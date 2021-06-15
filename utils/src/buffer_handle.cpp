@@ -171,7 +171,7 @@ BufferHandle *ReadBufferHandle(MessageParcel &parcel)
     }
 
     if (!parcel.ReadInt32(handle->width) || !parcel.ReadInt32(handle->stride) || !parcel.ReadInt32(handle->height) ||
-        !parcel.ReadInt32(handle->size) || !parcel.ReadInt32(handle->format) || !parcel.ReadInt64(handle->usage) ||
+        !parcel.ReadInt32(handle->size) || !parcel.ReadInt32(handle->format) || !parcel.ReadUint64(handle->usage) ||
         !parcel.ReadUint64(handle->phyAddr) || !parcel.ReadInt32(handle->key)) {
         UTILS_LOGE("%{public}s a lot failed", __func__);
         FreeBufferHandle(handle);
