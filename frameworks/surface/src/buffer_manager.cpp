@@ -92,7 +92,7 @@ SurfaceError BufferManager::Alloc(BufferRequestConfig& config, sptr<SurfaceBuffe
     CHECK_BUFFER(buffer);
 
     BufferHandle* handle = nullptr;
-    AllocInfo info = {config.width, config.height, config.usage, (PixelFormat)config.format, DMA_MEM};
+    AllocInfo info = {config.width, config.height, config.usage, (PixelFormat)config.format};
 
     int ret = grallocFuncs_->AllocMem(&info, &handle);
     if (ret == DISPLAY_SUCCESS) {

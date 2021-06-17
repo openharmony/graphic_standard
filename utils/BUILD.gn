@@ -15,7 +15,10 @@ import("//build/ohos.gni")
 
 ## Utils BufferHandle {{{
 config("buffer_handle_public_config") {
-  include_dirs = [ "include" ]
+  include_dirs = [
+    "include",
+    "//drivers/peripheral/base",
+  ]
 }
 
 ohos_static_library("buffer_handle") {

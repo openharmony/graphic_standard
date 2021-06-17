@@ -29,6 +29,9 @@ static constexpr OHOS::HiviewDFX::HiLogLabel LOG_LABEL = { LOG_CORE, 0xD001400, 
 #define UTILS_LOGI(...) (void)OHOS::HiviewDFX::HiLog::Info(LOG_LABEL, __VA_ARGS__)
 #define UTILS_LOGD(...) (void)OHOS::HiviewDFX::HiLog::Debug(LOG_LABEL, __VA_ARGS__)
 
+#define BUFFER_HANDLE_MAX_RESERVE_INTS 64
+#define BUFFER_HANDLE_MAX_RESERVE_FDS 64
+
 BufferHandle *AllocateBufferHandle(uint32_t reserveFds, uint32_t reserveInts)
 {
     if (reserveFds > BUFFER_HANDLE_MAX_RESERVE_FDS || reserveFds < 0 ||
@@ -171,7 +174,7 @@ BufferHandle *ReadBufferHandle(MessageParcel &parcel)
     }
 
     if (!parcel.ReadInt32(handle->width) || !parcel.ReadInt32(handle->stride) || !parcel.ReadInt32(handle->height) ||
-        !parcel.ReadInt32(handle->size) || !parcel.ReadInt32(handle->format) || !parcel.ReadInt64(handle->usage) ||
+        !parcel.ReadInt32(handle->size) || !parcel.ReadInt32(handle->format) || !parcel.ReadUint64(handle->usage) ||
         !parcel.ReadUint64(handle->phyAddr) || !parcel.ReadInt32(handle->key)) {
         UTILS_LOGE("%{public}s a lot failed", __func__);
         FreeBufferHandle(handle);
