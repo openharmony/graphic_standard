@@ -145,7 +145,7 @@ static int32_t GetDrmFmtByPixelFmt(int32_t pixelFmt)
 static int32_t CreateShmFile(int32_t size)
 {
     static const char tempPath[] = "/weston-shared-XXXXXX";
-    static const char path[] = "/dev/socket";
+    static const char path[] = "/data/weston";
     size_t len = sizeof(path) + sizeof(tempPath) + 1;
     std::unique_ptr<char[]> name = std::make_unique<char[]>(len);
     auto ret = strcpy_s(name.get(), len, path);
