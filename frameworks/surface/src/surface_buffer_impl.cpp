@@ -59,7 +59,7 @@ SurfaceBufferImpl::~SurfaceBufferImpl()
     }
 
     if (this->bufferData_.handle_) {
-        delete[] reinterpret_cast<uint8_t*>(this->bufferData_.handle_);
+        FreeBufferHandle(this->bufferData_.handle_);
     }
 }
 

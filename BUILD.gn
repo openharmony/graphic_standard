@@ -14,8 +14,19 @@
 import("//build/ohos.gni")
 
 ## Install graphic.rc to /system/etc/init/graphic.rc {{{
+#ohos_prebuilt_etc("graphic.rc") {
+#  source = "graphic.rc"
+#  relative_install_dir = "init"
+#  part_name = "graphic_standard"
+#  subsystem_name = "graphic"
+#}
+
 ohos_prebuilt_etc("graphic.rc") {
-  source = "graphic.rc"
+  if (use_musl) {
+    source = "graphic.cfg"
+  } else {
+    source = "graphic.rc"
+  }
   relative_install_dir = "init"
   part_name = "graphic_standard"
   subsystem_name = "graphic"

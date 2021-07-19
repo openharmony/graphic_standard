@@ -43,6 +43,7 @@ BufferHandle *AllocateBufferHandle(uint32_t reserveFds, uint32_t reserveInts)
     size_t handleSize = sizeof(BufferHandle) + (sizeof(int32_t) * (reserveFds + reserveInts));
     BufferHandle *handle = static_cast<BufferHandle *>(malloc(handleSize));
     if (handle != nullptr) {
+        (void)memset_s(handle, handleSize, 0, handleSize);
         handle->fd = -1;
         for (uint32_t i = 0; i < reserveFds; i++) {
             handle->reserve[i] = -1;
