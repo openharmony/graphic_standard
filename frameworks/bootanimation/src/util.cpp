@@ -16,6 +16,7 @@
 #include "util.h"
 
 #include <ctime>
+#include <sys/time.h>
 
 #include <vsync_helper.h>
 
