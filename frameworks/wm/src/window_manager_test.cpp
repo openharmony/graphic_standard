@@ -17,6 +17,7 @@
 #include <functional>
 #include <iostream>
 #include <securec.h>
+#include <sys/time.h>
 #include <thread>
 #include <unistd.h>
 #include <vector>
