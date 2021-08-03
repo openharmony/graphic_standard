@@ -20,6 +20,7 @@
 #include <surface_type.h>
 
 #include "buffer_manager.h"
+#include "buffer_utils.h"
 #include "environments.h"
 #include "surface_buffer_impl.h"
 
@@ -151,5 +152,29 @@ HWTEST_F(LocalSurfaceBufferImplTest, NormalState, testing::ext::TestSize.Level0)
 
     ret = BufferManager::GetInstance()->Free(buffer);
     ASSERT_EQ(ret, SURFACE_ERROR_OK);
+}
+
+HWTEST_F(LocalSurfaceBufferImplTest, Parcel, testing::ext::TestSize.Level0)
+{
+    sptr<SurfaceBufferImpl> sbi = new SurfaceBufferImpl();
+    const auto &bm = BufferManager::GetInstance();
+    auto sret = bm->Alloc(g_requestConfig, sbi);
+    ASSERT_EQ(sret, SURFACE_ERROR_OK);
+
+    sbi->SetInt32(32, 32);
+    sbi->SetInt64(64, 64);
+
+    MessageParcel parcel;
+    WriteSurfaceBufferImpl(parcel, sbi->GetSeqNum(), sbi);
+
+    sptr<SurfaceBufferImpl> sbi2 = nullptr;
+    int32_t seq;
+    ReadSurfaceBufferImpl(parcel, seq, sbi2);
+    ASSERT_NE(sbi2, nullptr);
+
+    int32_t val32 = 0;
+    int64_t val64 = 0;
+    ASSERT_EQ(sbi2->GetInt32(32, val32), SURFACE_ERROR_OK);
+    ASSERT_EQ(sbi2->GetInt64(64, val64), SURFACE_ERROR_OK);
 }
 }
