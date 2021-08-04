@@ -73,7 +73,7 @@ private:
         MessageParcel& reply, MessageOption& option);
     std::map<uint32_t, BufferQueueProducerFunc> memberFuncMap_;
 
-    sptr<BufferQueue> bufferQueue_;
+    sptr<BufferQueue> bufferQueue_ = nullptr;
     std::string name_ = "not init";
 };
 }; // namespace OHOS

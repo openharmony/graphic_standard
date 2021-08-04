@@ -68,8 +68,8 @@ public:
 
 private:
     std::map<std::string, std::string> userData_;
-    sptr<BufferQueueProducer> producer_;
-    sptr<BufferQueueConsumer> consumer_;
+    sptr<BufferQueueProducer> producer_ = nullptr;
+    sptr<BufferQueueConsumer> consumer_ = nullptr;
     std::string name_ = "not init";
 };
 } // namespace OHOS

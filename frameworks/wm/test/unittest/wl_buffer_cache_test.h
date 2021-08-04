@@ -22,12 +22,14 @@
 #include "wl_buffer_cache.h"
 
 namespace OHOS {
-class WlBufferCacheTest : public testing::Test {
+class WlBufferCacheTest : public testing::Test, public IBufferConsumerListenerClazz {
 public:
     static void SetUpTestCase();
     static void TearDownTestCase();
     virtual void SetUp() override;
     virtual void TearDown() override;
+
+    virtual void OnBufferAvailable() override;
 
 private:
     static inline WMError initRet = WM_ERROR_NOT_INIT;
