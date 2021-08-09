@@ -41,7 +41,7 @@ public:
     SurfaceError SetDefaultUsage(uint32_t usage);
 
 private:
-    sptr<BufferQueue> bufferQueue_;
+    sptr<BufferQueue> bufferQueue_ = nullptr;
     std::string name_ = "not init";
 };
 } // namespace OHOS

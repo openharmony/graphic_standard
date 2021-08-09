@@ -37,6 +37,10 @@ void WlBufferCacheTest::TearDownTestCase()
 {
 }
 
+void WlBufferCacheTest::OnBufferAvailable()
+{
+}
+
 namespace {
 /*
  * Feature: WlBufferCache add
@@ -69,6 +73,8 @@ HWTEST_F(WlBufferCacheTest, Add, testing::ext::TestSize.Level0)
     csurface1 = Surface::CreateSurfaceAsConsumer();
     ASSERT_NE(csurface1, nullptr) << "CaseDescription: "
         << "2.a. get consumer surface (csurface1 != nullptr)";
+
+    csurface1->RegisterConsumerListener(this);
 
     // 2.b. get producer
     auto producer = csurface1->GetProducer();

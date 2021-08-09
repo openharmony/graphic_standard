@@ -103,8 +103,8 @@ private:
     std::list<int32_t> dirtyList_;
     std::list<int32_t> deletingList_;
     std::map<int32_t, BufferElement> bufferQueueCache_;
-    sptr<IBufferConsumerListener> listener_;
-    IBufferConsumerListenerClazz *listenerClazz_;
+    sptr<IBufferConsumerListener> listener_ = nullptr;
+    IBufferConsumerListenerClazz *listenerClazz_ = nullptr;
     std::mutex mutex_;
 };
 }; // namespace OHOS

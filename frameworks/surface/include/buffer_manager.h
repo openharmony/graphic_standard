@@ -36,10 +36,11 @@ public:
     SurfaceError Free(sptr<SurfaceBufferImpl>& buffer);
 
 private:
-    static BufferManager instance_;
-    GrallocFuncs* grallocFuncs_;
-    BufferManager() : grallocFuncs_(nullptr) {}
+    BufferManager() = default;
     ~BufferManager();
+    static BufferManager instance_;
+
+    GrallocFuncs* grallocFuncs_ = nullptr;
 };
 } // namespace OHOS
 
