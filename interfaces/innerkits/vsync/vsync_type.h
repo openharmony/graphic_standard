@@ -24,6 +24,8 @@ namespace OHOS {
 static const char *DrmModuleNames[] = {
     "hisilicon",
     "sprd",
+    "imx-drm",
+    "rockchip",
 };
 } // namespace OHOS
 
