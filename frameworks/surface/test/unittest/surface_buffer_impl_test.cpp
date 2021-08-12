@@ -13,47 +13,26 @@
  * limitations under the License.
  */
 
-#include "local_surface_buffer_impl_test.h"
-
-#include <display_type.h>
-#include <gtest/gtest.h>
-#include <surface_type.h>
+#include "surface_buffer_impl_test.h"
 
 #include "buffer_manager.h"
 #include "buffer_utils.h"
-#include "environments.h"
-#include "surface_buffer_impl.h"
 
-using namespace OHOS;
+namespace OHOS {
+void SurfaceBufferImplTest::SetUpTestCase()
+{
+    buffer = nullptr;
+    val32 = 0;
+    val64 = 0;
+}
+
+void SurfaceBufferImplTest::TearDownTestCase()
+{
+    buffer = nullptr;
+}
 
 namespace {
-BufferRequestConfig g_requestConfig = {
-    .width = 1920,
-    .height = 1080,
-    .strideAlignment = 8,
-    .format = PIXEL_FMT_RGBA_8888,
-    .usage = HBM_USE_CPU_READ | HBM_USE_CPU_WRITE | HBM_USE_MEM_DMA,
-    .timeout = 0,
-};
-static sptr<SurfaceBufferImpl> buffer;
-static int32_t val32;
-static int64_t val64;
-
-class LocalSurfaceBufferImplTest : public testing::Test {
-public:
-    static void SetUpTestCase(void)
-    {
-        buffer = nullptr;
-        val32 = 0;
-        val64 = 0;
-    }
-    static void TearDownTestCase(void)
-    {
-        buffer = nullptr;
-    }
-};
-
-HWTEST_F(LocalSurfaceBufferImplTest, NewSeqIncrease, testing::ext::TestSize.Level0)
+HWTEST_F(SurfaceBufferImplTest, NewSeqIncrease, testing::ext::TestSize.Level0)
 {
     buffer = new SurfaceBufferImpl();
     int oldSeq = buffer->GetSeqNum();
@@ -62,7 +41,7 @@ HWTEST_F(LocalSurfaceBufferImplTest, NewSeqIncrease, testing::ext::TestSize.Leve
     ASSERT_EQ(oldSeq + 1, buffer->GetSeqNum());
 }
 
-HWTEST_F(LocalSurfaceBufferImplTest, NewState, testing::ext::TestSize.Level0)
+HWTEST_F(SurfaceBufferImplTest, NewState, testing::ext::TestSize.Level0)
 {
     ASSERT_EQ(buffer->GetBufferHandle(), nullptr);
     ASSERT_EQ(buffer->GetVirAddr(), nullptr);
@@ -70,7 +49,7 @@ HWTEST_F(LocalSurfaceBufferImplTest, NewState, testing::ext::TestSize.Level0)
     ASSERT_EQ(buffer->GetSize(), 0u);
 }
 
-HWTEST_F(LocalSurfaceBufferImplTest, GetterSetter32Positive, testing::ext::TestSize.Level0)
+HWTEST_F(SurfaceBufferImplTest, GetterSetter32Positive, testing::ext::TestSize.Level0)
 {
     SurfaceError ret;
 
@@ -82,7 +61,7 @@ HWTEST_F(LocalSurfaceBufferImplTest, GetterSetter32Positive, testing::ext::TestS
     ASSERT_EQ(val32, 0x7fffffff);
 }
 
-HWTEST_F(LocalSurfaceBufferImplTest, GetterSetter32Nagetive, testing::ext::TestSize.Level0)
+HWTEST_F(SurfaceBufferImplTest, GetterSetter32Nagetive, testing::ext::TestSize.Level0)
 {
     SurfaceError ret;
 
@@ -94,7 +73,7 @@ HWTEST_F(LocalSurfaceBufferImplTest, GetterSetter32Nagetive, testing::ext::TestS
     ASSERT_EQ(val32, -1);
 }
 
-HWTEST_F(LocalSurfaceBufferImplTest, GetterSetter64Positive, testing::ext::TestSize.Level0)
+HWTEST_F(SurfaceBufferImplTest, GetterSetter64Positive, testing::ext::TestSize.Level0)
 {
     SurfaceError ret;
 
@@ -106,7 +85,7 @@ HWTEST_F(LocalSurfaceBufferImplTest, GetterSetter64Positive, testing::ext::TestS
     ASSERT_EQ(val64, 0x7fffffffffLL);
 }
 
-HWTEST_F(LocalSurfaceBufferImplTest, GetterSetter64Negative, testing::ext::TestSize.Level0)
+HWTEST_F(SurfaceBufferImplTest, GetterSetter64Negative, testing::ext::TestSize.Level0)
 {
     SurfaceError ret;
 
@@ -118,7 +97,7 @@ HWTEST_F(LocalSurfaceBufferImplTest, GetterSetter64Negative, testing::ext::TestS
     ASSERT_EQ(val64, -1);
 }
 
-HWTEST_F(LocalSurfaceBufferImplTest, GetterSetter32As64, testing::ext::TestSize.Level0)
+HWTEST_F(SurfaceBufferImplTest, GetterSetter32As64, testing::ext::TestSize.Level0)
 {
     SurfaceError ret;
 
@@ -128,7 +107,7 @@ HWTEST_F(LocalSurfaceBufferImplTest, GetterSetter32As64, testing::ext::TestSize.
     ASSERT_EQ(val64, 0x123);
 }
 
-HWTEST_F(LocalSurfaceBufferImplTest, GetterSetter64As32, testing::ext::TestSize.Level0)
+HWTEST_F(SurfaceBufferImplTest, GetterSetter64As32, testing::ext::TestSize.Level0)
 {
     SurfaceError ret;
 
@@ -138,11 +117,11 @@ HWTEST_F(LocalSurfaceBufferImplTest, GetterSetter64As32, testing::ext::TestSize.
     ASSERT_EQ(val32, 0x456);
 }
 
-HWTEST_F(LocalSurfaceBufferImplTest, NormalState, testing::ext::TestSize.Level0)
+HWTEST_F(SurfaceBufferImplTest, NormalState, testing::ext::TestSize.Level0)
 {
     ASSERT_EQ(buffer->GetBufferHandle(), nullptr);
 
-    SurfaceError ret = BufferManager::GetInstance()->Alloc(g_requestConfig, buffer);
+    SurfaceError ret = BufferManager::GetInstance()->Alloc(requestConfig, buffer);
     ASSERT_EQ(ret, SURFACE_ERROR_OK);
 
     ASSERT_EQ(buffer->GetVirAddr(), nullptr);
@@ -154,11 +133,11 @@ HWTEST_F(LocalSurfaceBufferImplTest, NormalState, testing::ext::TestSize.Level0)
     ASSERT_EQ(ret, SURFACE_ERROR_OK);
 }
 
-HWTEST_F(LocalSurfaceBufferImplTest, Parcel, testing::ext::TestSize.Level0)
+HWTEST_F(SurfaceBufferImplTest, Parcel, testing::ext::TestSize.Level0)
 {
     sptr<SurfaceBufferImpl> sbi = new SurfaceBufferImpl();
     const auto &bm = BufferManager::GetInstance();
-    auto sret = bm->Alloc(g_requestConfig, sbi);
+    auto sret = bm->Alloc(requestConfig, sbi);
     ASSERT_EQ(sret, SURFACE_ERROR_OK);
 
     sbi->SetInt32(32, 32);
@@ -178,3 +157,4 @@ HWTEST_F(LocalSurfaceBufferImplTest, Parcel, testing::ext::TestSize.Level0)
     ASSERT_EQ(sbi2->GetInt64(64, val64), SURFACE_ERROR_OK);
 }
 }
+} // namespace OHOS

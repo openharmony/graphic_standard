@@ -13,48 +13,32 @@
  * limitations under the License.
  */
 
-#include "local_buffer_manager_test.h"
+#include "buffer_manager_test.h"
 
 #include <securec.h>
 
-#include <display_type.h>
-#include <gtest/gtest.h>
-#include <surface_type.h>
-
 #include "buffer_manager.h"
-#include "environments.h"
 
 using namespace OHOS;
 
+namespace OHOS {
+void BufferManagerTest::SetUpTestCase()
+{
+    buffer = new SurfaceBufferImpl();
+}
+
+void BufferManagerTest::TearDownTestCase()
+{
+    buffer = nullptr;
+}
+
 namespace {
-BufferRequestConfig g_requestConfig = {
-    .width = 1920,
-    .height = 1080,
-    .strideAlignment = 8,
-    .format = PIXEL_FMT_RGBA_8888,
-    .usage = HBM_USE_CPU_READ | HBM_USE_CPU_WRITE | HBM_USE_MEM_DMA,
-    .timeout = 0,
-};
-sptr<SurfaceBufferImpl> buffer;
-
-class LocalBufferManagerTest : public testing::Test {
-public:
-    static void SetUpTestCase(void)
-    {
-        buffer = new SurfaceBufferImpl();
-    }
-    static void TearDownTestCase(void)
-    {
-        buffer = nullptr;
-    }
-};
-
-HWTEST_F(LocalBufferManagerTest, GetInstance, testing::ext::TestSize.Level0)
+HWTEST_F(BufferManagerTest, GetInstance, testing::ext::TestSize.Level0)
 {
     ASSERT_NE(BufferManager::GetInstance(), nullptr);
 }
 
-HWTEST_F(LocalBufferManagerTest, Init, testing::ext::TestSize.Level0)
+HWTEST_F(BufferManagerTest, Init, testing::ext::TestSize.Level0)
 {
     SurfaceError ret = BufferManager::GetInstance()->Init();
     ASSERT_EQ(ret, SURFACE_ERROR_OK);
@@ -69,11 +53,11 @@ HWTEST_F(LocalBufferManagerTest, Init, testing::ext::TestSize.Level0)
     ASSERT_EQ(pFun1, pFun2);
 }
 
-HWTEST_F(LocalBufferManagerTest, Alloc, testing::ext::TestSize.Level0)
+HWTEST_F(BufferManagerTest, Alloc, testing::ext::TestSize.Level0)
 {
     ASSERT_EQ(buffer->GetBufferHandle(), nullptr);
 
-    SurfaceError ret = BufferManager::GetInstance()->Alloc(g_requestConfig, buffer);
+    SurfaceError ret = BufferManager::GetInstance()->Alloc(requestConfig, buffer);
     ASSERT_EQ(ret, SURFACE_ERROR_OK);
 
     BufferHandle* handle = buffer->GetBufferHandle();
@@ -82,7 +66,7 @@ HWTEST_F(LocalBufferManagerTest, Alloc, testing::ext::TestSize.Level0)
     ASSERT_EQ(handle->virAddr, nullptr);
 }
 
-HWTEST_F(LocalBufferManagerTest, Map, testing::ext::TestSize.Level0)
+HWTEST_F(BufferManagerTest, Map, testing::ext::TestSize.Level0)
 {
     BufferHandle* handle;
 
@@ -98,7 +82,7 @@ HWTEST_F(LocalBufferManagerTest, Map, testing::ext::TestSize.Level0)
     ASSERT_NE(handle->virAddr, nullptr);
 }
 
-HWTEST_F(LocalBufferManagerTest, FlushBufferBeforeUnmap, testing::ext::TestSize.Level0)
+HWTEST_F(BufferManagerTest, FlushBufferBeforeUnmap, testing::ext::TestSize.Level0)
 {
     BufferHandle* handle;
 
@@ -114,7 +98,7 @@ HWTEST_F(LocalBufferManagerTest, FlushBufferBeforeUnmap, testing::ext::TestSize.
     ASSERT_NE(handle->virAddr, nullptr);
 }
 
-HWTEST_F(LocalBufferManagerTest, Unmap, testing::ext::TestSize.Level0)
+HWTEST_F(BufferManagerTest, Unmap, testing::ext::TestSize.Level0)
 {
     BufferHandle* handle = buffer->GetBufferHandle();
     ASSERT_NE(handle, nullptr);
@@ -128,7 +112,7 @@ HWTEST_F(LocalBufferManagerTest, Unmap, testing::ext::TestSize.Level0)
     ASSERT_EQ(handle->virAddr, nullptr);
 }
 
-HWTEST_F(LocalBufferManagerTest, FlushBufferAfterUnmap, testing::ext::TestSize.Level0)
+HWTEST_F(BufferManagerTest, FlushBufferAfterUnmap, testing::ext::TestSize.Level0)
 {
     BufferHandle* handle;
 
@@ -144,7 +128,7 @@ HWTEST_F(LocalBufferManagerTest, FlushBufferAfterUnmap, testing::ext::TestSize.L
     ASSERT_EQ(handle->virAddr, nullptr);
 }
 
-HWTEST_F(LocalBufferManagerTest, Free, testing::ext::TestSize.Level0)
+HWTEST_F(BufferManagerTest, Free, testing::ext::TestSize.Level0)
 {
     BufferHandle* handle;
 
@@ -169,9 +153,9 @@ HWTEST_F(LocalBufferManagerTest, Free, testing::ext::TestSize.Level0)
  *                  2. alloc buffer 3*1024KB
  *                  3. free buffer
  *                  4. get cma free, get diff
- *                  5. diff should less then 200KB
+ *                  5. diff should less then 1000KB
  */
-HWTEST_F(LocalBufferManagerTest, CMALeak, testing::ext::TestSize.Level0)
+HWTEST_F(BufferManagerTest, CMALeak, testing::ext::TestSize.Level0)
 {
     // 0. buffer size = 1024KB
     constexpr uint32_t width = 1024 * 3;
@@ -228,8 +212,9 @@ HWTEST_F(LocalBufferManagerTest, CMALeak, testing::ext::TestSize.Level0)
     // 4. get cma free again
     int32_t third = getCmaFree();
 
-    // 5. diff should less then 200KB
+    // 5. diff should less then 1000KB
     GTEST_LOG_(INFO) << "diff: " << first - third;
-    ASSERT_LT(first - third, 200);
+    ASSERT_LT(first - third, 1000);
 }
 }
+} // namespace OHOS

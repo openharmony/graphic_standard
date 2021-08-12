@@ -13,9 +13,18 @@
  * limitations under the License.
  */
 
-#ifndef FRAMEWORKS_SURFACE_TEST_UNITTEST_ENVIRONMENTS_H
-#define FRAMEWORKS_SURFACE_TEST_UNITTEST_ENVIRONMENTS_H
+#ifndef FRAMEWORKS_SURFACE_TEST_UNITTEST_BUFFER_CONSUMER_LISTENER_H
+#define FRAMEWORKS_SURFACE_TEST_UNITTEST_BUFFER_CONSUMER_LISTENER_H
 
-#define IPC_QUEUE_SAID 654321
+#include <ibuffer_consumer_listener.h>
 
-#endif // FRAMEWORKS_SURFACE_TEST_UNITTEST_ENVIRONMENTS_H
+namespace OHOS {
+class BufferConsumerListener : public ::OHOS::IBufferConsumerListener {
+public:
+    void OnBufferAvailable()
+    {
+    }
+};
+} // namespace OHOS
+
+#endif // FRAMEWORKS_SURFACE_TEST_UNITTEST_BUFFER_CONSUMER_LISTENER_H
