@@ -46,12 +46,12 @@ constexpr int32_t SEC_TO_USEC = 1000000;
 BufferQueue::BufferQueue(const std::string &name)
     : name_(name)
 {
-    BLOGNI("ctor %{public}s", name_.c_str());
+    BLOGNI("ctor");
 }
 
 BufferQueue::~BufferQueue()
 {
-    BLOGNI("dtor %{public}s", name_.c_str());
+    BLOGNI("dtor");
     std::lock_guard<std::mutex> lockGuard(mutex_);
     for (auto it = bufferQueueCache_.begin(); it != bufferQueueCache_.end(); it++) {
         FreeBuffer(it->second.buffer);

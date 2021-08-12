@@ -29,7 +29,6 @@ constexpr HiviewDFX::HiLogLabel LABEL = { LOG_CORE, 0, "SurfaceBufferImpl" };
 
 SurfaceBufferImpl::SurfaceBufferImpl()
 {
-    BLOGD("");
     {
         static std::mutex mutex;
         mutex.lock();
@@ -40,18 +39,19 @@ SurfaceBufferImpl::SurfaceBufferImpl()
         mutex.unlock();
     }
     handle_ = nullptr;
+    BLOGD("ctor +[%{public}d]", sequenceNumber);
 }
 
 SurfaceBufferImpl::SurfaceBufferImpl(int seqNum)
 {
-    BLOGD("");
     sequenceNumber = seqNum;
     handle_ = nullptr;
+    BLOGD("ctor =[%{public}d]", sequenceNumber);
 }
 
 SurfaceBufferImpl::~SurfaceBufferImpl()
 {
-    BLOGD("");
+    BLOGD("dtor ~[%{public}d]", sequenceNumber);
     if (handle_) {
         FreeBufferHandle(handle_);
     }

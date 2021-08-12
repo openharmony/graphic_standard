@@ -62,12 +62,12 @@ constexpr HiviewDFX::HiLogLabel LABEL = { LOG_CORE, 0, "BufferClientProducer" };
 BufferClientProducer::BufferClientProducer(const sptr<IRemoteObject>& impl)
     : IRemoteProxy<IBufferProducer>(impl)
 {
-    BLOGI("ctor");
+    BLOGNI("ctor");
 }
 
 BufferClientProducer::~BufferClientProducer()
 {
-    BLOGI("dtor");
+    BLOGNI("dtor");
 }
 
 SurfaceError BufferClientProducer::RequestBuffer(int32_t& sequence, sptr<SurfaceBuffer>& buffer,

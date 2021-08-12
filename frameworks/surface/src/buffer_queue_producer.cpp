@@ -31,7 +31,7 @@ BufferQueueProducer::BufferQueueProducer(sptr<BufferQueue>& bufferQueue)
     if (bufferQueue_ != nullptr) {
         bufferQueue_->GetName(name_);
     }
-    BLOGNI("ctor %{public}s", name_.c_str());
+    BLOGNI("ctor");
 
     memberFuncMap_[BUFFER_PRODUCER_REQUEST_BUFFER] = &BufferQueueProducer::RequestBufferInner;
     memberFuncMap_[BUFFER_PRODUCER_CANCEL_BUFFER] = &BufferQueueProducer::CancelBufferInner;
@@ -47,7 +47,7 @@ BufferQueueProducer::BufferQueueProducer(sptr<BufferQueue>& bufferQueue)
 
 BufferQueueProducer::~BufferQueueProducer()
 {
-    BLOGNI("dtor %{public}s", name_.c_str());
+    BLOGNI("dtor");
 }
 
 int BufferQueueProducer::OnRemoteRequest(uint32_t code, MessageParcel& arguments,
@@ -69,7 +69,10 @@ int BufferQueueProducer::OnRemoteRequest(uint32_t code, MessageParcel& arguments
         return ERR_INVALID_STATE;
     }
 
-    return (this->*(it->second))(arguments, reply, option);
+    BLOGND("OnRemoteRequest call %{public}d start", code);
+    auto ret = (this->*(it->second))(arguments, reply, option);
+    BLOGND("OnRemoteRequest call %{public}d end", code);
+    return ret;
 }
 
 int BufferQueueProducer::RequestBufferInner(MessageParcel& arguments, MessageParcel& reply, MessageOption& option)

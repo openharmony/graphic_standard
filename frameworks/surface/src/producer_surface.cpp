@@ -25,17 +25,17 @@ constexpr HiviewDFX::HiLogLabel LABEL = { LOG_CORE, 0, "ProducerSurface" };
 
 ProducerSurface::ProducerSurface(sptr<IBufferProducer>& producer)
 {
-    BLOGND("ctor");
     producer_ = producer;
     auto sret = producer_->GetName(name_);
     if (sret != SURFACE_ERROR_OK) {
         BLOGNE("GetName failed, %{public}s", SurfaceErrorStr(sret).c_str());
     }
+    BLOGND("ctor");
 }
 
 ProducerSurface::~ProducerSurface()
 {
-    BLOGND("dtor %{public}s", name_.c_str());
+    BLOGND("dtor");
     if (IsRemote()) {
         for (auto it = bufferProducerCache_.begin(); it != bufferProducerCache_.end(); it++) {
             if (it->second->GetVirAddr() != nullptr) {
@@ -103,7 +103,7 @@ SurfaceError ProducerSurface::RequestBuffer(sptr<SurfaceBuffer>& buffer,
         }
         bufferProducerCache_.erase(*it);
     }
-    return ret;
+    return SURFACE_ERROR_OK;
 }
 
 SurfaceError ProducerSurface::CancelBuffer(sptr<SurfaceBuffer>& buffer)
