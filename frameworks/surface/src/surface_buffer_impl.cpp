@@ -236,6 +236,57 @@ SurfaceError SurfaceBufferImpl::GetData(uint32_t key, ExtraData& data)
     return SURFACE_ERROR_OK;
 }
 
+void SurfaceBufferImpl::SetExtraData(const BufferExtraData &bedata)
+{
+    auto bedatai = static_cast<const BufferExtraDataImpl*>(&bedata);
+    bedataimpl = *bedatai;
+}
+
+BufferExtraData &SurfaceBufferImpl::GetExtraData()
+{
+    return bedataimpl;
+}
+
+SurfaceError SurfaceBufferImpl::ExtraGet(std::string key, int32_t &value) const
+{
+    return bedataimpl.ExtraGet(key, value);
+}
+
+SurfaceError SurfaceBufferImpl::ExtraGet(std::string key, int64_t &value) const
+{
+    return bedataimpl.ExtraGet(key, value);
+}
+
+SurfaceError SurfaceBufferImpl::ExtraGet(std::string key, double &value) const
+{
+    return bedataimpl.ExtraGet(key, value);
+}
+
+SurfaceError SurfaceBufferImpl::ExtraGet(std::string key, std::string &value) const
+{
+    return bedataimpl.ExtraGet(key, value);
+}
+
+SurfaceError SurfaceBufferImpl::ExtraSet(std::string key, int32_t value)
+{
+    return bedataimpl.ExtraSet(key, value);
+}
+
+SurfaceError SurfaceBufferImpl::ExtraSet(std::string key, int64_t value)
+{
+    return bedataimpl.ExtraSet(key, value);
+}
+
+SurfaceError SurfaceBufferImpl::ExtraSet(std::string key, double value)
+{
+    return bedataimpl.ExtraSet(key, value);
+}
+
+SurfaceError SurfaceBufferImpl::ExtraSet(std::string key, std::string value)
+{
+    return bedataimpl.ExtraSet(key, value);
+}
+
 void SurfaceBufferImpl::SetBufferHandle(BufferHandle* handle)
 {
     bufferData_.handle_ = handle;

@@ -112,7 +112,9 @@ SurfaceError ProducerSurface::CancelBuffer(sptr<SurfaceBuffer>& buffer)
         return SURFACE_ERROR_NULLPTR;
     }
 
-    return GetProducer()->CancelBuffer(SurfaceBufferImpl::FromBase(buffer)->GetSeqNum());
+    auto bufferImpl = SurfaceBufferImpl::FromBase(buffer);
+    auto& bedata = bufferImpl->GetExtraData();
+    return GetProducer()->CancelBuffer(bufferImpl->GetSeqNum(), bedata);
 }
 
 SurfaceError ProducerSurface::FlushBuffer(sptr<SurfaceBuffer>& buffer,
@@ -122,7 +124,9 @@ SurfaceError ProducerSurface::FlushBuffer(sptr<SurfaceBuffer>& buffer,
         return SURFACE_ERROR_NULLPTR;
     }
 
-    return GetProducer()->FlushBuffer(SurfaceBufferImpl::FromBase(buffer)->GetSeqNum(), fence, config);
+    auto bufferImpl = SurfaceBufferImpl::FromBase(buffer);
+    auto& bedata = bufferImpl->GetExtraData();
+    return GetProducer()->FlushBuffer(bufferImpl->GetSeqNum(), bedata, fence, config);
 }
 
 SurfaceError ProducerSurface::AcquireBuffer(sptr<SurfaceBuffer>& buffer, int32_t& fence,

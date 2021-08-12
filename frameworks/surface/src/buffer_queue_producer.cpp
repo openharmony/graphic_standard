@@ -15,6 +15,7 @@
 
 #include "buffer_queue_producer.h"
 
+#include "buffer_extra_data_impl.h"
 #include "buffer_log.h"
 #include "buffer_manager.h"
 #include "buffer_utils.h"
@@ -73,10 +74,10 @@ int BufferQueueProducer::OnRemoteRequest(uint32_t code, MessageParcel& arguments
 
 int BufferQueueProducer::RequestBufferInner(MessageParcel& arguments, MessageParcel& reply, MessageOption& option)
 {
-    int32_t sequence;
-    sptr<SurfaceBuffer> buffer;
+    int32_t sequence = -1;
+    sptr<SurfaceBuffer> buffer = nullptr;
     int32_t fence = -1;
-    BufferRequestConfig config;
+    BufferRequestConfig config = {};
     std::vector<int32_t> deletingBuffers;
 
     ReadRequestConfig(arguments, config);
@@ -96,8 +97,13 @@ int BufferQueueProducer::RequestBufferInner(MessageParcel& arguments, MessagePar
 
 int BufferQueueProducer::CancelBufferInner(MessageParcel& arguments, MessageParcel& reply, MessageOption& option)
 {
-    int32_t sequence = arguments.ReadInt32();
-    SurfaceError retval = CancelBuffer(sequence);
+    int32_t sequence;
+    BufferExtraDataImpl bedataimpl;
+
+    sequence = arguments.ReadInt32();
+    bedataimpl.ReadFromParcel(arguments);
+
+    SurfaceError retval = CancelBuffer(sequence, bedataimpl);
     reply.WriteInt32(retval);
     return 0;
 }
@@ -107,12 +113,14 @@ int BufferQueueProducer::FlushBufferInner(MessageParcel& arguments, MessageParce
     int32_t fence;
     int32_t sequence;
     BufferFlushConfig config;
+    BufferExtraDataImpl bedataimpl;
 
     sequence = arguments.ReadInt32();
+    bedataimpl.ReadFromParcel(arguments);
     ReadFence(arguments, fence);
     ReadFlushConfig(arguments, config);
 
-    SurfaceError retval = FlushBuffer(sequence, fence, config);
+    SurfaceError retval = FlushBuffer(sequence, bedataimpl, fence, config);
 
     reply.WriteInt32(retval);
     return 0;
@@ -174,26 +182,31 @@ SurfaceError BufferQueueProducer::RequestBuffer(int32_t& sequence, sptr<SurfaceB
         return SURFACE_ERROR_NULLPTR;
     }
     sptr<SurfaceBufferImpl> bufferImpl = SurfaceBufferImpl::FromBase(buffer);
-    SurfaceError ret = bufferQueue_->RequestBuffer(sequence, bufferImpl, fence, config, deletingBuffers);
-    buffer = bufferImpl;
-    return ret;
+    BufferQueue::RequestBufferReturnValue retval = {.buffer = bufferImpl};
+    auto sret = bufferQueue_->RequestBuffer(config, retval);
+
+    sequence = retval.sequence;
+    buffer = retval.buffer;
+    deletingBuffers = retval.deletingBuffers;
+    fence = retval.fence;
+    return sret;
 }
 
-SurfaceError BufferQueueProducer::CancelBuffer(int32_t sequence)
+SurfaceError BufferQueueProducer::CancelBuffer(int32_t sequence, BufferExtraData &bedata)
 {
     if (bufferQueue_ == nullptr) {
         return SURFACE_ERROR_NULLPTR;
     }
-    return bufferQueue_->CancelBuffer(sequence);
+    return bufferQueue_->CancelBuffer(sequence, bedata);
 }
 
-SurfaceError BufferQueueProducer::FlushBuffer(int32_t sequence,
+SurfaceError BufferQueueProducer::FlushBuffer(int32_t sequence, BufferExtraData &bedata,
                                               int32_t fence, BufferFlushConfig& config)
 {
     if (bufferQueue_ == nullptr) {
         return SURFACE_ERROR_NULLPTR;
     }
-    return bufferQueue_->FlushBuffer(sequence, fence, config);
+    return bufferQueue_->FlushBuffer(sequence, bedata, fence, config);
 }
 
 uint32_t BufferQueueProducer::GetQueueSize()

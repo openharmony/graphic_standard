@@ -19,9 +19,12 @@
 #include <any>
 #include <map>
 
-#include <surface_buffer.h>
+#include <buffer_extra_data.h>
 #include <buffer_handle_parcel.h>
 #include <buffer_handle_utils.h>
+#include <surface_buffer.h>
+
+#include "buffer_extra_data_impl.h"
 
 namespace OHOS {
 enum ExtraDataType {
@@ -67,6 +70,17 @@ public:
     SurfaceError SetInt64(uint32_t key, int64_t val) override;
     SurfaceError GetInt64(uint32_t key, int64_t& val) override;
 
+    void SetExtraData(const BufferExtraData &bedata);
+    BufferExtraData &GetExtraData();
+    virtual SurfaceError ExtraGet(std::string key, int32_t &value) const override;
+    virtual SurfaceError ExtraGet(std::string key, int64_t &value) const override;
+    virtual SurfaceError ExtraGet(std::string key, double &value) const override;
+    virtual SurfaceError ExtraGet(std::string key, std::string &value) const override;
+    virtual SurfaceError ExtraSet(std::string key, int32_t value) override;
+    virtual SurfaceError ExtraSet(std::string key, int64_t value) override;
+    virtual SurfaceError ExtraSet(std::string key, double value) override;
+    virtual SurfaceError ExtraSet(std::string key, std::string value) override;
+
     void SetBufferHandle(BufferHandle* handle);
     BufferHandle* GetBufferHandle();
 
@@ -78,6 +92,7 @@ private:
     SurfaceError SetData(uint32_t key, ExtraData data);
     SurfaceError GetData(uint32_t key, ExtraData& data);
     std::map<uint32_t, ExtraData> extraDatas_;
+    BufferExtraDataImpl bedataimpl;
 };
 } // namespace OHOS
 

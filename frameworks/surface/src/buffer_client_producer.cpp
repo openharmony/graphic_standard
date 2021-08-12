@@ -71,8 +71,7 @@ BufferClientProducer::~BufferClientProducer()
 }
 
 SurfaceError BufferClientProducer::RequestBuffer(int32_t& sequence, sptr<SurfaceBuffer>& buffer,
-                                                 int32_t& fence, BufferRequestConfig& config,
-                                                 std::vector<int32_t>& deletingBuffers)
+    int32_t& fence, BufferRequestConfig& config, std::vector<int32_t>& deletingBuffers)
 {
     DEFINE_MESSAGE_VARIABLES(arguments, reply, option, BLOGE);
 
@@ -84,18 +83,19 @@ SurfaceError BufferClientProducer::RequestBuffer(int32_t& sequence, sptr<Surface
     ReadFence(reply, fence);
     reply.ReadInt32Vector(&deletingBuffers);
 
-    sptr<SurfaceBufferImpl> bufferImpl;
+    sptr<SurfaceBufferImpl> bufferImpl = nullptr;
     ReadSurfaceBufferImpl(reply, sequence, bufferImpl);
     buffer = bufferImpl;
 
     return SURFACE_ERROR_OK;
 }
 
-SurfaceError BufferClientProducer::CancelBuffer(int32_t sequence)
+SurfaceError BufferClientProducer::CancelBuffer(int32_t sequence, BufferExtraData &bedata)
 {
     DEFINE_MESSAGE_VARIABLES(arguments, reply, option, BLOGE);
 
     arguments.WriteInt32(sequence);
+    bedata.WriteToParcel(arguments);
 
     SEND_REQUEST_WITH_SEQ(BUFFER_PRODUCER_CANCEL_BUFFER, arguments, reply, option, sequence);
     CHECK_RETVAL_WITH_SEQ(reply, sequence);
@@ -103,12 +103,13 @@ SurfaceError BufferClientProducer::CancelBuffer(int32_t sequence)
     return SURFACE_ERROR_OK;
 }
 
-SurfaceError BufferClientProducer::FlushBuffer(int32_t sequence,
+SurfaceError BufferClientProducer::FlushBuffer(int32_t sequence, BufferExtraData &bedata,
                              int32_t fence, BufferFlushConfig& config)
 {
     DEFINE_MESSAGE_VARIABLES(arguments, reply, option, BLOGE);
 
     arguments.WriteInt32(sequence);
+    bedata.WriteToParcel(arguments);
     WriteFence(arguments, fence);
     WriteFlushConfig(arguments, config);
 

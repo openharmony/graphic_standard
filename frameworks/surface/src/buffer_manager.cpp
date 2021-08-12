@@ -85,7 +85,7 @@ BufferManager::~BufferManager()
     }
 }
 
-SurfaceError BufferManager::Alloc(BufferRequestConfig& config, sptr<SurfaceBufferImpl>& buffer)
+SurfaceError BufferManager::Alloc(const BufferRequestConfig& config, sptr<SurfaceBufferImpl>& buffer)
 {
     CHECK_INIT();
     CHECK_FUNC(grallocFuncs_->AllocMem);
