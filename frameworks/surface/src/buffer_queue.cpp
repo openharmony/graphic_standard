@@ -514,6 +514,7 @@ SurfaceError BufferQueue::RegisterConsumerListener(IBufferConsumerListenerClazz 
 SurfaceError BufferQueue::UnregisterConsumerListener()
 {
     listener_ = nullptr;
+    listenerClazz_ = nullptr;
     return SURFACE_ERROR_OK;
 }
 
