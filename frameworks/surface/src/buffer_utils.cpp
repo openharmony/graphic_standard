@@ -89,7 +89,7 @@ void ReadSurfaceBufferImpl(MessageParcel& parcel,
 {
     sequence = parcel.ReadInt32();
     if (parcel.ReadBool()) {
-        auto bufferImpl = new SurfaceBufferImpl(sequence);
+        sptr<SurfaceBufferImpl> bufferImpl = new SurfaceBufferImpl(sequence);
         auto handle = ReadBufferHandle(parcel);
         bufferImpl->SetBufferHandle(handle);
         int32_t size = parcel.ReadInt32();

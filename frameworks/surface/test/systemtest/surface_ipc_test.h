@@ -17,7 +17,6 @@
 #define FRAMEWORKS_SURFACE_TEST_SYSTEMTEST_SURFACE_IPC_TEST_H
 
 #include <gtest/gtest.h>
-#include <iservice_registry.h>
 #include <surface.h>
 
 namespace OHOS {
@@ -25,11 +24,11 @@ class SurfaceIPCTest : public testing::Test, public IBufferConsumerListenerClazz
 public:
     static void SetUpTestCase();
     virtual void OnBufferAvailable() override;
-    int32_t OtherMain();
+    pid_t ChildProcessMain() const;
 
     static inline sptr<Surface> csurface = nullptr;
     static inline int32_t pipeFd[2] = {};
-    static inline constexpr int32_t ipcSystemAbilityID = 34156;
+    static inline int32_t ipcSystemAbilityID = 34156;
     static inline BufferRequestConfig requestConfig = {};
     static inline BufferFlushConfig flushConfig = {};
 };

@@ -29,7 +29,7 @@ public:
     pid_t ChildProcessMain();
 
     static inline int32_t pipeFd[2] = {};
-    static inline constexpr int32_t ipcSystemAbilityID = 34156;
+    static inline int32_t ipcSystemAbilityID = 34156;
     static inline BufferRequestConfig requestConfig = {};
     static inline BufferFlushConfig flushConfig = {};
 };

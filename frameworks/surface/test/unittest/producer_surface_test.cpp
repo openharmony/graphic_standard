@@ -220,11 +220,7 @@ HWTEST_F(ProducerSurfaceTest, UserData, testing::ext::TestSize.Level0)
 
 HWTEST_F(ProducerSurfaceTest, RegisterConsumerListener, testing::ext::TestSize.Level0)
 {
-    class TestConsumerListener : public IBufferConsumerListener {
-    public:
-        void OnBufferAvailable() override {}
-    };
-    sptr<IBufferConsumerListener> listener = new TestConsumerListener();
+    sptr<IBufferConsumerListener> listener = new BufferConsumerListener();
     SurfaceError ret = psurface->RegisterConsumerListener(listener);
     ASSERT_NE(ret, SURFACE_ERROR_OK);
 }

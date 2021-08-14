@@ -16,6 +16,7 @@
 #include "surface_ipc_test.h"
 
 #include <display_type.h>
+#include <iservice_registry.h>
 
 namespace OHOS {
 void SurfaceIPCTest::SetUpTestCase()
@@ -36,16 +37,14 @@ void SurfaceIPCTest::OnBufferAvailable()
 {
 }
 
-int32_t SurfaceIPCTest::OtherMain()
+pid_t SurfaceIPCTest::ChildProcessMain() const
 {
     pipe(pipeFd);
     pid_t pid = fork();
-    if (pid < 0) {
-        return -1;
+    if (pid != 0) {
+        return pid;
     }
-    if (pid > 0) {
-        return 0;
-    }
+
     int64_t data;
     read(pipeFd[0], &data, sizeof(data));
 
@@ -81,7 +80,7 @@ int32_t SurfaceIPCTest::OtherMain()
 namespace {
 HWTEST_F(SurfaceIPCTest, BufferIPC, testing::ext::TestSize.Level0)
 {
-    ASSERT_EQ(OtherMain(), 0);
+    ASSERT_EQ(ChildProcessMain(), 0);
 
     csurface = Surface::CreateSurfaceAsConsumer("test");
     csurface->RegisterConsumerListener(this);

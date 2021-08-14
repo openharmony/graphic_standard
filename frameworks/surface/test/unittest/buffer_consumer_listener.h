@@ -21,7 +21,7 @@
 namespace OHOS {
 class BufferConsumerListener : public ::OHOS::IBufferConsumerListener {
 public:
-    void OnBufferAvailable()
+    void OnBufferAvailable() override
     {
     }
 };

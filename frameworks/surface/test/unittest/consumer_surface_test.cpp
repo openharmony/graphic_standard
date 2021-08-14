@@ -176,7 +176,8 @@ HWTEST_F(ConsumerSurfaceTest, RegisterConsumerListener, testing::ext::TestSize.L
 {
     class TestConsumerListener : public IBufferConsumerListener {
     public:
-        void OnBufferAvailable() override {
+        void OnBufferAvailable() override
+        {
             sptr<SurfaceBuffer> buffer;
             int32_t flushFence;
 
@@ -215,11 +216,7 @@ HWTEST_F(ConsumerSurfaceTest, RegisterConsumerListener, testing::ext::TestSize.L
 
 HWTEST_F(ConsumerSurfaceTest, RegisterConsumerListenerWithParam, testing::ext::TestSize.Level0)
 {
-    class TestConsumerListener : public IBufferConsumerListener {
-    public:
-        void OnBufferAvailable() override {}
-    };
-    sptr<IBufferConsumerListener> listener = new TestConsumerListener();
+    sptr<IBufferConsumerListener> listener = new BufferConsumerListener();
     SurfaceError ret = cs->RegisterConsumerListener(listener);
     ASSERT_EQ(ret, SURFACE_ERROR_OK);
 
