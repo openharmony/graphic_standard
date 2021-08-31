@@ -36,10 +36,14 @@ class Main : public IWindowChangeListenerClazz {
 public:
     void Init(int32_t width, int32_t height);
     int32_t DoDraw(uint8_t *addr, uint32_t width, uint32_t height, uint32_t count);
-    void Draw(Window *window);
+    void Draw();
     void Sync(int64_t time, void *data);
     void OnWindowCreate(int32_t pid, int32_t wid) override;
     void OnWindowDestroy(int32_t pid, int32_t wid) override;
+
+private:
+    sptr<Window> window = nullptr;
+    int32_t freq = 30;
 };
 
 int32_t Main::DoDraw(uint8_t *addr, uint32_t width, uint32_t height, uint32_t count)
@@ -69,7 +73,7 @@ int32_t Main::DoDraw(uint8_t *addr, uint32_t width, uint32_t height, uint32_t co
     return 0;
 }
 
-void Main::Draw(Window *window)
+void Main::Draw()
 {
     sptr<Surface> surface = window->GetSurface();
     if (surface == nullptr) {
@@ -129,9 +133,9 @@ void Main::Draw(Window *window)
 
 void Main::Sync(int64_t time, void *data)
 {
-    Draw(reinterpret_cast<Window *>(data));
+    Draw();
     struct FrameCallback cb = {
-        .frequency_ = 30,
+        .frequency_ = freq,
         .timestamp_ = 0,
         .userdata_ = data,
         .callback_ = std::bind(&Main::Sync, this, SYNC_FUNC_ARG),
@@ -153,7 +157,6 @@ void Main::Init(int32_t width, int32_t height)
     option->SetX(0);
     option->SetY(0);
 
-    sptr<Window> window = nullptr;
     auto wret = wmi->CreateWindow(window, option);
     if (wret != WM_OK || window == nullptr) {
         LOG("WindowManager::CreateWindow() return %{public}s", WMErrorStr(wret).c_str());
@@ -166,6 +169,12 @@ void Main::Init(int32_t width, int32_t height)
     if (wret != WM_OK) {
         LOG("WindowManagerServiceClient::Init() return %{public}s", WMErrorStr(wret).c_str());
         exit(1);
+    }
+
+    std::vector<uint32_t> freqs;
+    VsyncHelper::Current()->GetSupportedVsyncFrequencys(freqs);
+    if (freqs.size() >= 0x2) {
+        freq = freqs[1];
     }
 
     const auto &wms = wmsc->GetService();
