@@ -28,7 +28,7 @@ public:
     Promise() = default;
     virtual ~Promise() = default;
 
-    Promise(const T& t)
+    Promise(const T &t)
     {
         value = t;
         resolved = true;

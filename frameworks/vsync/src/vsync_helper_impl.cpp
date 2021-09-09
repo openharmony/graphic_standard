@@ -118,12 +118,10 @@ VsyncError VsyncClient::Init(bool restart)
         VsyncError vret;
         if (service_ == nullptr) {
             vret = InitService();
-            if (vret == VSYNC_ERROR_SERVICE_NOT_FOUND) {
-                if (restart == true) {
-                    constexpr int sleepTime = 5 * 1000;
-                    usleep(sleepTime);
-                    continue;
-                }
+            if (vret == VSYNC_ERROR_SERVICE_NOT_FOUND && restart == true) {
+                constexpr int sleepTime = 5 * 1000;
+                usleep(sleepTime);
+                continue;
             }
             if (vret != VSYNC_ERROR_OK) {
                 return vret;
@@ -239,7 +237,7 @@ void VsyncClient::DispatchMain(int64_t timestamp)
     std::list<struct VsyncElement> vsyncElements;
     {
         std::lock_guard<std::mutex> lockGuard(callbacksMapMutex_);
-        for (auto& [vid, eles] : callbacksMap_) {
+        for (auto &[vid, eles] : callbacksMap_) {
             if (vid > id) {
                 continue;
             }
@@ -260,7 +258,7 @@ void VsyncClient::DispatchMain(int64_t timestamp)
                 id, now, timestamp);
     }
 
-    for (const auto& ele : vsyncElements) {
+    for (const auto &ele : vsyncElements) {
         ele.callback_(timestamp, ele.userdata_);
     }
 
@@ -312,7 +310,7 @@ VsyncHelperImpl::~VsyncHelperImpl()
     }
 }
 
-VsyncError VsyncHelperImpl::RequestFrameCallback(const struct FrameCallback& cb)
+VsyncError VsyncHelperImpl::RequestFrameCallback(const struct FrameCallback &cb)
 {
     return VsyncClient::GetInstance()->RequestFrameCallback(cb);
 }

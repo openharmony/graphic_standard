@@ -222,7 +222,7 @@ WMError WindowManagerImpl::ListenNextScreenShot(int32_t id, IScreenShotCallback 
         return WM_ERROR_NEW;
     }
 
-    auto then = [cb](const auto& wmsinfo) {
+    auto then = [cb](const auto &wmsinfo) {
         WMImageInfo wminfo = {
             .wret = wmsinfo.wret,
             .width = wmsinfo.width,
@@ -270,7 +270,7 @@ WMError WindowManagerImpl::ListenNextWindowShot(const sptr<Window> &window, IWin
         return WM_ERROR_NEW;
     }
 
-    auto then = [cb](const auto& wmsinfo) {
+    auto then = [cb](const auto &wmsinfo) {
         WMImageInfo wminfo = {
             .wret = wmsinfo.wret,
             .width = wmsinfo.width,

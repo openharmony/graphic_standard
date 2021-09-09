@@ -16,16 +16,14 @@
 #ifndef FRAMEWORKS_WMSERVER_TEST_UNITTEST_WMSERVER_TEST_H
 #define FRAMEWORKS_WMSERVER_TEST_UNITTEST_WMSERVER_TEST_H
 
-#include <gtest/gtest.h>
-
-#include "wmserver.h"
-#include <wms-client-protocol.h>
 #include <list>
 
-namespace {
+#include <gtest/gtest.h>
+#include <wms-client-protocol.h>
 
-struct WMSScreenShotInfo
-{
+#include "wmserver.h"
+
+struct WMSScreenShotInfo {
     uint32_t status;
     uint32_t id;
     int32_t fd;
@@ -37,8 +35,7 @@ struct WMSScreenShotInfo
     uint32_t nanoseconds;
 };
 
-struct WMSDisplayInfo
-{
+struct WMSDisplayInfo {
     uint32_t id;
     std::string name;
     uint32_t height;
@@ -60,10 +57,8 @@ struct WMSWindowStatus {
     uint32_t width;
     uint32_t height;
 };
-}
 
 namespace OHOS {
-
 class WMServerTest : public testing::Test {
 public:
     static void SetUpTestCase();
@@ -75,7 +70,7 @@ private:
     static inline struct WMSContext ctx;
     static inline pthread_t tid;
 
-    //for wms request/reply
+    // for wms request/reply
     static inline std::mutex syncMutex;
     static inline bool replyFlag = false;
     static inline std::condition_variable syncVariable;
@@ -86,7 +81,7 @@ private:
     static inline std::list<WMSDisplayInfo> displayInfo;
     static inline WMSScreenShotInfo shotInfo;
 
-    //for passive destroy window.
+    // for passive destroy window.
     static inline std::mutex destroyMutex;
     static inline bool destroyReplyFlag = false;
     static inline std::condition_variable destroyVariable;

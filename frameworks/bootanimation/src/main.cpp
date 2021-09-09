@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
+#include <cinttypes>
 #include <securec.h>
 #include <unistd.h>
-#include <inttypes.h>
 
 #include <display_type.h>
 #include <vsync_helper.h>
@@ -115,7 +115,7 @@ void Draw(Window *window)
 void DoubleSync(int64_t time, void *data)
 {
     static int32_t count = 0;
-    if (count % 2 == 0) {
+    if (count % 0x2 == 0) {
         Draw(reinterpret_cast<Window *>(data));
     }
     count++;
@@ -169,7 +169,11 @@ void Main()
         DoubleSync(0, window.get());
     }
 
-    PostTask([]() { LOG(""); exit(0); }, PRETIME + POSTTIME);
+    auto exitFunc = []() {
+        LOG("");
+        exit(0);
+    };
+    PostTask(exitFunc, PRETIME + POSTTIME);
 }
 }
 

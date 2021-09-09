@@ -63,6 +63,6 @@ struct WmsScreen {
     struct weston_output *westonOutput;
 };
 
-struct WmsContext *GetWmsInstance();
+struct WmsContext *GetWmsInstance(void);
 
 #endif // FRAMEWORKS_WMSERVER_SRC_WMSERVER_H

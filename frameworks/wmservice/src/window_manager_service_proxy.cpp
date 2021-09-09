@@ -42,13 +42,14 @@ void WindowManagerServiceProxy::OnDisplayChange(uint32_t did,
 
     if (state == WMS_SCREEN_STATUS_ADD) {
         if (ret == displays.end()) {
+            constexpr int32_t tmpVsyncFreq = 60;
             struct WMDisplayInfo info = {
                 .id = did,
                 .width = width,
                 .height = height,
                 .phyWidth = width,
                 .phyHeight = height,
-                .vsync = 60,
+                .vsync = tmpVsyncFreq,
             };
             displays.push_back(info);
         }
