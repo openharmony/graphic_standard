@@ -15,6 +15,7 @@
 
 #include "vsync_helper_impl.h"
 
+#include <algorithm>
 #include <chrono>
 #include <list>
 #include <sys/time.h>
@@ -65,7 +66,7 @@ VsyncError VsyncClient::InitService()
         if (remoteObject == nullptr) {
             VLOG_FAILURE_RET(VSYNC_ERROR_SERVICE_NOT_FOUND);
         }
-        
+
         sptr<IRemoteObject::DeathRecipient> deathRecipient = new VsyncManagerDeathRecipient();
         if (remoteObject->IsProxyObject() == true && remoteObject->AddDeathRecipient(deathRecipient) == false) {
             VLOGW("Failed to add death recipient");
@@ -214,6 +215,9 @@ VsyncError VsyncClient::GetSupportedVsyncFrequencys(std::vector<uint32_t>& freqs
             freqs.push_back(i);
         }
     }
+
+    auto compare = [](int a, int b) { return a > b; };
+    std::sort(freqs.begin(), freqs.end(), compare);
     return VSYNC_ERROR_OK;
 }
 

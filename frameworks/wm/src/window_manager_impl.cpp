@@ -162,7 +162,6 @@ void WindowManagerImpl::Deinit()
 
     if (wmservice != nullptr) {
         wmservice = nullptr;
-        wmsc->Deinit();
         wmsc = nullptr;
     }
 
@@ -180,13 +179,34 @@ WMError WindowManagerImpl::GetDisplays(std::vector<struct WMDisplayInfo> &displa
     return wmservice->GetDisplays(displays);
 }
 
+sptr<Window> WindowManagerImpl::GetWindowByID(int32_t wid)
+{
+    sptr<Window> ret = nullptr;
+    auto cache = windowCache;
+    windowCache.clear();
+    for (const auto &wptrWindow : cache) {
+        auto window = wptrWindow.promote();
+        if (window != nullptr) {
+            windowCache.push_back(window);
+            if (window->GetID() == wid) {
+                ret = window;
+            }
+        }
+    }
+    return ret;
+}
+
 WMError WindowManagerImpl::CreateWindow(sptr<Window> &window, const sptr<WindowOption> &option)
 {
     if (wmservice == nullptr) {
         return WM_ERROR_NOT_INIT;
     }
 
-    return SingletonContainer::Get<StaticCall>()->WindowImplCreate(window, option, wmservice);
+    auto wret = SingletonContainer::Get<StaticCall>()->WindowImplCreate(window, option, wmservice);
+    if (window != nullptr) {
+        windowCache.push_back(window);
+    }
+    return wret;
 }
 
 WMError WindowManagerImpl::CreateSubwindow(sptr<Subwindow> &subwindow,
