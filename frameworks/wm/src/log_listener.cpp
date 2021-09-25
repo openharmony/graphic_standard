@@ -69,26 +69,25 @@ void LogListener::RemoveListener(sptr<InputListener> &listener)
     delegator.Dep<InputListenerManager>()->RemoveListener(listener);
 }
 
-void LogListener::PointerHandleEnter(void *data, uint32_t serial, double x, double y)
+void LogListener::PointerHandleEnter(void *data, uint32_t sss, double x, double y)
 {
-    WMLOGFD("serial: %{public}u, (%{public}lf, %{public}lf)", serial, x, y);
+    WMLOGFD("");
 }
 
-void LogListener::PointerHandleLeave(void *data, uint32_t serial)
+void LogListener::PointerHandleLeave(void *data, uint32_t sss)
 {
-    WMLOGFD("serial: %{public}u", serial);
+    WMLOGFD("");
 }
 
 void LogListener::PointerHandleMotion(void *data, uint32_t time, double x, double y)
 {
-    WMLOGFD("time: %{public}u, (%{public}lf, %{public}lf)", time, x, y);
+    WMLOGFD("");
 }
 
-void LogListener::PointerHandleButton(void *data, uint32_t serial,
+void LogListener::PointerHandleButton(void *data, uint32_t sss,
     uint32_t time, uint32_t button, PointerButtonState state)
 {
-    WMLOGFD("serial: %{public}u, button: %{public}u, state: %{public}u, time: %{public}d",
-        serial, button, state, time);
+    WMLOGFD("");
 }
 
 void LogListener::PointerHandleFrame(void *data)
@@ -103,68 +102,66 @@ void LogListener::PointerHandleAxis(void *data, uint32_t time, PointerAxis axis,
 
 void LogListener::PointerHandleAxisSource(void *data, PointerAxisSource axisSource)
 {
-    WMLOGFD("axisSource: %{public}d", axisSource);
+    WMLOGFD("");
 }
 
 void LogListener::PointerHandleAxisStop(void *data, uint32_t time, PointerAxis axis)
 {
-    WMLOGFD("time: %{public}u, axis: %{public}d", time, axis);
+    WMLOGFD("");
 }
 
 void LogListener::PointerHandleAxisDiscrete(void *data, PointerAxis axis, int32_t discrete)
 {
-    WMLOGFD("axis: %{public}d, discrete: %{public}d", axis, discrete);
+    WMLOGFD("");
 }
 
 void LogListener::KeyboardHandleKeyMap(void *data,
     KeyboardKeymapFormat format, int32_t fd, uint32_t size)
 {
-    WMLOGFD("format: %{public}d, size: %{public}u", format, size);
+    WMLOGFD("");
 }
 
-void LogListener::KeyboardHandleEnter(void *data, uint32_t serial, const std::vector<uint32_t> &keys)
+void LogListener::KeyboardHandleEnter(void *data, uint32_t sss, const std::vector<uint32_t> &keys)
 {
-    WMLOGFD("serial: %{public}u", serial);
+    WMLOGFD("");
 }
 
-void LogListener::KeyboardHandleLeave(void *data, uint32_t serial)
+void LogListener::KeyboardHandleLeave(void *data, uint32_t sss)
 {
-    WMLOGFD("serial: %{public}u", serial);
+    WMLOGFD("");
 }
 
 void LogListener::KeyboardHandleKey(void *data,
-    uint32_t serial, uint32_t time, uint32_t key, KeyboardKeyState state)
+    uint32_t sss, uint32_t time, uint32_t key, KeyboardKeyState state)
 {
-    WMLOGFD("serial: %{public}u, time: %{public}u, key: %{public}u, state: %{public}d",
-        serial, time, key, state);
+    WMLOGFD("");
 }
 
-void LogListener::KeyboardHandleModifiers(void *data, uint32_t serial,
+void LogListener::KeyboardHandleModifiers(void *data, uint32_t sss,
     uint32_t modsDepressed, uint32_t modsLatched, uint32_t modsLocked, uint32_t group)
 {
-    WMLOGFD("serial: %{public}u, modsDepressed: %{public}u", serial, modsDepressed);
+    WMLOGFD("");
 }
 
 void LogListener::KeyboardHandleRepeatInfo(void *data, int32_t rate, int32_t delay)
 {
-    WMLOGFD("rate: %{public}d, delay: %{public}d", rate, delay);
+    WMLOGFD("");
 }
 
 void LogListener::TouchHandleDown(void *data,
-    uint32_t serial, uint32_t time, int32_t id, double x, double y)
+    uint32_t sss, uint32_t time, int32_t id, double x, double y)
 {
-    WMLOGFD("serial: %{public}u, time: %{public}u, id: %{public}d, (%{public}lf, %{public}lf)",
-        serial, time, id, x, y);
+    WMLOGFD("");
 }
 
-void LogListener::TouchHandleUp(void *data, uint32_t serial, uint32_t time, int32_t id)
+void LogListener::TouchHandleUp(void *data, uint32_t sss, uint32_t time, int32_t id)
 {
-    WMLOGFD("serial: %{public}u, time: %{public}u, id: %{public}d", serial, time, id);
+    WMLOGFD("");
 }
 
 void LogListener::TouchHandleMotion(void *data, uint32_t time, int32_t id, double x, double y)
 {
-    WMLOGFD("time: %{public}u, id: %{public}d, (%{public}lf, %{public}lf)", time, id, x, y);
+    WMLOGFD("");
 }
 
 void LogListener::TouchHandleFrame(void *data)
@@ -179,11 +176,11 @@ void LogListener::TouchHandleCancel(void *data)
 
 void LogListener::TouchHandleShape(void *data, int32_t id, double major, double minor)
 {
-    WMLOGFD("id: %{public}d, major: %{public}lf, minor: %{public}lf", id, major, minor);
+    WMLOGFD("");
 }
 
 void LogListener::TouchHandleOrientation(void *data, int32_t id, double orientation)
 {
-    WMLOGFD("id: %{public}d, orientation: %{public}lf", id, orientation);
+    WMLOGFD("");
 }
 }
