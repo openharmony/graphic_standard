@@ -38,7 +38,7 @@ private:
     bool resolved = false;
     std::mutex mutex;
     std::condition_variable cv;
-    T value;
+    T value{};
 
     std::function<void(const T &t)> onComplete = nullptr;
 };

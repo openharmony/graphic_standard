@@ -105,19 +105,19 @@ int main(int argc, char **argv)
     wl_display_roundtrip(ctx.display);
     wl_display_roundtrip(ctx.display);
 
-    if (testId == ID_GET_SCREENS_INFO || testId == ID_GET_SEATS_INFO) {
-        screen_info_get(ctx.screenInfo, testId);
-    } else if (testId == ID_SET_LISTENER) {
-        screen_info_listener(ctx.screenInfo, SCREEN_INFO_LISTENER_SET_ENABLE);
-    } else {
-        screen_info_listener(ctx.screenInfo, SCREEN_INFO_LISTENER_SET_DISABLE);
-    }
+    if (ctx.screenInfo != NULL) {
+        if (testId == ID_GET_SCREENS_INFO || testId == ID_GET_SEATS_INFO) {
+            screen_info_get(ctx.screenInfo, testId);
+        } else if (testId == ID_SET_LISTENER) {
+            screen_info_listener(ctx.screenInfo, SCREEN_INFO_LISTENER_SET_ENABLE);
+        } else {
+            screen_info_listener(ctx.screenInfo, SCREEN_INFO_LISTENER_SET_DISABLE);
+        }
 
-    while (g_running && ret != -1) {
-        ret = wl_display_dispatch(ctx.display);
-    }
+        while (g_running && ret != -1) {
+            ret = wl_display_dispatch(ctx.display);
+        }
 
-    if (ctx.screenInfo) {
         screen_info_destroy(ctx.screenInfo);
     }
 

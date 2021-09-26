@@ -184,13 +184,17 @@ void WlDMABufferFactory::SendBufferHandle(zwp_linux_buffer_params_v1 *param, Buf
     wl_array_init(&reservefds);
     for (int i = 0; i < handle->reserveFds; i++) {
         uint32_t *p = (uint32_t *)wl_array_add(&reservefds, sizeof(uint32_t));
-        *p = handle->reserve[i];
+        if (p != nullptr) {
+            *p = handle->reserve[i];
+        }
     }
 
     wl_array_init(&reserveints);
     for (int i = 0; i < handle->reserveInts; i++) {
         uint32_t *p = (uint32_t *)wl_array_add(&reserveints, sizeof(uint32_t));
-        *p = handle->reserve[i + handle->reserveFds];
+        if (p != nullptr) {
+            *p = handle->reserve[i + handle->reserveFds];
+        }
     }
 
     zwp_linux_buffer_params_v1_add_buffer_handle(param,
