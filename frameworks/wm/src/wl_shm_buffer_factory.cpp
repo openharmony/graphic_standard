@@ -76,14 +76,14 @@ int32_t CreateShmFile(int32_t size)
     auto ret = strcpy_s(name.get(), len, path);
     if (ret) {
         WMLOGFE("strcpy_s: %{public}s, name: %{public}s, len: %{public}zu, path: %{public}s",
-            strerror(ret), name.get() ? "Yes" : "No", len, path);
+            strerror(errno), name.get() ? "Yes" : "No", len, path);
         return -1;
     }
 
     ret = strcat_s(name.get(), len, tempPath);
     if (ret) {
         WMLOGFE("strcpy_s: %{public}s, name: %{public}s, len: %{public}zu, tempPath: %{public}s",
-            strerror(ret), name.get() ? "Yes" : "No", len, tempPath);
+            strerror(errno), name.get() ? "Yes" : "No", len, tempPath);
         return -1;
     }
 

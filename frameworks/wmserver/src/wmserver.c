@@ -131,8 +131,8 @@ static void SendGlobalWindowStatus(const struct WmsController *pController, uint
 {
     LOGD("start.");
     struct WmsContext *pWmsCtx = pController->pWmsCtx;
-    struct WmsController *pControllerTemp;
-    pid_t pid;
+    struct WmsController *pControllerTemp = NULL;
+    pid_t pid = 0;
 
     wl_client_get_credentials(pController->pWlClient, &pid, NULL, NULL);
 
@@ -324,7 +324,7 @@ static void DisplayModeUpdate(const struct WmsContext *pCtx)
 static bool CheckWindowId(struct wl_client *client,
                           uint32_t windowId)
 {
-    pid_t pid;
+    pid_t pid = 0;
 
     wl_client_get_credentials(client, &pid, NULL, NULL);
     if ((windowId >> WINDOW_ID_BIT) == pid) {
@@ -360,7 +360,7 @@ static void ClearWindowId(struct WmsController *pController, uint32_t windowId)
 
 static uint32_t GetWindowId(struct WmsController *pController)
 {
-    pid_t pid;
+    pid_t pid = 0;
     uint32_t windowId = WINDOW_ID_INVALID;
     uint32_t windowCount = wl_list_length(&pController->pWmsCtx->wlListWindow);
     if (windowCount >= WINDOW_ID_NUM_MAX) {
@@ -479,22 +479,21 @@ static struct WmsScreen *GetScreen(const struct WindowSurface *windowSurface)
 
 static void CalcWindowInfo(struct WindowSurface *surface)
 {
-    int32_t maxWidth, maxHeight, topBarHeight, bottomBarsHeight;
 #ifdef USE_DUMMY_SCREEN
-    maxWidth = DUMMY_SCREEN_WIDTH;
-    maxHeight = DUMMY_SCREEN_HEIGHT;
-    topBarHeight = (BAR_WIDTH_PERCENT * maxHeight);
-    bottomBarsHeight = topBarHeight;
+    int maxWidth = DUMMY_SCREEN_WIDTH;
+    int maxHeight = DUMMY_SCREEN_HEIGHT;
+    int topBarHeight = (BAR_WIDTH_PERCENT * maxHeight);
+    int bottomBarsHeight = topBarHeight;
 #else
     struct WmsScreen *screen = GetScreen(surface);
     if (!screen) {
         LOGE("GetScreen error.");
         return;
     }
-    maxWidth = screen->westonOutput->width;
-    maxHeight = screen->westonOutput->height;
-    topBarHeight = (BAR_WIDTH_PERCENT * maxHeight);
-    bottomBarsHeight = topBarHeight;
+    int maxWidth = screen->westonOutput->width;
+    int maxHeight = screen->westonOutput->height;
+    int topBarHeight = (BAR_WIDTH_PERCENT * maxHeight);
+    int bottomBarsHeight = topBarHeight;
 #endif /* USE_DUMMY_SCREEN */
 
     LayoutControllerInit(maxWidth, maxHeight);
@@ -511,7 +510,7 @@ static bool AddWindow(struct WindowSurface *windowSurface)
     struct ivi_layout_layer *layoutLayer = NULL;
     struct WmsContext *ctx = windowSurface->controller->pWmsCtx;
     struct WmsScreen *screen = NULL;
-    uint32_t layerId;
+    uint32_t layerId = 0;
 
     LOGD("start.");
 
@@ -555,7 +554,7 @@ static void ControllerSetDisplayMode(const struct wl_client *client,
                                      uint32_t displayMode)
 {
     LOGD("start. displayMode %{public}d", displayMode);
-    int32_t ret;
+    int32_t ret = 0;
     struct WmsController *controller = wl_resource_get_user_data(resource);
     struct WmsContext *ctx = controller->pWmsCtx;
 
@@ -600,7 +599,7 @@ static void MoveWindowToLayerId(const struct WmsContext *wc,
                                 const struct wl_resource *wr,
                                 uint32_t layerIdNew)
 {
-    uint32_t layerIdOld;
+    uint32_t layerIdOld = 0;
     struct ivi_layout_layer *pLayoutLayerOld = NULL;
     struct ivi_layout_layer *pLayoutLayerNew = NULL;
     struct ivi_layout_interface_for_wms *pLayoutInterface = wc->pLayoutInterface;
@@ -1215,7 +1214,7 @@ static void ControllerWindowshot(const struct wl_client *pWlClient,
         return;
     }
 
-    struct timespec timeStamp;
+    struct timespec timeStamp = {};
     weston_compositor_read_presentation_clock(pWmsController->pWmsCtx->pCompositor, &timeStamp);
 
     wms_send_windowshot_done(pWlResource, windowId, fd, width, height,
@@ -1227,13 +1226,12 @@ static void ControllerWindowshot(const struct wl_client *pWlClient,
 
 static void FlipY(int32_t stride, int32_t height, uint32_t *data)
 {
-    int i, y, p, q;
     // assuming stride aligned to 4 bytes
     int pitch = stride / sizeof(*data);
-    for (y = 0; y < height / HEIGHT_AVERAGE; ++y) {
-        p = y * pitch;
-        q = (height - y - 1) * pitch;
-        for (i = 0; i < pitch; ++i) {
+    for (int y = 0; y < height / HEIGHT_AVERAGE; ++y) {
+        int p = y * pitch;
+        int q = (height - y - 1) * pitch;
+        for (int i = 0; i < pitch; ++i) {
             uint32_t tmp = data[p + i];
             data[p + i] = data[q + i];
             data[q + i] = tmp;
@@ -1299,7 +1297,7 @@ static void ScreenshotNotify(const struct wl_listener *pWlListener, const struct
     struct ScreenshotFrameListener *pFrameListener = wl_container_of(pWlListener, pFrameListener, frameListener);
     struct WmsController *pWmsController = wl_container_of(pFrameListener, pWmsController, stListener);
     pixman_format_code_t format = pFrameListener->output->compositor->read_format;
-    uint32_t shmFormat;
+    uint32_t shmFormat = 0;
 
     --pFrameListener->output->disable_planes;
     ClearFrameListener(pFrameListener);
@@ -1374,7 +1372,7 @@ static void AddGlobalWindowStatus(const struct WmsController *pController)
 {
     LOGD("start.");
     struct WmsContext *pWmsCtx = pController->pWmsCtx;
-    struct WmsController *pControllerTemp;
+    struct WmsController *pControllerTemp = NULL;
     bool found = false;
 
     wl_list_for_each(pControllerTemp, &pWmsCtx->wlListGlobalEventResource, wlListLinkRes) {
@@ -1575,7 +1573,7 @@ static void WmsControllerDestroy(const struct wl_listener *listener,
 static int32_t CreateScreen(struct WmsContext *pCtx,
                             struct weston_output *pOutput)
 {
-    struct WmsScreen *pScreen;
+    struct WmsScreen *pScreen = NULL;
 
     pScreen = calloc(1, sizeof(*pScreen));
     if (pScreen == NULL) {

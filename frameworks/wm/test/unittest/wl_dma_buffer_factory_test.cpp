@@ -104,6 +104,7 @@ HWTEST_F(WlDMABufferFactoryTest, createAbnormal, testing::ext::TestSize.Level0)
 
     // 1. Create WlDMABuffers by some abnormal arguments
     auto bh = sbuffer->GetBufferHandle();
+    ASSERT_NE(bh, nullptr);
     bh->fd = -1;
     auto dmabuf1 = WlDMABufferFactory::GetInstance()->Create(bh);
     initRet = WindowManager::GetInstance()->Init();

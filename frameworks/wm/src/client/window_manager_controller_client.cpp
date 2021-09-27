@@ -63,7 +63,7 @@ sptr<LayerControllerClient> LayerControllerClient::GetInstance()
     return instance;
 }
 
-LayerControllerClient::LayerControllerClient() : m_screenWidth(0), m_screenHeight(0)
+LayerControllerClient::LayerControllerClient()
 {
     WMLOG_I("DEBUG LayerControllerClient");
 }

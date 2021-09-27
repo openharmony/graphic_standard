@@ -112,9 +112,9 @@ private:
     std::mutex mutex;
     std::mutex windowListMutex;
     std::list<InnerWindowInfo> m_windowList;
-    uint32_t m_screenId;
-    int32_t m_screenWidth;
-    int32_t m_screenHeight;
+    uint32_t m_screenId = 0;
+    int32_t m_screenWidth = 0;
+    int32_t m_screenHeight = 0;
 };
 
 class SurfaceListener : public IBufferConsumerListener {

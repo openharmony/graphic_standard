@@ -143,7 +143,7 @@ int32_t RawParser::ReadFile(int32_t width, int32_t height)
     clength = ftell(fp);
     (void)fseek(fp, 0, SEEK_SET);
 
-    if (clength < magicHeaderLength) {
+    if (clength <= 0 || clength < magicHeaderLength) {
         LOG("%{public}s is too small", ss.str().c_str());
         fclose(fp);
         return -1;

@@ -32,35 +32,35 @@ void VsyncManagerTest::TearDown()
 
 void VsyncManagerTest::SetUpTestCase()
 {
-        pipe(pipeFd);
+    pipe(pipeFd);
 
-        pid_ = fork();
-        if (pid_ < 0) {
-            exit(1);
-        }
+    pid_ = fork();
+    if (pid_ < 0) {
+        exit(1);
+    }
 
-        if (pid_ == 0) {
-            sptr<VsyncManager> vcqp = new VsyncManager();
-            ASSERT_NE(vcqp, nullptr);
-            auto sam = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
-            sam->AddSystemAbility(IPC_VSYNCMANAGER_SAID, vcqp);
-            char buf[10] = "start";
-            write(pipeFd[1], buf, sizeof(buf));
+    if (pid_ == 0) {
+        sptr<VsyncManager> vcqp = new VsyncManager();
+        ASSERT_NE(vcqp, nullptr);
+        auto sam = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
+        sam->AddSystemAbility(IPC_VSYNCMANAGER_SAID, vcqp);
+        char buf[10] = "start";
+        write(pipeFd[1], buf, sizeof(buf));
 
-            sleep(0);
+        sleep(0);
 
-            read(pipeFd[0], buf, sizeof(buf));
+        read(pipeFd[0], buf, sizeof(buf));
 
-            sam->RemoveSystemAbility(IPC_VSYNCMANAGER_SAID);
+        sam->RemoveSystemAbility(IPC_VSYNCMANAGER_SAID);
 
-            exit(0);
-        } else {
-            char buf[10];
-            read(pipeFd[0], buf, sizeof(buf));
-            auto sam = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
-            robj_ = sam->GetSystemAbility(IPC_VSYNCMANAGER_SAID);
-            vc_ = iface_cast<IVsyncManager>(robj_);
-        }
+        exit(0);
+    } else {
+        char buf[10];
+        read(pipeFd[0], buf, sizeof(buf));
+        auto sam = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
+        robj_ = sam->GetSystemAbility(IPC_VSYNCMANAGER_SAID);
+        vc_ = iface_cast<IVsyncManager>(robj_);
+    }
 }
 
 void VsyncManagerTest::TearDownTestCase()
