@@ -70,7 +70,6 @@ public:
 
     void Init(int32_t width, int32_t height);
     int32_t CalcWindowDefaultLayout(uint32_t type, uint32_t mode, struct Layout &outLayout);
-    void RegisterAttributeProcessFunction(const char *attr, AttributeProcessFunction func);
 
 private:
     LayoutController() = default;
@@ -84,7 +83,6 @@ private:
     int32_t displayWidth = 0;
     int32_t displayHeight = 0;
     std::map<uint32_t, struct Layout> modeLayoutMap[WINDOW_MODE_MAX];
-    std::map<std::string, AttributeProcessFunction> attrProcessFuncs;
 };
 } // namespace OHOS::WMServer
 
