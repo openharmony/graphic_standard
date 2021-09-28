@@ -16,6 +16,7 @@
 #include "layout_controller.h"
 
 #include <algorithm>
+#include <cmath>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -98,28 +99,28 @@ int32_t LayoutController::CalcWindowDefaultLayout(uint32_t type, uint32_t mode, 
 
     constexpr double full = 100.0; // 100%
     constexpr int32_t half = 2;
-    outLayout.layout.x = rect.w * outLayout.layout.x / full;
-    outLayout.layout.y = rect.h * outLayout.layout.y / full;
-    outLayout.layout.w = rect.w * outLayout.layout.w / full;
-    outLayout.layout.h = rect.h * outLayout.layout.h / full;
+    outLayout.layout.x = floor(rect.w * outLayout.layout.x / full + 1e-6);
+    outLayout.layout.y = floor(rect.h * outLayout.layout.y / full + 1e-6);
+    outLayout.layout.w = floor(rect.w * outLayout.layout.w / full + 1e-6);
+    outLayout.layout.h = floor(rect.h * outLayout.layout.h / full + 1e-6);
     if (outLayout.pTypeX == Layout::XPositionType::LFT) {
-        outLayout.layout.x = rect.x;
+        outLayout.layout.x = floor(rect.x + 1e-6);
     } else if (outLayout.pTypeX == Layout::XPositionType::MID) {
-        outLayout.layout.x = rect.x + (rect.w - outLayout.layout.w) / half;
+        outLayout.layout.x = floor(rect.x + (rect.w - outLayout.layout.w) / half + 1e-6);
     } else if (outLayout.pTypeX == Layout::XPositionType::RGH) {
-        outLayout.layout.x = rect.x + rect.w - outLayout.layout.w;
+        outLayout.layout.x = floor(rect.x + rect.w - outLayout.layout.w + 1e-6);
     } else {
-        outLayout.layout.x += rect.x;
+        outLayout.layout.x += floor(rect.x + 1e-6);
     }
 
     if (outLayout.pTypeY == Layout::YPositionType::TOP) {
-        outLayout.layout.y = rect.y;
+        outLayout.layout.y = floor(rect.y + 1e-6);
     } else if (outLayout.pTypeY == Layout::YPositionType::MID) {
-        outLayout.layout.y = rect.y + (rect.h - outLayout.layout.h) / half;
+        outLayout.layout.y = floor(rect.y + (rect.h - outLayout.layout.h) / half + 1e-6);
     } else if (outLayout.pTypeY == Layout::YPositionType::BTM) {
-        outLayout.layout.y = rect.y + rect.h - outLayout.layout.h;
+        outLayout.layout.y = floor(rect.y + rect.h - outLayout.layout.h + 1e-6);
     } else {
-        outLayout.layout.y += rect.y;
+        outLayout.layout.y += floor(rect.y + 1e-6);
     }
     return 0;
 }
@@ -159,8 +160,8 @@ void LayoutController::InitByDefaultValue()
             .h = full,
         },
     };
-    DEF_POS_LYT(STATIC, MID, TOP, full, 7.00, STATUS_BAR);
-    DEF_POS_LYT(STATIC, MID, BTM, full, 7.00, NAVI_BAR);
+    DEF_POS_LYT(STATIC, MID, TOP, full, 7.0, STATUS_BAR);
+    DEF_POS_LYT(STATIC, MID, BTM, full, 7.0, NAVI_BAR);
     DEF_POS_LYT(FIXED, MID, MID, 80.0, 30.0, ALARM_SCREEN);
     DEF_POS_LYT(FIXED, MID, MID, full, full, SYSTEM_UI);
     DEF_POS_LYT(RELATIVE, MID, MID, full, full, LAUNCHER);
