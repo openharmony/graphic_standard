@@ -25,8 +25,6 @@
 #include <string>
 
 #include <window_manager_type.h>
-
-#include "wmlayout_scss_parser/driver.h"
 #endif
 
 struct layout {
@@ -79,15 +77,10 @@ private:
     ~LayoutController() = default;
 
     void InitByDefaultValue();
-    void InitByParseSCSS();
     bool CalcNormalRect(struct layout &layout);
     const std::string searchCSSDirectory = "/system/etc/wmlayout.d";
 
-    void ParseSCSS(const std::filesystem::path &file);
-    void ParseAttr(const struct Driver::CSSBlock &block, struct Layout &layout);
-
     bool init = false;
-    Driver driver;
     int32_t displayWidth = 0;
     int32_t displayHeight = 0;
     std::map<uint32_t, struct Layout> modeLayoutMap[WINDOW_MODE_MAX];

@@ -72,7 +72,6 @@ void LayoutController::Init(int32_t width, int32_t height)
     displayHeight = height;
     if (!init) {
         InitByDefaultValue();
-        InitByParseSCSS();
         init = true;
     }
 }
@@ -152,38 +151,31 @@ void LayoutController::InitByDefaultValue()
 {
     constexpr double full = 100.0; // 100%
     DEF_POS_LYT(RELATIVE, MID, MID, full, full, NORMAL);
+    modeLayoutMap[WINDOW_MODE_FREE][WINDOW_TYPE_NORMAL] = {
+        .windowType = WINDOW_TYPE_NORMAL,
+        .windowTypeString = "WINDOW_TYPE_NORMAL",
+        .zIndex = static_cast<int32_t>(51.0 + 1e-6),
+        .positionType = Layout::PositionType::FIXED,
+        .pTypeX = Layout::XPositionType::MID,
+        .pTypeY = Layout::YPositionType::MID,
+        .layout = {
+            .x = 0,
+            .y = 0,
+            .w = full,
+            .h = full,
+        },
+    };
     DEF_POS_LYT(STATIC, MID, TOP, full, 7.00, STATUS_BAR);
     DEF_POS_LYT(STATIC, MID, BTM, full, 7.00, NAVI_BAR);
     DEF_POS_LYT(FIXED, MID, MID, 80.0, 30.0, ALARM_SCREEN);
+    DEF_POS_LYT(FIXED, MID, MID, full, full, SYSTEM_UI);
     DEF_POS_LYT(RELATIVE, MID, MID, full, full, LAUNCHER);
+    DEF_POS_LYT(FIXED, MID, MID, full, full, VIDEO);
     DEF_POS_LYT(RELATIVE, MID, BTM, full, 33.3, INPUT_METHOD);
     DEF_POS_LYT(RELATIVE, MID, BTM, 90.0, 33.3, INPUT_METHOD_SELECTOR);
-    DEF_POS_LYT(FIXED, MID, TOP, full, 50.0, NOTIFICATION_SHADE);
     DEF_RCT_LYT(FIXED, 2.5, 2.5, 95.0, 40.0, VOLUME_OVERLAY);
+    DEF_POS_LYT(FIXED, MID, TOP, full, 50.0, NOTIFICATION_SHADE);
     DEF_RCT_LYT(RELATIVE, 7.5, 7.5, 85.0, 50.0, FLOAT);
-}
-
-void LayoutController::InitByParseSCSS()
-{
-    fs::path dir{searchCSSDirectory};
-    if (!fs::exists(dir)) {
-        LOGE("%{public}s not exist dir", searchCSSDirectory.c_str());
-        return;
-    }
-
-    fs::directory_entry entry{dir};
-    if (entry.status().type() != fs::file_type::directory) {
-        LOGE("%{public}s is not dir", searchCSSDirectory.c_str());
-        return;
-    }
-
-    fs::directory_iterator files{dir};
-    for (const auto &file : files) {
-        LOGI("found file: %{public}s", file.path().string().c_str());
-        if (file.is_regular_file() && file.path().extension().string() == ".scss") {
-            ParseSCSS(file.path());
-        }
-    }
 }
 
 bool LayoutController::CalcNormalRect(struct layout &layout)
@@ -307,19 +299,6 @@ bool YPositionTypeParser(const std::string &value, Layout::YPositionType &retval
     return false;
 }
 
-WindowMode WindowModeParser(const std::string &value)
-{
-    if (value == "unset") {
-        return WINDOW_MODE_UNSET;
-    } else if (value == "free") {
-        return WINDOW_MODE_FREE;
-    } else if (value == "full") {
-        return WINDOW_MODE_FULL;
-    }
-    LOGE("invalid window mode (%{public}s)", value.c_str());
-    return WINDOW_MODE_UNSET;
-}
-
 #define DEFINE_ATTRIBUTE_PROCESS_FUNCTION(attr, value, layout, displayWidth, displayHeight)\
 int32_t AttributeProcess##attr(const std::string &value,\
                                struct Layout &layout,\
@@ -400,64 +379,4 @@ DEFINE_ATTRIBUTE_PROCESS_FUNCTION(height, value, layout, displayWidth, displayHe
     return 1;
 }
 } // namespace
-
-void LayoutController::ParseSCSS(const fs::path &file)
-{
-    std::ifstream ifs{file};
-    int ret = driver.parse(ifs);
-    if (ret != 0) {
-        LOGE("parse %{public}s failed", file.string().c_str());
-        return;
-    }
-    LOGI("parse %{public}s success", file.string().c_str());
-
-    for (const auto &[typeString, typeBlock] : driver.global.blocks) {
-        LOGI("type: %{public}s", typeString.c_str());
-        auto str = typeString;
-        auto isTypeWindow = [&str](const auto &it) {
-            return it.second.windowTypeString == str;
-        };
-        auto window = std::find_if(modeLayoutMap[WINDOW_MODE_UNSET].begin(),
-            modeLayoutMap[WINDOW_MODE_UNSET].end(), isTypeWindow);
-        if (window == modeLayoutMap[WINDOW_MODE_UNSET].end()) {
-            continue;
-        }
-
-        ParseAttr(typeBlock, window->second);
-        for (const auto &[modeString, modeBlock] : typeBlock.blocks) {
-            LOGI("mode: %{public}s", modeString.c_str());
-            WindowMode mode = WindowModeParser(modeString);
-            auto modeWindow = std::find_if(modeLayoutMap[mode].begin(),
-                modeLayoutMap[mode].end(), isTypeWindow);
-            if (modeWindow == modeLayoutMap[mode].end()) {
-                modeLayoutMap[mode][window->first] = window->second;
-            }
-            ParseAttr(modeBlock, modeLayoutMap[mode][window->first]);
-        }
-    }
-}
-
-void LayoutController::ParseAttr(const struct Driver::CSSBlock &block, struct Layout &layout)
-{
-    for (const auto &[attr, value] : block.declares) {
-        LOGI("attr: %{public}s, value: %{public}s", attr.c_str(), value.c_str());
-        std::string attribute = attr;
-        if (attribute.find("-") != std::string::npos) {
-            attribute.replace(attribute.find("-"), 1, "");
-        }
-        if (attribute.find("_") != std::string::npos) {
-            attribute.replace(attribute.find("_"), 1, "");
-        }
-        auto it = attrProcessFuncs.find(attribute);
-        if (it == attrProcessFuncs.end()) {
-            LOGE("attr is invalid (%{public}s)", attribute.c_str());
-        }
-
-        auto ret = it->second(value, layout, displayWidth, displayHeight);
-        if (ret != 0) {
-            LOGI("value (%{public}s: %{public}s) return %{public}d",
-                 attribute.c_str(), value.c_str(), ret);
-        }
-    }
-}
 } // namespace OHOS
