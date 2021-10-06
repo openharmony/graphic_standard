@@ -23,6 +23,7 @@
 #include <regex>
 #include <sstream>
 
+#include "layout_header.h"
 #include "rects.h"
 #include "weston.h"
 
@@ -128,8 +129,6 @@ int32_t LayoutController::CalcWindowDefaultLayout(uint32_t type, uint32_t mode, 
 
 #define DEF_LYT_MACRO(wt, lt, ptx, pty, _x, _y, _w, _h) \
     modeLayoutMap[WINDOW_MODE_UNSET][WINDOW_TYPE_##wt] = { \
-        .windowType = WINDOW_TYPE_##wt, \
-        .windowTypeString = "WINDOW_TYPE_" #wt, \
         .zIndex = WINDOW_TYPE_##wt, \
         .positionType = Layout::PositionType::lt, \
         .pTypeX = Layout::XPositionType::ptx, \
@@ -148,8 +147,6 @@ void LayoutController::InitByDefaultValue()
     constexpr double full = 100.0; // 100%
     DEF_POS_LYT(RELATIVE, MID, MID, full, full, NORMAL);
     modeLayoutMap[WINDOW_MODE_FREE][WINDOW_TYPE_NORMAL] = {
-        .windowType = WINDOW_TYPE_NORMAL,
-        .windowTypeString = "WINDOW_TYPE_NORMAL",
         .zIndex = static_cast<int32_t>(51.0 + 1e-6),
         .positionType = Layout::PositionType::FIXED,
         .pTypeX = Layout::XPositionType::MID,
@@ -200,10 +197,10 @@ void LayoutController::InitByParseSCSS()
 bool LayoutController::CalcNormalRect(struct layout &layout)
 {
     Rects totalRects{0, 0, displayWidth, displayHeight};
-    for (const auto &[_, layout] : modeLayoutMap[WINDOW_MODE_UNSET]) {
+    for (const auto &[type, layout] : modeLayoutMap[WINDOW_MODE_UNSET]) {
         if (layout.positionType == Layout::PositionType::STATIC) {
             struct Layout nowLayout = {};
-            CalcWindowDefaultLayout(layout.windowType, WINDOW_MODE_UNSET, nowLayout);
+            CalcWindowDefaultLayout(type, WINDOW_MODE_UNSET, nowLayout);
             Rects rect{
                 static_cast<int32_t>(nowLayout.layout.x + 1e-6),
                 static_cast<int32_t>(nowLayout.layout.y + 1e-6),
@@ -231,36 +228,15 @@ bool LayoutController::CalcNormalRect(struct layout &layout)
 void LayoutController::ParseSCSS(const fs::path &file)
 {
     std::ifstream ifs{file};
-    int ret = driver.parse(ifs);
-    if (ret != 0) {
-        LOGE("parse %{public}s failed", file.string().c_str());
-        return;
-    }
-    LOGI("parse %{public}s success", file.string().c_str());
+    int32_t size = 0;
+    ifs >> size;
 
-    for (const auto &[typeString, typeBlock] : driver.global.blocks) {
-        LOGI("type: %{public}s", typeString.c_str());
-        auto str = typeString;
-        auto isTypeWindow = [&str](const auto &it) {
-            return it.second.windowTypeString == str;
-        };
-        auto window = std::find_if(modeLayoutMap[WINDOW_MODE_UNSET].begin(),
-            modeLayoutMap[WINDOW_MODE_UNSET].end(), isTypeWindow);
-        if (window == modeLayoutMap[WINDOW_MODE_UNSET].end()) {
-            continue;
-        }
-
-        ParseAttr(typeBlock, window->second);
-        for (const auto &[modeString, modeBlock] : typeBlock.blocks) {
-            LOGI("mode: %{public}s", modeString.c_str());
-            WindowMode mode = WindowModeParser(modeString);
-            auto modeWindow = std::find_if(modeLayoutMap[mode].begin(),
-                modeLayoutMap[mode].end(), isTypeWindow);
-            if (modeWindow == modeLayoutMap[mode].end()) {
-                modeLayoutMap[mode][window->first] = window->second;
-            }
-            ParseAttr(modeBlock, modeLayoutMap[mode][window->first]);
-        }
+    int32_t mode = 0;
+    int32_t type = 0;
+    struct Layout layout = {};
+    for (size_t i = 0; i < size; i++) {
+        ifs >> mode >> type >> layout;
+        modeLayoutMap[mode][type] = layout;
     }
 }
-} // namespace OHOS
+} // namespace OHOS::WMServer
