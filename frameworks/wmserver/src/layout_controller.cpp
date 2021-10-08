@@ -185,12 +185,19 @@ void LayoutController::InitByParseSCSS()
         return;
     }
 
+    std::vector<fs::path> orderedFiles;
     fs::directory_iterator files{dir};
     for (const auto &file : files) {
         LOGI("found file: %{public}s", file.path().string().c_str());
         if (file.is_regular_file() && file.path().extension().string() == ".scss") {
-            ParseSCSS(file.path());
+            orderedFiles.push_back(file.path());
         }
+    }
+
+    auto fspathLessOperator = [](const auto &a, const auto &b) { return a.string() < b.string(); };
+    std::sort(orderedFiles.begin(), orderedFiles.end(), fspathLessOperator);
+    for (const auto &file : orderedFiles) {
+        ParseSCSS(file);
     }
 }
 
