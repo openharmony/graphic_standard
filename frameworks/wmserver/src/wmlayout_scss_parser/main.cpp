@@ -143,7 +143,7 @@ void Main::RegAttrProcessFunc(const char *attr, AttributeProcessFunction func)
 namespace {
 bool IntegerParser(const std::string &value, int32_t &retval)
 {
-    std::regex numberRegex{"([0-9]+)"};
+    std::regex numberRegex("([0-9]+)");
     std::smatch result;
     if (std::regex_match(value, result, numberRegex)) {
         std::stringstream ss;
@@ -157,7 +157,7 @@ bool IntegerParser(const std::string &value, int32_t &retval)
 
 bool NumberUnitParser(const std::string &value, double &retval)
 {
-    std::regex numberUnitRegex{"([0-9]+(\\.[0-9]+)?)%"};
+    std::regex numberUnitRegex("([0-9]+(\\.[0-9]+)?)%");
     std::smatch result;
     if (std::regex_match(value, result, numberUnitRegex)) {
         std::stringstream ss;
@@ -221,7 +221,7 @@ bool YPositionTypeParser(const std::string &value, Layout::YPositionType &retval
     return false;
 }
 
-#define DEFINE_ATTRIBUTE_PROCESS_FUNCTION(attr, value, layout)\
+#define DEFINE_ATTRIBUTE_PROCESS_FUNCTION(attr, value, layout) \
 int32_t AttributeProcess##attr(const std::string &value, \
                                struct Layout &layout); \
 __attribute__((constructor)) void RegisterAttributeProcess##attr() \
@@ -314,7 +314,7 @@ int main(int argc, const char *argv[])
     }
 
     constexpr int32_t inputFileArgIndex = 1;
-    std::ifstream ifs{argv[inputFileArgIndex]};
+    std::ifstream ifs(argv[inputFileArgIndex]);
     if (ifs.fail()) {
         std::cerr << "open file " << argv[inputFileArgIndex] << "failed with "
             << errno << ": " << strerror(errno) << std::endl;
@@ -322,7 +322,7 @@ int main(int argc, const char *argv[])
     }
 
     constexpr int32_t outputFileArgIndex = 2;
-    std::ofstream ofs{argv[outputFileArgIndex]};
+    std::ofstream ofs(argv[outputFileArgIndex]);
     if (ofs.fail()) {
         std::cerr << "open file " << argv[outputFileArgIndex] << "failed with "
             << errno << ": " << strerror(errno) << std::endl;

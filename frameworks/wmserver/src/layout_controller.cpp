@@ -93,7 +93,7 @@ int32_t LayoutController::CalcWindowDefaultLayout(uint32_t type, uint32_t mode, 
         }
     }
 
-    struct layout rect = { 0, 0, (double)displayWidth, (double)displayHeight };
+    struct layout rect = { 0, 0, static_cast<double>(displayWidth), static_cast<double>(displayHeight) };
     outLayout = it->second;
     if (outLayout.positionType == Layout::PositionType::RELATIVE) {
         CalcNormalRect(rect);
@@ -203,17 +203,15 @@ void LayoutController::InitByParseSCSS()
 
 bool LayoutController::CalcNormalRect(struct layout &layout)
 {
-    Rects totalRects{0, 0, displayWidth, displayHeight};
+    Rects totalRects(0, 0, displayWidth, displayHeight);
     for (const auto &[type, layout] : modeLayoutMap[WINDOW_MODE_UNSET]) {
         if (layout.positionType == Layout::PositionType::STATIC) {
             struct Layout nowLayout = {};
             CalcWindowDefaultLayout(type, WINDOW_MODE_UNSET, nowLayout);
-            Rects rect{
-                static_cast<int32_t>(nowLayout.layout.x + 1e-6),
-                static_cast<int32_t>(nowLayout.layout.y + 1e-6),
-                static_cast<int32_t>(nowLayout.layout.w + 1e-6),
-                static_cast<int32_t>(nowLayout.layout.h + 1e-6),
-            };
+            Rects rect(static_cast<int32_t>(nowLayout.layout.x + 1e-6),
+                       static_cast<int32_t>(nowLayout.layout.y + 1e-6),
+                       static_cast<int32_t>(nowLayout.layout.w + 1e-6),
+                       static_cast<int32_t>(nowLayout.layout.h + 1e-6));
             totalRects -= rect;
         }
     }

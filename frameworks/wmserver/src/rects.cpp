@@ -90,7 +90,7 @@ Rects Rects::operator -(Rects &other)
     totalRects.push_back(totalRect);
     RectsSubtrace(totalRects, lrects);
 
-    Rects result{};
+    Rects result;
     result.rects = lrects;
     if (totalRects.size() == 0) {
         totalRects.push_back(totalRect);
@@ -113,18 +113,18 @@ void Rects::Intersect(const struct Rect &a, const struct Rect &b, struct Rect &o
     out.h = min(a.y + a.h, b.y + b.h) - out.y;
 }
 
-void Rects::Subtrace(const struct Rect &rect, const struct Rect &inner, std::vector<struct Rect> &rects)
+void Rects::Subtrace(const struct Rect &rect, const struct Rect &inner, std::vector<struct Rect> &result)
 {
     int32_t topDiff = inner.y - rect.y;
     if (topDiff > 0) {
         struct Rect r = {rect.x, rect.y, rect.w, topDiff};
-        rects.push_back(r);
+        result.push_back(r);
     }
 
     int32_t bottomDiff = rect.y + rect.h - inner.y - inner.h;
     if (bottomDiff > 0) {
         struct Rect r = {rect.x, rect.y + rect.h - bottomDiff, rect.w, bottomDiff};
-        rects.push_back(r);
+        result.push_back(r);
     }
 
     int32_t middleYDiff = inner.h;
@@ -132,13 +132,13 @@ void Rects::Subtrace(const struct Rect &rect, const struct Rect &inner, std::vec
         int32_t leftDiff = inner.x - rect.x;
         if (leftDiff > 0) {
             struct Rect r = {rect.x, inner.y, leftDiff, middleYDiff};
-            rects.push_back(r);
+            result.push_back(r);
         }
 
         int32_t rightDiff = rect.x + rect.w - inner.x - inner.w;
         if (rightDiff > 0) {
             struct Rect r = {inner.x + inner.w, inner.y, rightDiff, middleYDiff};
-            rects.push_back(r);
+            result.push_back(r);
         }
     }
 }
