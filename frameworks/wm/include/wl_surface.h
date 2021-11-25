@@ -49,6 +49,7 @@ private:
     struct wl_surface *surface = nullptr;
     struct zwp_linux_surface_synchronization_v1 *sync = nullptr;
     struct wp_viewport *viewport = nullptr;
+    enum wl_output_transform bufferTransform = WL_OUTPUT_TRANSFORM_NORMAL;
 };
 } // namespace OHOS
 

@@ -75,6 +75,7 @@ void WlSurface::SetSurfaceType(wl_surface_type type)
 
 void WlSurface::SetBufferTransform(wl_output_transform type)
 {
+    bufferTransform = type;
     wl_surface_set_buffer_transform(surface, type);
 }
 
@@ -99,16 +100,26 @@ void WlSurface::SetAcquireFence(int32_t fence)
 void WlSurface::SetSource(double dx, double dy, double dw, double dh)
 {
     if (viewport != nullptr) {
-        wp_viewport_set_source(viewport,
-            wl_fixed_from_double(dx), wl_fixed_from_double(dy),
-            wl_fixed_from_double(dw), wl_fixed_from_double(dh));
+        wl_fixed_t x = wl_fixed_from_double(dx);
+        wl_fixed_t y = wl_fixed_from_double(dy);
+        wl_fixed_t w = wl_fixed_from_double(dw);
+        wl_fixed_t h = wl_fixed_from_double(dh);
+        if (bufferTransform % 2 == 1) {
+            wp_viewport_set_source(viewport, y, x, h, w);
+        } else {
+            wp_viewport_set_source(viewport, x, y, w, h);
+        }
     }
 }
 
 void WlSurface::SetDestination(uint32_t w, uint32_t h)
 {
     if (viewport != nullptr) {
-        wp_viewport_set_destination(viewport, w, h);
+        if (bufferTransform % 2 == 1) {
+            wp_viewport_set_destination(viewport, h, w);
+        } else {
+            wp_viewport_set_destination(viewport, w, h);
+        }
     }
 }
 } // namespace OHOS
