@@ -13,6 +13,7 @@
 
 import("//build/ohos.gni")
 import("//foundation/graphic/standard/utils/wmlayout/wmlayout.gni")
+import("graphic_config.gni")
 
 ## Install graphic.rc to /system/etc/init/graphic.rc {{{
 ohos_prebuilt_etc("graphic.rc") {
@@ -59,4 +60,12 @@ group("libwmservice") {
 
 group("libfence") {
   public_deps = [ "frameworks/fence:libfence" ]
+}
+
+group("libgl") {
+  public_deps = [
+    "//third_party/EGL:libEGL",
+    "//third_party/openGLES:libGLES",
+  ]
+  public_deps += libgl
 }

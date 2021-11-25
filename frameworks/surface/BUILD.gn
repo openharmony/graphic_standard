@@ -36,11 +36,7 @@ config("surface_public_config") {
   ]
 
   if (ace_enable_gpu) {
-    defines = [
-      "ACE_ENABLE_GPU",
-      "ENABLE_EGL",
-      "EGL_NO_X11",
-    ]
+    defines = [ "ACE_ENABLE_GPU" ]
   }
 
   cflags = [ "-Wno-error=deprecated-declarations" ]
@@ -88,10 +84,10 @@ ohos_shared_library("surface") {
   public_deps = [
     "//drivers/peripheral/display/hdi_service/gralloc/client:hdi_gralloc_client",
     "//foundation/communication/ipc/interfaces/innerkits/ipc_core:ipc_core",
+    "//foundation/graphic/standard:libgl",
     "//foundation/graphic/standard/utils:buffer_handle",
     "//utils/native/base:utils",
   ]
-  public_deps += libgl
 
   part_name = "graphic_standard"
   subsystem_name = "graphic"

@@ -20,7 +20,7 @@ if ("${product_name}" == "rk3566" || "${product_name}" == "rk3568") {
 }
 
 if (ace_enable_gpu) {
-  libgl = [ "//device/rockchip/hardware/gpu:mali-bifrost-g52-g2p0-wayland" ]
+  libgl = [ "//device/hihope/hardware/gpu:mali-bifrost-g52-g2p0-wayland" ]
 } else {
   libgl = []
 }
