@@ -27,6 +27,11 @@ constexpr HiviewDFX::HiLogLabel LABEL = { LOG_CORE, 0, "EglSurface" };
 
 sptr<EglSurface> EglSurface::CreateEglSurfaceAsProducer(sptr<IBufferProducer>& producer)
 {
+    if (producer == nullptr) {
+        BLOGE("Failure, Reason: producer is nullptr.");
+        return nullptr;
+    }
+
     sptr<ProducerEglSurface> surface = new ProducerEglSurface(producer);
     if (surface == nullptr) {
         BLOGE("Failure, Reason: no memory.");

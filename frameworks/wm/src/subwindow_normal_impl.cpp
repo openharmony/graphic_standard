@@ -37,11 +37,6 @@ WMError SubwindowNormalImpl::CheckAndNew(sptr<SubwindowNormalImpl> &si,
                                          const sptr<SubwindowOption> &option,
                                          sptr<WlSurface> &parent)
 {
-    if (option == nullptr) {
-        WMLOGFE("SubwindowOption is nullptr");
-        return WM_ERROR_NULLPTR;
-    }
-
     auto windowImpl = static_cast<WindowImpl *>(window.GetRefPtr());
     if (windowImpl == nullptr) {
         WMLOGFE("WindowImpl is nullptr");

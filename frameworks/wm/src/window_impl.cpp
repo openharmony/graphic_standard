@@ -51,10 +51,6 @@ WMError WindowImpl::CheckAndNew(sptr<WindowImpl> &wi,
                                 const sptr<WindowOption> &option,
                                 const sptr<IWindowManagerService> &wms)
 {
-    if (option == nullptr) {
-        WMLOGFE("WindowOption is nullptr");
-        return WM_ERROR_NULLPTR;
-    }
     if (wms == nullptr) {
         WMLOGFE("IWindowManagerService is nullptr");
         return WM_ERROR_NULLPTR;

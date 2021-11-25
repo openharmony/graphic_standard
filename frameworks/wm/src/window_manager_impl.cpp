@@ -194,6 +194,11 @@ sptr<Window> WindowManagerImpl::GetWindowByID(int32_t wid)
 
 WMError WindowManagerImpl::CreateWindow(sptr<Window> &window, const sptr<WindowOption> &option)
 {
+    if (option == nullptr) {
+        WMLOGFE("WindowOption is nullptr");
+        return WM_ERROR_NULLPTR;
+    }
+
     if (wmservice == nullptr) {
         return WM_ERROR_NOT_INIT;
     }
@@ -209,6 +214,16 @@ WMError WindowManagerImpl::CreateSubwindow(sptr<Subwindow> &subwindow,
                                            const sptr<Window> &window,
                                            const sptr<SubwindowOption> &option)
 {
+    if (window == nullptr) {
+        WMLOGFE("Window is nullptr");
+        return WM_ERROR_NULLPTR;
+    }
+
+    if (option == nullptr) {
+        WMLOGFE("WindowOption is nullptr");
+        return WM_ERROR_NULLPTR;
+    }
+
     auto staticCall = SingletonContainer::Get<StaticCall>();
     if (option == nullptr) {
         return WM_ERROR_NULLPTR;

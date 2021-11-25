@@ -39,6 +39,11 @@ sptr<Surface> Surface::CreateSurfaceAsConsumer(std::string name)
 
 sptr<Surface> Surface::CreateSurfaceAsProducer(sptr<IBufferProducer>& producer)
 {
+    if (producer == nullptr) {
+        BLOGE("Failure, Reason: producer is nullptr");
+        return nullptr;
+    }
+
     sptr<ProducerSurface> surface = new ProducerSurface(producer);
     SurfaceError ret = surface->Init();
     if (ret != SURFACE_ERROR_OK) {
