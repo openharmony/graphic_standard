@@ -226,7 +226,7 @@ static void SetDestinationRectangle(const struct WindowSurface *windowSurface,
 
     const struct ivi_layout_surface_properties *prop = layoutInterface->get_properties_of_surface(layoutSurface);
     layoutInterface->surface_set_transition(layoutSurface,
-        IVI_LAYOUT_TRANSITION_NONE, TIMER_INTERVAL_MS); // ms
+        IVI_LAYOUT_TRANSITION_VIEW_DEFAULT, TIMER_INTERVAL_MS); // ms
 
     if (width < 0) {
         width = prop->dest_width;
