@@ -17,6 +17,8 @@
 
 #include <mutex>
 
+#include <graphic_bytrace.h>
+
 #include "buffer_log.h"
 #include "buffer_manager.h"
 #include "egl_data_impl.h"
@@ -68,6 +70,8 @@ SurfaceError ProducerEglSurface::RequestBuffer(sptr<SurfaceBuffer> &buffer,
         return ret;
     }
 
+    GraphicBytrace::BytraceBegin("EGLProducerUseBuffer");
+
     // add cache
     if (retval.buffer != nullptr && IsRemote()) {
         sptr<SurfaceBufferImpl> bufferImpl = SurfaceBufferImpl::FromBase(retval.buffer);
@@ -115,6 +119,7 @@ SurfaceError ProducerEglSurface::FlushBuffer(sptr<SurfaceBuffer> &buffer,
         return SURFACE_ERROR_NULLPTR;
     }
 
+    GraphicBytrace::BytraceEnd("EGLProducerUseBuffer");
     auto bufferImpl = SurfaceBufferImpl::FromBase(buffer);
     BufferExtraDataImpl bedataimpl;
     bufferImpl->GetExtraData(bedataimpl);
@@ -123,6 +128,8 @@ SurfaceError ProducerEglSurface::FlushBuffer(sptr<SurfaceBuffer> &buffer,
 
 SurfaceError ProducerEglSurface::InitContext(EGLContext context)
 {
+    ScopedBytrace func(__func__);
+
     sEglManager_ = EglManager::GetInstance();
     if (sEglManager_ == nullptr) {
         BLOGNE("EglManager::GetInstance Failed.");
@@ -179,6 +186,7 @@ GLuint ProducerEglSurface::GetEglFbo() const
 
 SurfaceError ProducerEglSurface::SwapBuffers()
 {
+    ScopedBytrace func(__func__);
     if (!initFlag_) {
         BLOGNE("ProducerEglSurface is not init.");
         return SURFACE_ERROR_INIT;
@@ -206,6 +214,7 @@ SurfaceError ProducerEglSurface::SetWidthAndHeight(int32_t width, int32_t height
 
 SurfaceError ProducerEglSurface::WaitForReleaseFence(int32_t fd)
 {
+    ScopedBytrace func(__func__);
     SurfaceError ret = SURFACE_ERROR_OK;
     if (fd != EGL_NO_NATIVE_FENCE_FD_ANDROID) {
         BLOGNI("releaseFence %{public}d.", fd);
@@ -235,24 +244,27 @@ SurfaceError ProducerEglSurface::WaitForReleaseFence(int32_t fd)
 
 SurfaceError ProducerEglSurface::RequestBufferProc()
 {
+    ScopedBytrace func(__func__);
     int32_t releaseFence;
-    BufferRequestConfig rconfig;
     {
-        std::lock_guard<std::mutex> lock(mutex_);
-        rconfig = {
-            .width = width_,
-            .height = height_,
-            .strideAlignment = 0x8,
-            .format = PIXEL_FMT_RGBA_8888,
-            .usage = producer_->GetDefaultUsage(),
-            .timeout = 0,
-        };
-    }
+        BufferRequestConfig rconfig;
+        {
+            std::lock_guard<std::mutex> lock(mutex_);
+            rconfig = {
+                .width = width_,
+                .height = height_,
+                .strideAlignment = 0x8,
+                .format = PIXEL_FMT_RGBA_8888,
+                .usage = producer_->GetDefaultUsage(),
+                .timeout = 0,
+            };
+        }
 
-    currentBuffer_ = nullptr;
-    if (RequestBuffer(currentBuffer_, releaseFence, rconfig) != SURFACE_ERROR_OK) {
-        BLOGNE("RequestBuffer failed.");
-        return SURFACE_ERROR_ERROR;
+        currentBuffer_ = nullptr;
+        if (RequestBuffer(currentBuffer_, releaseFence, rconfig) != SURFACE_ERROR_OK) {
+            BLOGNE("RequestBuffer failed.");
+            return SURFACE_ERROR_ERROR;
+        }
     }
 
     if (AddEglData(currentBuffer_) != SURFACE_ERROR_OK) {
@@ -292,6 +304,7 @@ SurfaceError ProducerEglSurface::CreateEglFenceFd(int32_t &fd)
 
 SurfaceError ProducerEglSurface::FlushBufferProc()
 {
+    ScopedBytrace func(__func__);
     int32_t fd = EGL_NO_NATIVE_FENCE_FD_ANDROID;
     if (currentBuffer_ == nullptr) {
         BLOGNE("currentBuffer_ is nullptr.");
@@ -326,6 +339,7 @@ bool ProducerEglSurface::IsRemote()
 
 SurfaceError ProducerEglSurface::AddEglData(sptr<SurfaceBuffer> &buffer)
 {
+    ScopedBytrace func(__func__);
     sptr<SurfaceBufferImpl> bufferImpl = SurfaceBufferImpl::FromBase(buffer);
     sptr<EglData> sEglData = bufferImpl->GetEglData();
     if (sEglData != nullptr) {

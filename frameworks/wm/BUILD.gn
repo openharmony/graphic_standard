@@ -72,6 +72,7 @@ ohos_shared_library("wms_client") {
   ]
 
   deps = [
+    "//developtools/bytrace_standard/interfaces/innerkits/native:bytrace_core",
     "//foundation/graphic/standard:libwmservice",
     "//foundation/graphic/standard/frameworks/wmserver:wms_protocol",
     "//third_party/wayland-ivi-extension:libilmClient",
@@ -175,6 +176,7 @@ ohos_shared_library("libwmclient") {
   public_configs = [ ":libwmclient_public_config" ]
 
   deps = [
+    "//developtools/bytrace_standard/interfaces/innerkits/native:bytrace_core",
     "//foundation/graphic/standard:libwmservice",
     "//foundation/graphic/standard/frameworks/wmserver:wms_protocol",
     "//third_party/wayland-ivi-extension:libilmClient",

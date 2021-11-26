@@ -16,6 +16,7 @@
 #include "egl_manager.h"
 
 #include <fcntl.h>
+#include <graphic_bytrace.h>
 #include <mutex>
 #include <unistd.h>
 
@@ -77,6 +78,7 @@ bool EglManager::IsInit() const
 
 SurfaceError EglManager::Init(EGLContext context)
 {
+    ScopedBytrace eGLManagerInit("EGLManagerInit");
     if (initFlag_) {
         BLOGW("already init.");
         return SURFACE_ERROR_OK;
@@ -98,6 +100,7 @@ SurfaceError EglManager::Init(EGLContext context)
 
 SurfaceError EglManager::GbmInit()
 {
+    ScopedBytrace func(__func__);
     drmFd_ = open(GBM_DEVICE_PATH, O_RDWR);
     if (drmFd_ < 0) {
         BLOGE("Failed to open drm render node.");
@@ -265,6 +268,7 @@ SurfaceError EglManager::EglFuncInit()
 
 SurfaceError EglManager::EglInit(EGLContext ctx)
 {
+    ScopedBytrace func(__func__);
     display_ = GetPlatformEglDisplay(EGL_PLATFORM_GBM_KHR, device_, NULL);
     if (display_ == EGL_NO_DISPLAY) {
         BLOGE("Failed to create EGLDisplay");

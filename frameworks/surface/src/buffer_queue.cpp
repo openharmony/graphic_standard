@@ -16,11 +16,13 @@
 #include "buffer_queue.h"
 
 #include <algorithm>
-#include <display_type.h>
 #include <fstream>
 #include <sstream>
 #include <sys/time.h>
 #include <unistd.h>
+
+#include <display_type.h>
+#include <graphic_bytrace.h>
 
 #include "buffer_log.h"
 #include "buffer_manager.h"
@@ -156,6 +158,7 @@ SurfaceError BufferQueue::CheckFlushConfig(const BufferFlushConfig &config)
 SurfaceError BufferQueue::RequestBuffer(const BufferRequestConfig &config, BufferExtraData &bedata,
                                         struct IBufferProducer::RequestBufferReturnValue &retval)
 {
+    ScopedBytrace func(__func__);
     if (listener_ == nullptr && listenerClazz_ == nullptr) {
         BLOGN_FAILURE_RET(SURFACE_ERROR_NO_CONSUMER);
     }
@@ -190,12 +193,14 @@ SurfaceError BufferQueue::RequestBuffer(const BufferRequestConfig &config, Buffe
     bufferImpl->GetExtraData(bedata);
     retval.buffer = bufferImpl;
     retval.fence = -1;
+    GraphicBytrace::BytraceBegin("ProducerUseBuffer");
     return ret;
 }
 
 SurfaceError BufferQueue::ReuseBuffer(const BufferRequestConfig &config, BufferExtraData &bedata,
                                       struct IBufferProducer::RequestBufferReturnValue &retval)
 {
+    ScopedBytrace func(__func__);
     sptr<SurfaceBufferImpl> bufferImpl = SurfaceBufferImpl::FromBase(retval.buffer);
     retval.sequence = bufferImpl->GetSeqNum();
     bool needRealloc = (config != bufferQueueCache_[retval.sequence].config);
@@ -230,11 +235,13 @@ SurfaceError BufferQueue::ReuseBuffer(const BufferRequestConfig &config, BufferE
         retval.buffer = nullptr;
     }
 
+    GraphicBytrace::BytraceBegin("ProducerUseBuffer");
     return SURFACE_ERROR_OK;
 }
 
 SurfaceError BufferQueue::CancelBuffer(int32_t sequence, const BufferExtraData &bedata)
 {
+    ScopedBytrace func(__func__);
     std::lock_guard<std::mutex> lockGuard(mutex_);
 
     CHECK_SEQ_CACHE_AND_STATE(sequence, bufferQueueCache_, BUFFER_STATE_REQUESTED);
@@ -244,12 +251,14 @@ SurfaceError BufferQueue::CancelBuffer(int32_t sequence, const BufferExtraData &
 
     BLOGN_SUCCESS_ID(sequence, "cancel");
 
+    GraphicBytrace::BytraceEnd("ProducerUseBuffer");
     return SURFACE_ERROR_OK;
 }
 
 SurfaceError BufferQueue::FlushBuffer(int32_t sequence, const BufferExtraData &bedata,
                                       int32_t fence, const BufferFlushConfig &config)
 {
+    ScopedBytrace func(__func__);
     // check param
     auto sret = CheckFlushConfig(config);
     if (sret != SURFACE_ERROR_OK) {
@@ -267,6 +276,8 @@ SurfaceError BufferQueue::FlushBuffer(int32_t sequence, const BufferExtraData &b
         return SURFACE_ERROR_NO_CONSUMER;
     }
 
+    GraphicBytrace::BytraceEnd("ProducerUseBuffer");
+    ScopedBytrace bufferIPCSend("BufferIPCSend");
     sret = DoFlushBuffer(sequence, bedata, fence, config);
     if (sret != SURFACE_ERROR_OK) {
         return sret;
@@ -312,6 +323,7 @@ void BufferQueue::DumpToFile(int32_t sequence)
 SurfaceError BufferQueue::DoFlushBuffer(int32_t sequence, const BufferExtraData &bedata,
                                         int32_t fence, const BufferFlushConfig &config)
 {
+    ScopedBytrace func(__func__);
     std::lock_guard<std::mutex> lockGuard(mutex_);
     if (bufferQueueCache_[sequence].isDeleting) {
         DeleteBufferInCache(sequence);
@@ -348,6 +360,7 @@ SurfaceError BufferQueue::DoFlushBuffer(int32_t sequence, const BufferExtraData 
 SurfaceError BufferQueue::AcquireBuffer(sptr<SurfaceBufferImpl>& buffer,
                                         int32_t &fence, int64_t &timestamp, Rect &damage)
 {
+    ScopedBytrace func(__func__);
     // dequeue from dirty list
     std::lock_guard<std::mutex> lockGuard(mutex_);
     SurfaceError ret = PopFromDirtyList(buffer);
@@ -373,6 +386,7 @@ SurfaceError BufferQueue::AcquireBuffer(sptr<SurfaceBufferImpl>& buffer,
 
 SurfaceError BufferQueue::ReleaseBuffer(sptr<SurfaceBufferImpl>& buffer, int32_t fence)
 {
+    ScopedBytrace func(__func__);
     std::lock_guard<std::mutex> lockGuard(mutex_);
 
     if (buffer == nullptr) {
@@ -400,6 +414,7 @@ SurfaceError BufferQueue::ReleaseBuffer(sptr<SurfaceBufferImpl>& buffer, int32_t
 SurfaceError BufferQueue::AllocBuffer(sptr<SurfaceBufferImpl>& buffer,
     const BufferRequestConfig &config)
 {
+    ScopedBytrace func(__func__);
     buffer = new SurfaceBufferImpl();
     int32_t sequence = buffer->GetSeqNum();
 

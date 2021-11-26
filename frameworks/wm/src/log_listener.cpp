@@ -15,6 +15,7 @@
 
 #include "log_listener.h"
 
+#include <bytrace.h>
 #include <mutex>
 
 #include "window_manager_hilog.h"
@@ -151,12 +152,15 @@ void LogListener::KeyboardHandleRepeatInfo(void *data, int32_t rate, int32_t del
 void LogListener::TouchHandleDown(void *data,
     uint32_t sss, uint32_t time, int32_t id, double x, double y)
 {
+    UpdateTraceLabel();
+    StartTrace(BYTRACE_TAG_GRAPHIC_AGP, "Touch");
     WMLOGFD("");
 }
 
 void LogListener::TouchHandleUp(void *data, uint32_t sss, uint32_t time, int32_t id)
 {
     WMLOGFD("");
+    FinishTrace(BYTRACE_TAG_GRAPHIC_AGP, "Touch");
 }
 
 void LogListener::TouchHandleMotion(void *data, uint32_t time, int32_t id, double x, double y)

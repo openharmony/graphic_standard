@@ -19,6 +19,7 @@
 #include <thread>
 #include <unistd.h>
 
+#include <graphic_bytrace.h>
 #include <iservice_registry.h>
 #include <system_ability_definition.h>
 
@@ -152,6 +153,7 @@ void VsyncModuleImpl::VsyncMainThread()
             VLOGE("WaitNextVsync return negative time");
             continue;
         }
+        ScopedBytrace vsyncSending("VsyncSending");
         vsyncManager_.Callback(timestamp);
     }
 }
