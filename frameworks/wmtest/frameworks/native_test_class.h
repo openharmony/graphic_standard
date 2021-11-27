@@ -40,7 +40,7 @@ typedef struct {
 
 class NativeTestFactory {
 public:
-    static sptr<Window> CreateWindow(WindowType, sptr<Surface> csurface = nullptr);
+    static sptr<Window> CreateWindow(WindowType, sptr<Surface> csurface = nullptr, uint32_t did = 0);
 };
 
 using DrawFunc = std::function<void(void *, uint32_t, uint32_t, uint32_t)>;
