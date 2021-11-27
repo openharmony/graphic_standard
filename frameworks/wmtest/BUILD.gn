@@ -37,6 +37,7 @@ ohos_executable("wmtest") {
     "frameworks/util.cpp",
     "test/crash_native_test_1.cpp",
     "test/crash_native_test_2.cpp",
+    "test/dumper_test_1.cpp",
     "test/other_native_test_1.cpp",
     "test/pref_native_test_1.cpp",
     "test/vsync_native_test_1.cpp",
@@ -80,6 +81,7 @@ ohos_executable("wmtest") {
   deps = [
     "//foundation/communication/ipc/interfaces/innerkits/ipc_core:ipc_core",
     "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy:samgr_proxy",
+    "//foundation/graphic/standard:libgraphic_dumper_client",
     "//foundation/graphic/standard:libvsync_client",
     "//foundation/graphic/standard:libwmclient",
     "//foundation/graphic/standard:libwmservice",
