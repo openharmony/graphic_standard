@@ -12,6 +12,7 @@
 # limitations under the License.
 
 import("//build/ohos.gni")
+import("//foundation/graphic/standard/graphic_config.gni")
 
 ## Build wmtest {{{
 config("wmtest_config") {
@@ -51,16 +52,12 @@ ohos_executable("wmtest") {
     "test/wmclient_native_test_18.cpp",
     "test/wmclient_native_test_19.cpp",
     "test/wmclient_native_test_2.cpp",
-    "test/wmclient_native_test_20.cpp",
-    "test/wmclient_native_test_21.cpp",
-    "test/wmclient_native_test_22.cpp",
-    "test/wmclient_native_test_23.cpp",
-    "test/wmclient_native_test_24.cpp",
-    "test/wmclient_native_test_25.cpp",
     "test/wmclient_native_test_26.cpp",
     "test/wmclient_native_test_27.cpp",
     "test/wmclient_native_test_28.cpp",
-    "test/wmclient_native_test_3.cpp",
+    "test/wmclient_native_test_29.cpp",
+    "test/wmclient_native_test_30.cpp",
+    "test/wmclient_native_test_32.cpp",
     "test/wmclient_native_test_4.cpp",
     "test/wmclient_native_test_5.cpp",
     "test/wmclient_native_test_6.cpp",
@@ -74,13 +71,19 @@ ohos_executable("wmtest") {
     "test/wmservice_native_test_5.cpp",
   ]
 
+  if (ace_enable_gpu) {
+    sources += [ "test/wmclient_native_test_31.cpp" ]
+  }
+
   configs = [ ":wmtest_config" ]
 
   deps = [
+    "//foundation/communication/ipc/interfaces/innerkits/ipc_core:ipc_core",
     "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy:samgr_proxy",
     "//foundation/graphic/standard:libvsync_client",
     "//foundation/graphic/standard:libwmclient",
     "//foundation/graphic/standard:libwmservice",
+    "//foundation/multimodalinput/input/frameworks/proxy:libmmi-client",
     "//third_party/zlib:libz",
   ]
 

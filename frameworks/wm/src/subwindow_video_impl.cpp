@@ -33,11 +33,6 @@ WMError SubwindowVideoImpl::CheckAndNew(sptr<SubwindowVideoImpl> &svi,
                                         const sptr<SubwindowOption> &option,
                                         sptr<WlSurface> &parent)
 {
-    if (option == nullptr) {
-        WMLOGFE("SubwindowOption is nullptr");
-        return WM_ERROR_NULLPTR;
-    }
-
     auto windowImpl = static_cast<WindowImpl *>(window.GetRefPtr());
     if (windowImpl == nullptr) {
         WMLOGFE("WindowImpl is nullptr");
@@ -71,6 +66,7 @@ WMError SubwindowVideoImpl::CreateWlSurface(sptr<SubwindowVideoImpl> &svi,
     }
 
     svi->wlSubsurface->SetPosition(svi->attr.GetX(), svi->attr.GetY());
+    svi->wlSubsurface->PlaceBelow(parentWlSurface);
     svi->wlSubsurface->SetDesync();
     return WM_OK;
 }
@@ -289,5 +285,10 @@ void SubwindowVideoImpl::OnSizeChange(WindowSizeChangeFunc func)
 SubwindowVideoImpl::~SubwindowVideoImpl()
 {
     Destroy();
+}
+
+void SubwindowVideoImpl::OnBeforeFrameSubmit(BeforeFrameSubmitFunc func)
+{
+    onBeforeFrameSubmitFunc = func;
 }
 } // namespace OHOS

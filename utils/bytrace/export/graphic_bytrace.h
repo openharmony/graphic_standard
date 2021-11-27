@@ -13,7 +13,24 @@
  * limitations under the License.
  */
 
-#ifndef FRAMEWORKS_WMTEST_TEST_WMCLIENT_WMCLIENT_NATIVE_TEST_25_H
-#define FRAMEWORKS_WMTEST_TEST_WMCLIENT_WMCLIENT_NATIVE_TEST_25_H
+#ifndef UTILS_TRACE_GRAPHIC_BYTRACE_H
+#define UTILS_TRACE_GRAPHIC_BYTRACE_H
 
-#endif // FRAMEWORKS_WMTEST_TEST_WMCLIENT_WMCLIENT_NATIVE_TEST_25_H
+#include <string>
+
+class GraphicBytrace {
+public:
+    static void BytraceBegin(const std::string &proc);
+    static void BytraceEnd(const std::string &proc);
+};
+
+class ScopedBytrace {
+public:
+    ScopedBytrace(const std::string &proc);
+    ~ScopedBytrace();
+
+private:
+    std::string proc_;
+};
+
+#endif // UTILS_TRACE_GRAPHIC_BYTRACE_H

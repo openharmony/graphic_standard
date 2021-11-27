@@ -13,7 +13,27 @@
  * limitations under the License.
  */
 
-#ifndef FRAMEWORKS_WMTEST_TEST_WMCLIENT_WMCLIENT_NATIVE_TEST_20_H
-#define FRAMEWORKS_WMTEST_TEST_WMCLIENT_WMCLIENT_NATIVE_TEST_20_H
+#include "graphic_bytrace.h"
 
-#endif // FRAMEWORKS_WMTEST_TEST_WMCLIENT_WMCLIENT_NATIVE_TEST_20_H
+#include <bytrace.h>
+#include <hilog/log.h>
+
+void GraphicBytrace::BytraceBegin(const std::string &proc)
+{
+    StartTrace(BYTRACE_TAG_GRAPHIC_AGP, proc);
+}
+
+void GraphicBytrace::BytraceEnd(const std::string &proc)
+{
+    FinishTrace(BYTRACE_TAG_GRAPHIC_AGP);
+}
+
+ScopedBytrace::ScopedBytrace(const std::string &proc) : proc_(proc)
+{
+    GraphicBytrace::BytraceBegin(proc_);
+}
+
+ScopedBytrace::~ScopedBytrace()
+{
+    GraphicBytrace::BytraceEnd(proc_);
+}

@@ -13,7 +13,21 @@
  * limitations under the License.
  */
 
-#ifndef FRAMEWORKS_WMTEST_TEST_WMCLIENT_WMCLIENT_NATIVE_TEST_3_H
-#define FRAMEWORKS_WMTEST_TEST_WMCLIENT_WMCLIENT_NATIVE_TEST_3_H
+#ifndef INTERFACES_INNERKITS_SURFACE_EGL_DATA_H
+#define INTERFACES_INNERKITS_SURFACE_EGL_DATA_H
 
-#endif // FRAMEWORKS_WMTEST_TEST_WMCLIENT_WMCLIENT_NATIVE_TEST_3_H
+#include <refbase.h>
+#include <GLES2/gl2.h>
+
+namespace OHOS {
+class EglData : public RefBase {
+public:
+    virtual GLuint GetFrameBufferObj() const = 0;
+
+protected:
+    EglData() {}
+    virtual ~EglData() {}
+};
+} // namespace OHOS
+
+#endif // INTERFACES_INNERKITS_SURFACE_EGL_DATA_H

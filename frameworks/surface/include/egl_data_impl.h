@@ -13,25 +13,29 @@
  * limitations under the License.
  */
 
-#ifndef FRAMEWORKS_WM_TEST_UNITTEST_WP_VIEWPORT_FACTORY_TEST_H
-#define FRAMEWORKS_WM_TEST_UNITTEST_WP_VIEWPORT_FACTORY_TEST_H
+#ifndef FRAMEWORKS_SURFACE_INCLUDE_EGL_DATA_IMPL_H
+#define FRAMEWORKS_SURFACE_INCLUDE_EGL_DATA_IMPL_H
 
-#include <gtest/gtest.h>
-#include <window_manager.h>
-
-#include "wp_viewport_factory.h"
+#include "egl_data.h"
+#include "egl_manager.h"
+#include "surface_type.h"
+#include "surface_buffer_impl.h"
 
 namespace OHOS {
-class WpViewportFactoryTest : public testing::Test {
+class EglDataImpl : public EglData {
 public:
-    static void SetUpTestCase();
-    static void TearDownTestCase();
-    virtual void SetUp() override;
-    virtual void TearDown() override;
+    EglDataImpl();
+    virtual ~EglDataImpl();
+
+    virtual GLuint GetFrameBufferObj() const override;
+    SurfaceError CreateEglData(const sptr<SurfaceBufferImpl> &buffer);
 
 private:
-    static inline WMError initRet = WM_ERROR_NOT_INIT;
+    sptr<EglManager> sEglManager_;
+    EGLImageKHR eglImage_;
+    GLuint glTexture_;
+    GLuint glFbo_;
 };
-}
+} // namespace OHOS
 
-#endif // FRAMEWORKS_WM_TEST_UNITTEST_WP_VIEWPORT_FACTORY_TEST_H
+#endif // FRAMEWORKS_SURFACE_INCLUDE_EGL_DATA_IMPL_H

@@ -37,11 +37,6 @@ WMError SubwindowNormalImpl::CheckAndNew(sptr<SubwindowNormalImpl> &si,
                                          const sptr<SubwindowOption> &option,
                                          sptr<WlSurface> &parent)
 {
-    if (option == nullptr) {
-        WMLOGFE("SubwindowOption is nullptr");
-        return WM_ERROR_NULLPTR;
-    }
-
     auto windowImpl = static_cast<WindowImpl *>(window.GetRefPtr());
     if (windowImpl == nullptr) {
         WMLOGFE("WindowImpl is nullptr");
@@ -74,6 +69,7 @@ WMError SubwindowNormalImpl::CreateWlSurface(sptr<SubwindowNormalImpl> &si,
     }
 
     si->wlSubsurface->SetPosition(si->attr.GetX(), si->attr.GetY());
+    si->wlSubsurface->PlaceBelow(parentWlSurface);
     si->wlSubsurface->SetDesync();
     return WM_OK;
 }
@@ -198,15 +194,20 @@ void SubwindowNormalImpl::OnSizeChange(WindowSizeChangeFunc func)
     attr.OnSizeChange(func);
 }
 
+void SubwindowNormalImpl::OnBeforeFrameSubmit(BeforeFrameSubmitFunc func)
+{
+    onBeforeFrameSubmitFunc = func;
+}
+
 namespace {
-void BufferRelease(struct wl_buffer *wbuffer)
+void BufferRelease(struct wl_buffer *wbuffer, int32_t fence)
 {
     WMLOGFI("(subwindow normal) BufferRelease");
     sptr<Surface> surface = nullptr;
     sptr<SurfaceBuffer> sbuffer = nullptr;
     if (SingletonContainer::Get<WlBufferCache>()->GetSurfaceBuffer(wbuffer, surface, sbuffer)) {
         if (surface != nullptr && sbuffer != nullptr) {
-            surface->ReleaseBuffer(sbuffer, -1);
+            surface->ReleaseBuffer(sbuffer, fence);
         }
     }
 }
@@ -221,15 +222,19 @@ void SubwindowNormalImpl::OnBufferAvailable()
         return;
     }
 
+    if (onBeforeFrameSubmitFunc != nullptr) {
+        onBeforeFrameSubmitFunc();
+    }
+
     if (csurface == nullptr || wlSurface == nullptr) {
         WMLOGFE("csurface or wlSurface is nullptr");
         return;
     }
 
-    sptr<SurfaceBuffer> sbuffer;
-    int32_t flushFence;
-    int64_t timestamp;
-    Rect damage;
+    sptr<SurfaceBuffer> sbuffer = nullptr;
+    int32_t flushFence = -1;
+    int64_t timestamp = 0;
+    Rect damage = {};
     SurfaceError ret = csurface->AcquireBuffer(sbuffer, flushFence, timestamp, damage);
     if (ret != SURFACE_ERROR_OK) {
         WMLOGFE("AcquireBuffer failed");
@@ -241,18 +246,39 @@ void SubwindowNormalImpl::OnBufferAvailable()
     if (wbuffer == nullptr) {
         auto dmaBufferFactory = SingletonContainer::Get<WlDMABufferFactory>();
         auto dmaWlBuffer = dmaBufferFactory->Create(sbuffer->GetBufferHandle());
+        if (dmaWlBuffer == nullptr) {
+            WMLOGFE("Create DMA Buffer Failed");
+            auto sret = csurface->ReleaseBuffer(sbuffer, -1);
+            if (sret != SURFACE_ERROR_OK) {
+                WMLOGFW("ReleaseBuffer failed");
+            }
+            return;
+        }
         dmaWlBuffer->OnRelease(BufferRelease);
 
         wbuffer = dmaWlBuffer;
         bc->AddWlBuffer(wbuffer, csurface, sbuffer);
     }
 
+    SendBufferToServer(wbuffer, sbuffer, flushFence, damage);
+    WMLOGFI("(subwindow normal) OnBufferAvailable exit");
+}
+
+void SubwindowNormalImpl::SendBufferToServer(sptr<WlBuffer> &wbuffer,
+    sptr<SurfaceBuffer> &sbuffer, int32_t fence, Rect &damage)
+{
     if (wbuffer) {
+        auto br = wlSurface->GetBufferRelease();
+        wbuffer->SetBufferRelease(br);
         wlSurface->Attach(wbuffer, 0, 0);
+        wlSurface->SetAcquireFence(fence);
         wlSurface->Damage(damage.x, damage.y, damage.w, damage.h);
+        wlSurface->SetSource(0, 0, sbuffer->GetWidth(), sbuffer->GetHeight());
+        wlSurface->SetDestination(attr.GetWidth(), attr.GetHeight());
+        WMLOGFI("(subwindow normal) Source[%{public}d x %{public}d] Dest[%{public}d x %{public}d]",
+                sbuffer->GetWidth(), sbuffer->GetHeight(), attr.GetWidth(), attr.GetHeight());
         wlSurface->Commit();
         SingletonContainer::Get<WlDisplay>()->Flush();
     }
-    WMLOGFI("(subwindow normal) OnBufferAvailable exit");
 }
 } // namespace OHOS

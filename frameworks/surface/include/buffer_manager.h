@@ -16,18 +16,18 @@
 #ifndef FRAMEWORKS_SURFACE_INCLUDE_BUFFER_MANAGER_H
 #define FRAMEWORKS_SURFACE_INCLUDE_BUFFER_MANAGER_H
 
+#include <memory>
+
 #include <surface_type.h>
-#include <display_gralloc.h>
+#include <idisplay_gralloc.h>
 
 #include "surface_buffer_impl.h"
 
 namespace OHOS {
-class BufferManager {
+class BufferManager : public RefBase {
 public:
-    static BufferManager *GetInstance()
-    {
-        return &instance_;
-    }
+    static sptr<BufferManager> GetInstance();
+
     SurfaceError Init();
     SurfaceError Alloc(const BufferRequestConfig &config, sptr<SurfaceBufferImpl>& buffer);
     SurfaceError Map(sptr<SurfaceBufferImpl>& buffer);
@@ -38,10 +38,10 @@ public:
 
 private:
     BufferManager() = default;
-    ~BufferManager();
-    static BufferManager instance_;
+    ~BufferManager() = default;
+    static inline sptr<BufferManager> instance = nullptr;
 
-    GrallocFuncs *grallocFuncs_ = nullptr;
+    std::unique_ptr<::OHOS::HDI::Display::V1_0::IDisplayGralloc> displayGralloc_ = nullptr;
 };
 } // namespace OHOS
 

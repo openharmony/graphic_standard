@@ -13,26 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef FRAMEWORKS_WM_INCLUDE_WP_VIEWPORT_H
-#define FRAMEWORKS_WM_INCLUDE_WP_VIEWPORT_H
+#ifndef FRAMEWORKS_WMTEST_TEST_WMCLIENT_WMCLIENT_NATIVE_TEST_30_H
+#define FRAMEWORKS_WMTEST_TEST_WMCLIENT_WMCLIENT_NATIVE_TEST_30_H
 
-#include <refbase.h>
-#include <viewporter-client-protocol.h>
 
-namespace OHOS {
-class WpViewport : public RefBase {
-public:
-    WpViewport(struct wp_viewport *viewport);
-    virtual ~WpViewport() override;
-
-    struct wp_viewport *GetRawPtr() const;
-
-    void SetSource(double x, double y, double w, double h);
-    void SetDestination(uint32_t w, uint32_t h);
-
-private:
-    struct wp_viewport *viewport;
-};
-} // namespace OHOS
-
-#endif // FRAMEWORKS_WM_INCLUDE_WP_VIEWPORT_H
+#endif // FRAMEWORKS_WMTEST_TEST_WMCLIENT_WMCLIENT_NATIVE_TEST_30_H

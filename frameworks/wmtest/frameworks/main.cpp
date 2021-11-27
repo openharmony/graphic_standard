@@ -59,7 +59,7 @@ int32_t main(int32_t argc, const char **argv)
     constexpr int32_t idIndex = 2;
     std::stringstream ss(argv[idIndex]);
     ss >> testcase;
-    if (ss.fail() == true || testcase == -1) {
+    if (!ss || testcase == -1) {
         Usage(argv[0]);
         return 1;
     }
@@ -78,7 +78,7 @@ int32_t main(int32_t argc, const char **argv)
 
     auto runner = AppExecFwk::EventRunner::Create(false);
     auto handler = std::make_shared<AppExecFwk::EventHandler>(runner);
-    handler->PostTask(std::bind(&INativeTest::Run, found, argc - 1, argv + 1));
+    handler->PostTask(std::bind(&INativeTest::Run, found, argc - argNumber, argv + argNumber));
     if (found->GetLastTime() != INativeTest::LAST_TIME_FOREVER) {
         handler->PostTask(std::bind(&AppExecFwk::EventRunner::Stop, runner), found->GetLastTime());
     }

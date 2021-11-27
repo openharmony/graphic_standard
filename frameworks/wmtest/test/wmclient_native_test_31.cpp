@@ -13,10 +13,9 @@
  * limitations under the License.
  */
 
-#include "wmclient_native_test_22.h"
+#include "wmclient_native_test_31.h"
 
 #include <cstdio>
-#include <securec.h>
 
 #include <display_type.h>
 #include <window_manager.h>
@@ -28,11 +27,11 @@
 using namespace OHOS;
 
 namespace {
-class WMClientNativeTest22 : public INativeTest {
+class WMClientNativeTest31 : public INativeTest {
 public:
     std::string GetDescription() const override
     {
-        constexpr const char *desc = "input method selector window";
+        constexpr const char *desc = "egl surface test";
         return desc;
     }
 
@@ -44,7 +43,7 @@ public:
 
     int32_t GetID() const override
     {
-        constexpr int32_t id = 22;
+        constexpr int32_t id = 31;
         return id;
     }
 
@@ -63,15 +62,17 @@ public:
             return;
         }
 
-        window = NativeTestFactory::CreateWindow(WINDOW_TYPE_INPUT_METHOD_SELECTOR);
+        window = NativeTestFactory::CreateWindow(WINDOW_TYPE_NORMAL);
         if (window == nullptr) {
-            printf("NativeTestFactory::CreateWindow return nullptr\n");
+            ExitTest();
             return;
         }
 
         window->SwitchTop();
-        auto surface = window->GetSurface();
-        windowSync = NativeTestSync::CreateSync(NativeTestDraw::FlushDraw, surface);
+        auto producer = window->GetProducer();
+        sptr<EglSurface> pEglSurface = EglSurface::CreateEglSurfaceAsProducer(producer);
+        windowSync = NativeTestSync::CreateSyncEgl(NativeTestDraw::FlushDrawEgl,
+            pEglSurface, window->GetWidth(), window->GetHeight());
     }
 
 private:

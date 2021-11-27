@@ -62,7 +62,7 @@ public:
         auto threadFunc = [&wptr]() {
             for (int32_t i = 0; i < static_cast<int32_t>(1e9); i++) {
                 auto sp = wptr.promote();
-                std::this_thread::yield();
+                sleep(0);
             }
         };
         std::thread thread(threadFunc);

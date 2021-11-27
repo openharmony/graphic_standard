@@ -26,9 +26,9 @@ namespace {
 constexpr HiviewDFX::HiLogLabel LABEL = { LOG_CORE, 0, "Surface" };
 }
 
-sptr<Surface> Surface::CreateSurfaceAsConsumer(std::string name)
+sptr<Surface> Surface::CreateSurfaceAsConsumer(std::string name, bool isShared)
 {
-    sptr<ConsumerSurface> surface = new ConsumerSurface(name);
+    sptr<ConsumerSurface> surface = new ConsumerSurface(name, isShared);
     SurfaceError ret = surface->Init();
     if (ret != SURFACE_ERROR_OK) {
         BLOGE("Failure, Reason: consumer surface init failed");
@@ -39,6 +39,11 @@ sptr<Surface> Surface::CreateSurfaceAsConsumer(std::string name)
 
 sptr<Surface> Surface::CreateSurfaceAsProducer(sptr<IBufferProducer>& producer)
 {
+    if (producer == nullptr) {
+        BLOGE("Failure, Reason: producer is nullptr");
+        return nullptr;
+    }
+
     sptr<ProducerSurface> surface = new ProducerSurface(producer);
     SurfaceError ret = surface->Init();
     if (ret != SURFACE_ERROR_OK) {

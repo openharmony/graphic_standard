@@ -13,7 +13,27 @@
  * limitations under the License.
  */
 
-#ifndef FRAMEWORKS_WMTEST_TEST_WMCLIENT_WMCLIENT_NATIVE_TEST_23_H
-#define FRAMEWORKS_WMTEST_TEST_WMCLIENT_WMCLIENT_NATIVE_TEST_23_H
+#ifndef FRAMEWORKS_FENCE_INCLUDE_FENCE_H
+#define FRAMEWORKS_FENCE_INCLUDE_FENCE_H
 
-#endif // FRAMEWORKS_WMTEST_TEST_WMCLIENT_WMCLIENT_NATIVE_TEST_23_H
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+enum FenceStatus {
+    ERROR, ACTIVE, SIGNALED
+};
+
+bool IsSupportSwSync(void);
+int CreateTimeline(void);
+int CreateFenceFromTimeline(int timeline, const char* name, unsigned int totalSteps);
+int FenceHold(int fd, int timeout);
+int TimelineActivate(int timeline, unsigned int step);
+enum FenceStatus FenceGetStatus(int fd);
+int FenceMerge(const char* name, int fd1, int fd2);
+
+#ifdef __cplusplus
+}
+
+#endif
+#endif // FRAMEWORKS_FENCE_INCLUDE_FENCE_H

@@ -54,6 +54,7 @@ ohos_shared_library("libvsync_client") {
   deps = [
     "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
     "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy:samgr_proxy",
+    "//foundation/graphic/standard/utils/bytrace:graphic_bytrace",
   ]
 
   external_deps = [ "ipc:ipc_core" ]
@@ -112,6 +113,7 @@ ohos_shared_library("libvsync_module") {
     "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
     "//foundation/communication/ipc/interfaces/innerkits/ipc_core:ipc_core",
     "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy:samgr_proxy",
+    "//foundation/graphic/standard/utils/bytrace:graphic_bytrace",
     "//third_party/libdrm:libdrm",
   ]
 

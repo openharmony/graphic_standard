@@ -226,7 +226,7 @@ static void SetDestinationRectangle(const struct WindowSurface *windowSurface,
 
     const struct ivi_layout_surface_properties *prop = layoutInterface->get_properties_of_surface(layoutSurface);
     layoutInterface->surface_set_transition(layoutSurface,
-        IVI_LAYOUT_TRANSITION_NONE, TIMER_INTERVAL_MS); // ms
+        IVI_LAYOUT_TRANSITION_VIEW_DEFAULT, TIMER_INTERVAL_MS); // ms
 
     if (width < 0) {
         width = prop->dest_width;
@@ -1903,6 +1903,12 @@ int ScreenInfoInit(const struct weston_compositor *pCompositor);
 
 static int WmsContextInit(struct WmsContext *ctx, struct weston_compositor *compositor)
 {
+    int32_t ret = DeviceInitialize(&ctx->deviceFuncs);
+    if (ret != 0) {
+        LOGE("DeviceInitialize failed, return %{public}d", ret);
+        ctx->deviceFuncs = NULL;
+    }
+
     wl_list_init(&ctx->wlListController);
     wl_list_init(&ctx->wlListWindow);
     wl_list_init(&ctx->wlListScreen);
