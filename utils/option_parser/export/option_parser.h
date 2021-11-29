@@ -26,24 +26,73 @@ public:
     int32_t Parse(int32_t argc, const char **argv);
     std::string GetErrorString();
 
-    template<typename T> int32_t AddOption(const std::string &shortOpt,
-                                           const std::string &longOpt, T &result);
-    template<> int32_t AddOption<int32_t>(const std::string &shortOpt,
-                                          const std::string &longOpt, int32_t &result);
-    template<> int32_t AddOption<int64_t>(const std::string &shortOpt,
-                                          const std::string &longOpt, int64_t &result);
-    template<> int32_t AddOption<double>(const std::string &shortOpt,
-                                         const std::string &longOpt, double &result);
-    template<> int32_t AddOption<std::string>(const std::string &shortOpt,
-                                              const std::string &longOpt, std::string &result);
-    template<> int32_t AddOption<bool>(const std::string &shortOpt,
-                                       const std::string &longOpt, bool &result);
+    template<typename T>
+    int32_t AddOption(const std::string &shortOpt, const std::string &longOpt, T &result)
+    {
+        assert(!"not support");
+        return 0;
+    }
 
-    template<typename T> int32_t AddArguments(T &result);
-    template<> int32_t AddArguments<int32_t>(int32_t &result);
-    template<> int32_t AddArguments<int64_t>(int64_t &result);
-    template<> int32_t AddArguments<double>(double &result);
-    template<> int32_t AddArguments<std::string>(std::string &result);
+    template<>
+    int32_t AddOption<int32_t>(const std::string &shortOpt, const std::string &longOpt, int32_t &result)
+    {
+        return AddOption(shortOpt, longOpt, &result, Option::ValueType::i32);
+    }
+
+    template<>
+    int32_t AddOption<int64_t>(const std::string &shortOpt, const std::string &longOpt, int64_t &result)
+    {
+        return AddOption(shortOpt, longOpt, &result, Option::ValueType::i64);
+    }
+
+    template<>
+    int32_t AddOption<double>(const std::string &shortOpt, const std::string &longOpt, double &result)
+    {
+        return AddOption(shortOpt, longOpt, &result, Option::ValueType::f64);
+    }
+
+    template<>
+    int32_t AddOption<std::string>(const std::string &shortOpt, const std::string &longOpt, std::string &result)
+    {
+        return AddOption(shortOpt, longOpt, &result, Option::ValueType::str);
+    }
+
+    template<>
+    int32_t AddOption<bool>(const std::string &shortOpt, const std::string &longOpt, bool &result)
+    {
+        return AddOption(shortOpt, longOpt, &result, Option::ValueType::bol);
+    }
+
+    template<typename T>
+    int32_t AddArguments(T &result)
+    {
+        assert(!"not support");
+        return 0;
+    }
+
+    template<>
+    int32_t AddArguments<int32_t>(int32_t &result)
+    {
+        return AddArguments(&result, Argument::ValueType::i32);
+    }
+
+    template<>
+    int32_t AddArguments<int64_t>(int64_t &result)
+    {
+        return AddArguments(&result, Argument::ValueType::i64);
+    }
+
+    template<>
+    int32_t AddArguments<double>(double &result)
+    {
+        return AddArguments(&result, Argument::ValueType::f64);
+    }
+
+    template<>
+    int32_t AddArguments<std::string>(std::string &result)
+    {
+        return AddArguments(&result, Argument::ValueType::str);
+    }
 
     int32_t GetSkippedArgc();
     const char **GetSkippedArgv();
@@ -98,73 +147,5 @@ private:
     std::vector<const char *> skipped;
     std::string error = "";
 };
-
-template<typename T>
-int32_t OptionParser::AddOption(const std::string &shortOpt, const std::string &longOpt, T &result)
-{
-    assert(!"not support");
-    return 0;
-}
-
-template<>
-int32_t OptionParser::AddOption<int32_t>(const std::string &shortOpt, const std::string &longOpt, int32_t &result)
-{
-    return AddOption(shortOpt, longOpt, &result, Option::ValueType::i32);
-}
-
-template<>
-int32_t OptionParser::AddOption<int64_t>(const std::string &shortOpt, const std::string &longOpt, int64_t &result)
-{
-    return AddOption(shortOpt, longOpt, &result, Option::ValueType::i64);
-}
-
-template<>
-int32_t OptionParser::AddOption<double>(const std::string &shortOpt, const std::string &longOpt, double &result)
-{
-    return AddOption(shortOpt, longOpt, &result, Option::ValueType::f64);
-}
-
-template<>
-int32_t OptionParser::AddOption<std::string>(const std::string &shortOpt, const std::string &longOpt, std::string &result)
-{
-    return AddOption(shortOpt, longOpt, &result, Option::ValueType::str);
-}
-
-template<>
-int32_t OptionParser::AddOption<bool>(const std::string &shortOpt, const std::string &longOpt, bool &result)
-{
-    return AddOption(shortOpt, longOpt, &result, Option::ValueType::bol);
-}
-
-template<typename T>
-int32_t OptionParser::AddArguments(T &result)
-{
-    assert(!"not support");
-    return 0;
-}
-
-template<>
-int32_t OptionParser::AddArguments<int32_t>(int32_t &result)
-{
-    return AddArguments(&result, Argument::ValueType::i32);
-}
-
-template<>
-int32_t OptionParser::AddArguments<int64_t>(int64_t &result)
-{
-    return AddArguments(&result, Argument::ValueType::i64);
-}
-
-template<>
-int32_t OptionParser::AddArguments<double>(double &result)
-{
-    return AddArguments(&result, Argument::ValueType::f64);
-}
-
-template<>
-int32_t OptionParser::AddArguments<std::string>(std::string &result)
-{
-    return AddArguments(&result, Argument::ValueType::str);
-}
 
 #endif // UTILS_OPTION_PARSER_EXPORT_OPTION_PARSER_H

@@ -22,16 +22,42 @@
 
 #include <vsync_helper.h>
 #include <window_manager.h>
+#include <option_parser.h>
 
 #include "inative_test.h"
+#include "native_test_class.h"
 
 using namespace OHOS;
 
+class MainOption : public OptionParser {
+public:
+    MainOption();
+    int32_t Parse(int32_t argc, const char **argv);
+
+    // attr
+    std::string domain = "";
+    int32_t testcase = -1;
+    int32_t displayID = 0;
+};
+
+MainOption::MainOption()
+{
+    AddArguments(domain);
+    AddArguments(testcase);
+    AddOption("d", "display", displayID);
+}
+
+int32_t MainOption::Parse(int32_t argc, const char **argv)
+{
+    // ignore wmtest(argv0)
+    return OptionParser::Parse(argc - 1, argv + 1);
+}
+
 namespace {
-constexpr int32_t ARG_DISPLAY_ID_INDEX = 4;
 void Usage(const char *argv0)
 {
-    printf("Usage: %s type id\n", argv0);
+    std::cerr << "Usage: " << argv0 << " [option] type id" << std::endl;
+    std::cerr << "-d, --display[=0]  Created Window's Display ID" << std::endl;
     auto visitFunc = [](const INativeTest *test) {
         std::stringstream ss;
         ss << test->GetDomain() << ", id=";
@@ -49,43 +75,34 @@ void Usage(const char *argv0)
 
 int32_t main(int32_t argc, const char **argv)
 {
-    constexpr int32_t argNumber = 2;
-    if (argc <= argNumber) {
-        Usage(argv[0]);
-        return 0;
-    }
-
-    int32_t testcase = -1;
-    constexpr int32_t domainIndex = 1;
-    constexpr int32_t idIndex = 2;
-    constexpr int32_t idDisplay = 3;
-    std::stringstream ss(argv[idIndex]);
-    ss >> testcase;
-    if (!ss || testcase == -1) {
+    // parse option
+    MainOption option;
+    if (option.Parse(argc, argv)) {
+        std::cerr << option.GetErrorString() << std::endl;
         Usage(argv[0]);
         return 1;
     }
 
+    // find test
     INativeTest *found = nullptr;
-    auto visitFunc = [argv, testcase, &found](INativeTest *test) {
-        if (test->GetDomain() == argv[domainIndex] && test->GetID() == testcase) {
+    auto visitFunc = [&option, &found](INativeTest *test) {
+        if (test->GetDomain() == option.domain && test->GetID() == option.testcase) {
             found = test;
         }
     };
     INativeTest::VisitTests(visitFunc);
     if (found == nullptr) {
-        printf("not found test %d\n", testcase);
+        printf("not found test %d\n", option.testcase);
         return 1;
     }
 
-    if (argc == ARG_DISPLAY_ID_INDEX) {
-        std::stringstream s(argv[idDisplay]);
-        s >> INativeTest::displayID;
-    }
+    // default value assign
+    NativeTestFactory::defaultDisplayID = option.displayID;
 
+    // run test
     auto runner = AppExecFwk::EventRunner::Create(false);
     auto handler = std::make_shared<AppExecFwk::EventHandler>(runner);
-    handler->PostTask(std::bind(&INativeTest::Run, found, argc - argNumber, argv + argNumber));
+    handler->PostTask(std::bind(&INativeTest::Run, found, option.GetSkippedArgc(), option.GetSkippedArgv()));
     if (found->GetLastTime() != INativeTest::LAST_TIME_FOREVER) {
         handler->PostTask(std::bind(&AppExecFwk::EventRunner::Stop, runner), found->GetLastTime());
     }

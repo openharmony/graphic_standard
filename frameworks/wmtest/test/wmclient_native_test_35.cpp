@@ -16,10 +16,11 @@
 #include "wmclient_native_test_35.h"
 
 #include <cstdio>
-#include <securec.h>
+#include <iostream>
 #include <sstream>
 
 #include <display_type.h>
+#include <option_parser.h>
 #include <window_manager.h>
 
 #include "inative_test.h"
@@ -29,7 +30,6 @@
 using namespace OHOS;
 
 namespace {
-constexpr int32_t ARG_COUNT = 2;
 constexpr int32_t DISPLAY_MODE_SINGLE = 1;
 constexpr int32_t DISPLAY_MODE_CLONE = 2;
 constexpr int32_t DISPLAY_MODE_EXTEND = 3;
@@ -72,8 +72,13 @@ public:
 
     void Run(int32_t argc, const char **argv)
     {
-        if (argc != ARG_COUNT) {
+        OptionParser parser;
+        int32_t displayMode = 0;
+        parser.AddArguments(displayMode);
+        if (parser.Parse(argc, argv)) {
+            std::cerr << parser.GetErrorString() << std::endl;
             inputExplain();
+            ExitTest();
             return;
         }
 
@@ -85,9 +90,6 @@ public:
             return;
         }
 
-        uint32_t displayMode = 0;
-        std::stringstream s(argv[1]);
-        s >> displayMode;
         switch (displayMode) {
             case DISPLAY_MODE_SINGLE:
                 wmRet = wm->SetDisplayMode(WM_DISPLAY_MODE_SINGLE);

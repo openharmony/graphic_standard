@@ -20,6 +20,7 @@
 #include <unistd.h>
 
 #include <graphic_dumper_helper.h>
+#include <option_parser.h>
 
 #include "inative_test.h"
 #include "native_test_class.h"
@@ -76,9 +77,9 @@ public:
         std::signal(SIGQUIT, Handler);
         std::signal(SIGHUP, Handler);
 
-        if (argc > 1) {
-            tagInfo = argv[1];
-        }
+        OptionParser parser;
+        parser.AddArguments(tagInfo);
+        parser.Parse(argc, argv);
 
         dumper = GraphicDumperHelper::GetInstance();
         configListener = dumper->AddConfigChangeListener(tagInfo + ".info",

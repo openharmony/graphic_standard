@@ -31,8 +31,6 @@ public:
         LAST_TIME_FOREVER = 999999999,
     };
 
-    static inline uint32_t displayID = 0;
-
     static void VisitTests(VisitTestFunc func);
     INativeTest();
     virtual ~INativeTest() = default;
