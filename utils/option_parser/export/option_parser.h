@@ -98,10 +98,12 @@ public:
     const char **GetSkippedArgv();
 
 private:
-    int32_t ParseArgument(const char *arg);
+    int32_t ParseArgument(const char *arg, const char *arg2);
+    int32_t ParseArgc(const char *arg, const char *arg2);
     int32_t ParseShortOption(const char *arg1, const char *arg2);
+    int32_t ParseLongEqualOption(const char *arg, const char *arg2);
     int32_t ParseLongOption(const char *arg1, const char *arg2);
-    int32_t ParseArgc(const char *arg);
+    int32_t AddSkipped(const char *arg, const char *arg2);
 
     struct Option {
         const std::string so;

@@ -17,10 +17,17 @@
 
 #include <sstream>
 
-int32_t OptionParser::ParseArgument(const char *arg)
+enum {
+    PARSER_NEXT = 0,
+    PARSER_ERROR = 1,
+    PARSER_PARSED = 2,
+    PARSER_PARSED_MORE = 3,
+};
+
+int32_t OptionParser::ParseArgument(const char *arg, const char *arg2)
 {
     if (arguments.empty()) {
-        return -1;
+        return PARSER_NEXT;
     }
 
     std::stringstream ss(arg);
@@ -42,159 +49,179 @@ int32_t OptionParser::ParseArgument(const char *arg)
     if (!ss.eof() || !ss) {
         error = "parse ";
         error = error + arg + " error";
-        return 1;
+        return PARSER_ERROR;
     }
 
     arguments.pop_front();
-    return 0;
+    return PARSER_PARSED;
 }
 
-int32_t OptionParser::ParseShortOption(const char *arg1, const char *arg2)
-{
-    for (const auto &option : options) {
-        if (option.so == arg1) {
-            if (option.type == Option::ValueType::bol) {
-                option.result->bl = !option.result->bl;
-                return -1;
-            } else if (arg2 == nullptr) {
-                error = option.so + " need argument";
-                return 1;
-            }
-
-            std::stringstream ss(arg2);
-            switch (option.type) {
-                case Option::ValueType::i32:
-                    ss >> option.result->i32;
-                    break;
-                case Option::ValueType::i64:
-                    ss >> option.result->i64;
-                    break;
-                case Option::ValueType::f64:
-                    ss >> option.result->f64;
-                    break;
-                case Option::ValueType::str:
-                    ss >> option.result->str;
-                    break;
-                default:
-                    assert(!"no way");
-                    break;
-            }
-
-            if (!ss.eof() || !ss) {
-                error = "parse ";
-                error = error + arg1 + " error, " + arg2;
-                return 1;
-            }
-        }
-    }
-    return 0;
-}
-
-int32_t OptionParser::ParseLongOption(const char *arg1, const char *arg2)
-{
-    for (const auto &option : options) {
-        if (option.lo == arg1) {
-            if (option.type == Option::ValueType::bol) {
-                option.result->bl = !option.result->bl;
-                return -1;
-            } else if (arg2 == nullptr) {
-                error = option.lo + " need argument";
-                return 1;
-            }
-
-            std::stringstream ss(arg2);
-            switch (option.type) {
-                case Option::ValueType::i32:
-                    ss >> option.result->i32;
-                    break;
-                case Option::ValueType::i64:
-                    ss >> option.result->i64;
-                    break;
-                case Option::ValueType::f64:
-                    ss >> option.result->f64;
-                    break;
-                case Option::ValueType::str:
-                    ss >> option.result->str;
-                    break;
-                default:
-                    assert(!"no way");
-                    break;
-            }
-
-            if (!ss.eof() || !ss) {
-                error = "parse ";
-                error = error + arg1 + " error, " + arg2;
-                return 1;
-            }
-        }
-    }
-    return 0;
-}
-
-int32_t OptionParser::ParseArgc(const char *arg)
+int32_t OptionParser::ParseArgc(const char *arg, const char *arg2)
 {
     if (arg[0] == 0) {
-        return 1;
+        return PARSER_ERROR;
     }
 
     if (arg[0] != '-') {
         skipped.push_back(arg);
-        return 1;
+        return PARSER_PARSED;
     }
 
     if (arg[1] == 0) {
-        return 1;
+        return PARSER_ERROR;
     }
-    return 0;
+    return PARSER_NEXT;
+}
+
+int32_t OptionParser::ParseShortOption(const char *arg1, const char *arg2)
+{
+    if (arg1[1] == '-') {
+        // long option
+        return PARSER_NEXT;
+    }
+
+    for (const auto &option : options) {
+        if (option.so == &arg1[1]) {
+            if (option.type == Option::ValueType::bol) {
+                option.result->bl = !option.result->bl;
+                return PARSER_PARSED;
+            } else if (arg2 == nullptr) {
+                error = option.so + " need argument";
+                return PARSER_ERROR;
+            }
+
+            std::stringstream ss(arg2);
+            switch (option.type) {
+                case Option::ValueType::i32:
+                    ss >> option.result->i32;
+                    break;
+                case Option::ValueType::i64:
+                    ss >> option.result->i64;
+                    break;
+                case Option::ValueType::f64:
+                    ss >> option.result->f64;
+                    break;
+                case Option::ValueType::str:
+                    ss >> option.result->str;
+                    break;
+                default:
+                    assert(!"no way");
+                    break;
+            }
+
+            if (!ss.eof() || !ss) {
+                error = "parse ";
+                error = error + arg1 + " error, " + arg2;
+                return PARSER_ERROR;
+            }
+
+            return PARSER_PARSED_MORE;
+        }
+    }
+    return PARSER_NEXT;
+}
+
+int32_t OptionParser::ParseLongEqualOption(const char *arg, const char *arg2)
+{
+    if (arg[1] != '-') {
+        return PARSER_NEXT;
+    }
+
+    int32_t ret = 0;
+    bool parsed = false;
+    for (const char *c = arg; *c; c++) {
+        if (*c == '=') {
+            std::string arg1(arg, c - arg);
+            std::string arg2(c + 1);
+            ret = ParseLongOption(arg1.c_str(), arg2.c_str());
+            parsed = true;
+            break;
+        }
+    }
+
+    if (ret == PARSER_ERROR || ret == PARSER_NEXT) {
+        return ret;
+    }
+
+    if (parsed) {
+        return PARSER_PARSED;
+    }
+    return PARSER_NEXT;
+}
+
+int32_t OptionParser::ParseLongOption(const char *arg1, const char *arg2)
+{
+    if (arg1[1] != '-') {
+        return PARSER_NEXT;
+    }
+
+    for (const auto &option : options) {
+        if (option.lo == &arg1[0x2]) {
+            if (option.type == Option::ValueType::bol) {
+                option.result->bl = !option.result->bl;
+                return PARSER_PARSED;
+            } else if (arg2 == nullptr) {
+                error = option.lo + " need argument";
+                return PARSER_ERROR;
+            }
+
+            std::stringstream ss(arg2);
+            switch (option.type) {
+                case Option::ValueType::i32:
+                    ss >> option.result->i32;
+                    break;
+                case Option::ValueType::i64:
+                    ss >> option.result->i64;
+                    break;
+                case Option::ValueType::f64:
+                    ss >> option.result->f64;
+                    break;
+                case Option::ValueType::str:
+                    ss >> option.result->str;
+                    break;
+                default:
+                    assert(!"no way");
+                    break;
+            }
+
+            if (!ss.eof() || !ss) {
+                error = "parse ";
+                error = error + arg1 + " error, " + arg2;
+                return PARSER_ERROR;
+            }
+            return PARSER_PARSED_MORE;
+        }
+    }
+    return PARSER_NEXT;
+}
+
+int32_t OptionParser::AddSkipped(const char *arg, const char *arg2)
+{
+    skipped.push_back(arg);
+    return PARSER_PARSED;
 }
 
 int32_t OptionParser::Parse(int32_t argc, const char **argv)
 {
+    int32_t (OptionParser:: *parsers[])(const char *, const char *) = {
+        &OptionParser::ParseArgument,
+        &OptionParser::ParseArgc,
+        &OptionParser::ParseShortOption,
+        &OptionParser::ParseLongEqualOption,
+        &OptionParser::ParseLongOption,
+        &OptionParser::AddSkipped,
+    };
     for (int32_t i = 0; i < argc; i++) {
-        auto ret = ParseArgument(argv[i]);
-        if (ret > 0) {
-            return ret;
-        } else if (ret == 0) {
-            continue;
-        }
-
-        if (ParseArgc(argv[i])) {
-            continue;
-        }
-
-        if (argv[i][1] != '-') {
-            ret = ParseShortOption(argv[i] + 1, argv[i + 1]);
-            if (ret > 0) {
+        for (auto &parser : parsers) {
+            auto ret = (this->*parser)(argv[i], argv[i + 1]);
+            if (ret == PARSER_ERROR) {
                 return ret;
-            } else if (ret == 0) {
+            } else if (ret == PARSER_PARSED_MORE) {
                 i++;
-            }
-            continue;
-        }
-
-        bool parsed = false;
-        for (const char *c = argv[i]; *c; c++) {
-            if (*c == '=') {
-                std::string arg1(argv[i], c - argv[i]);
-                std::string arg2(c + 1);
-                ret = ParseLongOption(arg1.c_str() + 0x2, arg2.c_str());
-                if (ret) {
-                    return ret;
-                }
-                parsed = true;
+                break;
+            } else if (ret == PARSER_PARSED) {
                 break;
             }
-        }
-
-        if (parsed) {
-            continue;
-        }
-
-        ret = ParseLongOption(argv[i] + 0x2, argv[i + 1]);
-        if (ret > 0) {
-            return ret;
-        } else if (ret == 0) {
-            i++;
         }
     }
 

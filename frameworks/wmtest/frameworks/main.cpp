@@ -22,36 +22,12 @@
 
 #include <vsync_helper.h>
 #include <window_manager.h>
-#include <option_parser.h>
 
 #include "inative_test.h"
+#include "main_option.h"
 #include "native_test_class.h"
 
 using namespace OHOS;
-
-class MainOption : public OptionParser {
-public:
-    MainOption();
-    int32_t Parse(int32_t argc, const char **argv);
-
-    // attr
-    std::string domain = "";
-    int32_t testcase = -1;
-    int32_t displayID = 0;
-};
-
-MainOption::MainOption()
-{
-    AddArguments(domain);
-    AddArguments(testcase);
-    AddOption("d", "display", displayID);
-}
-
-int32_t MainOption::Parse(int32_t argc, const char **argv)
-{
-    // ignore wmtest(argv0)
-    return OptionParser::Parse(argc - 1, argv + 1);
-}
 
 namespace {
 void Usage(const char *argv0)

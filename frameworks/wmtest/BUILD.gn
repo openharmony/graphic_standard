@@ -33,8 +33,12 @@ ohos_executable("wmtest") {
   sources = [
     "frameworks/inative_test.cpp",
     "frameworks/main.cpp",
+    "frameworks/main_option.cpp",
     "frameworks/native_test_class.cpp",
     "frameworks/util.cpp",
+  ]
+
+  sources += [
     "test/crash_native_test_1.cpp",
     "test/crash_native_test_2.cpp",
     "test/dumper_test_1.cpp",
