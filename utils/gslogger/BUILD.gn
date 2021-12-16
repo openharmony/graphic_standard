@@ -11,26 +11,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-group("buffer_handle") {
-  public_deps = [ "buffer_handle:buffer_handle" ]
+import("//build/ohos.gni")
+
+## Build libgslogger.so {{{
+config("libgslogger_config") {
+  visibility = [ ":*" ]
+
+  cflags = [
+    "-Wall",
+    "-Werror",
+    "-g3",
+  ]
 }
 
-group("promise") {
-  public_deps = [ "promise:promise" ]
+config("libgslogger_public_config") {
+  include_dirs = [ "export" ]
 }
 
-group("semaphore") {
-  public_deps = [ "semaphore:semaphore" ]
-}
+ohos_shared_library("libgslogger") {
+  sources = [ "src/gslogger.cpp" ]
 
-group("test_header") {
-  public_deps = [ "test_header:test_header" ]
-}
+  configs = [ ":libgslogger_config" ]
 
-group("option_parser") {
-  public_deps = [ "option_parser:option_parser" ]
-}
+  public_configs = [ ":libgslogger_public_config" ]
 
-group("libgslogger") {
-  public_deps = [ "gslogger:libgslogger" ]
+  public_deps =
+      [ "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog" ]
+
+  part_name = "graphic_standard"
+  subsystem_name = "graphic"
 }
+## Build libgslogger.so }}}
