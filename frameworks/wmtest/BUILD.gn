@@ -85,6 +85,7 @@ ohos_executable("wmtest") {
   if (ace_enable_gpu) {
     sources += [
       "frameworks/egl_native_test_class.cpp",
+      "test/wmclient_native_test_21.cpp",
       "test/wmclient_native_test_31.cpp",
       "test/wmservice_native_test_6.cpp",
     ]
@@ -101,6 +102,7 @@ ohos_executable("wmtest") {
     "//foundation/graphic/standard:libwmservice",
     "//foundation/graphic/standard/frameworks/animation_server:libanimation_service",
     "//foundation/graphic/standard/utils:cpudraw",
+    "//foundation/graphic/standard/utils:gl_utils",
     "//foundation/graphic/standard/utils:libgslogger",
     "//foundation/graphic/standard/utils:option_parser",
     "//foundation/graphic/standard/utils:raw_parser",
