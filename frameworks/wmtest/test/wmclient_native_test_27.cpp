@@ -92,24 +92,30 @@ public:
         config.usage = surface->GetDefaultUsage();
         freeWindowSync = NativeTestSync::CreateSync(NativeTestDraw::RainbowDraw, surface, &config);
 
-        freeWindow->OnTouchDown(std::bind(&WMClientNativeTest27::OnTouchDown, this, TOUCH_DOWN_ARG));
-        freeWindow->OnTouchMotion(std::bind(&WMClientNativeTest27::OnTouchMotion, this, TOUCH_MOTION_ARG));
         freeWindow->OnSizeChange(onSizeChange);
         constexpr int32_t width = 300;
         constexpr int32_t height = 300;
         freeWindow->Resize(width, height);
+        ListenWindowTouchEvent(freeWindow->GetID());
     }
 
-    void OnTouchDown(void *, uint32_t serial, uint32_t time, int32_t id, double x, double y)
+    bool OnTouch(const TouchEvent &event) override
     {
-        downX = x;
-        downY = y;
-    }
+        int32_t x = event.GetPointerPosition(event.GetIndex()).GetX();
+        int32_t y = event.GetPointerPosition(event.GetIndex()).GetY();
+        if (event.GetAction() == TouchEnum::PRIMARY_POINT_DOWN) {
+            downX = x;
+            downY = y;
+            return false;
+        }
 
-    void OnTouchMotion(void *, uint32_t time, int32_t id, double x, double y)
-    {
-        freeWindow->Move(freeWindow->GetX() + x - downX, freeWindow->GetY() + y - downY)
-            ->Then(std::bind(&WMClientNativeTest27::OnMoveReturn, this, std::placeholders::_1));
+        if (event.GetAction() == TouchEnum::POINT_MOVE) {
+            freeWindow->Move(freeWindow->GetX() + x - downX, freeWindow->GetY() + y - downY)
+                ->Then(std::bind(&WMClientNativeTest27::OnMoveReturn, this, std::placeholders::_1));
+            return false;
+        }
+
+        return true;
     }
 
     void OnMoveReturn(const GSError &err)

@@ -102,26 +102,6 @@ foundation/graphic/standard/
 | ChangeWindowType            | 更改当前窗口类型             |
 | ReSize                      | 调整当前窗口至指定大小       |
 | Rotate                      | 旋转当前窗口                 |
-| RegistPointerButtonCb       | 注册鼠标Button事件回调       |
-| RegistPointerEnterCb        | 注册鼠标Enter事件回调        |
-| RegistPointerLeaveCb        | 注册鼠标Leave事件回调        |
-| RegistPointerMotionCb       | 注册鼠标Motion事件回调       |
-| RegistPointerAxisDiscreteCb | 注册鼠标AxisDiscrete事件回调 |
-| RegistPointerAxisSourceCb   | 注册鼠标AxisSource事件回调   |
-| RegistPointerAxisStopCb     | 注册鼠标AxisStop事件回调     |
-| RegistPointerAxisCb         | 注册鼠标Axis事件回调         |
-| RegistTouchUpCb             | 注册TouchUp事件回调          |
-| RegistTouchDownCb           | 注册TouchDown事件回调        |
-| RegistTouchEmotionCb        | 注册TouchEmotion事件回调     |
-| RegistTouchFrameCb          | 注册TouchFrame事件回调       |
-| RegistTouchCancelCb         | 注册TouchCancel事件回调      |
-| RegistTouchShapeCb          | 注册TouchShape事件回调       |
-| RegistTouchOrientationCb    | 注册TouchOrientation事件回调 |
-| RegistKeyboardKeyCb         | 注册键盘Key事件回调          |
-| RegistKeyboardKeyMapCb      | 注册键盘KeyMap事件回调       |
-| RegistKeyboardLeaveCb       | 注册键盘Leave事件回调        |
-| RegistKeyboardEnterCb       | 注册键盘Enter事件回调        |
-| RegistKeyboardRepeatInfoCb  | 注册键盘RepeatInfo事件回调   |
 
 ### SubWindow
 | 接口名           | 职责               |

@@ -20,7 +20,6 @@
 #include <surface.h>
 #include <promise.h>
 
-#include "window_manager_input_type.h"
 #include "window_manager_type.h"
 
 namespace OHOS {
@@ -61,34 +60,6 @@ public:
     // listener
     virtual GSError OnTouch(OnTouchFunc cb) = 0;
     virtual GSError OnKey(OnKeyFunc cb) = 0;
-
-    // pointer listener
-    virtual GSError OnPointerEnter(PointerEnterFunc func) = 0;
-    virtual GSError OnPointerLeave(PointerLeaveFunc func) = 0;
-    virtual GSError OnPointerMotion(PointerMotionFunc func) = 0;
-    virtual GSError OnPointerButton(PointerButtonFunc func) = 0;
-    virtual GSError OnPointerFrame(PointerFrameFunc func) = 0;
-    virtual GSError OnPointerAxis(PointerAxisFunc func) = 0;
-    virtual GSError OnPointerAxisSource(PointerAxisSourceFunc func) = 0;
-    virtual GSError OnPointerAxisStop(PointerAxisStopFunc func) = 0;
-    virtual GSError OnPointerAxisDiscrete(PointerAxisDiscreteFunc func) = 0;
-
-    // keyboard listener
-    virtual GSError OnKeyboardKeymap(KeyboardKeymapFunc func) = 0;
-    virtual GSError OnKeyboardEnter(KeyboardEnterFunc func) = 0;
-    virtual GSError OnKeyboardLeave(KeyboardLeaveFunc func) = 0;
-    virtual GSError OnKeyboardKey(KeyboardKeyFunc func) = 0;
-    virtual GSError OnKeyboardModifiers(KeyboardModifiersFunc func) = 0;
-    virtual GSError OnKeyboardRepeatInfo(KeyboardRepeatInfoFunc func) = 0;
-
-    // touch listener
-    virtual GSError OnTouchDown(TouchDownFunc func) = 0;
-    virtual GSError OnTouchUp(TouchUpFunc func) = 0;
-    virtual GSError OnTouchMotion(TouchMotionFunc func) = 0;
-    virtual GSError OnTouchFrame(TouchFrameFunc func) = 0;
-    virtual GSError OnTouchCancel(TouchCancelFunc func) = 0;
-    virtual GSError OnTouchShape(TouchShapeFunc func) = 0;
-    virtual GSError OnTouchOrientation(TouchOrientationFunc func) = 0;
 };
 } // namespace OHOS
 

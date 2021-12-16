@@ -64,7 +64,6 @@ bool LayerControllerClient::init(sptr<IWindowManagerService> &service)
     }
     wms = service;
 
-    InputListenerManager::GetInstance()->Init();
     WlDMABufferFactory::GetInstance()->Init();
     WlSHMBufferFactory::GetInstance()->Init();
     WlSurfaceFactory::GetInstance()->Init();

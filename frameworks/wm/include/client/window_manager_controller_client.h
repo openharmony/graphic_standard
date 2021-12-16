@@ -24,8 +24,6 @@
 #include <surface.h>
 #include <window_manager_service_client.h>
 
-#include "input_listener_manager.h"
-#include "log_listener.h"
 #include "wayland_service.h"
 #include "window_manager_server.h"
 #include "wl_buffer_cache.h"
@@ -56,7 +54,6 @@ struct InnerWindowInfo {
     int32_t pos_y;
     funcWindowInfoChange windowInfoChangeCb;
     void (* onWindowCreateCb)(uint32_t pid);
-    sptr<InputListener> logListener;
 
     bool operator ==(const InnerWindowInfo &other) const
     {

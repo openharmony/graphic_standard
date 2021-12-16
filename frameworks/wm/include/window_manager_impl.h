@@ -23,7 +23,6 @@
 
 #include <window_manager_service_client.h>
 
-#include "input_listener_manager.h"
 #include "singleton_delegator.h"
 #include "wayland_service.h"
 #include "window_manager_server.h"
@@ -76,7 +75,6 @@ private:
     std::vector<WptrWindow> windowCache;
 
     sptr<WlDisplay> display = nullptr;
-    sptr<InputListenerManager> inputListenerManager = nullptr;
     sptr<WlBufferCache> wlBufferCache = nullptr;
     sptr<WlDMABufferFactory> wlDMABufferFactory = nullptr;
     sptr<WlSHMBufferFactory> wlSHMBufferFactory = nullptr;

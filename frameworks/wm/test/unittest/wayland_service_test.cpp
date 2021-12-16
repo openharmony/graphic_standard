@@ -54,7 +54,8 @@ namespace {
 HWTEST_F(WaylandServiceTest, Start, testing::ext::TestSize.Level0)
 {
     // once before all
-    const auto appear = std::bind(&WaylandServiceTest::OnAppear, this, __BIND3_ARGS);
+    const auto appear = std::bind(&WaylandServiceTest::OnAppear,
+        this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
     WaylandService::GetInstance()->OnAppear(appear);
 
     const auto &display = WlDisplay::GetInstance();

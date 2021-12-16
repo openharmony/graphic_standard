@@ -18,7 +18,6 @@
 #include <mutex>
 
 #include <wayland-client-protocol.h>
-#include <window_manager_input_type.h>
 
 #include "window_manager_hilog.h"
 #include "wl_display.h"
@@ -108,8 +107,8 @@ GSError WaylandService::Start()
         return GSERROR_API_FAILED;
     }
 
-    g_appear = std::bind(&WaylandService::Appear, this, __BIND3_ARGS);
-    g_remove = std::bind(&WaylandService::Remove, this, __BIND1_ARGS);
+    g_appear = std::bind(&WaylandService::Appear, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+    g_remove = std::bind(&WaylandService::Remove, this, std::placeholders::_1);
     return GSERROR_OK;
 }
 

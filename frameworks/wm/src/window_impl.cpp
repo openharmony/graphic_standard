@@ -170,9 +170,6 @@ GSError WindowImpl::Create(sptr<Window> &window,
         return wret;
     }
 
-    wi->logListener = SingletonContainer::Get<LogListener>()->AddListener(wi.GetRefPtr());
-    wi->exportListener = SingletonContainer::Get<InputListenerManager>()->AddListener(wi.GetRefPtr());
-
     window = wi;
     WMLOGFI("Create Window Success");
     return GSERROR_OK;
@@ -424,160 +421,6 @@ GSError WindowImpl::OnKey(OnKeyFunc cb)
     return GSERROR_OK;
 }
 
-GSError WindowImpl::OnPointerEnter(PointerEnterFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->pointerEnter = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnPointerLeave(PointerLeaveFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->pointerLeave = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnPointerMotion(PointerMotionFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->pointerMotion = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnPointerButton(PointerButtonFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->pointerButton = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnPointerFrame(PointerFrameFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->pointerFrame = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnPointerAxis(PointerAxisFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->pointerAxis = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnPointerAxisSource(PointerAxisSourceFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->pointerAxisSource = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnPointerAxisStop(PointerAxisStopFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->pointerAxisStop = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnPointerAxisDiscrete(PointerAxisDiscreteFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->pointerAxisDiscrete = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnKeyboardKeymap(KeyboardKeymapFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->keyboardKeymap = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnKeyboardEnter(KeyboardEnterFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->keyboardEnter = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnKeyboardLeave(KeyboardLeaveFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->keyboardLeave = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnKeyboardKey(KeyboardKeyFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->keyboardKey = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnKeyboardModifiers(KeyboardModifiersFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->keyboardModifiers = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnKeyboardRepeatInfo(KeyboardRepeatInfoFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->keyboardRepeatInfo = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnTouchDown(TouchDownFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->touchDown = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnTouchUp(TouchUpFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->touchUp = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnTouchMotion(TouchMotionFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->touchMotion = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnTouchFrame(TouchFrameFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->touchFrame = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnTouchCancel(TouchCancelFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->touchCancel = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnTouchShape(TouchShapeFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->touchShape = func;
-    return GSERROR_OK;
-}
-
-GSError WindowImpl::OnTouchOrientation(TouchOrientationFunc func)
-{
-    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
-    exportListener->touchOrientation = func;
-    return GSERROR_OK;
-}
-
 namespace {
 void BufferRelease(struct wl_buffer *wbuffer, int32_t fence)
 {
@@ -642,14 +485,6 @@ void WindowImpl::OnBufferAvailable()
 
 WindowImpl::~WindowImpl()
 {
-    if (logListener != nullptr) {
-        SingletonContainer::Get<LogListener>()->RemoveListener(logListener);
-    }
-
-    if (exportListener != nullptr) {
-        SingletonContainer::Get<InputListenerManager>()->RemoveListener(exportListener);
-    }
-
     if (csurface != nullptr) {
         csurface->UnregisterConsumerListener();
     }

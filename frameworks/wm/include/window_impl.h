@@ -22,7 +22,6 @@
 
 #include <window_manager_service_client.h>
 
-#include "log_listener.h"
 #include "wl_surface.h"
 #include "window_attribute.h"
 #include "window_option_impl.h"
@@ -72,34 +71,6 @@ public:
     virtual GSError OnTouch(OnTouchFunc cb) override;
     virtual GSError OnKey(OnKeyFunc cb) override;
 
-    // pointer listener
-    virtual GSError OnPointerEnter(PointerEnterFunc func) override;
-    virtual GSError OnPointerLeave(PointerLeaveFunc func) override;
-    virtual GSError OnPointerMotion(PointerMotionFunc func) override;
-    virtual GSError OnPointerButton(PointerButtonFunc func) override;
-    virtual GSError OnPointerFrame(PointerFrameFunc func) override;
-    virtual GSError OnPointerAxis(PointerAxisFunc func) override;
-    virtual GSError OnPointerAxisSource(PointerAxisSourceFunc func) override;
-    virtual GSError OnPointerAxisStop(PointerAxisStopFunc func) override;
-    virtual GSError OnPointerAxisDiscrete(PointerAxisDiscreteFunc func) override;
-
-    // keyboard listener
-    virtual GSError OnKeyboardKeymap(KeyboardKeymapFunc func) override;
-    virtual GSError OnKeyboardEnter(KeyboardEnterFunc func) override;
-    virtual GSError OnKeyboardLeave(KeyboardLeaveFunc func) override;
-    virtual GSError OnKeyboardKey(KeyboardKeyFunc func) override;
-    virtual GSError OnKeyboardModifiers(KeyboardModifiersFunc func) override;
-    virtual GSError OnKeyboardRepeatInfo(KeyboardRepeatInfoFunc func) override;
-
-    // touch listener
-    virtual GSError OnTouchDown(TouchDownFunc func) override;
-    virtual GSError OnTouchUp(TouchUpFunc func) override;
-    virtual GSError OnTouchMotion(TouchMotionFunc func) override;
-    virtual GSError OnTouchFrame(TouchFrameFunc func) override;
-    virtual GSError OnTouchCancel(TouchCancelFunc func) override;
-    virtual GSError OnTouchShape(TouchShapeFunc func) override;
-    virtual GSError OnTouchOrientation(TouchOrientationFunc func) override;
-
 private:
     WindowImpl() = default;
     virtual ~WindowImpl() override;
@@ -127,8 +98,6 @@ private:
     sptr<Surface> csurface = nullptr;
     sptr<Surface> psurface = nullptr;
 
-    sptr<InputListener> logListener = nullptr;
-    sptr<InputListener> exportListener = nullptr;
     BeforeFrameSubmitFunc onBeforeFrameSubmitFunc = nullptr;
 };
 } // namespace OHOS

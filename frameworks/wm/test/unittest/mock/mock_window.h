@@ -51,30 +51,8 @@ public:
     MOCK_METHOD1(OnTypeChange, void(WindowTypeChangeFunc func));
     MOCK_METHOD1(OnModeChange, void(WindowModeChangeFunc func));
     MOCK_METHOD1(OnSplitStatusChange, void(SplitStatusChangeFunc func));
-    MOCK_METHOD1(OnTouch, GSError(OnTouchFunc cb));
     MOCK_METHOD1(OnKey, GSError(OnKeyFunc cb));
-    MOCK_METHOD1(OnPointerEnter, GSError(PointerEnterFunc func));
-    MOCK_METHOD1(OnPointerLeave, GSError(PointerLeaveFunc func));
-    MOCK_METHOD1(OnPointerMotion, GSError(PointerMotionFunc func));
-    MOCK_METHOD1(OnPointerButton, GSError(PointerButtonFunc func));
-    MOCK_METHOD1(OnPointerFrame, GSError(PointerFrameFunc func));
-    MOCK_METHOD1(OnPointerAxis, GSError(PointerAxisFunc func));
-    MOCK_METHOD1(OnPointerAxisSource, GSError(PointerAxisSourceFunc func));
-    MOCK_METHOD1(OnPointerAxisStop, GSError(PointerAxisStopFunc func));
-    MOCK_METHOD1(OnPointerAxisDiscrete, GSError(PointerAxisDiscreteFunc func));
-    MOCK_METHOD1(OnKeyboardKeymap, GSError(KeyboardKeymapFunc func));
-    MOCK_METHOD1(OnKeyboardEnter, GSError(KeyboardEnterFunc func));
-    MOCK_METHOD1(OnKeyboardLeave, GSError(KeyboardLeaveFunc func));
-    MOCK_METHOD1(OnKeyboardKey, GSError(KeyboardKeyFunc func));
-    MOCK_METHOD1(OnKeyboardModifiers, GSError(KeyboardModifiersFunc func));
-    MOCK_METHOD1(OnKeyboardRepeatInfo, GSError(KeyboardRepeatInfoFunc func));
-    MOCK_METHOD1(OnTouchDown, GSError(TouchDownFunc func));
-    MOCK_METHOD1(OnTouchUp, GSError(TouchUpFunc func));
-    MOCK_METHOD1(OnTouchMotion, GSError(TouchMotionFunc func));
-    MOCK_METHOD1(OnTouchFrame, GSError(TouchFrameFunc func));
-    MOCK_METHOD1(OnTouchCancel, GSError(TouchCancelFunc func));
-    MOCK_METHOD1(OnTouchShape, GSError(TouchShapeFunc func));
-    MOCK_METHOD1(OnTouchOrientation, GSError(TouchOrientationFunc func));
+    MOCK_METHOD1(OnTouch, GSError(OnTouchFunc cb));
 };
 } // namespace OHOS
 

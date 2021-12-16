@@ -61,7 +61,6 @@ void WindowManagerImpl::InitSingleton()
 {
     if (initSingleton == false) {
         initSingleton = true;
-        inputListenerManager = SingletonContainer::Get<InputListenerManager>();
         windowManagerServer = SingletonContainer::Get<WindowManagerServer>();
         wlBufferCache = SingletonContainer::Get<WlBufferCache>();
         wlDMABufferFactory = SingletonContainer::Get<WlDMABufferFactory>();
@@ -69,7 +68,6 @@ void WindowManagerImpl::InitSingleton()
         wlSubsurfaceFactory = SingletonContainer::Get<WlSubsurfaceFactory>();
         wlSurfaceFactory = SingletonContainer::Get<WlSurfaceFactory>();
 
-        inputListenerManager->Init();
         windowManagerServer->Init();
         wlBufferCache->Init();
         wlDMABufferFactory->Init();
@@ -136,7 +134,6 @@ void WindowManagerImpl::DeinitSingleton()
         wlDMABufferFactory->Deinit();
         wlBufferCache->Deinit();
         windowManagerServer->Deinit();
-        inputListenerManager->Deinit();
 
         waylandService = nullptr;
         wlSurfaceFactory = nullptr;
@@ -145,7 +142,6 @@ void WindowManagerImpl::DeinitSingleton()
         wlDMABufferFactory = nullptr;
         wlBufferCache = nullptr;
         windowManagerServer = nullptr;
-        inputListenerManager = nullptr;
 
         display->Roundtrip();
     }
