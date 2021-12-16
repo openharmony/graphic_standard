@@ -15,12 +15,10 @@
 
 #include "wmclient_native_test_21.h"
 
-#include <csignal>
 #include <GLES2/gl2.h>
 #include <gslogger.h>
 #include <iservice_registry.h>
 #include <shader.h>
-#include <sys/wait.h>
 #include <texture.h>
 
 #include "inative_test.h"
@@ -68,40 +66,11 @@ public:
             ExitTest();
         }
 
-        thiz = this;
-        std::signal(SIGINT, WMClientNativeTest21::Signal);
-
         GSLOG7SO(INFO) << "fork return: " << StartSubprocess(0);
         sleep(1);
         GSLOG7SO(INFO) << "fork return: " << StartSubprocess(1);
-        auto func = std::bind(&WMClientNativeTest21::WaitingThreadMain, this);
-        thread = std::make_unique<std::thread>(func);
+        WaitSubprocessAllQuit();
     }
-
-private:
-    static void Signal(int32_t signum)
-    {
-        thiz->PostTask(std::bind(&INativeTest::IPCServerStop, thiz));
-    }
-
-    void WaitingThreadMain()
-    {
-        int32_t ret = 0;
-        do {
-            ret = wait(nullptr);
-        } while (ret == -1 && errno == EINTR);
-
-        do {
-            ret = wait(nullptr);
-        } while (ret == -1 && errno == EINTR);
-
-        PostTask(std::bind(&INativeTest::IPCServerStop, this));
-        PostTask(std::bind(&std::thread::join, thread.get()));
-        ExitTest();
-    }
-
-    std::unique_ptr<std::thread> thread;
-    static inline WMClientNativeTest21 *thiz = nullptr;
 } g_autoload;
 
 class WMClientNativeTest21Sub0 : public WMClientNativeTest21, public IScreenShotCallback {

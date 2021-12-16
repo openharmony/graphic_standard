@@ -17,9 +17,11 @@
 
 #include <algorithm>
 #include <codecvt>
+#include <csignal>
 #include <gslogger.h>
 #include <iservice_registry.h>
 #include <sstream>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <vector>
 
@@ -123,6 +125,17 @@ int32_t INativeTest::GetProcessNumber() const
 int32_t INativeTest::GetProcessSequence() const
 {
     return -1;
+}
+
+void INativeTest::WaitSubprocessAllQuit()
+{
+    if (waitingThread == nullptr) {
+        thiz = this;
+        std::signal(SIGINT, INativeTest::Signal);
+
+        auto func = std::bind(&INativeTest::WaitingThreadMain, this);
+        waitingThread = std::make_unique<std::thread>(func);
+    }
 }
 
 int32_t INativeTest::StartSubprocess(int32_t id)
@@ -289,5 +302,25 @@ GSError INativeTest::OnMessage(int32_t sequence, const std::string &message, con
 
     IPCClientOnMessage(sequence, message, robj);
     return GSERROR_OK;
+}
+
+void INativeTest::WaitingThreadMain()
+{
+    int32_t ret = 0;
+    for (int32_t i = 0; i < GetProcessNumber(); i++) {
+        do {
+            ret = wait(nullptr);
+        } while (ret == -1 && errno == EINTR);
+    }
+
+    PostTask(std::bind(&INativeTest::IPCServerStop, this));
+    PostTask(std::bind(&std::thread::join, waitingThread.get()));
+    ExitTest();
+}
+
+void INativeTest::Signal(int32_t signum)
+{
+    (void)signum;
+    thiz->PostTask(std::bind(&INativeTest::IPCServerStop, thiz));
 }
 } // namespace OHOS

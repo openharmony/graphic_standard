@@ -41,7 +41,7 @@ void Usage(const char *argv0)
     auto visitFunc = [](const INativeTest *test) {
         std::stringstream ss;
         ss << "    ";
-        ss << test->GetDomain() << ", id=";
+        ss << test->GetDomain() << " id=";
         ss << test->GetID() << ": ";
         ss << test->GetDescription();
         if (test->GetLastTime() != INativeTest::LAST_TIME_FOREVER) {
