@@ -28,7 +28,7 @@ public:
     virtual ~EglDataImpl();
 
     virtual GLuint GetFrameBufferObj() const override;
-    SurfaceError CreateEglData(const sptr<SurfaceBufferImpl> &buffer);
+    GSError CreateEglData(const sptr<SurfaceBufferImpl> &buffer);
 
 private:
     sptr<EglManager> sEglManager_;

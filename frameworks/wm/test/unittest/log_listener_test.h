@@ -32,7 +32,7 @@ public:
     virtual void TearDown() override;
 
 private:
-    static inline WMError initRet = WM_ERROR_NOT_INIT;
+    static inline GSError initRet = GSERROR_NOT_INIT;
     static inline sptr<InputListener> listener[4] = {};
     static inline int32_t addressA = 0;
 };

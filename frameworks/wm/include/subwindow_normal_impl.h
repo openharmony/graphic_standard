@@ -28,15 +28,15 @@
 namespace OHOS {
 class SubwindowNormalImpl : public Subwindow, public IBufferConsumerListenerClazz {
 public:
-    static WMError Create(sptr<Subwindow> &subwindow,
+    static GSError Create(sptr<Subwindow> &subwindow,
                           const sptr<Window> &window,
                           const sptr<SubwindowOption> &option);
 
     virtual sptr<Surface> GetSurface() const override;
 
-    virtual WMError Move(int32_t x, int32_t y) override;
-    virtual WMError Resize(uint32_t width, uint32_t height) override;
-    virtual WMError Destroy() override;
+    virtual GSError Move(int32_t x, int32_t y) override;
+    virtual GSError Resize(uint32_t width, uint32_t height) override;
+    virtual GSError Destroy() override;
 
     virtual void OnPositionChange(WindowPositionChangeFunc func) override;
     virtual void OnSizeChange(WindowSizeChangeFunc func) override;
@@ -50,15 +50,15 @@ private:
                             sptr<SurfaceBuffer> &sbuffer,
                             int32_t fence, Rect &damage);
 
-    static WMError CheckAndNew(sptr<SubwindowNormalImpl> &si,
+    static GSError CheckAndNew(sptr<SubwindowNormalImpl> &si,
                                const sptr<Window> &window,
                                const sptr<SubwindowOption> &option,
                                sptr<WlSurface> &parent);
 
-    static WMError CreateWlSurface(sptr<SubwindowNormalImpl> &si,
+    static GSError CreateWlSurface(sptr<SubwindowNormalImpl> &si,
                                const sptr<WlSurface> &parentWlSurface);
 
-    static WMError CreateConsumerSurface(sptr<SubwindowNormalImpl> &si,
+    static GSError CreateConsumerSurface(sptr<SubwindowNormalImpl> &si,
                                          const sptr<SubwindowOption> &option);
 
     // base attribute

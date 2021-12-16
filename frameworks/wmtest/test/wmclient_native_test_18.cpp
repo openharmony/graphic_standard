@@ -51,7 +51,7 @@ public:
     {
         auto initRet = WindowManager::GetInstance()->Init();
         if (initRet) {
-            printf("init failed with %s\n", WMErrorStr(initRet).c_str());
+            printf("init failed with %s\n", GSErrorStr(initRet).c_str());
             ExitTest();
             return;
         }
@@ -106,12 +106,12 @@ public:
     {
         constexpr double half = 0.5;
         auto wret = subwindow->Move(x, maxHeight * half);
-        if (wret != WM_OK) {
-            printf("Move: %d(%s)\n", wret, WMErrorStr(wret).c_str());
+        if (wret != GSERROR_OK) {
+            printf("Move: %d(%s)\n", wret, GSErrorStr(wret).c_str());
         }
         wret = subwindow->Resize(width, height);
-        if (wret != WM_OK) {
-            printf("Resize: %d(%s)\n", wret, WMErrorStr(wret).c_str());
+        if (wret != GSERROR_OK) {
+            printf("Resize: %d(%s)\n", wret, GSErrorStr(wret).c_str());
         }
 
         height += diffHeight;

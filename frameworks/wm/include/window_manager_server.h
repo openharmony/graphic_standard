@@ -29,7 +29,7 @@
 
 namespace OHOS {
 struct WMSWindowInfo {
-    WMError wret;
+    GSError wret;
     int32_t wid;
     int32_t x;
     int32_t y;

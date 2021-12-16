@@ -118,8 +118,8 @@ void WindowManager::init()
 
     if (g_windowManagerService == nullptr) {
         auto wmsc = WindowManagerServiceClient::GetInstance();
-        WMError wret = wmsc->Init();
-        if (wret != WM_OK) {
+        GSError wret = wmsc->Init();
+        if (wret != GSERROR_OK) {
             WMLOG_E("WMService init failed");
             fprintf(stderr, "WMService init failed");
             exit(1);
@@ -170,8 +170,8 @@ std::unique_ptr<Window> WindowManager::CreateWindow(WindowConfig *config)
     auto wms = WindowManagerServer::GetInstance();
     auto promise = wms->CreateWindow(wlSurface, 0, static_cast<WindowType>(config->type));
     auto wminfo = promise->Await();
-    if (wminfo.wret != WM_OK) {
-        WMLOG_E("Error: wms->CreateWindow failed, %{public}s", WMErrorStr(wminfo.wret).c_str());
+    if (wminfo.wret != GSERROR_OK) {
+        WMLOG_E("Error: wms->CreateWindow failed, %{public}s", GSErrorStr(wminfo.wret).c_str());
         return nullptr;
     }
     WMLOG_I("WindowManager::CreateWindow widow ID is %{public}d", wminfo.wid);

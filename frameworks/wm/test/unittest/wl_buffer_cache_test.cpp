@@ -60,7 +60,7 @@ namespace {
 HWTEST_F(WlBufferCacheTest, Add, testing::ext::TestSize.Level0)
 {
     // WindowManager init success.
-    ASSERT_EQ(initRet, WM_OK) << "EnvConditions: WindowManager init success. (initRet == WM_OK)";
+    ASSERT_EQ(initRet, GSERROR_OK) << "EnvConditions: WindowManager init success. (initRet == GSERROR_OK)";
 
     auto bc = WlBufferCache::GetInstance();
 
@@ -95,8 +95,8 @@ HWTEST_F(WlBufferCacheTest, Add, testing::ext::TestSize.Level0)
         .usage = HBM_USE_CPU_READ | HBM_USE_CPU_WRITE | HBM_USE_MEM_DMA,
     };
     auto sret = psurface->RequestBufferNoFence(sbuffer1, config);
-    ASSERT_EQ(sret, SURFACE_ERROR_OK) << "CaseDescription: "
-        << "2.d. get surface buffer (sret == SURFACE_ERROR_OK)";
+    ASSERT_EQ(sret, GSERROR_OK) << "CaseDescription: "
+        << "2.d. get surface buffer (sret == GSERROR_OK)";
 
     // 2.e. get dma buffer
     dmabuf = WlDMABufferFactory::GetInstance()->Create(sbuffer1->GetBufferHandle());
@@ -105,8 +105,8 @@ HWTEST_F(WlBufferCacheTest, Add, testing::ext::TestSize.Level0)
 
     // 2.f. AddWlBuffer
     auto wret = bc->AddWlBuffer(dmabuf, csurface1, sbuffer1);
-    ASSERT_EQ(wret, WM_OK) << "CaseDescription: "
-        << "2.f. AddWlBuffer (wret == WM_OK)";
+    ASSERT_EQ(wret, GSERROR_OK) << "CaseDescription: "
+        << "2.f. AddWlBuffer (wret == GSERROR_OK)";
 }
 
 /*
@@ -123,7 +123,7 @@ HWTEST_F(WlBufferCacheTest, Add, testing::ext::TestSize.Level0)
 HWTEST_F(WlBufferCacheTest, Get, testing::ext::TestSize.Level0)
 {
     // WindowManager init success.
-    ASSERT_EQ(initRet, WM_OK) << "EnvConditions: WindowManager init success. (initRet == WM_OK)";
+    ASSERT_EQ(initRet, GSERROR_OK) << "EnvConditions: WindowManager init success. (initRet == GSERROR_OK)";
 
     auto bc = WlBufferCache::GetInstance();
 
@@ -157,12 +157,12 @@ HWTEST_F(WlBufferCacheTest, Get, testing::ext::TestSize.Level0)
     auto wbuffer1 = bc->GetWlBuffer(csurfaceNullptr, sbuffer1);
     auto wbuffer2 = bc->GetWlBuffer(csurface1, sbufferNullptr);
     auto bret1 = bc->GetSurfaceBuffer(nullptr, csurface1, sbuffer1);
-    ASSERT_NE(wret1, WM_OK) << "CaseDescription: "
-        << "4. invalid arguments call (wret1 != WM_OK)";
-    ASSERT_NE(wret2, WM_OK) << "CaseDescription: "
-        << "4. invalid arguments call (wret2 != WM_OK)";
-    ASSERT_NE(wret3, WM_OK) << "CaseDescription: "
-        << "4. invalid arguments call (wret3 != WM_OK)";
+    ASSERT_NE(wret1, GSERROR_OK) << "CaseDescription: "
+        << "4. invalid arguments call (wret1 != GSERROR_OK)";
+    ASSERT_NE(wret2, GSERROR_OK) << "CaseDescription: "
+        << "4. invalid arguments call (wret2 != GSERROR_OK)";
+    ASSERT_NE(wret3, GSERROR_OK) << "CaseDescription: "
+        << "4. invalid arguments call (wret3 != GSERROR_OK)";
     ASSERT_EQ(wbuffer1, nullptr) << "CaseDescription: "
         << "4. invalid arguments call (wbuffer1 == nullptr)";
     ASSERT_EQ(wbuffer2, nullptr) << "CaseDescription: "

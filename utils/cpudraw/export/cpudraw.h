@@ -18,7 +18,7 @@
 
 #include <cstdint>
 
-struct CPUDrawRect {
+struct CpudrawRect {
     double x;
     double y;
     double w;
@@ -27,18 +27,18 @@ struct CPUDrawRect {
     bool Contain(int32_t x2, int32_t y2);
 };
 
-class CPUDraw {
+class Cpudraw {
 public:
-    CPUDraw(void *vaddr, int32_t width, int32_t height);
+    Cpudraw(uint32_t *vaddr, int32_t width, int32_t height);
 
     void SetColor(const uint32_t &color);
     void SetBorder(const int32_t &border);
 
     void DrawBorder(const int32_t &x, const int32_t &y, const int32_t &w, const int32_t &h);
-    void DrawBorder(const struct CPUDrawRect &rect);
+    void DrawBorder(const struct CpudrawRect &rect);
 
     void DrawRect(const int32_t &x, const int32_t &y, const int32_t &w, const int32_t &h);
-    void DrawRect(const struct CPUDrawRect &rect);
+    void DrawRect(const struct CpudrawRect &rect);
 
 private:
     int32_t Min(const int32_t &a, const int32_t &b);

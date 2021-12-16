@@ -85,7 +85,7 @@ public:
         auto wm = WindowManager::GetInstance();
         auto wmRet = wm->Init();
         if (wmRet) {
-            printf("init failed with %s\n", WMErrorStr(wmRet).c_str());
+            printf("init failed with %s\n", GSErrorStr(wmRet).c_str());
             ExitTest();
             return;
         }
@@ -113,8 +113,8 @@ public:
                 break;
         }
 
-        if (wmRet != WM_OK) {
-            printf("set display mode failed with %s.\n", WMErrorStr(wmRet).c_str());
+        if (wmRet != GSERROR_OK) {
+            printf("set display mode failed with %s.\n", GSErrorStr(wmRet).c_str());
             ExitTest();
             return;
         }

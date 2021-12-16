@@ -85,19 +85,19 @@ void RegistryGlobalRemove(void *, struct wl_registry *, uint32_t name)
 }
 } // namespace
 
-WMError WaylandService::Start()
+GSError WaylandService::Start()
 {
     const auto &display = delegator.Dep<WlDisplay>();
     const auto &wlDisplay = display->GetRawPtr();
     if (wlDisplay == nullptr) {
         WMLOGFE("wl_display is nullptr");
-        return WM_ERROR_NOT_INIT;
+        return GSERROR_NOT_INIT;
     }
 
     registry = wl_display_get_registry(wlDisplay);
     if (registry == nullptr) {
         WMLOGFE("wl_display_get_registry failed");
-        return WM_ERROR_API_FAILED;
+        return GSERROR_API_FAILED;
     }
 
     const struct wl_registry_listener listener = { RegistryGlobal, RegistryGlobalRemove };
@@ -105,12 +105,12 @@ WMError WaylandService::Start()
         WMLOGFE("wl_registry_add_listener failed");
         wl_registry_destroy(registry);
         registry = nullptr;
-        return WM_ERROR_API_FAILED;
+        return GSERROR_API_FAILED;
     }
 
     g_appear = std::bind(&WaylandService::Appear, this, __BIND3_ARGS);
     g_remove = std::bind(&WaylandService::Remove, this, __BIND1_ARGS);
-    return WM_OK;
+    return GSERROR_OK;
 }
 
 void WaylandService::Stop()

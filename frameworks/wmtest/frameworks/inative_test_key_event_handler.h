@@ -13,21 +13,29 @@
  * limitations under the License.
  */
 
-#ifndef UTILS_TRACE_GRAPHIC_BYTRACE_H
-#define UTILS_TRACE_GRAPHIC_BYTRACE_H
+#ifndef FRAMEWORKS_WM_SRC_TEST_INATIVE_TEST_KEY_EVENT_HANDLER_H
+#define FRAMEWORKS_WM_SRC_TEST_INATIVE_TEST_KEY_EVENT_HANDLER_H
 
-#include <string>
+#include <scoped_bytrace.h>
 
-class ScopedBytrace {
+#include "inative_test.h"
+
+namespace OHOS {
+class INativeTestKeyEventHandler : public MMI::KeyEventHandler {
 public:
-    ScopedBytrace(const std::string &proc);
-    ~ScopedBytrace();
+    explicit INativeTestKeyEventHandler(INativeTest *test) : test_(test)
+    {
+    }
 
-    void End();
+    virtual bool OnKey(const KeyEvent &event) override
+    {
+        ScopedBytrace trace(__func__);
+        return test_->OnKey(event);
+    }
 
 private:
-    std::string proc_;
-    bool isEnd = false;
+    INativeTest *test_ = nullptr;
 };
+} // namespace OHOS
 
-#endif // UTILS_TRACE_GRAPHIC_BYTRACE_H
+#endif // FRAMEWORKS_WM_SRC_TEST_INATIVE_TEST_KEY_EVENT_HANDLER_H

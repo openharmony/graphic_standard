@@ -22,7 +22,7 @@
 #include <unistd.h>
 
 #include <cpudraw.h>
-#include <graphic_bytrace.h>
+#include <scoped_bytrace.h>
 #include <gslogger.h>
 #include <ipc_object_stub.h>
 #include <option_parser.h>
@@ -39,35 +39,35 @@ using namespace std::chrono_literals;
 namespace {
 class WMClientNativeTest20 : public INativeTest {
 public:
-    virtual std::string GetDescription() const override
+    std::string GetDescription() const override
     {
         constexpr const char *desc = "split mode";
         return desc;
     }
 
-    virtual std::string GetDomain() const override
+    std::string GetDomain() const override
     {
         constexpr const char *domain = "wmclient";
         return domain;
     }
 
-    virtual int32_t GetID() const override
+    int32_t GetID() const override
     {
         constexpr int32_t id = 20;
         return id;
     }
 
-    virtual enum AutoLoadService GetAutoLoadService() const override
+    AutoLoadService GetAutoLoadService() const override
     {
         return AutoLoadService::WindowManager;
     }
 
-    virtual int32_t GetProcessNumber() const override
+    int32_t GetProcessNumber() const override
     {
         return 3;
     }
 
-    virtual void Run(int32_t argc, const char **argv) override
+    void Run(int32_t argc, const char **argv) override
     {
         GSLOG7SO(INFO) << "fork return: " << StartSubprocess(0);
         GSLOG7SO(INFO) << "fork return: " << StartSubprocess(1);
@@ -77,18 +77,18 @@ public:
 
 class WMClientNativeTest20Sub0 : public WMClientNativeTest20 {
 public:
-    virtual std::string GetDescription() const override
+    std::string GetDescription() const override
     {
         constexpr const char *desc = "splited application mocker";
         return desc;
     }
 
-    virtual int32_t GetProcessSequence() const override
+    int32_t GetProcessSequence() const override
     {
         return 0;
     }
 
-    virtual void Run(int32_t argc, const char **argv) override
+    void Run(int32_t argc, const char **argv) override
     {
         ScopedBytrace trace(__func__);
         GSLOG7SO(INFO) << getpid() << " run0";
@@ -125,7 +125,7 @@ public:
         windowDrawer->DrawOnce();
     }
 
-    void Draw(void *vaddr, uint32_t width, uint32_t height, uint32_t count)
+    void Draw(uint32_t *vaddr, uint32_t width, uint32_t height, uint32_t count)
     {
         ScopedBytrace trace(__func__);
         count = NativeTestDraw::RainbowDrawFramerate / 0x2;
@@ -136,7 +136,7 @@ public:
         NativeTestDraw::RainbowDraw(vaddr, width, height, count);
     }
 
-    virtual bool OnKey(const KeyEvent &event) override
+    bool OnKey(const KeyEvent &event) override
     {
         GSLOG7SO(DEBUG) << "[" << event.GetKeyCode() << "]";
         if (event.IsKeyDown() ==  true && event.GetKeyCode() == KeyEventEnum::KEY_BACK) {
@@ -146,7 +146,7 @@ public:
         return true;
     }
 
-    virtual bool OnTouch(const TouchEvent &event) override
+    bool OnTouch(const TouchEvent &event) override
     {
         if (event.GetAction() == TouchEnum::PRIMARY_POINT_DOWN) {
             window->SwitchTop();
@@ -189,23 +189,23 @@ private:
 
 class WMClientNativeTest20Sub1 : public WMClientNativeTest20 {
 public:
-    virtual std::string GetDescription() const override
+    std::string GetDescription() const override
     {
         constexpr const char *desc = "systemui mocker";
         return desc;
     }
 
-    virtual int32_t GetProcessSequence() const override
+    int32_t GetProcessSequence() const override
     {
         return 1;
     }
 
-    virtual enum AutoLoadService GetAutoLoadService() const override
+    AutoLoadService GetAutoLoadService() const override
     {
         return AutoLoadService::WindowManager | AutoLoadService::WindowManagerService;
     }
 
-    virtual void Run(int32_t argc, const char **argv) override
+    void Run(int32_t argc, const char **argv) override
     {
         ScopedBytrace trace(__func__);
         window = NativeTestFactory::CreateWindow(WINDOW_TYPE_SYSTEM_UI);
@@ -235,11 +235,11 @@ public:
         ListenWindowInputEvent(window->GetID());
     }
 
-    void Draw(void *vaddr, uint32_t width, uint32_t height, uint32_t count)
+    void Draw(uint32_t *vaddr, uint32_t width, uint32_t height, uint32_t count)
     {
         ScopedBytrace trace(__func__);
         GSLOG7SO(INFO) << "currentIcon: " << currentIcon;
-        CPUDraw draw(vaddr, width, height);
+        Cpudraw draw(vaddr, width, height);
 
         draw.SetColor(0x00000000);
         draw.DrawRect(0, 0, width, height);
@@ -257,7 +257,7 @@ public:
         }
     }
 
-    virtual bool OnKey(const KeyEvent &event) override
+    bool OnKey(const KeyEvent &event) override
     {
         GSLOG7SO(DEBUG) << "[" << event.GetKeyCode() << "]";
         if (event.IsKeyDown() ==  true && event.GetKeyCode() == KeyEventEnum::KEY_BACK) {
@@ -267,77 +267,101 @@ public:
         return true;
     }
 
-    virtual bool OnTouch(const TouchEvent &event) override
+    bool OnTouch(const TouchEvent &event) override
     {
         ScopedBytrace trace(__func__);
         if (event.GetAction() == TouchEnum::PRIMARY_POINT_DOWN) {
             window->SwitchTop();
         }
 
-        int32_t index = event.GetIndex();
-        int32_t x = event.GetPointerPosition(index).GetX();
-        int32_t y = event.GetPointerPosition(index).GetY();
+        int32_t x = event.GetPointerPosition(event.GetIndex()).GetX();
+        int32_t y = event.GetPointerPosition(event.GetIndex()).GetY();
         if (event.GetAction() == TouchEnum::PRIMARY_POINT_DOWN) {
-            downX = x;
-            downY = y;
-            currentIcon = nullptr;
-            for (auto &icon : icons) {
-                if (icon.rect.Contain(x, y)) {
-                    currentIcon = &icon;
-                    backupIcon = icon;
-                    GSLOG7SO(INFO) << "selected: " << currentIcon
-                        << " " << currentIcon->rect.x << ", " << currentIcon->rect.y;
-                    if (currentIcon != &icons[0]) {
-                        SetSplitMode(SPLIT_MODE_SINGLE);
-                    } else {
-                        SetSplitMode(SPLIT_MODE_UNENABLE);
-                    }
-                    break;
-                }
-            }
-            return false;
+            return OnTouchDown(x, y);
         }
 
-        if (event.GetAction() == TouchEnum::POINT_MOVE && currentIcon) {
-            currentIcon->rect.x = backupIcon.rect.x + x - downX;
-            currentIcon->rect.y = backupIcon.rect.y + y - downY;
-            PostTask(std::bind(&NativeTestDrawer::DrawOnce, windowDrawer));
+        if (event.GetAction() == TouchEnum::POINT_MOVE) {
+            return OnTouchMove(x, y);
+        }
 
-            if (currentIcon != &icons[0]) {
-                if (total.Contain(x, y)) {
+        if (event.GetAction() == TouchEnum::PRIMARY_POINT_UP) {
+            return OnTouchUp(x, y);
+        }
+
+        return true;
+    }
+
+    bool OnTouchDown(int32_t x, int32_t y)
+    {
+        downX = x;
+        downY = y;
+        currentIcon = nullptr;
+        for (auto &icon : icons) {
+            if (icon.rect.Contain(x, y)) {
+                currentIcon = &icon;
+                backupIcon = icon;
+                GSLOG7SO(INFO) << "selected: " << currentIcon
+                    << " " << currentIcon->rect.x << ", " << currentIcon->rect.y;
+                if (currentIcon != &icons[0]) {
                     SetSplitMode(SPLIT_MODE_SINGLE);
                 } else {
-                    static int32_t lastX = -1;
-                    static int32_t lastY = -1;
-                    if (lastX != x || lastY != y) {
-                        SetSplitMode(SPLIT_MODE_SELECT, x, y);
-                    }
-                    lastX = x;
-                    lastY = y;
+                    SetSplitMode(SPLIT_MODE_UNENABLE);
                 }
+                break;
             }
-            return false;
+        }
+        return false;
+    }
+
+    bool OnTouchMove(int32_t x, int32_t y)
+    {
+        if (currentIcon == nullptr) {
+            return true;
         }
 
-        if (event.GetAction() == TouchEnum::PRIMARY_POINT_UP && currentIcon) {
-            if (currentIcon != &icons[0]) {
-                // center point (x, y)
-                auto x = currentIcon->rect.x + currentIcon->rect.w / 0x2;
-                auto y = currentIcon->rect.y + currentIcon->rect.y / 0x2;
-                if (total.Contain(x, y)) {
-                    SetSplitMode(SPLIT_MODE_NULL);
-                } else {
-                    StartProcess2();
-                    return false;
-                }
+        currentIcon->rect.x = backupIcon.rect.x + x - downX;
+        currentIcon->rect.y = backupIcon.rect.y + y - downY;
+        PostTask(std::bind(&NativeTestDrawer::DrawOnce, windowDrawer));
+
+        if (currentIcon != &icons[0]) {
+            if (total.Contain(x, y)) {
+                SetSplitMode(SPLIT_MODE_SINGLE);
             } else {
-                SetSplitMode(SPLIT_MODE_NULL);
+                static int32_t lastX = -1;
+                static int32_t lastY = -1;
+                if (lastX != x || lastY != y) {
+                    SetSplitMode(SPLIT_MODE_SELECT, x, y);
+                }
+                lastX = x;
+                lastY = y;
             }
-            *currentIcon = backupIcon;
-            PostTask(std::bind(&NativeTestDrawer::DrawOnce, windowDrawer));
-            return false;
         }
-        return true;
+        return false;
+    }
+
+    bool OnTouchUp(int32_t x, int32_t y)
+    {
+        if (currentIcon == nullptr) {
+            return true;
+        }
+
+        if (currentIcon != &icons[0]) {
+            // center point (x, y)
+            auto x = currentIcon->rect.x + currentIcon->rect.w / 0x2;
+            auto y = currentIcon->rect.y + currentIcon->rect.y / 0x2;
+            if (total.Contain(x, y)) {
+                SetSplitMode(SPLIT_MODE_NULL);
+            } else {
+                StartProcess2();
+                return false;
+            }
+        } else {
+            SetSplitMode(SPLIT_MODE_NULL);
+        }
+
+        *currentIcon = backupIcon;
+        PostTask(std::bind(&NativeTestDrawer::DrawOnce, windowDrawer));
+        return false;
     }
 
     SplitMode lastMode = SPLIT_MODE_NULL;
@@ -358,7 +382,7 @@ public:
         ss << "--color=" << std::hex << std::showbase << currentIcon->c;
         auto sss = ss.str();
         extraArgs.push_back(sss.c_str());
-        GSLOG7SO(INFO) << "fork return: " << StartSubprocess(2);
+        GSLOG7SO(INFO) << "fork return: " << StartSubprocess(0x2);
 
         std::this_thread::sleep_for(1s);
         SetSplitMode(SPLIT_MODE_CONFIRM);
@@ -376,7 +400,7 @@ private:
     static constexpr double hh = 0.8;
 
     struct Position {
-        struct CPUDrawRect rect;
+        struct CpudrawRect rect;
         uint32_t c;
     };
     struct Position icons[0x4] = {
@@ -387,25 +411,25 @@ private:
     };
     struct Position *currentIcon = nullptr;
     struct Position backupIcon;
-    struct CPUDrawRect total = { xx, yy, ww, hh };
+    struct CpudrawRect total = { xx, yy, ww, hh };
     int32_t downX = 0;
     int32_t downY = 0;
 } g_autoload1;
 
 class WMClientNativeTest20Sub2 : public WMClientNativeTest20Sub0 {
 public:
-    virtual std::string GetDescription() const override
+    std::string GetDescription() const override
     {
         constexpr const char *desc = "spliting application mocker";
         return desc;
     }
 
-    virtual int32_t GetProcessSequence() const override
+    int32_t GetProcessSequence() const override
     {
         return 2;
     }
 
-    virtual void Run(int32_t argc, const char **argv) override
+    void Run(int32_t argc, const char **argv) override
     {
         OptionParser parser;
         parser.AddOption("c", "color", color);
@@ -423,10 +447,10 @@ public:
         windowDrawer->DrawOnce();
     }
 
-    void Draw(void *vaddr, uint32_t width, uint32_t height, uint32_t count)
+    void Draw(uint32_t *vaddr, uint32_t width, uint32_t height, uint32_t count)
     {
         ScopedBytrace trace(__func__);
-        CPUDraw draw(vaddr, width, height);
+        Cpudraw draw(vaddr, width, height);
         draw.SetColor(color);
         if (adjStatus == SPLIT_STATUS_VAGUE) {
             draw.SetColor((0xffffffff - color) | 0xff000000);

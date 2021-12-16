@@ -79,7 +79,7 @@ public:
 
         auto initRet = WindowManager::GetInstance()->Init();
         if (initRet) {
-            printf("init failed with %s\n", WMErrorStr(initRet).c_str());
+            printf("init failed with %s\n", GSErrorStr(initRet).c_str());
             ExitTest();
             return;
         }
@@ -121,7 +121,8 @@ public:
             window->Rotate(rotateType);
         }
 
-        if (GetNowTime() - rotationTime > 500 * 1000 * 1000) {
+        constexpr int64_t lastingTime = 500 * 1000 * 1000; // 500ms
+        if (GetNowTime() - rotationTime > lastingTime) {
             resource.GetNextData(vaddr);
         } else {
             resource.GetNowData(vaddr);

@@ -90,12 +90,12 @@ ohos_executable("graphic_dumper_server") {
     "src/graphic_dumper_util.cpp",
     "src/ipc/graphic_dumper_client_listener_death_recipient.cpp",
     "src/ipc/graphic_dumper_client_listener_proxy.cpp",
-    "src/ipc/graphic_dumper_command_stub.cpp",
     "src/ipc/graphic_dumper_command_proxy.cpp",
+    "src/ipc/graphic_dumper_command_stub.cpp",
     "src/ipc/graphic_dumper_info_listener_death_recipient.cpp",
     "src/ipc/graphic_dumper_info_listener_proxy.cpp",
-    "src/ipc/graphic_dumper_service_stub.cpp",
     "src/ipc/graphic_dumper_service_proxy.cpp",
+    "src/ipc/graphic_dumper_service_stub.cpp",
   ]
 
   configs = [
@@ -143,10 +143,10 @@ ohos_executable("gdumper") {
     "src/graphic_dumper_command_line.cpp",
     "src/graphic_dumper_command_line_main.cpp",
     "src/graphic_dumper_util.cpp",
-    "src/ipc/graphic_dumper_info_listener_stub.cpp",
-    "src/ipc/graphic_dumper_info_listener_proxy.cpp",
     "src/ipc/graphic_dumper_command_proxy.cpp",
     "src/ipc/graphic_dumper_command_stub.cpp",
+    "src/ipc/graphic_dumper_info_listener_proxy.cpp",
+    "src/ipc/graphic_dumper_info_listener_stub.cpp",
   ]
 
   configs = [

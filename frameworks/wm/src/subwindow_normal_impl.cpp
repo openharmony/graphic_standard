@@ -32,7 +32,7 @@ namespace {
 constexpr HiviewDFX::HiLogLabel LABEL = {LOG_CORE, 0, "WMSubwindowImpl"};
 } // namespace
 
-WMError SubwindowNormalImpl::CheckAndNew(sptr<SubwindowNormalImpl> &si,
+GSError SubwindowNormalImpl::CheckAndNew(sptr<SubwindowNormalImpl> &si,
                                          const sptr<Window> &window,
                                          const sptr<SubwindowOption> &option,
                                          sptr<WlSurface> &parent)
@@ -40,41 +40,41 @@ WMError SubwindowNormalImpl::CheckAndNew(sptr<SubwindowNormalImpl> &si,
     auto windowImpl = static_cast<WindowImpl *>(window.GetRefPtr());
     if (windowImpl == nullptr) {
         WMLOGFE("WindowImpl is nullptr");
-        return WM_ERROR_NULLPTR;
+        return GSERROR_INVALID_ARGUMENTS;
     }
     parent = windowImpl->GetWlSurface();
 
     si = TESTER_NEW(SubwindowNormalImpl);
     if (si == nullptr) {
         WMLOGFE("new SubwindowNormalImpl return nullptr");
-        return WM_ERROR_NEW;
+        return GSERROR_NO_MEM;
     }
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError SubwindowNormalImpl::CreateWlSurface(sptr<SubwindowNormalImpl> &si,
+GSError SubwindowNormalImpl::CreateWlSurface(sptr<SubwindowNormalImpl> &si,
                                              const sptr<WlSurface> &parentWlSurface)
 {
     si->wlSurface = SingletonContainer::Get<WlSurfaceFactory>()->Create();
     if (si->wlSurface == nullptr) {
         WMLOGFE("WlSurfaceFactory::Create return nullptr");
-        return WM_ERROR_API_FAILED;
+        return GSERROR_API_FAILED;
     }
 
     auto subsurfaceFactory = SingletonContainer::Get<WlSubsurfaceFactory>();
     si->wlSubsurface = subsurfaceFactory->Create(si->wlSurface, parentWlSurface);
     if (si->wlSubsurface == nullptr) {
         WMLOGFE("WlSubsurface::Create return nullptr");
-        return WM_ERROR_API_FAILED;
+        return GSERROR_API_FAILED;
     }
 
     si->wlSubsurface->SetPosition(si->attr.GetX(), si->attr.GetY());
     si->wlSubsurface->PlaceBelow(parentWlSurface);
     si->wlSubsurface->SetDesync();
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError SubwindowNormalImpl::CreateConsumerSurface(sptr<SubwindowNormalImpl> &si,
+GSError SubwindowNormalImpl::CreateConsumerSurface(sptr<SubwindowNormalImpl> &si,
                                                    const sptr<SubwindowOption> &option)
 {
     auto csurface = option->GetConsumerSurface();
@@ -89,23 +89,23 @@ WMError SubwindowNormalImpl::CreateConsumerSurface(sptr<SubwindowNormalImpl> &si
 
     if (si->csurface == nullptr) {
         WMLOGFE("SurfaceCreateSurfaceAsConsumer return nullptr");
-        return WM_ERROR_API_FAILED;
+        return GSERROR_API_FAILED;
     }
 
     auto producer = si->csurface->GetProducer();
     si->psurface = SingletonContainer::Get<StaticCall>()->SurfaceCreateSurfaceAsProducer(producer);
     if (si->psurface == nullptr) {
         WMLOGFE("SurfaceCreateSurfaceAsProducer return nullptr");
-        return WM_ERROR_API_FAILED;
+        return GSERROR_API_FAILED;
     }
 
     si->csurface->RegisterConsumerListener(si.GetRefPtr());
     si->csurface->SetDefaultWidthAndHeight(si->attr.GetWidth(), si->attr.GetHeight());
     si->csurface->SetDefaultUsage(HBM_USE_CPU_READ | HBM_USE_CPU_WRITE | HBM_USE_MEM_DMA);
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError SubwindowNormalImpl::Create(sptr<Subwindow> &subwindow,
+GSError SubwindowNormalImpl::Create(sptr<Subwindow> &subwindow,
                                     const sptr<Window> &window,
                                     const sptr<SubwindowOption> &option)
 {
@@ -114,7 +114,7 @@ WMError SubwindowNormalImpl::Create(sptr<Subwindow> &subwindow,
     sptr<SubwindowNormalImpl> si = nullptr;
     sptr<WlSurface> parentWlSurface = nullptr;
     auto wret = CheckAndNew(si, window, option, parentWlSurface);
-    if (wret != WM_OK) {
+    if (wret != GSERROR_OK) {
         return wret;
     }
 
@@ -122,18 +122,18 @@ WMError SubwindowNormalImpl::Create(sptr<Subwindow> &subwindow,
     si->attr.SetXY(option->GetX(), option->GetY());
 
     wret = CreateWlSurface(si, parentWlSurface);
-    if (wret != WM_OK) {
+    if (wret != GSERROR_OK) {
         return wret;
     }
 
     wret = CreateConsumerSurface(si, option);
-    if (wret != WM_OK) {
+    if (wret != GSERROR_OK) {
         return wret;
     }
 
     subwindow = si;
     WMLOGFI("Create Normal Subwindow Success");
-    return WM_OK;
+    return GSERROR_OK;
 }
 
 sptr<Surface> SubwindowNormalImpl::GetSurface() const
@@ -141,35 +141,35 @@ sptr<Surface> SubwindowNormalImpl::GetSurface() const
     return psurface;
 }
 
-WMError SubwindowNormalImpl::Move(int32_t x, int32_t y)
+GSError SubwindowNormalImpl::Move(int32_t x, int32_t y)
 {
     WMLOGFI("(subwindow normal) x: %{public}d, y: %{public}d", x, y);
     std::lock_guard<std::mutex> lock(publicMutex);
     if (isDestroy == true) {
         WMLOGFI("object destroyed");
-        return WM_ERROR_DESTROYED_OBJECT;
+        return GSERROR_DESTROYED_OBJECT;
     }
 
     attr.SetXY(x, y);
     wlSubsurface->SetPosition(attr.GetX(), attr.GetY());
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError SubwindowNormalImpl::Resize(uint32_t width, uint32_t height)
+GSError SubwindowNormalImpl::Resize(uint32_t width, uint32_t height)
 {
     WMLOGFI("(subwindow normal)%{public}u x %{public}u", width, height);
     std::lock_guard<std::mutex> lock(publicMutex);
     if (isDestroy == true) {
         WMLOGFI("object destroyed");
-        return WM_ERROR_DESTROYED_OBJECT;
+        return GSERROR_DESTROYED_OBJECT;
     }
 
     attr.SetWidthHeight(width, height);
     wlSurface->Commit();
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError SubwindowNormalImpl::Destroy()
+GSError SubwindowNormalImpl::Destroy()
 {
     WMLOGFI("(subwindow normal) Destroy");
     std::lock_guard<std::mutex> lock(publicMutex);
@@ -179,7 +179,7 @@ WMError SubwindowNormalImpl::Destroy()
     psurface = nullptr;
     wlSubsurface = nullptr;
     wlSurface = nullptr;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
 void SubwindowNormalImpl::OnPositionChange(WindowPositionChangeFunc func)
@@ -226,8 +226,8 @@ void SubwindowNormalImpl::OnBufferAvailable()
     int32_t flushFence = -1;
     int64_t timestamp = 0;
     Rect damage = {};
-    SurfaceError ret = csurface->AcquireBuffer(sbuffer, flushFence, timestamp, damage);
-    if (ret != SURFACE_ERROR_OK) {
+    GSError ret = csurface->AcquireBuffer(sbuffer, flushFence, timestamp, damage);
+    if (ret != GSERROR_OK) {
         WMLOGFE("AcquireBuffer failed");
         return;
     }
@@ -240,7 +240,7 @@ void SubwindowNormalImpl::OnBufferAvailable()
         if (dmaWlBuffer == nullptr) {
             WMLOGFE("Create DMA Buffer Failed");
             auto sret = csurface->ReleaseBuffer(sbuffer, -1);
-            if (sret != SURFACE_ERROR_OK) {
+            if (sret != GSERROR_OK) {
                 WMLOGFW("ReleaseBuffer failed");
             }
             return;

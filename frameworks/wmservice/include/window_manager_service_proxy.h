@@ -30,41 +30,41 @@ public:
     WindowManagerServiceProxy(struct wms *wms, struct wl_display *display, sptr<IAnimationService> &as);
     virtual ~WindowManagerServiceProxy() = default;
 
-    virtual WMError GetDisplays(std::vector<struct WMDisplayInfo> &displays) override;
+    virtual GSError GetDisplays(std::vector<struct WMDisplayInfo> &displays) override;
     virtual sptr<PromisePowerStatus> GetDisplayPower(int32_t did) override;
-    virtual sptr<PromiseWMError> SetDisplayPower(int32_t did, DispPowerStatus status) override;
+    virtual sptr<PromiseGSError> SetDisplayPower(int32_t did, DispPowerStatus status) override;
     virtual sptr<PromiseBacklight> GetDisplayBacklight(int32_t did) override;
-    virtual sptr<PromiseWMError> SetDisplayBacklight(int32_t did, uint32_t level) override;
-    virtual WMError GetDisplayModes(uint32_t &displayModes) override;
-    virtual sptr<PromiseWMError> SetDisplayMode(WMSDisplayMode modes) override;
-    virtual WMError AddDisplayChangeListener(IWindowManagerDisplayListenerClazz *listener) override;
-    virtual sptr<PromiseWMError> OnWindowListChange(IWindowChangeListenerClazz *listener) override;
+    virtual sptr<PromiseGSError> SetDisplayBacklight(int32_t did, uint32_t level) override;
+    virtual GSError GetDisplayModes(uint32_t &displayModes) override;
+    virtual sptr<PromiseGSError> SetDisplayMode(WMSDisplayMode modes) override;
+    virtual GSError AddDisplayChangeListener(IWindowManagerDisplayListenerClazz *listener) override;
+    virtual sptr<PromiseGSError> OnWindowListChange(IWindowChangeListenerClazz *listener) override;
 
-    virtual WMError SetDisplayDirection(WMSDisplayDirection direction) override;
-    virtual WMError OnDisplayDirectionChange(DisplayDirectionChangeFunc func) override;
+    virtual GSError SetDisplayDirection(WMSDisplayDirection direction) override;
+    virtual GSError OnDisplayDirectionChange(DisplayDirectionChangeFunc func) override;
 
     virtual sptr<PromiseWMSImageInfo> ShotScreen(int32_t did) override;
     virtual sptr<PromiseWMSImageInfo> ShotWindow(int32_t wid) override;
 
-    virtual sptr<PromiseWMError> SetStatusBarVisibility(bool visibility) override;
-    virtual sptr<PromiseWMError> SetNavigationBarVisibility(bool visibility) override;
+    virtual sptr<PromiseGSError> SetStatusBarVisibility(bool visibility) override;
+    virtual sptr<PromiseGSError> SetNavigationBarVisibility(bool visibility) override;
 
-    virtual sptr<PromiseWMError> DestroyWindow(int32_t wid) override;
-    virtual sptr<PromiseWMError> SwitchTop(int32_t wid) override;
-    virtual sptr<PromiseWMError> Show(int32_t wid) override;
-    virtual sptr<PromiseWMError> Hide(int32_t wid) override;
-    virtual sptr<PromiseWMError> Move(int32_t wid, int32_t x, int32_t y) override;
-    virtual sptr<PromiseWMError> Resize(int32_t wid, uint32_t width, uint32_t height) override;
-    virtual sptr<PromiseWMError> ScaleTo(int32_t wid, uint32_t width, uint32_t height) override;
-    virtual sptr<PromiseWMError> SetWindowType(int32_t wid, WindowType type) override;
-    virtual sptr<PromiseWMError> SetWindowMode(int32_t wid, WindowMode mode) override;
+    virtual sptr<PromiseGSError> DestroyWindow(int32_t wid) override;
+    virtual sptr<PromiseGSError> SwitchTop(int32_t wid) override;
+    virtual sptr<PromiseGSError> Show(int32_t wid) override;
+    virtual sptr<PromiseGSError> Hide(int32_t wid) override;
+    virtual sptr<PromiseGSError> Move(int32_t wid, int32_t x, int32_t y) override;
+    virtual sptr<PromiseGSError> Resize(int32_t wid, uint32_t width, uint32_t height) override;
+    virtual sptr<PromiseGSError> ScaleTo(int32_t wid, uint32_t width, uint32_t height) override;
+    virtual sptr<PromiseGSError> SetWindowType(int32_t wid, WindowType type) override;
+    virtual sptr<PromiseGSError> SetWindowMode(int32_t wid, WindowMode mode) override;
 
-    virtual sptr<PromiseWMError> CreateVirtualDisplay(int32_t x, int32_t y, int32_t width, int32_t height) override;
-    virtual sptr<PromiseWMError> DestroyVirtualDisplay(uint32_t did) override;
+    virtual sptr<PromiseGSError> CreateVirtualDisplay(int32_t x, int32_t y, int32_t width, int32_t height) override;
+    virtual sptr<PromiseGSError> DestroyVirtualDisplay(uint32_t did) override;
 
     virtual GSError StartRotationAnimation(uint32_t did, int32_t degree) override;
 
-    virtual sptr<PromiseWMError> SetSplitMode(SplitMode mode, int32_t x, int32_t y) override;
+    virtual sptr<PromiseGSError> SetSplitMode(SplitMode mode, int32_t x, int32_t y) override;
 
     static void OnReply(wms_error);
     static void OnDisplayChange(uint32_t, const char *, wms_screen_status, int32_t, int32_t, wms_screen_type type);
@@ -82,7 +82,7 @@ private:
     static inline IWindowManagerDisplayListenerClazz *displayListener = nullptr;
     static inline IWindowChangeListenerClazz *globalWindowChangeListener = nullptr;
 
-    using SptrPromiseWMError = sptr<PromiseWMError>;
+    using SptrPromiseGSError = sptr<PromiseGSError>;
     using SptrPromiseWMSImageInfo = sptr<PromiseWMSImageInfo>;
     using SptrPromiseBacklight = sptr<PromiseBacklight>;
     using SptrPromisePowerStatus = sptr<PromisePowerStatus>;
@@ -96,7 +96,7 @@ private:
     static inline std::queue<SptrPromisePowerStatus> powerStatusPromiseQueue;
     static inline std::mutex powerStatusPromiseQueueMutex;
 
-    static inline std::queue<SptrPromiseWMError> promiseQueue;
+    static inline std::queue<SptrPromiseGSError> promiseQueue;
     static inline std::mutex promiseQueueMutex;
 
     static inline std::map<int32_t, SptrPromiseWMSImageInfo> screenShotPromises;

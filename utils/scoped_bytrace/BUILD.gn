@@ -13,8 +13,8 @@
 
 import("//build/ohos.gni")
 
-## Build graphic_bytrace.so {{{
-config("graphic_bytrace_config") {
+## Build scoped_bytrace.so {{{
+config("scoped_bytrace_config") {
   visibility = [ ":*" ]
 
   cflags = [
@@ -24,16 +24,16 @@ config("graphic_bytrace_config") {
   ]
 }
 
-config("graphic_bytrace_public_config") {
+config("scoped_bytrace_public_config") {
   include_dirs = [ "export" ]
 }
 
-ohos_shared_library("graphic_bytrace") {
-  sources = [ "src/graphic_bytrace.cpp" ]
+ohos_shared_library("scoped_bytrace") {
+  sources = [ "src/scoped_bytrace.cpp" ]
 
-  configs = [ ":graphic_bytrace_config" ]
+  configs = [ ":scoped_bytrace_config" ]
 
-  public_configs = [ ":graphic_bytrace_public_config" ]
+  public_configs = [ ":scoped_bytrace_public_config" ]
 
   deps = [
     "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
@@ -43,4 +43,4 @@ ohos_shared_library("graphic_bytrace") {
   subsystem_name = "graphic"
   part_name = "graphic_standard"
 }
-## Build graphic_bytrace.so }}}
+## Build scoped_bytrace.so }}}

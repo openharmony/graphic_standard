@@ -64,21 +64,21 @@ sptr<WlBuffer> WlBufferCache::GetWlBuffer(const sptr<Surface> &surface,
     return nullptr;
 }
 
-WMError WlBufferCache::AddWlBuffer(const sptr<WlBuffer> &wbuffer,
+GSError WlBufferCache::AddWlBuffer(const sptr<WlBuffer> &wbuffer,
                                    const sptr<Surface> &csurface,
                                    const sptr<SurfaceBuffer> &sbuffer)
 {
     if (wbuffer == nullptr) {
         WMLOGFW("wbuffer is nullptr");
-        return WM_ERROR_NULLPTR;
+        return GSERROR_INVALID_ARGUMENTS;
     }
     if (csurface == nullptr) {
         WMLOGFW("surface is nullptr");
-        return WM_ERROR_NULLPTR;
+        return GSERROR_INVALID_ARGUMENTS;
     }
     if (sbuffer == nullptr) {
         WMLOGFW("sbuffer is nullptr");
-        return WM_ERROR_NULLPTR;
+        return GSERROR_INVALID_ARGUMENTS;
     }
     if (GetWlBuffer(csurface, sbuffer) == nullptr) {
         std::lock_guard<std::mutex> lock(cacheMutex);
@@ -89,7 +89,7 @@ WMError WlBufferCache::AddWlBuffer(const sptr<WlBuffer> &wbuffer,
         };
         cache.push_back(ele);
     }
-    return WM_OK;
+    return GSERROR_OK;
 }
 
 bool WlBufferCache::GetSurfaceBuffer(const struct wl_buffer *wbuffer,

@@ -67,7 +67,7 @@ namespace {
 HWTEST_F(WlDMABufferFactoryTest, createNormal, testing::ext::TestSize.Level0)
 {
     // WindowManager init success.
-    ASSERT_EQ(initRet, WM_OK) << "EnvConditions: WindowManager init success. (initRet == WM_OK)";
+    ASSERT_EQ(initRet, GSERROR_OK) << "EnvConditions: WindowManager init success. (initRet == GSERROR_OK)";
 
     // Surface buffer init success.
     ASSERT_NE(sbuffer, nullptr) << "EnvConditions: Surface buffer init success. (sbuffer != nullptr)";
@@ -91,7 +91,7 @@ HWTEST_F(WlDMABufferFactoryTest, createNormal, testing::ext::TestSize.Level0)
 HWTEST_F(WlDMABufferFactoryTest, createAbnormal, testing::ext::TestSize.Level0)
 {
     // WindowManager init success.
-    ASSERT_EQ(initRet, WM_OK) << "EnvConditions: WindowManager init success. (initRet == WM_OK)";
+    ASSERT_EQ(initRet, GSERROR_OK) << "EnvConditions: WindowManager init success. (initRet == GSERROR_OK)";
 
     // Surface buffer init success.
     ASSERT_NE(sbuffer, nullptr) << "EnvConditions: Surface buffer init success. (sbuffer != nullptr)";
@@ -107,20 +107,20 @@ HWTEST_F(WlDMABufferFactoryTest, createAbnormal, testing::ext::TestSize.Level0)
     bh->fd = -1;
     auto dmabuf1 = WlDMABufferFactory::GetInstance()->Create(bh);
     initRet = WindowManager::GetInstance()->Init();
-    ASSERT_EQ(initRet, WM_OK) << "CaseDescription: "
-        << "1. Create WlDMABuffers by some abnormal arguments (initRet == WM_OK)";
+    ASSERT_EQ(initRet, GSERROR_OK) << "CaseDescription: "
+        << "1. Create WlDMABuffers by some abnormal arguments (initRet == GSERROR_OK)";
     bh->fd = fd;
     bh->width = 0;
     auto dmabuf2 = WlDMABufferFactory::GetInstance()->Create(bh);
     initRet = WindowManager::GetInstance()->Init();
-    ASSERT_EQ(initRet, WM_OK) << "CaseDescription: "
-        << "1. Create WlDMABuffers by some abnormal arguments (initRet == WM_OK)";
+    ASSERT_EQ(initRet, GSERROR_OK) << "CaseDescription: "
+        << "1. Create WlDMABuffers by some abnormal arguments (initRet == GSERROR_OK)";
     bh->width = width;
     bh->height = 0;
     auto dmabuf3 = WlDMABufferFactory::GetInstance()->Create(bh);
     initRet = WindowManager::GetInstance()->Init();
-    ASSERT_EQ(initRet, WM_OK) << "CaseDescription: "
-        << "1. Create WlDMABuffers by some abnormal arguments (initRet == WM_OK)";
+    ASSERT_EQ(initRet, GSERROR_OK) << "CaseDescription: "
+        << "1. Create WlDMABuffers by some abnormal arguments (initRet == GSERROR_OK)";
     bh->height = height;
     bh->format = -1;
     auto dmabuf4 = WlDMABufferFactory::GetInstance()->Create(bh);

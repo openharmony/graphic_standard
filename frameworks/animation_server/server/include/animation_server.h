@@ -64,7 +64,7 @@ private:
     void AnimationSync(int64_t time, void *data);
 
     void SplitWindowUpdate();
-    void SplitWindowDraw(void *vaddr, uint32_t width, uint32_t height, uint32_t count);
+    void SplitWindowDraw(uint32_t *vaddr, uint32_t width, uint32_t height, uint32_t count);
 
     std::shared_ptr<AppExecFwk::EventHandler> handler = nullptr;
     sptr<VsyncHelper> vhelper = nullptr;

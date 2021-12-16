@@ -64,7 +64,7 @@ public:
 
         auto wmRet = wm->Init();
         if (wmRet) {
-            printf("init failed with %s\n", WMErrorStr(wmRet).c_str());
+            printf("init failed with %s\n", GSErrorStr(wmRet).c_str());
             ExitTest();
             return;
         }
@@ -79,7 +79,7 @@ public:
         printf("virtual display non-existent.\n");
         } else {
             auto ret = wm->DestroyVirtualDisplay(display->id);
-            if (ret != WM_OK) {
+            if (ret != GSERROR_OK) {
                 printf("destroy virtual display failed.\n");
                 return;
             }

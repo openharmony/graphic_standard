@@ -32,7 +32,7 @@ public:
     virtual void OnBufferAvailable() override;
 
 private:
-    static inline WMError initRet = WM_ERROR_NOT_INIT;
+    static inline GSError initRet = GSERROR_NOT_INIT;
     static inline sptr<Surface> csurface = nullptr;
     static inline sptr<Surface> psurface = nullptr;
     static inline sptr<SurfaceBuffer> sbuffer = nullptr;

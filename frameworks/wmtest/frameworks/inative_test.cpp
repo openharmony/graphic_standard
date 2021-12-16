@@ -24,8 +24,8 @@
 #include <vector>
 #include <unistd.h>
 
-#include "inative_test_key_handler.h"
-#include "inative_test_touch_handler.h"
+#include "inative_test_key_event_handler.h"
+#include "inative_test_touch_event_handler.h"
 #include "util.h"
 
 namespace OHOS {
@@ -62,17 +62,17 @@ uint32_t INativeTest::GetLastTime() const
     return LAST_TIME_FOREVER;
 }
 
-enum AutoLoadService operator |(const enum AutoLoadService &l, const enum AutoLoadService &r)
+AutoLoadService operator |(const AutoLoadService &l, const AutoLoadService &r)
 {
-    return static_cast<enum AutoLoadService>(static_cast<int32_t>(l) | static_cast<int32_t>(r));
+    return static_cast<AutoLoadService>(static_cast<int32_t>(l) | static_cast<int32_t>(r));
 }
 
-bool operator &(const enum AutoLoadService &l, const enum AutoLoadService &r)
+bool operator &(const AutoLoadService &l, const AutoLoadService &r)
 {
     return (static_cast<int32_t>(l) & static_cast<int32_t>(r)) != 0;
 }
 
-enum AutoLoadService INativeTest::GetAutoLoadService() const
+AutoLoadService INativeTest::GetAutoLoadService() const
 {
     return AutoLoadService::Null;
 }

@@ -100,10 +100,10 @@ ohos_executable("wmtest") {
     "//foundation/graphic/standard:libwmservice",
     "//foundation/graphic/standard/frameworks/animation_server:libanimation_service",
     "//foundation/graphic/standard/utils:cpudraw",
-    "//foundation/graphic/standard/utils:graphic_bytrace",
     "//foundation/graphic/standard/utils:libgslogger",
     "//foundation/graphic/standard/utils:option_parser",
     "//foundation/graphic/standard/utils:raw_parser",
+    "//foundation/graphic/standard/utils:scoped_bytrace",
     "//foundation/multimodalinput/input/frameworks/proxy:libmmi-client",
     "//third_party/zlib:libz",
   ]

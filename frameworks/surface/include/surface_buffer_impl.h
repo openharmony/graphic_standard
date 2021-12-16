@@ -63,29 +63,29 @@ public:
     void SetEglData(const sptr<EglData>& data);
 
     int32_t GetSeqNum();
-    SurfaceError SetInt32(uint32_t key, int32_t val) override;
-    SurfaceError GetInt32(uint32_t key, int32_t &val) override;
-    SurfaceError SetInt64(uint32_t key, int64_t val) override;
-    SurfaceError GetInt64(uint32_t key, int64_t &val) override;
+    GSError SetInt32(uint32_t key, int32_t val) override;
+    GSError GetInt32(uint32_t key, int32_t &val) override;
+    GSError SetInt64(uint32_t key, int64_t val) override;
+    GSError GetInt64(uint32_t key, int64_t &val) override;
 
     void SetExtraData(const BufferExtraData &bedata);
     void GetExtraData(BufferExtraData &bedata) const;
-    virtual SurfaceError ExtraGet(std::string key, int32_t &value) const override;
-    virtual SurfaceError ExtraGet(std::string key, int64_t &value) const override;
-    virtual SurfaceError ExtraGet(std::string key, double &value) const override;
-    virtual SurfaceError ExtraGet(std::string key, std::string &value) const override;
-    virtual SurfaceError ExtraSet(std::string key, int32_t value) override;
-    virtual SurfaceError ExtraSet(std::string key, int64_t value) override;
-    virtual SurfaceError ExtraSet(std::string key, double value) override;
-    virtual SurfaceError ExtraSet(std::string key, std::string value) override;
+    virtual GSError ExtraGet(std::string key, int32_t &value) const override;
+    virtual GSError ExtraGet(std::string key, int64_t &value) const override;
+    virtual GSError ExtraGet(std::string key, double &value) const override;
+    virtual GSError ExtraGet(std::string key, std::string &value) const override;
+    virtual GSError ExtraSet(std::string key, int32_t value) override;
+    virtual GSError ExtraSet(std::string key, int64_t value) override;
+    virtual GSError ExtraSet(std::string key, double value) override;
+    virtual GSError ExtraSet(std::string key, std::string value) override;
 
     void SetBufferHandle(BufferHandle *handle);
 
     void WriteToMessageParcel(MessageParcel &parcel);
 
 private:
-    SurfaceError SetData(uint32_t key, ExtraData data);
-    SurfaceError GetData(uint32_t key, ExtraData &data);
+    GSError SetData(uint32_t key, ExtraData data);
+    GSError GetData(uint32_t key, ExtraData &data);
     std::map<uint32_t, ExtraData> extraDatas_;
 
     BufferHandle *handle_ = nullptr;

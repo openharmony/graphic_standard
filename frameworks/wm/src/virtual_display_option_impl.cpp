@@ -22,42 +22,42 @@ namespace {
 constexpr HiviewDFX::HiLogLabel LABEL = {LOG_CORE, 0, "WMVirtualDisplayOptionImpl"};
 }
 
-WMError VirtualDisplayOptionImpl::SetX(int32_t x)
+GSError VirtualDisplayOptionImpl::SetX(int32_t x)
 {
     this->x = x;
     this->settingX = true;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError VirtualDisplayOptionImpl::SetY(int32_t y)
+GSError VirtualDisplayOptionImpl::SetY(int32_t y)
 {
     this->y = y;
     this->settingY = true;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError VirtualDisplayOptionImpl::SetWidth(uint32_t width)
+GSError VirtualDisplayOptionImpl::SetWidth(uint32_t width)
 {
     if (!(width > 0)) {
         WMLOGFE("width is invalid, should > 0");
-        return WM_ERROR_INVALID_PARAM;
+        return GSERROR_INVALID_ARGUMENTS;
     }
 
     this->width = width;
     this->settingWidth = true;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError VirtualDisplayOptionImpl::SetHeight(uint32_t height)
+GSError VirtualDisplayOptionImpl::SetHeight(uint32_t height)
 {
     if (!(height > 0)) {
         WMLOGFE("height is invalid, should > 0");
-        return WM_ERROR_INVALID_PARAM;
+        return GSERROR_INVALID_ARGUMENTS;
     }
 
     this->height = height;
     this->settingHeight = true;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
 int32_t VirtualDisplayOptionImpl::GetX() const

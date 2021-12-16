@@ -49,7 +49,7 @@ namespace {
 HWTEST_F(WlSubsurfaceFactoryTest, Create, testing::ext::TestSize.Level0)
 {
     // WindowManager init success.
-    ASSERT_EQ(initRet, WM_OK) << "EnvConditions: WindowManager init success. (initRet == WM_OK)";
+    ASSERT_EQ(initRet, GSERROR_OK) << "EnvConditions: WindowManager init success. (initRet == GSERROR_OK)";
 
     // 1. create two WlSurface
     sptr<WlSurface> wlSurface1 = WlSurfaceFactory::GetInstance()->Create();

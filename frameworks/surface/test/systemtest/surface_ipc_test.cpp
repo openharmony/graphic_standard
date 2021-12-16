@@ -73,7 +73,7 @@ pid_t SurfaceIPCTest::ChildProcessMain() const
 
     sptr<SurfaceBuffer> buffer = nullptr;
     auto sret = psurface->RequestBufferNoFence(buffer, requestConfig);
-    if (sret != SURFACE_ERROR_OK) {
+    if (sret != GSERROR_OK) {
         data = sret;
         write(pipeFd[1], &data, sizeof(data));
         exit(0);
@@ -110,14 +110,14 @@ HWTEST_F(SurfaceIPCTest, BufferIPC, testing::ext::TestSize.Level0)
     write(pipeFd[1], &data, sizeof(data));
     sleep(0);
     read(pipeFd[0], &data, sizeof(data));
-    EXPECT_EQ(data, SURFACE_ERROR_OK);
+    EXPECT_EQ(data, GSERROR_OK);
 
     sptr<SurfaceBuffer> buffer = nullptr;
     int32_t fence;
     int64_t timestamp;
     Rect damage;
     auto sret = csurface->AcquireBuffer(buffer, fence, timestamp, damage);
-    EXPECT_EQ(sret, SURFACE_ERROR_OK);
+    EXPECT_EQ(sret, GSERROR_OK);
     EXPECT_NE(buffer, nullptr);
     if (buffer != nullptr) {
         int32_t int32;
@@ -133,7 +133,7 @@ HWTEST_F(SurfaceIPCTest, BufferIPC, testing::ext::TestSize.Level0)
     }
 
     sret = csurface->ReleaseBuffer(buffer, -1);
-    EXPECT_EQ(sret, SURFACE_ERROR_OK);
+    EXPECT_EQ(sret, GSERROR_OK);
 
     write(pipeFd[1], &data, sizeof(data));
     close(pipeFd[0]);
@@ -153,7 +153,7 @@ HWTEST_F(SurfaceIPCTest, Cache, testing::ext::TestSize.Level0)
 
     sptr<SurfaceBuffer> buffer = nullptr;
     auto sret = psurface->RequestBufferNoFence(buffer, requestConfig);
-    ASSERT_EQ(sret, SURFACE_ERROR_OK);
+    ASSERT_EQ(sret, GSERROR_OK);
     ASSERT_NE(buffer, nullptr);
     int32_t int32;
     int64_t int64;
@@ -167,7 +167,7 @@ HWTEST_F(SurfaceIPCTest, Cache, testing::ext::TestSize.Level0)
     ASSERT_EQ(str, "567");
 
     sret = psurface->FlushBuffer(buffer, -1, flushConfig);
-    ASSERT_EQ(sret, SURFACE_ERROR_OK);
+    ASSERT_EQ(sret, GSERROR_OK);
 }
 } // namespace
 } // namespace OHOS

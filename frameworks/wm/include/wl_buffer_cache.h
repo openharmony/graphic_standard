@@ -36,7 +36,7 @@ public:
     MOCKABLE sptr<WlBuffer> GetWlBuffer(const sptr<Surface> &csurface,
                                         const sptr<SurfaceBuffer> &buffer);
 
-    MOCKABLE WMError AddWlBuffer(const sptr<WlBuffer> &wbuffer,
+    MOCKABLE GSError AddWlBuffer(const sptr<WlBuffer> &wbuffer,
                                  const sptr<Surface> &csurface,
                                  const sptr<SurfaceBuffer> &sbuffer);
 

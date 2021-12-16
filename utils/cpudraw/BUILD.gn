@@ -35,6 +35,6 @@ ohos_static_library("cpudraw") {
 
   public_configs = [ ":cpudraw_public_config" ]
 
-  deps = [ "..:graphic_bytrace" ]
+  deps = [ "..:scoped_bytrace" ]
 }
 ## Build cpudraw.a }}}

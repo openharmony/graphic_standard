@@ -588,8 +588,8 @@ BufferRequestConfig requestConfig = {
 sptr<SurfaceBuffer> buffer;
 int32_t releaseFence;
 
-SurfaceError ret = surface->RequestBuffer(buffer, releaseFence, requestConfig);
-if (ret != SURFACE_ERROR_OK) {
+GSError ret = surface->RequestBuffer(buffer, releaseFence, requestConfig);
+if (ret != GSERROR_OK) {
     // failed
 }
 
@@ -604,7 +604,7 @@ BufferFlushConfig flushConfig = {
 };
 
 ret = surface->FlushBuffer(buffer, -1, flushConfig);
-if (ret != SURFACE_ERROR_OK) {
+if (ret != GSERROR_OK) {
     // failed
 }
 ```
@@ -618,21 +618,21 @@ public:
     void OnBufferAvailable() override {
         sptr<SurfaceBuffer> buffer;
         int32_t flushFence;
-        SurfaceError ret = surface->AcquireBuffer(buffer, flushFence, timestamp, damage);
-        if (ret != SURFACE_ERROR_OK) {
+        GSError ret = surface->AcquireBuffer(buffer, flushFence, timestamp, damage);
+        if (ret != GSERROR_OK) {
             // failed
         }
         // ...
         ret = surface->ReleaseBuffer(buffer, -1);
-        if (ret != SURFACE_ERROR_OK) {
+        if (ret != GSERROR_OK) {
             // failed
         }
     }
 };
 
 sptr<IBufferConsumerListener> listener = new TestConsumerListener();
-SurfaceError ret = surface->RegisterConsumerListener(listener);
-if (ret != SURFACE_ERROR_OK) {
+GSError ret = surface->RegisterConsumerListener(listener);
+if (ret != GSERROR_OK) {
     // failed
 }
 ```
@@ -641,14 +641,14 @@ if (ret != SURFACE_ERROR_OK) {
 
 ```
 sptr<SurfaceBuffer> buffer;
-SurfaceError ret = buffer->SetInt32(1, 3);
-if (ret != SURFACE_ERROR_OK) {
+GSError ret = buffer->SetInt32(1, 3);
+if (ret != GSERROR_OK) {
 // failed
 }
 
 int32_t val;
 ret = buffer->GetInt32(1, val);
-if (ret != SURFACE_ERROR_OK) {
+if (ret != GSERROR_OK) {
 // failed
 }
 ```
@@ -670,8 +670,8 @@ if (ret != SURFACE_ERROR_OK) {
         },
     };
     
-    VsyncError ret = helper->RequestFrameCallback(cb);
-    if (ret != VSYNC_ERROR_OK) {
+    GSError ret = helper->RequestFrameCallback(cb);
+    if (ret != GSERROR_OK) {
         // failed
     }
     ```
@@ -689,8 +689,8 @@ if (ret != SURFACE_ERROR_OK) {
             .callback_ = [](int64_t timestamp, void* userdata) {
             },
         };
-        VsyncError ret = helper->RequestFrameCallback(cb);
-        if (ret != VSYNC_ERROR_OK) {
+        GSError ret = helper->RequestFrameCallback(cb);
+        if (ret != GSERROR_OK) {
             // failed
         }
     });

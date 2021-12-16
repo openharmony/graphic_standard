@@ -39,16 +39,16 @@ public:
     virtual WindowType    GetType() const = 0;
     virtual WindowMode    GetMode() const = 0;
 
-    virtual sptr<Promise<WMError>> Show() = 0;
-    virtual sptr<Promise<WMError>> Hide() = 0;
-    virtual sptr<Promise<WMError>> Move(int32_t x, int32_t y) = 0;
-    virtual sptr<Promise<WMError>> SwitchTop() = 0;
-    virtual sptr<Promise<WMError>> SetWindowType(WindowType type) = 0;
-    virtual sptr<Promise<WMError>> SetWindowMode(WindowMode mode) = 0;
-    virtual sptr<Promise<WMError>> Resize(uint32_t width, uint32_t height) = 0;
-    virtual sptr<Promise<WMError>> ScaleTo(uint32_t width, uint32_t height) = 0;
-    virtual WMError Rotate(WindowRotateType type) = 0;
-    virtual WMError Destroy() = 0;
+    virtual sptr<Promise<GSError>> Show() = 0;
+    virtual sptr<Promise<GSError>> Hide() = 0;
+    virtual sptr<Promise<GSError>> Move(int32_t x, int32_t y) = 0;
+    virtual sptr<Promise<GSError>> SwitchTop() = 0;
+    virtual sptr<Promise<GSError>> SetWindowType(WindowType type) = 0;
+    virtual sptr<Promise<GSError>> SetWindowMode(WindowMode mode) = 0;
+    virtual sptr<Promise<GSError>> Resize(uint32_t width, uint32_t height) = 0;
+    virtual sptr<Promise<GSError>> ScaleTo(uint32_t width, uint32_t height) = 0;
+    virtual GSError Rotate(WindowRotateType type) = 0;
+    virtual GSError Destroy() = 0;
 
     // prop listener
     virtual void OnPositionChange(WindowPositionChangeFunc func) = 0;
@@ -59,36 +59,36 @@ public:
     virtual void OnSplitStatusChange(SplitStatusChangeFunc func) = 0;
 
     // listener
-    virtual WMError OnTouch(OnTouchFunc cb) = 0;
-    virtual WMError OnKey(OnKeyFunc cb) = 0;
+    virtual GSError OnTouch(OnTouchFunc cb) = 0;
+    virtual GSError OnKey(OnKeyFunc cb) = 0;
 
     // pointer listener
-    virtual WMError OnPointerEnter(PointerEnterFunc func) = 0;
-    virtual WMError OnPointerLeave(PointerLeaveFunc func) = 0;
-    virtual WMError OnPointerMotion(PointerMotionFunc func) = 0;
-    virtual WMError OnPointerButton(PointerButtonFunc func) = 0;
-    virtual WMError OnPointerFrame(PointerFrameFunc func) = 0;
-    virtual WMError OnPointerAxis(PointerAxisFunc func) = 0;
-    virtual WMError OnPointerAxisSource(PointerAxisSourceFunc func) = 0;
-    virtual WMError OnPointerAxisStop(PointerAxisStopFunc func) = 0;
-    virtual WMError OnPointerAxisDiscrete(PointerAxisDiscreteFunc func) = 0;
+    virtual GSError OnPointerEnter(PointerEnterFunc func) = 0;
+    virtual GSError OnPointerLeave(PointerLeaveFunc func) = 0;
+    virtual GSError OnPointerMotion(PointerMotionFunc func) = 0;
+    virtual GSError OnPointerButton(PointerButtonFunc func) = 0;
+    virtual GSError OnPointerFrame(PointerFrameFunc func) = 0;
+    virtual GSError OnPointerAxis(PointerAxisFunc func) = 0;
+    virtual GSError OnPointerAxisSource(PointerAxisSourceFunc func) = 0;
+    virtual GSError OnPointerAxisStop(PointerAxisStopFunc func) = 0;
+    virtual GSError OnPointerAxisDiscrete(PointerAxisDiscreteFunc func) = 0;
 
     // keyboard listener
-    virtual WMError OnKeyboardKeymap(KeyboardKeymapFunc func) = 0;
-    virtual WMError OnKeyboardEnter(KeyboardEnterFunc func) = 0;
-    virtual WMError OnKeyboardLeave(KeyboardLeaveFunc func) = 0;
-    virtual WMError OnKeyboardKey(KeyboardKeyFunc func) = 0;
-    virtual WMError OnKeyboardModifiers(KeyboardModifiersFunc func) = 0;
-    virtual WMError OnKeyboardRepeatInfo(KeyboardRepeatInfoFunc func) = 0;
+    virtual GSError OnKeyboardKeymap(KeyboardKeymapFunc func) = 0;
+    virtual GSError OnKeyboardEnter(KeyboardEnterFunc func) = 0;
+    virtual GSError OnKeyboardLeave(KeyboardLeaveFunc func) = 0;
+    virtual GSError OnKeyboardKey(KeyboardKeyFunc func) = 0;
+    virtual GSError OnKeyboardModifiers(KeyboardModifiersFunc func) = 0;
+    virtual GSError OnKeyboardRepeatInfo(KeyboardRepeatInfoFunc func) = 0;
 
     // touch listener
-    virtual WMError OnTouchDown(TouchDownFunc func) = 0;
-    virtual WMError OnTouchUp(TouchUpFunc func) = 0;
-    virtual WMError OnTouchMotion(TouchMotionFunc func) = 0;
-    virtual WMError OnTouchFrame(TouchFrameFunc func) = 0;
-    virtual WMError OnTouchCancel(TouchCancelFunc func) = 0;
-    virtual WMError OnTouchShape(TouchShapeFunc func) = 0;
-    virtual WMError OnTouchOrientation(TouchOrientationFunc func) = 0;
+    virtual GSError OnTouchDown(TouchDownFunc func) = 0;
+    virtual GSError OnTouchUp(TouchUpFunc func) = 0;
+    virtual GSError OnTouchMotion(TouchMotionFunc func) = 0;
+    virtual GSError OnTouchFrame(TouchFrameFunc func) = 0;
+    virtual GSError OnTouchCancel(TouchCancelFunc func) = 0;
+    virtual GSError OnTouchShape(TouchShapeFunc func) = 0;
+    virtual GSError OnTouchOrientation(TouchOrientationFunc func) = 0;
 };
 } // namespace OHOS
 

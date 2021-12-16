@@ -36,8 +36,8 @@ ohos_shared_library("raw_parser") {
   public_configs = [ ":raw_parser_public_config" ]
 
   deps = [
-    "//utils/native/base:utils",
     "//third_party/zlib:libz",
+    "//utils/native/base:utils",
   ]
 
   subsystem_name = "graphic"

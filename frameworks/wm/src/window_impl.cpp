@@ -47,32 +47,32 @@ namespace {
 constexpr HiviewDFX::HiLogLabel LABEL = {LOG_CORE, 0, "WMWindowImpl"};
 }
 
-WMError WindowImpl::CheckAndNew(sptr<WindowImpl> &wi,
+GSError WindowImpl::CheckAndNew(sptr<WindowImpl> &wi,
                                 const sptr<WindowOption> &option,
                                 const sptr<IWindowManagerService> &wms)
 {
     if (wms == nullptr) {
         WMLOGFE("IWindowManagerService is nullptr");
-        return WM_ERROR_NULLPTR;
+        return GSERROR_INVALID_ARGUMENTS;
     }
 
     wi = TESTER_NEW(WindowImpl);
     if (wi == nullptr) {
         WMLOGFE("new WindowImpl failed");
-        return WM_ERROR_NEW;
+        return GSERROR_NO_MEM;
     }
 
     wi->wms = wms;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::CreateRemoteWindow(sptr<WindowImpl> &wi,
+GSError WindowImpl::CreateRemoteWindow(sptr<WindowImpl> &wi,
                                        const sptr<WindowOption> &option)
 {
     wi->wlSurface = SingletonContainer::Get<WlSurfaceFactory>()->Create();
     if (wi->wlSurface == nullptr) {
         WMLOGFE("WlSurfaceFactory::Create return nullptr");
-        return WM_ERROR_API_FAILED;
+        return GSERROR_API_FAILED;
     }
 
     auto windowManagerServer = SingletonContainer::Get<WindowManagerServer>();
@@ -80,12 +80,12 @@ WMError WindowImpl::CreateRemoteWindow(sptr<WindowImpl> &wi,
         option->GetDisplay(), option->GetWindowType());
     if (promise == nullptr) {
         WMLOGFE("CreateWindow return nullptr promise");
-        return WM_ERROR_NEW;
+        return GSERROR_NO_MEM;
     }
 
     auto wminfo = promise->Await();
-    if (wminfo.wret != WM_OK) {
-        WMLOGFE("wms->CreateWindow failed %{public}s", WMErrorStr(wminfo.wret).c_str());
+    if (wminfo.wret != GSERROR_OK) {
+        WMLOGFE("wms->CreateWindow failed %{public}s", GSErrorStr(wminfo.wret).c_str());
         return wminfo.wret;
     }
 
@@ -101,10 +101,10 @@ WMError WindowImpl::CreateRemoteWindow(sptr<WindowImpl> &wi,
     wi->attr.SetWidthHeight(wminfo.width, wminfo.height);
     wi->attr.SetDestWidthHeight(wminfo.width, wminfo.height);
     wi->wlSurface->SetUserData(wi.GetRefPtr());
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::CreateConsumerSurface(sptr<WindowImpl> &wi,
+GSError WindowImpl::CreateConsumerSurface(sptr<WindowImpl> &wi,
                                           const sptr<WindowOption> &option)
 {
     const auto &sc = SingletonContainer::Get<StaticCall>();
@@ -119,7 +119,7 @@ WMError WindowImpl::CreateConsumerSurface(sptr<WindowImpl> &wi,
 
     if (wi->csurface == nullptr) {
         WMLOGFE("SurfaceCreateSurfaceAsConsumer return nullptr");
-        return WM_ERROR_API_FAILED;
+        return GSERROR_API_FAILED;
     }
 
     wi->csurface->RegisterConsumerListener(wi.GetRefPtr());
@@ -127,26 +127,26 @@ WMError WindowImpl::CreateConsumerSurface(sptr<WindowImpl> &wi,
     wi->psurface = sc->SurfaceCreateSurfaceAsProducer(producer);
     if (wi->psurface == nullptr) {
         WMLOGFE("SurfaceCreateSurfaceAsProducer return nullptr");
-        return WM_ERROR_API_FAILED;
+        return GSERROR_API_FAILED;
     }
 
     wi->csurface->SetDefaultWidthAndHeight(wi->attr.GetWidth(), wi->attr.GetHeight());
     wi->csurface->SetDefaultUsage(HBM_USE_CPU_READ | HBM_USE_CPU_WRITE | HBM_USE_MEM_DMA);
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::Create(sptr<Window> &window,
+GSError WindowImpl::Create(sptr<Window> &window,
                            const sptr<WindowOption> &option,
                            const sptr<IWindowManagerService> &wms)
 {
     sptr<WindowImpl> wi = nullptr;
     auto wret = CheckAndNew(wi, option, wms);
-    if (wret != WM_OK) {
+    if (wret != GSERROR_OK) {
         return wret;
     }
 
     wret = CreateRemoteWindow(wi, option);
-    if (wret != WM_OK) {
+    if (wret != GSERROR_OK) {
         return wret;
     }
 
@@ -166,7 +166,7 @@ WMError WindowImpl::Create(sptr<Window> &window,
     }
 
     wret = CreateConsumerSurface(wi, option);
-    if (wret != WM_OK) {
+    if (wret != GSERROR_OK) {
         return wret;
     }
 
@@ -175,7 +175,7 @@ WMError WindowImpl::Create(sptr<Window> &window,
 
     window = wi;
     WMLOGFI("Create Window Success");
-    return WM_OK;
+    return GSERROR_OK;
 }
 
 sptr<WlSurface> WindowImpl::GetWlSurface() const
@@ -256,70 +256,70 @@ WindowMode WindowImpl::GetMode() const
     return attr.GetMode();
 }
 
-sptr<Promise<WMError>> WindowImpl::Show()
+sptr<Promise<GSError>> WindowImpl::Show()
 {
     WMLOGFI("(%{public}d)", attr.GetID());
-    CHECK_DESTROY(new Promise<WMError>(WM_ERROR_DESTROYED_OBJECT));
+    CHECK_DESTROY(new Promise<GSError>(GSERROR_DESTROYED_OBJECT));
     attr.SetVisibility(true);
     return wms->Show(attr.GetID());
 }
 
-sptr<Promise<WMError>> WindowImpl::Hide()
+sptr<Promise<GSError>> WindowImpl::Hide()
 {
     WMLOGFI("(%{public}d)", attr.GetID());
-    CHECK_DESTROY(new Promise<WMError>(WM_ERROR_DESTROYED_OBJECT));
+    CHECK_DESTROY(new Promise<GSError>(GSERROR_DESTROYED_OBJECT));
     attr.SetVisibility(false);
     return wms->Hide(attr.GetID());
 }
 
-sptr<Promise<WMError>> WindowImpl::Move(int32_t x, int32_t y)
+sptr<Promise<GSError>> WindowImpl::Move(int32_t x, int32_t y)
 {
     WMLOGFI("(%{public}d) x: %{public}d, y: %{public}d", attr.GetID(), x, y);
-    CHECK_DESTROY(new Promise<WMError>(WM_ERROR_DESTROYED_OBJECT));
+    CHECK_DESTROY(new Promise<GSError>(GSERROR_DESTROYED_OBJECT));
     attr.SetXY(x, y);
     return wms->Move(attr.GetID(), attr.GetX(), attr.GetY());
 }
 
-sptr<Promise<WMError>> WindowImpl::SwitchTop()
+sptr<Promise<GSError>> WindowImpl::SwitchTop()
 {
     WMLOGFI("(%{public}d)", attr.GetID());
-    CHECK_DESTROY(new Promise<WMError>(WM_ERROR_DESTROYED_OBJECT));
+    CHECK_DESTROY(new Promise<GSError>(GSERROR_DESTROYED_OBJECT));
     return wms->SwitchTop(attr.GetID());
 }
 
-sptr<Promise<WMError>> WindowImpl::SetWindowType(WindowType type)
+sptr<Promise<GSError>> WindowImpl::SetWindowType(WindowType type)
 {
     WMLOGFI("(%{public}d)type: %{public}d", attr.GetID(), type);
-    CHECK_DESTROY(new Promise<WMError>(WM_ERROR_DESTROYED_OBJECT));
+    CHECK_DESTROY(new Promise<GSError>(GSERROR_DESTROYED_OBJECT));
     static sptr<WindowOption> testParam = WindowOption::Get();
-    if (testParam->SetWindowType(type) != WM_OK) {
-        return new Promise<WMError>(WM_ERROR_INVALID_PARAM);
+    if (testParam->SetWindowType(type) != GSERROR_OK) {
+        return new Promise<GSError>(GSERROR_INVALID_ARGUMENTS);
     }
 
     attr.SetType(type);
     return wms->SetWindowType(attr.GetID(), type);
 }
 
-sptr<Promise<WMError>> WindowImpl::SetWindowMode(WindowMode mode)
+sptr<Promise<GSError>> WindowImpl::SetWindowMode(WindowMode mode)
 {
     WMLOGFI("(%{public}d)mode: %{public}d", attr.GetID(), mode);
-    CHECK_DESTROY(new Promise<WMError>(WM_ERROR_DESTROYED_OBJECT));
+    CHECK_DESTROY(new Promise<GSError>(GSERROR_DESTROYED_OBJECT));
     static sptr<WindowOption> testParam = WindowOption::Get();
-    if (testParam->SetWindowMode(mode) != WM_OK) {
-        return new Promise<WMError>(WM_ERROR_INVALID_PARAM);
+    if (testParam->SetWindowMode(mode) != GSERROR_OK) {
+        return new Promise<GSError>(GSERROR_INVALID_ARGUMENTS);
     }
 
     attr.SetMode(mode);
     return wms->SetWindowMode(attr.GetID(), mode);
 }
 
-sptr<Promise<WMError>> WindowImpl::Resize(uint32_t width, uint32_t height)
+sptr<Promise<GSError>> WindowImpl::Resize(uint32_t width, uint32_t height)
 {
     WMLOGFI("(%{public}d)%{public}u x %{public}u", attr.GetID(), width, height);
-    CHECK_DESTROY(new Promise<WMError>(WM_ERROR_DESTROYED_OBJECT));
+    CHECK_DESTROY(new Promise<GSError>(GSERROR_DESTROYED_OBJECT));
     static sptr<WindowOption> testParam = WindowOption::Get();
-    if (testParam->SetWidth(width) != WM_OK || testParam->SetHeight(height) != WM_OK) {
-        return new Promise<WMError>(WM_ERROR_INVALID_PARAM);
+    if (testParam->SetWidth(width) != GSERROR_OK || testParam->SetHeight(height) != GSERROR_OK) {
+        return new Promise<GSError>(GSERROR_INVALID_ARGUMENTS);
     }
 
     attr.SetWidthHeight(width, height);
@@ -327,47 +327,47 @@ sptr<Promise<WMError>> WindowImpl::Resize(uint32_t width, uint32_t height)
     return wms->Resize(attr.GetID(), width, height);
 }
 
-sptr<Promise<WMError>> WindowImpl::ScaleTo(uint32_t width, uint32_t height)
+sptr<Promise<GSError>> WindowImpl::ScaleTo(uint32_t width, uint32_t height)
 {
     WMLOGFI("(%{public}d)%{public}u x %{public}u", attr.GetID(), width, height);
-    CHECK_DESTROY(new Promise<WMError>(WM_ERROR_DESTROYED_OBJECT));
+    CHECK_DESTROY(new Promise<GSError>(GSERROR_DESTROYED_OBJECT));
     if (width == 0 || height == 0) {
-        return new Promise<WMError>(WM_ERROR_INVALID_PARAM);
+        return new Promise<GSError>(GSERROR_INVALID_ARGUMENTS);
     }
 
     attr.SetDestWidthHeight(width, height);
     return wms->ScaleTo(attr.GetID(), width, height);
 }
 
-WMError WindowImpl::Rotate(WindowRotateType type)
+GSError WindowImpl::Rotate(WindowRotateType type)
 {
     WMLOGFI("(%{public}d)type: %{public}d", attr.GetID(), type);
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     auto display = SingletonContainer::Get<WlDisplay>();
     if (!(type >= 0 && type < WINDOW_ROTATE_TYPE_MAX)) {
-        return WM_ERROR_INVALID_PARAM;
+        return GSERROR_INVALID_ARGUMENTS;
     }
 
     wlSurface->SetBufferTransform(static_cast<wl_output_transform>(type));
     display->Sync();
     if (display->GetError() != 0) {
-        return WM_ERROR_API_FAILED;
+        return GSERROR_API_FAILED;
     }
 
     wlSurface->Commit();
 
     display->Sync();
     if (display->GetError() != 0) {
-        return WM_ERROR_API_FAILED;
+        return GSERROR_API_FAILED;
     }
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::Destroy()
+GSError WindowImpl::Destroy()
 {
     WMLOGFI("(%{public}d)", attr.GetID());
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
-    WMError wret;
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
+    GSError wret;
     {
         std::lock_guard<std::mutex> lock(mutex);
         isDestroyed = true;
@@ -412,170 +412,170 @@ void WindowImpl::OnSplitStatusChange(SplitStatusChangeFunc func)
     windowManagerServer->RegisterSplitModeChange(func);
 }
 
-WMError WindowImpl::OnTouch(OnTouchFunc cb)
+GSError WindowImpl::OnTouch(OnTouchFunc cb)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
-    return WM_OK;
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnKey(OnKeyFunc cb)
+GSError WindowImpl::OnKey(OnKeyFunc cb)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
-    return WM_OK;
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnPointerEnter(PointerEnterFunc func)
+GSError WindowImpl::OnPointerEnter(PointerEnterFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->pointerEnter = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnPointerLeave(PointerLeaveFunc func)
+GSError WindowImpl::OnPointerLeave(PointerLeaveFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->pointerLeave = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnPointerMotion(PointerMotionFunc func)
+GSError WindowImpl::OnPointerMotion(PointerMotionFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->pointerMotion = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnPointerButton(PointerButtonFunc func)
+GSError WindowImpl::OnPointerButton(PointerButtonFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->pointerButton = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnPointerFrame(PointerFrameFunc func)
+GSError WindowImpl::OnPointerFrame(PointerFrameFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->pointerFrame = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnPointerAxis(PointerAxisFunc func)
+GSError WindowImpl::OnPointerAxis(PointerAxisFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->pointerAxis = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnPointerAxisSource(PointerAxisSourceFunc func)
+GSError WindowImpl::OnPointerAxisSource(PointerAxisSourceFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->pointerAxisSource = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnPointerAxisStop(PointerAxisStopFunc func)
+GSError WindowImpl::OnPointerAxisStop(PointerAxisStopFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->pointerAxisStop = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnPointerAxisDiscrete(PointerAxisDiscreteFunc func)
+GSError WindowImpl::OnPointerAxisDiscrete(PointerAxisDiscreteFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->pointerAxisDiscrete = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnKeyboardKeymap(KeyboardKeymapFunc func)
+GSError WindowImpl::OnKeyboardKeymap(KeyboardKeymapFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->keyboardKeymap = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnKeyboardEnter(KeyboardEnterFunc func)
+GSError WindowImpl::OnKeyboardEnter(KeyboardEnterFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->keyboardEnter = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnKeyboardLeave(KeyboardLeaveFunc func)
+GSError WindowImpl::OnKeyboardLeave(KeyboardLeaveFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->keyboardLeave = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnKeyboardKey(KeyboardKeyFunc func)
+GSError WindowImpl::OnKeyboardKey(KeyboardKeyFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->keyboardKey = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnKeyboardModifiers(KeyboardModifiersFunc func)
+GSError WindowImpl::OnKeyboardModifiers(KeyboardModifiersFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->keyboardModifiers = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnKeyboardRepeatInfo(KeyboardRepeatInfoFunc func)
+GSError WindowImpl::OnKeyboardRepeatInfo(KeyboardRepeatInfoFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->keyboardRepeatInfo = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnTouchDown(TouchDownFunc func)
+GSError WindowImpl::OnTouchDown(TouchDownFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->touchDown = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnTouchUp(TouchUpFunc func)
+GSError WindowImpl::OnTouchUp(TouchUpFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->touchUp = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnTouchMotion(TouchMotionFunc func)
+GSError WindowImpl::OnTouchMotion(TouchMotionFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->touchMotion = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnTouchFrame(TouchFrameFunc func)
+GSError WindowImpl::OnTouchFrame(TouchFrameFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->touchFrame = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnTouchCancel(TouchCancelFunc func)
+GSError WindowImpl::OnTouchCancel(TouchCancelFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->touchCancel = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnTouchShape(TouchShapeFunc func)
+GSError WindowImpl::OnTouchShape(TouchShapeFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->touchShape = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowImpl::OnTouchOrientation(TouchOrientationFunc func)
+GSError WindowImpl::OnTouchOrientation(TouchOrientationFunc func)
 {
-    CHECK_DESTROY(WM_ERROR_DESTROYED_OBJECT);
+    CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
     exportListener->touchOrientation = func;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
 namespace {
@@ -602,7 +602,7 @@ void WindowImpl::OnBufferAvailable()
     int64_t timestamp;
     Rect damage;
     auto sret = csurface->AcquireBuffer(sbuffer, flushFence, timestamp, damage);
-    if (sret != SURFACE_ERROR_OK) {
+    if (sret != GSERROR_OK) {
         WMLOGFE("AcquireBuffer failed");
         return;
     }
@@ -615,7 +615,7 @@ void WindowImpl::OnBufferAvailable()
         if (dmaWlBuffer == nullptr) {
             WMLOGFE("Create DMA Buffer Failed");
             sret = csurface->ReleaseBuffer(sbuffer, -1);
-            if (sret != SURFACE_ERROR_OK) {
+            if (sret != GSERROR_OK) {
                 WMLOGFW("ReleaseBuffer failed");
             }
             return;

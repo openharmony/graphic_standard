@@ -99,7 +99,7 @@ bool PixelFormatToDrmFormat(int32_t pixelFormat, uint32_t &drmFormat)
 }
 } // namespace
 
-SurfaceError EglDataImpl::CreateEglData(const sptr<SurfaceBufferImpl> &buffer)
+GSError EglDataImpl::CreateEglData(const sptr<SurfaceBufferImpl> &buffer)
 {
     EGLint attribs[(GENERAL_ATTRIBS + PLANE_ATTRIBS * MAX_BUFFER_PLANES) * ENTRIES_PER_ATTRIB + 1];
     unsigned int index = 0;
@@ -107,13 +107,13 @@ SurfaceError EglDataImpl::CreateEglData(const sptr<SurfaceBufferImpl> &buffer)
     BufferHandle *handle = buffer->GetBufferHandle();
     if (!handle) {
         BLOGE("Failed to GetBufferHandle");
-        return SURFACE_ERROR_ERROR;
+        return GSERROR_INTERNEL;
     }
 
     uint32_t drmFormat;
     if (PixelFormatToDrmFormat(handle->format, drmFormat) == false) {
         BLOGE("PixelFormatToDrmFormat failed");
-        return SURFACE_ERROR_ERROR;
+        return GSERROR_INTERNEL;
     }
     attribs[index++] = EGL_WIDTH;
     attribs[index++] = handle->width;
@@ -133,7 +133,7 @@ SurfaceError EglDataImpl::CreateEglData(const sptr<SurfaceBufferImpl> &buffer)
     eglImage_ = sEglManager_->EglCreateImage(EGL_NO_CONTEXT, EGL_LINUX_DMA_BUF_EXT, NULL, attribs);
     if (eglImage_ == EGL_NO_IMAGE_KHR) {
         BLOGE("##createImage failed.");
-        return SURFACE_ERROR_ERROR;
+        return GSERROR_INTERNEL;
     }
     sEglManager_->EglMakeCurrent();
 
@@ -151,8 +151,8 @@ SurfaceError EglDataImpl::CreateEglData(const sptr<SurfaceBufferImpl> &buffer)
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, glTexture_, 0);
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         BLOGE("FBO creation failed");
-        return SURFACE_ERROR_ERROR;
+        return GSERROR_INTERNEL;
     }
-    return SURFACE_ERROR_OK;
+    return GSERROR_OK;
 }
 } // namespace OHOS

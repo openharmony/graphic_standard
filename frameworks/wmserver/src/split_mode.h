@@ -24,10 +24,9 @@ extern "C" {
 
 struct wl_client;
 struct wl_resource;
-struct WindowSurface;
 void ControllerSetSplitMode(struct wl_client *client,
-                               struct wl_resource *resource,
-                               uint32_t type, int32_t x, int32_t y);
+                            struct wl_resource *resource,
+                            uint32_t type, int32_t x, int32_t y);
 
 #ifdef __cplusplus
 }

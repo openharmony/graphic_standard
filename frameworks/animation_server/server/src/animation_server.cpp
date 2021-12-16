@@ -23,7 +23,7 @@
 #include <sys/time.h>
 
 #include <cpudraw.h>
-#include <graphic_bytrace.h>
+#include <scoped_bytrace.h>
 #include <gslogger.h>
 
 namespace OHOS {
@@ -37,8 +37,8 @@ GSError AnimationServer::Init()
     vhelper = VsyncHelper::FromHandler(handler);
     auto wm = WindowManager::GetInstance();
     auto wret = wm->Init();
-    if (wret != WM_OK) {
-        GSLOG2HI(ERROR) << "WindowManager::Init failed: " << WMErrorStr(wret);
+    if (wret != GSERROR_OK) {
+        GSLOG2HI(ERROR) << "WindowManager::Init failed: " << GSErrorStr(wret);
         return static_cast<enum GSError>(wret);
     }
 
@@ -47,8 +47,8 @@ GSError AnimationServer::Init()
     auto splitOption = WindowOption::Get();
     splitOption->SetWindowType(WINDOW_TYPE_SPLIT_LINE);
     wret = wm->CreateWindow(splitWindow, splitOption);
-    if (wret != WM_OK || splitWindow == nullptr) {
-        GSLOG2HI(ERROR) << "WindowManager::CreateWindow failed: " << WMErrorStr(wret);
+    if (wret != GSERROR_OK || splitWindow == nullptr) {
+        GSLOG2HI(ERROR) << "WindowManager::CreateWindow failed: " << GSErrorStr(wret);
         return static_cast<enum GSError>(wret);
     }
     splitWindow->Hide();
@@ -58,8 +58,8 @@ GSError AnimationServer::Init()
     auto option = WindowOption::Get();
     option->SetWindowType(WINDOW_TYPE_ANIMATION);
     wret = wm->CreateWindow(window, option);
-    if (wret != WM_OK || window == nullptr) {
-        GSLOG2HI(ERROR) << "WindowManager::CreateWindow failed: " << WMErrorStr(wret);
+    if (wret != GSERROR_OK || window == nullptr) {
+        GSLOG2HI(ERROR) << "WindowManager::CreateWindow failed: " << GSErrorStr(wret);
         return static_cast<enum GSError>(wret);
     }
 
@@ -106,7 +106,7 @@ GSError AnimationServer::SplitModeCreateMiddleLine()
 {
     ScopedBytrace trace(__func__);
     GSLOG2HI(DEBUG);
-    midlineY = splitWindow->GetHeight() / 2 + splitWindow->GetY();
+    midlineY = splitWindow->GetHeight() / 0x2 + splitWindow->GetY();
     haveMiddleLine = true;
     handler->PostTask(std::bind(&AnimationServer::SplitWindowUpdate, this));
     return GSERROR_OK;
@@ -129,7 +129,7 @@ void AnimationServer::StartAnimation(struct Animation &animation)
     wm->ListenNextScreenShot(0, this);
     auto asinfo = screenshotPromise->Await();
     if (asinfo.wmimage.wret) {
-        GSLOG2HI(ERROR) << "OnScreenShot failed: " << WMErrorStr(asinfo.wmimage.wret);
+        GSLOG2HI(ERROR) << "OnScreenShot failed: " << GSErrorStr(asinfo.wmimage.wret);
         animation.retval->Resolve(static_cast<enum GSError>(asinfo.wmimage.wret));
         isAnimationRunning = false;
         return;
@@ -140,7 +140,7 @@ void AnimationServer::StartAnimation(struct Animation &animation)
     window->Show();
 
     auto sret = eglSurface->InitContext();
-    if (sret != SURFACE_ERROR_OK) {
+    if (sret != GSERROR_OK) {
         GSLOG2HI(ERROR) << "EGLSurface InitContext failed: " << sret;
         animation.retval->Resolve(static_cast<enum GSError>(sret));
         isAnimationRunning = false;
@@ -194,7 +194,7 @@ void AnimationServer::OnScreenShot(const struct WMImageInfo &info)
         .wmimage = info,
         .ptr = nullptr,
     };
-    if (info.wret != WM_OK) {
+    if (info.wret != GSERROR_OK) {
         screenshotPromise->Resolve(ainfo);
         return;
     }
@@ -204,7 +204,7 @@ void AnimationServer::OnScreenShot(const struct WMImageInfo &info)
     ainfo.wmimage.data = ainfo.ptr.get();
     if (memcpy_s(ainfo.ptr->ptr.get(), length, info.data, info.size) != EOK) {
         GSLOG2HI(ERROR) << "memcpy_s failed: " << strerror(errno);
-        ainfo.wmimage.wret = static_cast<enum WMError>(GSERROR_INTERNEL);
+        ainfo.wmimage.wret = static_cast<enum GSError>(GSERROR_INTERNEL);
         screenshotPromise->Resolve(ainfo);
         return;
     }
@@ -239,10 +239,10 @@ void AnimationServer::SplitWindowUpdate()
         .timeout = 0,
     };
 
-    SurfaceError ret = surface->RequestBufferNoFence(buffer, rconfig);
-    if (ret == SURFACE_ERROR_NO_BUFFER) {
+    GSError ret = surface->RequestBufferNoFence(buffer, rconfig);
+    if (ret == GSERROR_NO_BUFFER) {
         return;
-    } else if (ret != SURFACE_ERROR_OK || buffer == nullptr) {
+    } else if (ret != GSERROR_OK || buffer == nullptr) {
         return;
     }
 
@@ -253,7 +253,7 @@ void AnimationServer::SplitWindowUpdate()
     }
 
     static int32_t count = 0;
-    SplitWindowDraw(buffer->GetVirAddr(), rconfig.width, rconfig.height, count);
+    SplitWindowDraw(reinterpret_cast<uint32_t *>(buffer->GetVirAddr()), rconfig.width, rconfig.height, count);
     count++;
 
     BufferFlushConfig fconfig = {
@@ -265,22 +265,29 @@ void AnimationServer::SplitWindowUpdate()
     surface->FlushBuffer(buffer, -1, fconfig);
 }
 
-void AnimationServer::SplitWindowDraw(void *vaddr, uint32_t width, uint32_t height, uint32_t count)
+void AnimationServer::SplitWindowDraw(uint32_t *vaddr, uint32_t width, uint32_t height, uint32_t count)
 {
     ScopedBytrace trace(__func__);
     GSLOG2HI(DEBUG) << "midlineY: " << midlineY << ", midlineDown: " << midlineDown;
-    CPUDraw draw(vaddr, width, height);
+    Cpudraw draw(vaddr, width, height);
 
     draw.SetColor(0xff000000);
     draw.DrawRect(0, 0, width, height);
     if (haveMiddleLine == false) {
         draw.SetColor(0xff333333);
-        draw.DrawRect(0.1 * width, 0.025 * height, 0.8 * width, 0.4 * height);
-        draw.DrawRect(0.1 * width, 0.575 * height, 0.8 * width, 0.4 * height);
+        constexpr double left = 0.1;
+        constexpr double w = 0.8;
+        constexpr double top1 = 0.025;
+        constexpr double top2 = 0.575;
+        constexpr double h = 0.4;
+
+        draw.DrawRect(left * width, top1 * height, w * width, h * height);
+        draw.DrawRect(left * width, top2 * height, w * width, h * height);
     } else {
         auto midlineYlocal = midlineY - splitWindow->GetY();
         draw.SetColor(midlineDown ? 0xffffffff : 0xffcccccc);
-        draw.DrawRect(0, midlineYlocal - height * 0.05, width, height * 0.1);
+        constexpr double lineHeight = 0.1;
+        draw.DrawRect(0, midlineYlocal - height * lineHeight / 0x2, width, height * lineHeight);
     }
 }
 

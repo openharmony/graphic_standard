@@ -15,34 +15,34 @@
 
 #include "cpudraw.h"
 
-#include <graphic_bytrace.h>
+#include <scoped_bytrace.h>
 
-bool CPUDrawRect::Contain(int32_t x2, int32_t y2)
+bool CpudrawRect::Contain(int32_t x2, int32_t y2)
 {
     return x <= x2 && x2 <= x + w && y <= y2 && y2 <= y + h;
 }
 
-CPUDraw::CPUDraw(void *vaddr, int32_t width, int32_t height)
-    : addr(reinterpret_cast<uint32_t *>(vaddr)), width(width), height(height)
+Cpudraw::Cpudraw(uint32_t *vaddr, int32_t width, int32_t height)
+    : addr(vaddr), width(width), height(height)
 {
 }
 
-void CPUDraw::SetColor(const uint32_t &color)
+void Cpudraw::SetColor(const uint32_t &color)
 {
     this->color = color;
 }
 
-void CPUDraw::SetBorder(const int32_t &border)
+void Cpudraw::SetBorder(const int32_t &border)
 {
     this->border = border;
 }
 
-void CPUDraw::DrawBorder(const struct CPUDrawRect &rect)
+void Cpudraw::DrawBorder(const struct CpudrawRect &rect)
 {
     DrawBorder(rect.x, rect.y, rect.w, rect.h);
 }
 
-void CPUDraw::DrawBorder(const int32_t &x, const int32_t &y, const int32_t &w, const int32_t &h)
+void Cpudraw::DrawBorder(const int32_t &x, const int32_t &y, const int32_t &w, const int32_t &h)
 {
     ScopedBytrace trace(__func__);
     DrawRect(x, y, border, h);
@@ -51,12 +51,12 @@ void CPUDraw::DrawBorder(const int32_t &x, const int32_t &y, const int32_t &w, c
     DrawRect(x, y + h - border, w, border);
 }
 
-void CPUDraw::DrawRect(const struct CPUDrawRect &rect)
+void Cpudraw::DrawRect(const struct CpudrawRect &rect)
 {
     DrawRect(rect.x, rect.y, rect.w, rect.h);
 }
 
-void CPUDraw::DrawRect(const int32_t &x, const int32_t &y, const int32_t &w, const int32_t &h)
+void Cpudraw::DrawRect(const int32_t &x, const int32_t &y, const int32_t &w, const int32_t &h)
 {
     ScopedBytrace trace(__func__);
     for (int32_t j = Max(y, 0); j < Min(y + h, height); j++) {
@@ -66,12 +66,12 @@ void CPUDraw::DrawRect(const int32_t &x, const int32_t &y, const int32_t &w, con
     }
 }
 
-int32_t CPUDraw::Min(const int32_t &a, const int32_t &b)
+int32_t Cpudraw::Min(const int32_t &a, const int32_t &b)
 {
     return a < b ? a : b;
 }
 
-int32_t CPUDraw::Max(const int32_t &a, const int32_t &b)
+int32_t Cpudraw::Max(const int32_t &a, const int32_t &b)
 {
     return a > b ? a : b;
 }

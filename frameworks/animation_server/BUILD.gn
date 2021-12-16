@@ -106,9 +106,9 @@ ohos_executable("animation_server") {
     "//foundation/graphic/standard:libwmclient",
     "//foundation/graphic/standard:libwmservice",
     "//foundation/graphic/standard/utils:cpudraw",
-    "//foundation/graphic/standard/utils:graphic_bytrace",
     "//foundation/graphic/standard/utils:libgslogger",
     "//foundation/graphic/standard/utils:matrix",
+    "//foundation/graphic/standard/utils:scoped_bytrace",
     "//foundation/multimodalinput/input/frameworks/proxy:libmmi-client",
   ]
 

@@ -26,10 +26,10 @@ class VirtualDisplayOption : public RefBase {
 public:
     static sptr<VirtualDisplayOption> Get();
 
-    virtual WMError SetX(int32_t x) = 0;
-    virtual WMError SetY(int32_t y) = 0;
-    virtual WMError SetWidth(uint32_t width) = 0;
-    virtual WMError SetHeight(uint32_t height) = 0;
+    virtual GSError SetX(int32_t x) = 0;
+    virtual GSError SetY(int32_t y) = 0;
+    virtual GSError SetWidth(uint32_t width) = 0;
+    virtual GSError SetHeight(uint32_t height) = 0;
 
     virtual int32_t GetX() const = 0;
     virtual int32_t GetY() const = 0;

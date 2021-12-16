@@ -120,8 +120,8 @@ void LayerControllerClient::CreateWlBuffer(sptr<Surface>& surface, uint32_t wind
     int32_t flushFence;
     int64_t timestamp;
     Rect damage;
-    SurfaceError ret = surface->AcquireBuffer(buffer, flushFence, timestamp, damage);
-    if (ret != SURFACE_ERROR_OK) {
+    GSError ret = surface->AcquireBuffer(buffer, flushFence, timestamp, damage);
+    if (ret != GSERROR_OK) {
         WMLOG_I("LayerControllerClient::CreateWlBuffer AcquireBuffer failed");
         return;
     }
@@ -139,7 +139,7 @@ void LayerControllerClient::CreateWlBuffer(sptr<Surface>& surface, uint32_t wind
         if (dmaWlBuffer == nullptr) {
             WMLOG_E("Create DMA Buffer Failed");
             ret = surface->ReleaseBuffer(buffer, -1);
-            if (ret != SURFACE_ERROR_OK) {
+            if (ret != GSERROR_OK) {
                 WMLOG_W("ReleaseBuffer failed");
             }
             return;

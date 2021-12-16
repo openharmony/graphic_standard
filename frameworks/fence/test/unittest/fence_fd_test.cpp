@@ -56,11 +56,11 @@ HWTEST_F(FenceFdTest, BufferQueueFenceItem, testing::ext::TestSize.Level0) {
     PART("CaseDescription") {
         sptr<SurfaceBuffer> buffer = nullptr;
         int32_t releaseFence = 0;
-        SurfaceError ret = SURFACE_ERROR_ERROR;
+        GSError ret = GSERROR_INTERNEL;
 
         STEP("1. Check release fence fd") {
             ret = psurface->RequestBuffer(buffer, releaseFence, requestConfig);
-            STEP_ASSERT_EQ(ret, SURFACE_ERROR_OK);
+            STEP_ASSERT_EQ(ret, GSERROR_OK);
             STEP_ASSERT_EQ(releaseFence, -1);
             STEP_ASSERT_NE(buffer, nullptr);
         }
@@ -68,22 +68,22 @@ HWTEST_F(FenceFdTest, BufferQueueFenceItem, testing::ext::TestSize.Level0) {
         STEP("2. Check acquire fence from FlushBuffer to AcquireBuffer") {
             int32_t acquireFence = 1;
             ret = psurface->FlushBuffer(buffer, acquireFence, flushConfig);
-            STEP_ASSERT_EQ(ret, SURFACE_ERROR_OK);
+            STEP_ASSERT_EQ(ret, GSERROR_OK);
 
             int32_t outAcquireFence = 0;
             ret = csurface->AcquireBuffer(buffer, outAcquireFence, timestamp, damage);
-            STEP_ASSERT_EQ(ret, SURFACE_ERROR_OK);
+            STEP_ASSERT_EQ(ret, GSERROR_OK);
             STEP_ASSERT_EQ(outAcquireFence, acquireFence);
         }
 
         STEP("3. Check this release fence and the release fence of the next RequestBuffer") {
             int32_t newReleaseFence = 2;
             ret = csurface->ReleaseBuffer(buffer, newReleaseFence);
-            STEP_ASSERT_EQ(ret, SURFACE_ERROR_OK);
+            STEP_ASSERT_EQ(ret, GSERROR_OK);
 
             int32_t outReleaseFence = 0;
             ret = psurface->RequestBuffer(buffer, outReleaseFence, requestConfig);
-            STEP_ASSERT_EQ(ret, SURFACE_ERROR_OK);
+            STEP_ASSERT_EQ(ret, GSERROR_OK);
             STEP_ASSERT_NE(buffer, nullptr);
             STEP_ASSERT_EQ(outReleaseFence, newReleaseFence);
         }

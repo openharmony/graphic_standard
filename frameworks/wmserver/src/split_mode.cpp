@@ -17,7 +17,7 @@
 
 #include <map>
 
-#include <graphic_bytrace.h>
+#include <scoped_bytrace.h>
 #include <ianimation_service.h>
 #include <ivi-layout-private.h>
 #include <window_manager_type.h>
@@ -34,8 +34,10 @@ using namespace OHOS;
 int32_t g_x = 0;
 int32_t g_y = 0;
 bool g_reinit = false;
+
 constexpr double lineHeight = 0.1;
 constexpr double lineHeightHalf = lineHeight / 2;
+constexpr double exitingPosition = 0.2;
 
 void GetSplitModeShowArea(int32_t &x, int32_t &y, int32_t &width, int32_t &height)
 {
@@ -201,10 +203,10 @@ void OnSwitchTop(struct WindowSurface *ws)
     AddSetWindowTopListener(nullptr);
 }
 
-void OnSurfaceDestroy(struct WindowSurface *surface)
+void OnSurfaceDestroy(struct WindowSurface *ws)
 {
-    LOG_INFO("OnSurfaceDestroy: %d", surface->surfaceId);
-    if (surface->isSplited == false) {
+    LOG_INFO("OnSurfaceDestroy: %d", ws->surfaceId);
+    if (ws->isSplited == false) {
         return;
     }
     AddSurfaceDestroyListener(nullptr);
@@ -216,20 +218,20 @@ void OnSurfaceDestroy(struct WindowSurface *surface)
         ChangeSplitMode(lineWindow, SPLIT_STATUS_DESTROY);
     }
 
-    auto condition = [surface](struct WindowSurface *ws) {
-        return ws->isSplited && ws != surface;
+    auto condition = [other = ws](struct WindowSurface *ws) {
+        return ws->isSplited && ws != other;
     };
-    auto ws = GetWindow(condition);
-    if (ws == nullptr) {
+    auto ws2 = GetWindow(condition);
+    if (ws2 == nullptr) {
         return;
     }
 
-    ws->isSplited = false;
+    ws2->isSplited = false;
     int32_t defX = 0, defY = 0, defWidth = 0, defHeight = 0;
     GetSplitModeShowArea(defX, defY, defWidth, defHeight);
-    ChangeWindowPosition(ws, defX, defY);
-    ChangeWindowSize(ws, defWidth, defHeight);
-    ChangeSplitMode(ws, SPLIT_STATUS_RETAIN);
+    ChangeWindowPosition(ws2, defX, defY);
+    ChangeWindowSize(ws2, defWidth, defHeight);
+    ChangeSplitMode(ws2, SPLIT_STATUS_RETAIN);
 
     auto ctx = GetWmsInstance();
     ctx->pLayoutInterface->surface_change_top(ws->layoutSurface);
@@ -302,8 +304,8 @@ bool To3Select()
         return false;
     }
 
-    int32_t height = defHeight * (1 - lineHeight) / 2;
-    if (g_y > defY + defHeight * 0.5) {
+    int32_t height = defHeight * (1 - lineHeight) / 0x2;
+    if (g_y > defY + defHeight / 0x2) {
         // select bottom, ws move to top
         LOG_INFO("Select bottom");
         // vectical-align: top
@@ -354,8 +356,8 @@ bool To4Confirm()
     int32_t defX = 0, defY = 0, defWidth = 0, defHeight = 0;
     GetSplitModeShowArea(defX, defY, defWidth, defHeight);
     int32_t y = 0;
-    if (win2->y <= defY + defHeight / 2) {
-        y = defHeight - (defHeight * (1 - lineHeight) / 2);
+    if (win2->y <= defY + defHeight / 0x2) {
+        y = defHeight - (defHeight * (1 - lineHeight) / 0x2);
     }
 
     win1->isSplited = true;
@@ -429,7 +431,7 @@ bool To7TouchUp6()
 
     int32_t diff = g_y - y;
     LOG_INFO("diff: %d", diff);
-    if (0.2 * h <= diff && diff <= h * 0.8) {
+    if (exitingPosition * h <= diff && diff <= h * (1 - exitingPosition)) {
         ChangeSplitMode(topWindow, SPLIT_STATUS_CLEAR);
         ChangeSplitMode(bottomWindow, SPLIT_STATUS_CLEAR);
         return true;
@@ -462,7 +464,7 @@ bool Ignore()
     return true;
 }
 
-/* split mode state machine:
+/* split mode state machine
  * /-\       /-*       /-*
  * |7| ----> |0| <---> |1|
  * \-/       \-/       \-/
@@ -496,13 +498,13 @@ bool(* stateMachine[SPLIT_MODE_MAX][SPLIT_MODE_MAX])() = {
 };
 
 void ControllerSetSplitMode(struct wl_client *client,
-                               struct wl_resource *resource,
-                               uint32_t type, int32_t x, int32_t y)
+                            struct wl_resource *resource,
+                            uint32_t type, int32_t x, int32_t y)
 {
     ScopedBytrace trace(__func__);
     LOG_SCOPE();
     LOG_INFO("type: %d", type);
-    if (!(0 <= type && type < SPLIT_MODE_MAX)) {
+    if (!(type >= 0 && type < SPLIT_MODE_MAX)) {
         LOG_ERROR("invalid");
         wms_send_reply_error(resource, WMS_ERROR_INVALID_PARAM);
         return;

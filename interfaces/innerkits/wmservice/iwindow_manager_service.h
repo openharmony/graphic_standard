@@ -33,18 +33,18 @@ class IWindowManagerService : public RefBase {
 public:
     virtual ~IWindowManagerService() = default;
 
-    virtual WMError GetDisplays(std::vector<struct WMDisplayInfo> &displays) = 0;
+    virtual GSError GetDisplays(std::vector<struct WMDisplayInfo> &displays) = 0;
     virtual sptr<PromisePowerStatus> GetDisplayPower(int32_t did) = 0;
     virtual sptr<PromiseWMError> SetDisplayPower(int32_t did, DispPowerStatus status) = 0;
     virtual sptr<PromiseBacklight> GetDisplayBacklight(int32_t did) = 0;
     virtual sptr<PromiseWMError> SetDisplayBacklight(int32_t did, uint32_t level) = 0;
-    virtual WMError GetDisplayModes(uint32_t &displayModes) = 0;
     virtual sptr<PromiseWMError> SetDisplayMode(WMSDisplayMode modes) = 0;
-    virtual WMError AddDisplayChangeListener(IWindowManagerDisplayListenerClazz *listener) = 0;
     virtual sptr<PromiseWMError> OnWindowListChange(IWindowChangeListenerClazz *listener) = 0;
+    virtual GSError GetDisplayModes(uint32_t &displayModes) = 0;
+    virtual GSError AddDisplayChangeListener(IWindowManagerDisplayListenerClazz *listener) = 0;
 
-    virtual WMError SetDisplayDirection(WMSDisplayDirection direction) = 0;
-    virtual WMError OnDisplayDirectionChange(DisplayDirectionChangeFunc func) = 0;
+    virtual GSError SetDisplayDirection(WMSDisplayDirection direction) = 0;
+    virtual GSError OnDisplayDirectionChange(DisplayDirectionChangeFunc func) = 0;
 
     virtual sptr<PromiseWMError> SetStatusBarVisibility(bool visibility) = 0;
     virtual sptr<PromiseWMError> SetNavigationBarVisibility(bool visibility) = 0;

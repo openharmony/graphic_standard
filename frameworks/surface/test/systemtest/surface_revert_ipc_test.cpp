@@ -65,7 +65,7 @@ pid_t SurfaceRevertIPCTest::ChildProcessMain()
     int64_t data;
     sptr<SurfaceBuffer> buffer = nullptr;
     auto sret = psurface->RequestBufferNoFence(buffer, requestConfig);
-    if (sret != SURFACE_ERROR_OK) {
+    if (sret != GSERROR_OK) {
         data = sret;
         write(pipeFd[1], &data, sizeof(data));
         exit(0);
@@ -76,7 +76,7 @@ pid_t SurfaceRevertIPCTest::ChildProcessMain()
     buffer->ExtraSet("567", "567");
 
     sret = psurface->FlushBuffer(buffer, -1, flushConfig);
-    if (sret != SURFACE_ERROR_OK) {
+    if (sret != GSERROR_OK) {
         data = sret;
         write(pipeFd[1], &data, sizeof(data));
         exit(0);
@@ -85,7 +85,7 @@ pid_t SurfaceRevertIPCTest::ChildProcessMain()
     Rect damage;
     int32_t fence;
     sret = csurface->AcquireBuffer(buffer, fence, data, damage);
-    if (sret != SURFACE_ERROR_OK) {
+    if (sret != GSERROR_OK) {
         data = sret;
         write(pipeFd[1], &data, sizeof(data));
         exit(0);
@@ -109,7 +109,7 @@ HWTEST_F(SurfaceRevertIPCTest, Fork, testing::ext::TestSize.Level0)
     int64_t data;
     read(pipeFd[0], &data, sizeof(data));
     GTEST_LOG_(INFO) << getpid();
-    ASSERT_EQ(data, SURFACE_ERROR_OK);
+    ASSERT_EQ(data, GSERROR_OK);
 
     auto sam = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
     auto robj = sam->GetSystemAbility(ipcSystemAbilityID);
@@ -118,7 +118,7 @@ HWTEST_F(SurfaceRevertIPCTest, Fork, testing::ext::TestSize.Level0)
 
     sptr<SurfaceBuffer> buffer = nullptr;
     auto sret = psurface->RequestBufferNoFence(buffer, requestConfig);
-    EXPECT_EQ(sret, SURFACE_ERROR_OK);
+    EXPECT_EQ(sret, GSERROR_OK);
     EXPECT_NE(buffer, nullptr);
     if (buffer != nullptr) {
         int32_t int32;

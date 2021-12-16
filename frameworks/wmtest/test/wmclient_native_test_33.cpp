@@ -69,7 +69,7 @@ public:
 
         auto wmRet = wm->Init();
         if (wmRet) {
-            printf("init failed with %s\n", WMErrorStr(wmRet).c_str());
+            printf("init failed with %s\n", GSErrorStr(wmRet).c_str());
             ExitTest();
             return;
         }
@@ -94,7 +94,7 @@ public:
             virtualDisplayOption->SetHeight(VIRTUAL_DISPLAY_H);
 
             auto ret = wm->CreateVirtualDisplay(virtualDisplayOption);
-            if (ret != WM_OK) {
+            if (ret != GSERROR_OK) {
                 printf("create virtual display failed.\n");
                 return;
             }

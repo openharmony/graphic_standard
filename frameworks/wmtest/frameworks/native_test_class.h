@@ -24,7 +24,6 @@
 #include <window_manager.h>
 
 namespace OHOS {
-
 class NativeTestFactory {
 public:
     static sptr<Window> CreateWindow(WindowType type,
@@ -33,13 +32,13 @@ public:
     static inline int32_t defaultDisplayID = 0;
 };
 
-using DrawFunc = std::function<void(void *, uint32_t, uint32_t, uint32_t)>;
+using DrawFunc = std::function<void(uint32_t *, uint32_t, uint32_t, uint32_t)>;
 class NativeTestSync : public RefBase {
 public:
     static sptr<NativeTestSync> CreateSync(DrawFunc drawFunc, sptr<Surface> &psurface, void *data = nullptr);
 
 private:
-    void Sync(int64_t, void *);
+    void Sync(int64_t, void *data);
 
     sptr<Surface> surface = nullptr;
     DrawFunc draw = nullptr;
@@ -66,13 +65,13 @@ private:
 
 class NativeTestDraw {
 public:
-    static void FlushDraw(void *vaddr, uint32_t width, uint32_t height, uint32_t count);
-    static void ColorDraw(void *vaddr, uint32_t width, uint32_t height, uint32_t count);
-    static void BlackDraw(void *vaddr, uint32_t width, uint32_t height, uint32_t count);
-    static void RainbowDraw(void *vaddr, uint32_t width, uint32_t height, uint32_t count);
+    static void FlushDraw(uint32_t *vaddr, uint32_t width, uint32_t height, uint32_t count);
+    static void ColorDraw(uint32_t *vaddr, uint32_t width, uint32_t height, uint32_t count);
+    static void BlackDraw(uint32_t *vaddr, uint32_t width, uint32_t height, uint32_t count);
+    static void RainbowDraw(uint32_t *vaddr, uint32_t width, uint32_t height, uint32_t count);
     static inline constexpr int32_t RainbowDrawFramerate = 100;
-    static void BoxDraw(void *vaddr, uint32_t width, uint32_t height, uint32_t count);
-    static void PureColorDraw(void *vaddr, uint32_t width, uint32_t height, uint32_t count, uint32_t *color);
+    static void BoxDraw(uint32_t *vaddr, uint32_t width, uint32_t height, uint32_t count);
+    static void PureColorDraw(uint32_t *vaddr, uint32_t width, uint32_t height, uint32_t count, uint32_t *color);
 };
 } // namespace OHOS
 

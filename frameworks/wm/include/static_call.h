@@ -30,13 +30,13 @@ public:
 
     MOCKABLE sptr<Surface> SurfaceCreateSurfaceAsConsumer(std::string name = "no name");
     MOCKABLE sptr<Surface> SurfaceCreateSurfaceAsProducer(sptr<IBufferProducer>& producer);
-    MOCKABLE WMError WindowImplCreate(sptr<Window> &window,
+    MOCKABLE GSError WindowImplCreate(sptr<Window> &window,
                                       const sptr<WindowOption> &option,
                                       const sptr<IWindowManagerService> &wms);
-    MOCKABLE WMError SubwindowNormalImplCreate(sptr<Subwindow> &subwindow,
+    MOCKABLE GSError SubwindowNormalImplCreate(sptr<Subwindow> &subwindow,
                                                const sptr<Window> &window,
                                                const sptr<SubwindowOption> &option);
-    MOCKABLE WMError SubwindowVideoImplCreate(sptr<Subwindow> &subwindow,
+    MOCKABLE GSError SubwindowVideoImplCreate(sptr<Subwindow> &subwindow,
                                               const sptr<Window> &window,
                                               const sptr<SubwindowOption> &option);
 

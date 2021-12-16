@@ -45,10 +45,10 @@ class VsyncClient : public RefBase {
 public:
     static sptr<VsyncClient> GetInstance();
 
-    virtual VsyncError Init(bool restart = false);
+    virtual GSError Init(bool restart = false);
 
-    VsyncError RequestFrameCallback(const struct FrameCallback &cb);
-    VsyncError GetSupportedVsyncFrequencys(std::vector<uint32_t>& freqs);
+    GSError RequestFrameCallback(const struct FrameCallback &cb);
+    GSError GetSupportedVsyncFrequencys(std::vector<uint32_t>& freqs);
 
     virtual void DispatchFrameCallback(int64_t timestamp);
 
@@ -57,8 +57,8 @@ private:
     virtual ~VsyncClient() = default;
     static inline sptr<VsyncClient> instance = nullptr;
 
-    VsyncError InitService();
-    VsyncError InitVsyncFrequency();
+    GSError InitService();
+    GSError InitVsyncFrequency();
     GSError InitListener();
 
     void DispatchMain(int64_t timestamp);
@@ -81,8 +81,8 @@ public:
     VsyncHelperImpl(std::shared_ptr<AppExecFwk::EventHandler>& handler);
     virtual ~VsyncHelperImpl() override;
 
-    virtual VsyncError RequestFrameCallback(const struct FrameCallback &cb) override;
-    virtual VsyncError GetSupportedVsyncFrequencys(std::vector<uint32_t>& freqs) override;
+    virtual GSError RequestFrameCallback(const struct FrameCallback &cb) override;
+    virtual GSError GetSupportedVsyncFrequencys(std::vector<uint32_t>& freqs) override;
 
 private:
     std::shared_ptr<AppExecFwk::EventHandler> handler_ = nullptr;
@@ -91,7 +91,7 @@ private:
 
 class VsyncCallback : public VsyncCallbackStub {
 public:
-    virtual VsyncError OnVsync(int64_t timestamp) override;
+    virtual GSError OnVsync(int64_t timestamp) override;
 };
 
 class VsyncManagerDeathRecipient : public IRemoteObject::DeathRecipient {

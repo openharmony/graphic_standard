@@ -13,26 +13,21 @@
  * limitations under the License.
  */
 
-#ifndef FRAMEWORKS_VSYNC_INCLUDE_VSYNC_CALLBACK_PROXY_H
-#define FRAMEWORKS_VSYNC_INCLUDE_VSYNC_CALLBACK_PROXY_H
+#ifndef UTILS_TRACE_SCOPED_BYTRACE_H
+#define UTILS_TRACE_SCOPED_BYTRACE_H
 
-#include <iremote_proxy.h>
+#include <string>
 
-#include "ivsync_callback.h"
-
-namespace OHOS {
-namespace Vsync {
-class VsyncCallbackProxy : public IRemoteProxy<IVsyncCallback> {
+class ScopedBytrace {
 public:
-    VsyncCallbackProxy(const sptr<IRemoteObject>& impl);
-    virtual ~VsyncCallbackProxy() = default;
+    ScopedBytrace(const std::string &proc);
+    ~ScopedBytrace();
 
-    GSError OnVsync(int64_t timestamp) override;
+    void End();
 
 private:
-    static inline BrokerDelegator<VsyncCallbackProxy> delegator_;
+    std::string proc_;
+    bool isEnd = false;
 };
-} // namespace Vsync
-} // namespace OHOS
 
-#endif // FRAMEWORKS_VSYNC_INCLUDE_VSYNC_CALLBACK_PROXY_H
+#endif // UTILS_TRACE_SCOPED_BYTRACE_H

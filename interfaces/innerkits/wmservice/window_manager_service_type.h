@@ -33,7 +33,7 @@ enum WMSDisplayDirection {
 using DisplayDirectionChangeFunc = std::function<void(WMSDisplayDirection newDirection)>;
 
 struct WMSImageInfo {
-    WMError wret;
+    GSError wret;
     int32_t fd;
     uint32_t width;
     uint32_t height;
@@ -43,20 +43,20 @@ struct WMSImageInfo {
 };
 
 struct PowerStatus {
-    WMError wret;
+    GSError wret;
     DispPowerStatus status;
 };
 
 struct Backlight {
-    WMError wret;
+    GSError wret;
     uint32_t level;
 };
 
 using PromiseWMError = Promise<WMError>;
+using PromiseGSError = Promise<GSError>;
 using PromiseWMSImageInfo = Promise<WMSImageInfo>;
 using PromisePowerStatus = Promise<PowerStatus>;
 using PromiseBacklight = Promise<Backlight>;
-
 } // namespace OHOS
 
 #endif // INTERFACES_INNERKITS_WMSERVICE_WINDOW_MANAGER_SERVICE_TYPE_H

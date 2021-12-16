@@ -19,10 +19,6 @@
 
 #include <gslogger.h>
 
-namespace {
-//DEFINE_HILOG_LABEL("AnimationServer::Texture");
-} // namespace
-
 Texture::Texture(void *buffer, int32_t width, int32_t height)
     : buffer_(buffer), width_(width), height_(height)
 {

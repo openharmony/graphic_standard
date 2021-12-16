@@ -34,14 +34,14 @@ using namespace OHOS;
 namespace {
 class WMClientNativeTest32Ability : public INativeTest {
 public:
-    virtual void Draw(void *vaddr, uint32_t width, uint32_t height, uint32_t count) = 0;
+    virtual void Draw(uint32_t *vaddr, uint32_t width, uint32_t height, uint32_t count) = 0;
 
     void Run(int32_t argc, const char **argv) override
     {
         handler = AppExecFwk::EventHandler::Current();
         auto initRet = WindowManager::GetInstance()->Init();
         if (initRet) {
-            printf("init failed with %s\n", WMErrorStr(initRet).c_str());
+            printf("init failed with %s\n", GSErrorStr(initRet).c_str());
             ExitTest();
             return;
         }
@@ -164,10 +164,10 @@ public:
         return false;
     }
 
-    void OnMoveReturn(const WMError &err)
+    void OnMoveReturn(const GSError &err)
     {
-        if (err != WM_OK) {
-            printf("Move failed %d, means %s\n", err, WMErrorStr(err).c_str());
+        if (err != GSERROR_OK) {
+            printf("Move failed %d, means %s\n", err, GSErrorStr(err).c_str());
         }
     }
 
@@ -221,7 +221,7 @@ public:
         OnPIPModeChange(std::bind(&WMClientNativeTest32::OnPipModeChange, this, std::placeholders::_1));
     }
 
-    void Draw(void *vaddr, uint32_t width, uint32_t height, uint32_t count) override
+    void Draw(uint32_t *vaddr, uint32_t width, uint32_t height, uint32_t count) override
     {
         drawptr(vaddr, width, height, count);
     }

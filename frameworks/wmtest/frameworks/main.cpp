@@ -94,7 +94,7 @@ int32_t LoadService(INativeTest *test)
         test->windowManager = WindowManager::GetInstance();
         auto wret = test->windowManager->Init();
         if (wret) {
-            GSLOG7SO(ERROR) << "WindowManager Init failed with " << WMErrorStr(wret);
+            GSLOG7SO(ERROR) << "WindowManager Init failed with " << GSErrorStr(wret);
             return wret;
         }
     }
@@ -103,7 +103,7 @@ int32_t LoadService(INativeTest *test)
         auto wmsc = WindowManagerServiceClient::GetInstance();
         auto wret = wmsc->Init();
         if (wret) {
-            GSLOG7SO(ERROR) << "WindowManagerServiceClient Init failed with " << WMErrorStr(wret);
+            GSLOG7SO(ERROR) << "WindowManagerServiceClient Init failed with " << GSErrorStr(wret);
             return wret;
         }
         test->windowManagerService = wmsc->GetService();

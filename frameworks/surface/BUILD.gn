@@ -77,7 +77,7 @@ ohos_shared_library("surface") {
   deps = [
     "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
     "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy:samgr_proxy",
-    "//foundation/graphic/standard/utils/bytrace:graphic_bytrace",
+    "//foundation/graphic/standard/utils:scoped_bytrace",
   ]
 
   public_deps = [

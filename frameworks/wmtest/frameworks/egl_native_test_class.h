@@ -28,12 +28,12 @@
 #include <GLES2/gl2ext.h>
 
 namespace OHOS {
-typedef struct {
+using GLContext = struct {
     GLuint program;
     GLuint pos;
     GLuint color;
     GLuint offsetUniform;
-} GLContext;
+};
 
 using EGLDrawFunc = std::function<void(GLContext *,
     sptr<EglSurface> &psurface, uint32_t width, uint32_t height)>;
@@ -44,14 +44,14 @@ public:
         sptr<EglSurface> &psurface, uint32_t width, uint32_t height, void *data = nullptr);
 
 private:
-    void Sync(int64_t, void *);
+    void Sync(int64_t, void *data);
     bool GLContextInit();
 
     sptr<EglSurface> eglsurface = nullptr;
     EGLDrawFunc draw = nullptr;
     GLContext glCtx;
     bool bInit = false;
-    SurfaceError sret = SURFACE_ERROR_OK;
+    GSError sret = GSERROR_OK;
     uint32_t width_ = 0;
     uint32_t height_ = 0;
     uint32_t count = 0;

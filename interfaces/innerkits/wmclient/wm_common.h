@@ -109,7 +109,7 @@ enum rotateType {
 };
 
 struct WMImageInfo {
-    enum WMError wret;
+    enum GSError wret;
     uint32_t width;
     uint32_t height;
     uint32_t format;

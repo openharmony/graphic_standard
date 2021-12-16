@@ -49,7 +49,7 @@ void EGLNativeTestSync::Sync(int64_t, void *data)
         return;
     }
 
-    if (sret == SURFACE_ERROR_OK) {
+    if (sret == GSERROR_OK) {
         draw(&glCtx, eglsurface, width_, height_);
         count++;
     }
@@ -136,7 +136,7 @@ bool EGLNativeTestSync::GLContextInit()
         return bInit;
     }
 
-    if (eglsurface->InitContext() != SURFACE_ERROR_OK) {
+    if (eglsurface->InitContext() != GSERROR_OK) {
         printf("GLContextInit InitContext failed\n");
         return bInit;
     }
@@ -183,11 +183,11 @@ void EGLNativeTestDraw::FlushDraw(GLContext *ctx, sptr<EglSurface> &eglsurface, 
     /* Split time_ms in repeating windows of [0, iterationMs) and map them
      * to offsets in the [-0.5, 0.5) range. */
     constexpr uint64_t iterationMs = 5000000000;
-    GLfloat offset = (GetNowTime() % iterationMs) / static_cast<double>(iterationMs);
+    GLfloat offset = (GetNowTime() % iterationMs) / static_cast<double>(iterationMs) - 0.5;
 
     glViewport(0, 0, width, height);
 
-    glUniform1f(ctx->offsetUniform, offset - 0.5);
+    glUniform1f(ctx->offsetUniform, offset);
 
     glClearColor(0.0, 1.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);

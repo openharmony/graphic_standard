@@ -62,28 +62,28 @@ namespace {
  * Rank: Rare(4)
  * EnvConditions: WindowManager init success.
  * CaseDescription: 1. Create ($2=nullptr)
- *                  2. check return WM_ERROR_NULLPTR
+ *                  2. check return GSERROR_INVALID_ARGUMENTS
  *                  3. check $1 is nullptr
  */
 HWTEST_F(SubwindowNormalImplTest, Create01, Reliability | SmallTest | Level4)
 {
     PART("EnvConditions") {
         STEP("WindowManager init success.") {
-            STEP_ASSERT_EQ(initRet, WM_OK);
+            STEP_ASSERT_EQ(initRet, GSERROR_OK);
         }
     }
 
     PART("CaseDescription") {
         sptr<Subwindow> subwindow = nullptr;
-        WMError wret;
+        GSError wret;
 
         STEP("1. Create ($2=nullptr)") {
             sptr<Window> w = nullptr;
             wret = SubwindowNormalImpl::Create(subwindow, w, subwindowOption);
         }
 
-        STEP("2. check return WM_ERROR_NULLPTR") {
-            STEP_ASSERT_EQ(wret, WM_ERROR_NULLPTR);
+        STEP("2. check return GSERROR_INVALID_ARGUMENTS") {
+            STEP_ASSERT_EQ(wret, GSERROR_INVALID_ARGUMENTS);
         }
 
         STEP("3. check $1 is nullptr") {
@@ -98,28 +98,28 @@ HWTEST_F(SubwindowNormalImplTest, Create01, Reliability | SmallTest | Level4)
  * Rank: Rare(4)
  * EnvConditions: WindowManager init success.
  * CaseDescription: 1. Create ($3=nullptr)
- *                  2. check return WM_ERROR_NULLPTR
+ *                  2. check return GSERROR_INVALID_ARGUMENTS
  *                  3. check $1 is nullptr
  */
 HWTEST_F(SubwindowNormalImplTest, Create02, Reliability | SmallTest | Level4)
 {
     PART("EnvConditions") {
         STEP("WindowManager init success.") {
-            STEP_ASSERT_EQ(initRet, WM_OK);
+            STEP_ASSERT_EQ(initRet, GSERROR_OK);
         }
     }
 
     PART("CaseDescription") {
         sptr<Subwindow> subwindow = nullptr;
-        WMError wret;
+        GSError wret;
 
         STEP("1. Create ($3=nullptr)") {
             sptr<SubwindowOption> option = nullptr;
             wret = SubwindowNormalImpl::Create(subwindow, window, option);
         }
 
-        STEP("2. check return WM_ERROR_NULLPTR") {
-            STEP_ASSERT_EQ(wret, WM_ERROR_NULLPTR);
+        STEP("2. check return GSERROR_INVALID_ARGUMENTS") {
+            STEP_ASSERT_EQ(wret, GSERROR_INVALID_ARGUMENTS);
         }
 
         STEP("3. check $1 is nullptr") {
@@ -135,13 +135,13 @@ HWTEST_F(SubwindowNormalImplTest, Create02, Reliability | SmallTest | Level4)
  * EnvConditions: WindowManager init success.
  * CaseDescription: 1. SetTestNew
  *                  2. Create (all normal)
- *                  3. check return WM_ERROR_NEW
+ *                  3. check return GSERROR_NO_MEM
  */
 HWTEST_F(SubwindowNormalImplTest, Create03, Reliability | SmallTest | Level4)
 {
     PART("EnvConditions") {
         STEP("WindowManager init success.") {
-            STEP_ASSERT_EQ(initRet, WM_OK);
+            STEP_ASSERT_EQ(initRet, GSERROR_OK);
         }
     }
 
@@ -150,14 +150,14 @@ HWTEST_F(SubwindowNormalImplTest, Create03, Reliability | SmallTest | Level4)
             Tester::Get().SetTestNew("SubwindowNormalImpl", nullptr);
         }
 
-        WMError wret;
+        GSError wret;
         STEP("2. Create (all normal)") {
             sptr<Subwindow> subwindow = nullptr;
             wret = SubwindowNormalImpl::Create(subwindow, window, subwindowOption);
         }
 
-        STEP("3. check return WM_ERROR_NEW") {
-            STEP_ASSERT_EQ(wret, WM_ERROR_NEW);
+        STEP("3. check return GSERROR_NO_MEM") {
+            STEP_ASSERT_EQ(wret, GSERROR_NO_MEM);
         }
     }
 }
@@ -170,13 +170,13 @@ HWTEST_F(SubwindowNormalImplTest, Create03, Reliability | SmallTest | Level4)
  * CaseDescription: 1. SingletonContainer::SetSingleton MockWlSurfaceFactory
  *                  2. except MockWlSurfaceFactory Create return nullptr
  *                  3. Create (all normal)
- *                  4. check return WM_ERROR_API_FAILED
+ *                  4. check return GSERROR_API_FAILED
  */
 HWTEST_F(SubwindowNormalImplTest, Create04, Reliability | SmallTest | Level4)
 {
     PART("EnvConditions") {
         STEP("WindowManager init success.") {
-            STEP_ASSERT_EQ(initRet, WM_OK);
+            STEP_ASSERT_EQ(initRet, GSERROR_OK);
         }
     }
 
@@ -194,14 +194,14 @@ HWTEST_F(SubwindowNormalImplTest, Create04, Reliability | SmallTest | Level4)
                 .WillOnce(Return(nullptr));
         }
 
-        WMError wret;
+        GSError wret;
         STEP("3. Create (all normal)") {
             sptr<Subwindow> subwindow = nullptr;
             wret = SubwindowNormalImpl::Create(subwindow, window, subwindowOption);
         }
 
-        STEP("4. check return WM_ERROR_API_FAILED") {
-            STEP_ASSERT_EQ(wret, WM_ERROR_API_FAILED);
+        STEP("4. check return GSERROR_API_FAILED") {
+            STEP_ASSERT_EQ(wret, GSERROR_API_FAILED);
         }
     }
 }
@@ -214,13 +214,13 @@ HWTEST_F(SubwindowNormalImplTest, Create04, Reliability | SmallTest | Level4)
  * CaseDescription: 1. SingletonContainer::SetSingleton MockWlSubsurfaceFactory
  *                  2. except MockWlSubsurfaceFactory Create return nullptr
  *                  3. Create (all normal)
- *                  4. check return WM_ERROR_API_FAILED
+ *                  4. check return GSERROR_API_FAILED
  */
 HWTEST_F(SubwindowNormalImplTest, Create05, Reliability | SmallTest | Level4)
 {
     PART("EnvConditions") {
         STEP("WindowManager init success.") {
-            STEP_ASSERT_EQ(initRet, WM_OK);
+            STEP_ASSERT_EQ(initRet, GSERROR_OK);
         }
     }
 
@@ -238,14 +238,14 @@ HWTEST_F(SubwindowNormalImplTest, Create05, Reliability | SmallTest | Level4)
                 .WillOnce(Return(nullptr));
         }
 
-        WMError wret;
+        GSError wret;
         STEP("3. Create (all normal)") {
             sptr<Subwindow> subwindow = nullptr;
             wret = SubwindowNormalImpl::Create(subwindow, window, subwindowOption);
         }
 
-        STEP("4. check return WM_ERROR_API_FAILED") {
-            STEP_ASSERT_EQ(wret, WM_ERROR_API_FAILED);
+        STEP("4. check return GSERROR_API_FAILED") {
+            STEP_ASSERT_EQ(wret, GSERROR_API_FAILED);
         }
     }
 }
@@ -258,13 +258,13 @@ HWTEST_F(SubwindowNormalImplTest, Create05, Reliability | SmallTest | Level4)
  * CaseDescription: 1. SingletonContainer::SetSingleton MockStaticCall
  *                  2. except MockStaticCall SurfaceCreateSurfaceAsConsumer return nullptr
  *                  3. Create (all normal)
- *                  4. check return WM_ERROR_API_FAILED
+ *                  4. check return GSERROR_API_FAILED
  */
 HWTEST_F(SubwindowNormalImplTest, Create06, Reliability | SmallTest | Level4)
 {
     PART("EnvConditions") {
         STEP("WindowManager init success.") {
-            STEP_ASSERT_EQ(initRet, WM_OK);
+            STEP_ASSERT_EQ(initRet, GSERROR_OK);
         }
     }
 
@@ -282,14 +282,14 @@ HWTEST_F(SubwindowNormalImplTest, Create06, Reliability | SmallTest | Level4)
                 .WillOnce(Return(nullptr));
         }
 
-        WMError wret;
+        GSError wret;
         STEP("3. Create (all normal)") {
             sptr<Subwindow> subwindow = nullptr;
             wret = SubwindowNormalImpl::Create(subwindow, window, subwindowOption);
         }
 
-        STEP("4. check return WM_ERROR_API_FAILED") {
-            STEP_ASSERT_EQ(wret, WM_ERROR_API_FAILED);
+        STEP("4. check return GSERROR_API_FAILED") {
+            STEP_ASSERT_EQ(wret, GSERROR_API_FAILED);
         }
     }
 }
@@ -302,13 +302,13 @@ HWTEST_F(SubwindowNormalImplTest, Create06, Reliability | SmallTest | Level4)
  * CaseDescription: 1. SingletonContainer::SetSingleton MockStaticCall
  *                  2. except MockStaticCall SurfaceCreateSurfaceAsProducer return nullptr
  *                  3. Create (all normal)
- *                  4. check return WM_ERROR_API_FAILED
+ *                  4. check return GSERROR_API_FAILED
  */
 HWTEST_F(SubwindowNormalImplTest, Create07, Reliability | SmallTest | Level4)
 {
     PART("EnvConditions") {
         STEP("WindowManager init success.") {
-            STEP_ASSERT_EQ(initRet, WM_OK);
+            STEP_ASSERT_EQ(initRet, GSERROR_OK);
         }
     }
 
@@ -330,14 +330,14 @@ HWTEST_F(SubwindowNormalImplTest, Create07, Reliability | SmallTest | Level4)
                 .WillOnce(Return(nullptr));
         }
 
-        WMError wret;
+        GSError wret;
         STEP("3. Create (all normal)") {
             sptr<Subwindow> subwindow = nullptr;
             wret = SubwindowNormalImpl::Create(subwindow, window, subwindowOption);
         }
 
-        STEP("4. check return WM_ERROR_API_FAILED") {
-            STEP_ASSERT_EQ(wret, WM_ERROR_API_FAILED);
+        STEP("4. check return GSERROR_API_FAILED") {
+            STEP_ASSERT_EQ(wret, GSERROR_API_FAILED);
         }
     }
 }
@@ -355,7 +355,7 @@ HWTEST_F(SubwindowNormalImplTest, GetSurface01, Function | SmallTest | Level2)
 {
     PART("EnvConditions") {
         STEP("WindowManager init success.") {
-            STEP_ASSERT_EQ(initRet, WM_OK);
+            STEP_ASSERT_EQ(initRet, GSERROR_OK);
         }
     }
 
@@ -365,7 +365,7 @@ HWTEST_F(SubwindowNormalImplTest, GetSurface01, Function | SmallTest | Level2)
     PART("CaseDescription") {
         STEP("1. Create (all normal)") {
             auto wret = SubwindowNormalImpl::Create(subwindow, window, subwindowOption);
-            STEP_ASSERT_EQ(wret, WM_OK);
+            STEP_ASSERT_EQ(wret, GSERROR_OK);
         }
 
         STEP("2. GetSurface") {
@@ -392,7 +392,7 @@ HWTEST_F(SubwindowNormalImplTest, GetSurface02, Function | SmallTest | Level2)
 {
     PART("EnvConditions") {
         STEP("WindowManager init success.") {
-            STEP_ASSERT_EQ(initRet, WM_OK);
+            STEP_ASSERT_EQ(initRet, GSERROR_OK);
         }
     }
 
@@ -402,7 +402,7 @@ HWTEST_F(SubwindowNormalImplTest, GetSurface02, Function | SmallTest | Level2)
     PART("CaseDescription") {
         STEP("1. Create (all normal)") {
             auto wret = SubwindowNormalImpl::Create(subwindow, window, subwindowOption);
-            STEP_ASSERT_EQ(wret, WM_OK);
+            STEP_ASSERT_EQ(wret, GSERROR_OK);
         }
 
         STEP("2. Destroy") {
@@ -426,31 +426,31 @@ HWTEST_F(SubwindowNormalImplTest, GetSurface02, Function | SmallTest | Level2)
  * EnvConditions: WindowManager init success.
  * CaseDescription: 1. Create (all normal)
  *                  2. Move
- *                  3. check return WM_OK
+ *                  3. check return GSERROR_OK
  */
 HWTEST_F(SubwindowNormalImplTest, Move01, Function | SmallTest | Level2)
 {
     PART("EnvConditions") {
         STEP("WindowManager init success.") {
-            STEP_ASSERT_EQ(initRet, WM_OK);
+            STEP_ASSERT_EQ(initRet, GSERROR_OK);
         }
     }
 
     sptr<Subwindow> subwindow = nullptr;
-    WMError moveRet;
+    GSError moveRet;
 
     PART("CaseDescription") {
         STEP("1. Create (all normal)") {
             auto wret = SubwindowNormalImpl::Create(subwindow, window, subwindowOption);
-            STEP_ASSERT_EQ(wret, WM_OK);
+            STEP_ASSERT_EQ(wret, GSERROR_OK);
         }
 
         STEP("2. Move") {
             moveRet = subwindow->Move(1, 1);
         }
 
-        STEP("3. check return WM_OK") {
-            STEP_ASSERT_EQ(moveRet, WM_OK);
+        STEP("3. check return GSERROR_OK") {
+            STEP_ASSERT_EQ(moveRet, GSERROR_OK);
         }
     }
 }
@@ -463,23 +463,23 @@ HWTEST_F(SubwindowNormalImplTest, Move01, Function | SmallTest | Level2)
  * CaseDescription: 1. Create (all normal)
  *                  2. Destroy
  *                  3. Move
- *                  4. check return WM_ERROR_DESTROYED_OBJECT
+ *                  4. check return GSERROR_DESTROYED_OBJECT
  */
 HWTEST_F(SubwindowNormalImplTest, Move02, Function | SmallTest | Level2)
 {
     PART("EnvConditions") {
         STEP("WindowManager init success.") {
-            STEP_ASSERT_EQ(initRet, WM_OK);
+            STEP_ASSERT_EQ(initRet, GSERROR_OK);
         }
     }
 
     sptr<Subwindow> subwindow = nullptr;
-    WMError moveRet;
+    GSError moveRet;
 
     PART("CaseDescription") {
         STEP("1. Create (all normal)") {
             auto wret = SubwindowNormalImpl::Create(subwindow, window, subwindowOption);
-            STEP_ASSERT_EQ(wret, WM_OK);
+            STEP_ASSERT_EQ(wret, GSERROR_OK);
         }
 
         STEP("2. Destroy") {
@@ -490,8 +490,8 @@ HWTEST_F(SubwindowNormalImplTest, Move02, Function | SmallTest | Level2)
             moveRet = subwindow->Move(1, 1);
         }
 
-        STEP("4. check return WM_ERROR_DESTROYED_OBJECT") {
-            STEP_ASSERT_EQ(moveRet, WM_ERROR_DESTROYED_OBJECT);
+        STEP("4. check return GSERROR_DESTROYED_OBJECT") {
+            STEP_ASSERT_EQ(moveRet, GSERROR_DESTROYED_OBJECT);
         }
     }
 }
@@ -509,17 +509,17 @@ HWTEST_F(SubwindowNormalImplTest, Resize01, Function | SmallTest | Level2)
 {
     PART("EnvConditions") {
         STEP("WindowManager init success.") {
-            STEP_ASSERT_EQ(initRet, WM_OK);
+            STEP_ASSERT_EQ(initRet, GSERROR_OK);
         }
     }
 
     sptr<Subwindow> subwindow = nullptr;
-    WMError resizeRet;
+    GSError resizeRet;
 
     PART("CaseDescription") {
         STEP("1. Create (all normal)") {
             auto wret = SubwindowNormalImpl::Create(subwindow, window, subwindowOption);
-            STEP_ASSERT_EQ(wret, WM_OK);
+            STEP_ASSERT_EQ(wret, GSERROR_OK);
         }
 
         STEP("2. Resize") {
@@ -529,7 +529,7 @@ HWTEST_F(SubwindowNormalImplTest, Resize01, Function | SmallTest | Level2)
         }
 
         STEP("3. check return normal") {
-            STEP_ASSERT_EQ(resizeRet, WM_OK);
+            STEP_ASSERT_EQ(resizeRet, GSERROR_OK);
         }
     }
 }
@@ -542,23 +542,23 @@ HWTEST_F(SubwindowNormalImplTest, Resize01, Function | SmallTest | Level2)
  * CaseDescription: 1. Create (all normal)
  *                  2. Destroy
  *                  3. Resize
- *                  4. check return WM_ERROR_DESTROYED_OBJECT
+ *                  4. check return GSERROR_DESTROYED_OBJECT
  */
 HWTEST_F(SubwindowNormalImplTest, Resize02, Function | SmallTest | Level2)
 {
     PART("EnvConditions") {
         STEP("WindowManager init success.") {
-            STEP_ASSERT_EQ(initRet, WM_OK);
+            STEP_ASSERT_EQ(initRet, GSERROR_OK);
         }
     }
 
     sptr<Subwindow> subwindow = nullptr;
-    WMError resizeRet;
+    GSError resizeRet;
 
     PART("CaseDescription") {
         STEP("1. Create (all normal)") {
             auto wret = SubwindowNormalImpl::Create(subwindow, window, subwindowOption);
-            STEP_ASSERT_EQ(wret, WM_OK);
+            STEP_ASSERT_EQ(wret, GSERROR_OK);
         }
 
         STEP("2. Destroy") {
@@ -571,14 +571,14 @@ HWTEST_F(SubwindowNormalImplTest, Resize02, Function | SmallTest | Level2)
             resizeRet = subwindow->Resize(width, height);
         }
 
-        STEP("4. check return WM_ERROR_DESTROYED_OBJECT") {
-            STEP_ASSERT_EQ(resizeRet, WM_ERROR_DESTROYED_OBJECT);
+        STEP("4. check return GSERROR_DESTROYED_OBJECT") {
+            STEP_ASSERT_EQ(resizeRet, GSERROR_DESTROYED_OBJECT);
         }
     }
 }
 
 void AlwaysMoveThreadFunc(const sptr<Promise<sptr<Subwindow>>> &subwindowPromise,
-                          const sptr<Promise<WMError>> &wmerrorPromise,
+                          const sptr<Promise<GSError>> &wmerrorPromise,
                           const bool &running, bool &waiting)
 {
     while (running) {
@@ -595,7 +595,7 @@ void AlwaysMoveThreadFunc(const sptr<Promise<sptr<Subwindow>>> &subwindowPromise
         if (wmerrorPromise != nullptr) {
             wmerrorPromise->Resolve(wret);
         }
-        while (wret == WM_OK) {
+        while (wret == GSERROR_OK) {
             static int32_t i = 0;
             constexpr int32_t mod = 2;
             wret = subwindow->Move(i % mod, i % mod);
@@ -622,13 +622,13 @@ HWTEST_F(SubwindowNormalImplTest, Destory, Function | SmallTest | Level2)
 {
     PART("EnvConditions") {
         STEP("WindowManager init success.") {
-            STEP_ASSERT_EQ(initRet, WM_OK);
+            STEP_ASSERT_EQ(initRet, GSERROR_OK);
         }
     }
 
     PART("CaseDescription") {
         sptr<Promise<sptr<Subwindow>>> subwindowPromise = nullptr;
-        sptr<Promise<WMError>> wmerrorPromise = nullptr;
+        sptr<Promise<GSError>> wmerrorPromise = nullptr;
         bool running = true;
         bool waiting = true;
 
@@ -644,7 +644,7 @@ HWTEST_F(SubwindowNormalImplTest, Destory, Function | SmallTest | Level2)
 
             STEP("1. Create (all normal)") {
                 auto wret = SubwindowNormalImpl::Create(subwindow, window, subwindowOption);
-                STEP_ASSERT_EQ(wret, WM_OK);
+                STEP_ASSERT_EQ(wret, GSERROR_OK);
             }
 
             STEP("2. SetSchedule") {
@@ -654,16 +654,16 @@ HWTEST_F(SubwindowNormalImplTest, Destory, Function | SmallTest | Level2)
             STEP("3. Move (in thread)") {
                 subwindowPromise = new Promise<sptr<Subwindow>>(subwindow);
                 waiting = false;
-                wmerrorPromise = new Promise<WMError>();
+                wmerrorPromise = new Promise<GSError>();
                 auto wret = wmerrorPromise->Await();
-                STEP_ASSERT_EQ(wret, WM_OK);
+                STEP_ASSERT_EQ(wret, GSERROR_OK);
             }
 
             STEP("4. Destroy") {
-                wmerrorPromise = new Promise<WMError>();
+                wmerrorPromise = new Promise<GSError>();
                 subwindow->Destroy();
                 auto wret = wmerrorPromise->Await();
-                STEP_ASSERT_EQ(wret, WM_ERROR_DESTROYED_OBJECT);
+                STEP_ASSERT_EQ(wret, GSERROR_DESTROYED_OBJECT);
             }
 
             if (i % concurrentPercent == 0) {

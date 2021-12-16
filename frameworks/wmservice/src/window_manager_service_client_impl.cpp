@@ -218,18 +218,18 @@ void WindowManagerServiceClientImpl::InterruptDispatchThread()
     } while (ret == -1 && errno == EINTR);
 }
 
-WMError WindowManagerServiceClientImpl::Init()
+GSError WindowManagerServiceClientImpl::Init()
 {
     WMLOGFI("init");
     if (wmservice != nullptr) {
-        return WM_OK;
+        return GSERROR_OK;
     }
 
     if (display == nullptr) {
         display = wl_display_connect(nullptr);
         if (display == nullptr) {
             WMLOGFE("Create display failed!");
-            return WM_ERROR_CONNOT_CONNECT_WESTON;
+            return GSERROR_CONNOT_CONNECT_WESTON;
         }
     }
 
@@ -237,29 +237,29 @@ WMError WindowManagerServiceClientImpl::Init()
         registry = wl_display_get_registry(display);
         if (registry == nullptr) {
             WMLOGFE("wl_display_get_registry failed");
-            return WM_ERROR_API_FAILED;
+            return GSERROR_API_FAILED;
         }
     }
 
     struct wl_registry_listener listener = { RegistryGlobal };
     if (wl_registry_add_listener(registry, &listener, &wms) == -1) {
         WMLOGFE("wl_registry_add_listener failed");
-        return WM_ERROR_API_FAILED;
+        return GSERROR_API_FAILED;
     }
 
     if (wl_display_roundtrip(display) == -1) {
         WMLOGFE("wl_display_roundtrip failed");
-        return WM_ERROR_API_FAILED;
+        return GSERROR_API_FAILED;
     }
 
     if (wl_display_roundtrip(display) == -1) {
         WMLOGFE("wl_display_roundtrip failed");
-        return WM_ERROR_API_FAILED;
+        return GSERROR_API_FAILED;
     }
 
     if (wms == nullptr) {
         WMLOGFE("weston not have wms module");
-        return WM_ERROR_WMS_NOT_FOUND;
+        return GSERROR_CONNOT_CONNECT_SERVER;
     }
 
     auto gret = IAnimationService::Init();
@@ -270,14 +270,14 @@ WMError WindowManagerServiceClientImpl::Init()
     auto as = IAnimationService::Get();
     wmservice = new WindowManagerServiceProxy(wms, display, as);
     StartDispatchThread();
-    return WM_OK;
+    return GSERROR_OK;
 }
 
-WMError WindowManagerServiceClientImpl::Deinit()
+GSError WindowManagerServiceClientImpl::Deinit()
 {
     WMLOGFI("deinit");
     if (display == nullptr) {
-        return WM_OK;
+        return GSERROR_OK;
     }
     StopDispatchThread();
     wms_destroy(wms);
@@ -287,7 +287,7 @@ WMError WindowManagerServiceClientImpl::Deinit()
     wl_display_roundtrip(display);
     wl_display_disconnect(display);
     display = nullptr;
-    return WM_OK;
+    return GSERROR_OK;
 }
 
 sptr<IWindowManagerService> WindowManagerServiceClientImpl::GetService() const

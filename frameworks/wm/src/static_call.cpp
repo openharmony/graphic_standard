@@ -44,21 +44,21 @@ sptr<Surface> StaticCall::SurfaceCreateSurfaceAsProducer(sptr<IBufferProducer>& 
     return Surface::CreateSurfaceAsProducer(producer);
 }
 
-WMError StaticCall::WindowImplCreate(sptr<Window> &window,
+GSError StaticCall::WindowImplCreate(sptr<Window> &window,
                                      const sptr<WindowOption> &option,
                                      const sptr<IWindowManagerService> &wms)
 {
     return WindowImpl::Create(window, option, wms);
 }
 
-WMError StaticCall::SubwindowNormalImplCreate(sptr<Subwindow> &subwindow,
+GSError StaticCall::SubwindowNormalImplCreate(sptr<Subwindow> &subwindow,
                                               const sptr<Window> &window,
                                               const sptr<SubwindowOption> &option)
 {
     return SubwindowNormalImpl::Create(subwindow, window, option);
 }
 
-WMError StaticCall::SubwindowVideoImplCreate(sptr<Subwindow> &subwindow,
+GSError StaticCall::SubwindowVideoImplCreate(sptr<Subwindow> &subwindow,
                                              const sptr<Window> &window,
                                              const sptr<SubwindowOption> &option)
 {

@@ -13,25 +13,24 @@
  * limitations under the License.
  */
 
-#ifndef FRAMEWORKS_WM_SRC_TEST_INATIVE_TEST_KEY_EVENT_HANDLER_H
-#define FRAMEWORKS_WM_SRC_TEST_INATIVE_TEST_KEY_EVENT_HANDLER_H
+#ifndef FRAMEWORKS_WM_SRC_TEST_INATIVE_TEST_TOUCH_EVENT_HANDLER_H
+#define FRAMEWORKS_WM_SRC_TEST_INATIVE_TEST_TOUCH_EVENT_HANDLER_H
 
-#include <graphic_bytrace.h>
+#include <scoped_bytrace.h>
 
 #include "inative_test.h"
 
 namespace OHOS {
-class INativeTest;
-class INativeTestKeyEventHandler : public MMI::KeyEventHandler {
+class INativeTestTouchEventHandler : public MMI::TouchEventHandler {
 public:
-    explicit INativeTestKeyEventHandler(INativeTest *test) : test_(test)
+    explicit INativeTestTouchEventHandler(INativeTest *test) : test_(test)
     {
     }
 
-    virtual bool OnKey(const KeyEvent &event) override
+    virtual bool OnTouch(const TouchEvent &event) override
     {
         ScopedBytrace trace(__func__);
-        return test_->OnKey(event);
+        return test_->OnTouch(event);
     }
 
 private:
@@ -39,4 +38,4 @@ private:
 };
 } // namespace OHOS
 
-#endif // FRAMEWORKS_WM_SRC_TEST_INATIVE_TEST_KEY_EVENT_HANDLER_H
+#endif // FRAMEWORKS_WM_SRC_TEST_INATIVE_TEST_TOUCH_EVENT_HANDLER_H

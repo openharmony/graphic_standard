@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-#include "graphic_bytrace.h"
+#include "scoped_bytrace.h"
 
 #include <bytrace.h>
 #include <hilog/log.h>

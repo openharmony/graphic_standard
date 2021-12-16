@@ -39,22 +39,22 @@ class WindowManagerImpl : public WindowManager {
 public:
     static sptr<WindowManagerImpl> GetInstance();
 
-    virtual WMError Init() override;
+    virtual GSError Init() override;
 
-    virtual WMError GetDisplays(std::vector<struct WMDisplayInfo> &displays) const override;
+    virtual GSError GetDisplays(std::vector<struct WMDisplayInfo> &displays) const override;
     virtual sptr<Window> GetWindowByID(int32_t wid) override;
 
-    virtual WMError CreateWindow(sptr<Window> &window, const sptr<WindowOption> &option) override;
-    virtual WMError CreateSubwindow(sptr<Subwindow> &subwindow,
+    virtual GSError CreateWindow(sptr<Window> &window, const sptr<WindowOption> &option) override;
+    virtual GSError CreateSubwindow(sptr<Subwindow> &subwindow,
                                     const sptr<Window> &window,
                                     const sptr<SubwindowOption> &option) override;
 
-    virtual WMError ListenNextScreenShot(int32_t id, IScreenShotCallback *cb) override;
-    virtual WMError ListenNextWindowShot(const sptr<Window> &window, IWindowShotCallback *cb) override;
+    virtual GSError ListenNextScreenShot(int32_t id, IScreenShotCallback *cb) override;
+    virtual GSError ListenNextWindowShot(const sptr<Window> &window, IWindowShotCallback *cb) override;
 
-    virtual WMError CreateVirtualDisplay(const sptr<VirtualDisplayOption> &option) override;
-    virtual WMError DestroyVirtualDisplay(uint32_t did) override;
-    virtual WMError SetDisplayMode(WMSDisplayMode mode) override;
+    virtual GSError CreateVirtualDisplay(const sptr<VirtualDisplayOption> &option) override;
+    virtual GSError DestroyVirtualDisplay(uint32_t did) override;
+    virtual GSError SetDisplayMode(WMSDisplayMode mode) override;
 
 private:
     WindowManagerImpl();

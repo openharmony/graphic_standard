@@ -939,7 +939,7 @@ static void ControllerDestroyVirtualDisplay(struct wl_client *pWlClient,
 }
 
 void SetWindowPosition(struct WindowSurface *ws,
-                              int32_t x, int32_t y)
+                       int32_t x, int32_t y)
 {
     SetDestinationRectangle(ws, x, y, ws->width, ws->height);
     ws->x = x;
@@ -947,7 +947,7 @@ void SetWindowPosition(struct WindowSurface *ws,
 }
 
 void SetWindowSize(struct WindowSurface *ws,
-                          uint32_t width, uint32_t height)
+                   uint32_t width, uint32_t height)
 {
     SetSourceRectangle(ws, 0, 0, width, height);
     SetDestinationRectangle(ws, ws->x, ws->y, width, height);
@@ -1561,37 +1561,47 @@ static void WindowSurfaceDestroy(const struct wl_listener *listener,
     LOGD("end.");
 }
 
+static struct WindowSurface *AllocWindow(struct WmsController *pWmsController,
+    struct weston_surface *pWestonSurface, uint32_t windowId)
+{
+    struct WindowSurface *pWindow = calloc(1, sizeof(*pWindow));
+    if (!pWindow) {
+        LOGE("calloc failed.");
+        wl_client_post_no_memory(pWmsController->pWlClient);
+        wms_send_window_status(pWmsController->pWlResource,
+            WMS_WINDOW_STATUS_FAILED, WINDOW_ID_INVALID, 0, 0, 0, 0);
+        wl_client_flush(wl_resource_get_client(pWmsController->pWlResource));
+
+        ClearWindowId(pWmsController, windowId);
+        return NULL;
+    }
+
+    struct WmsContext *pWmsCtx = pWmsController->pWmsCtx;
+    pWindow->layoutSurface = pWmsCtx->pLayoutInterface->surface_create(pWestonSurface, windowId);
+    /* check if windowId is already used for wl_surface */
+    if (pWindow->layoutSurface == NULL) {
+        LOGE("layoutInterface->surface_create failed.");
+        wms_send_window_status(pWmsController->pWlResource,
+            WMS_WINDOW_STATUS_FAILED, WINDOW_ID_INVALID, 0, 0, 0, 0);
+        wl_client_flush(wl_resource_get_client(pWmsController->pWlResource));
+
+        ClearWindowId(pWmsController, windowId);
+        free(pWindow);
+        return NULL;
+    }
+
+    return pWindow;
+
+}
 
 static void CreateWindow(struct WmsController *pWmsController,
     struct weston_surface *pWestonSurface,
     uint32_t windowId, uint32_t screenId, uint32_t windowType)
 {
-    struct WindowSurface *pWindow = NULL;
     struct WmsContext *pWmsCtx = pWmsController->pWmsCtx;
     struct wl_resource *pWlResource = pWmsController->pWlResource;
-
-    pWindow = calloc(1, sizeof(*pWindow));
-    if (!pWindow) {
-        LOGE("calloc failed.");
-        wl_client_post_no_memory(pWmsController->pWlClient);
-        wms_send_window_status(pWlResource,
-            WMS_WINDOW_STATUS_FAILED, WINDOW_ID_INVALID, 0, 0, 0, 0);
-        wl_client_flush(wl_resource_get_client(pWlResource));
-
-        ClearWindowId(pWmsController, windowId);
-        return;
-    }
-
-    pWindow->layoutSurface = pWmsCtx->pLayoutInterface->surface_create(pWestonSurface, windowId);
-    /* check if windowId is already used for wl_surface */
-    if (pWindow->layoutSurface == NULL) {
-        LOGE("layoutInterface->surface_create failed.");
-        wms_send_window_status(pWlResource,
-            WMS_WINDOW_STATUS_FAILED, WINDOW_ID_INVALID, 0, 0, 0, 0);
-        wl_client_flush(wl_resource_get_client(pWlResource));
-
-        ClearWindowId(pWmsController, windowId);
-        free(pWindow);
+    struct WindowSurface *pWindow = AllocWindow(pWmsController, pWestonSurface, windowId);
+    if (pWindow == NULL) {
         return;
     }
 

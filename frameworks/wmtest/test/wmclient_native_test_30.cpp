@@ -61,7 +61,7 @@ public:
     {
         auto initRet = WindowManager::GetInstance()->Init();
         if (initRet) {
-            printf("init failed with %s\n", WMErrorStr(initRet).c_str());
+            printf("init failed with %s\n", GSErrorStr(initRet).c_str());
             ExitTest();
             return;
         }
@@ -81,23 +81,23 @@ public:
         }
     }
 
-    SurfaceError OnReleaseBuffer(sptr<SurfaceBuffer> rbuffer)
+    GSError OnReleaseBuffer(sptr<SurfaceBuffer> rbuffer)
     {
         auto sret = bq2->DetachBuffer(rbuffer);
-        if (sret != SURFACE_ERROR_OK) {
+        if (sret != GSERROR_OK) {
             printf("OnReleaseBuffer, Detach failed!\n");
-            return SURFACE_ERROR_NO_ENTRY;
+            return GSERROR_NO_ENTRY;
         }
 
         do {
             sret = bq1->AttachBuffer(rbuffer);
-        } while (sret != SURFACE_ERROR_OK);
+        } while (sret != GSERROR_OK);
 
         auto ret = bq1->ReleaseBuffer(rbuffer, -1);
-        if (ret != SURFACE_ERROR_OK) {
+        if (ret != GSERROR_OK) {
             printf("release buffer failed!\n");
         }
-        return SURFACE_ERROR_OK;
+        return GSERROR_OK;
     }
 
     virtual void OnBufferAvailable() override
@@ -106,13 +106,13 @@ public:
         int64_t timestamp;
         Rect damage;
         auto sret = bq1->AcquireBuffer(sbuffer, flushFence, timestamp, damage);
-        if (sret != SURFACE_ERROR_OK) {
+        if (sret != GSERROR_OK) {
             printf("AcquireBuffer failed!\n");
             return;
         }
 
         sret = bq1->DetachBuffer(sbuffer);
-        if (sret != SURFACE_ERROR_OK) {
+        if (sret != GSERROR_OK) {
             printf("Detach buffer failed!\n");
             return;
         }
@@ -123,10 +123,10 @@ public:
 
         do {
             sret = bq2->AttachBuffer(sbuffer);
-        } while (sret != SURFACE_ERROR_OK);
+        } while (sret != GSERROR_OK);
 
-        if (sret != SURFACE_ERROR_OK) {
-            if (sret == SURFACE_ERROR_NO_BUFFER) {
+        if (sret != GSERROR_OK) {
+            if (sret == GSERROR_NO_BUFFER) {
                 printf("No Buffer!, %d\n", __LINE__);
                 bq1->AttachBuffer(sbuffer);
                 bq1->ReleaseBuffer(sbuffer, -1);
@@ -144,7 +144,7 @@ public:
         };
 
         sret = bq2->FlushBuffer(sbuffer, -1, fconfig);
-        if (sret != SURFACE_ERROR_OK) {
+        if (sret != GSERROR_OK) {
             printf("flush buffer failed\n");
         }
     }
@@ -162,7 +162,7 @@ private:
         bq2 = window->GetSurface();
         auto func = [this](sptr<SurfaceBuffer> &buffer) {
             OnReleaseBuffer(buffer);
-            return SURFACE_ERROR_OK;
+            return GSERROR_OK;
         };
         bq2->RegisterReleaseListener(func);
         if (bq2 == nullptr) {

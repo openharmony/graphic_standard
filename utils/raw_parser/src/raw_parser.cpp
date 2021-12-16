@@ -102,7 +102,7 @@ int32_t RawParser::GetNextData(void* addr)
 
     lastID = count;
     if (length > 0 && memcpy_s(lastData.get() + offset, GetSize() - offset,
-             uncompressed.get(), length) != EOK) {
+            uncompressed.get(), length) != EOK) {
         return -1;
     }
 

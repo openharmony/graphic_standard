@@ -69,7 +69,7 @@ namespace {
 HWTEST_F(InputListenerManagerTest, AddListener, testing::ext::TestSize.Level0)
 {
     // WindowManager init success.
-    ASSERT_EQ(initRet, WM_OK) << "EnvConditions: WindowManager init success. (initRet == WM_OK)";
+    ASSERT_EQ(initRet, GSERROR_OK) << "EnvConditions: WindowManager init success. (initRet == GSERROR_OK)";
 
     auto manager = InputListenerManager::GetInstance();
 
@@ -166,7 +166,7 @@ HWTEST_F(InputListenerManagerTest, AddListener, testing::ext::TestSize.Level0)
 HWTEST_F(InputListenerManagerTest, RemoveListener, testing::ext::TestSize.Level0)
 {
     // WindowManager init success.
-    ASSERT_EQ(initRet, WM_OK) << "EnvConditions: WindowManager init success. (initRet == WM_OK)";
+    ASSERT_EQ(initRet, GSERROR_OK) << "EnvConditions: WindowManager init success. (initRet == GSERROR_OK)";
 
     auto manager = InputListenerManager::GetInstance();
 

@@ -57,7 +57,7 @@ public:
     {
         auto initRet = WindowManager::GetInstance()->Init();
         if (initRet) {
-            printf("init failed with %s\n", WMErrorStr(initRet).c_str());
+            printf("init failed with %s\n", GSErrorStr(initRet).c_str());
             ExitTest();
             return;
         }
@@ -112,10 +112,10 @@ public:
             ->Then(std::bind(&WMClientNativeTest27::OnMoveReturn, this, std::placeholders::_1));
     }
 
-    void OnMoveReturn(const WMError &err)
+    void OnMoveReturn(const GSError &err)
     {
-        if (err != WM_OK) {
-            printf("Move failed %d, means %s\n", err, WMErrorStr(err).c_str());
+        if (err != GSERROR_OK) {
+            printf("Move failed %d, means %s\n", err, GSErrorStr(err).c_str());
         }
     }
 

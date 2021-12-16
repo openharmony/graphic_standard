@@ -30,7 +30,7 @@
 namespace OHOS {
 class WindowImpl : public Window, public IBufferConsumerListenerClazz {
 public:
-    static WMError Create(sptr<Window> &window,
+    static GSError Create(sptr<Window> &window,
                           const sptr<WindowOption> &option,
                           const sptr<IWindowManagerService> &wms);
 
@@ -49,16 +49,16 @@ public:
     virtual WindowType    GetType() const override;
     virtual WindowMode    GetMode() const override;
 
-    virtual sptr<Promise<WMError>> Show() override;
-    virtual sptr<Promise<WMError>> Hide() override;
-    virtual sptr<Promise<WMError>> Move(int32_t x, int32_t y) override;
-    virtual sptr<Promise<WMError>> SwitchTop() override;
-    virtual sptr<Promise<WMError>> SetWindowType(WindowType type) override;
-    virtual sptr<Promise<WMError>> SetWindowMode(WindowMode mode) override;
-    virtual sptr<Promise<WMError>> Resize(uint32_t width, uint32_t height) override;
-    virtual sptr<Promise<WMError>> ScaleTo(uint32_t width, uint32_t height) override;
-    virtual WMError Rotate(WindowRotateType type) override;
-    virtual WMError Destroy() override;
+    virtual sptr<Promise<GSError>> Show() override;
+    virtual sptr<Promise<GSError>> Hide() override;
+    virtual sptr<Promise<GSError>> Move(int32_t x, int32_t y) override;
+    virtual sptr<Promise<GSError>> SwitchTop() override;
+    virtual sptr<Promise<GSError>> SetWindowType(WindowType type) override;
+    virtual sptr<Promise<GSError>> SetWindowMode(WindowMode mode) override;
+    virtual sptr<Promise<GSError>> Resize(uint32_t width, uint32_t height) override;
+    virtual sptr<Promise<GSError>> ScaleTo(uint32_t width, uint32_t height) override;
+    virtual GSError Rotate(WindowRotateType type) override;
+    virtual GSError Destroy() override;
 
     // prop listener
     virtual void OnPositionChange(WindowPositionChangeFunc func) override;
@@ -69,36 +69,36 @@ public:
     virtual void OnSplitStatusChange(SplitStatusChangeFunc func) override;
 
     // listener
-    virtual WMError OnTouch(OnTouchFunc cb) override;
-    virtual WMError OnKey(OnKeyFunc cb) override;
+    virtual GSError OnTouch(OnTouchFunc cb) override;
+    virtual GSError OnKey(OnKeyFunc cb) override;
 
     // pointer listener
-    virtual WMError OnPointerEnter(PointerEnterFunc func) override;
-    virtual WMError OnPointerLeave(PointerLeaveFunc func) override;
-    virtual WMError OnPointerMotion(PointerMotionFunc func) override;
-    virtual WMError OnPointerButton(PointerButtonFunc func) override;
-    virtual WMError OnPointerFrame(PointerFrameFunc func) override;
-    virtual WMError OnPointerAxis(PointerAxisFunc func) override;
-    virtual WMError OnPointerAxisSource(PointerAxisSourceFunc func) override;
-    virtual WMError OnPointerAxisStop(PointerAxisStopFunc func) override;
-    virtual WMError OnPointerAxisDiscrete(PointerAxisDiscreteFunc func) override;
+    virtual GSError OnPointerEnter(PointerEnterFunc func) override;
+    virtual GSError OnPointerLeave(PointerLeaveFunc func) override;
+    virtual GSError OnPointerMotion(PointerMotionFunc func) override;
+    virtual GSError OnPointerButton(PointerButtonFunc func) override;
+    virtual GSError OnPointerFrame(PointerFrameFunc func) override;
+    virtual GSError OnPointerAxis(PointerAxisFunc func) override;
+    virtual GSError OnPointerAxisSource(PointerAxisSourceFunc func) override;
+    virtual GSError OnPointerAxisStop(PointerAxisStopFunc func) override;
+    virtual GSError OnPointerAxisDiscrete(PointerAxisDiscreteFunc func) override;
 
     // keyboard listener
-    virtual WMError OnKeyboardKeymap(KeyboardKeymapFunc func) override;
-    virtual WMError OnKeyboardEnter(KeyboardEnterFunc func) override;
-    virtual WMError OnKeyboardLeave(KeyboardLeaveFunc func) override;
-    virtual WMError OnKeyboardKey(KeyboardKeyFunc func) override;
-    virtual WMError OnKeyboardModifiers(KeyboardModifiersFunc func) override;
-    virtual WMError OnKeyboardRepeatInfo(KeyboardRepeatInfoFunc func) override;
+    virtual GSError OnKeyboardKeymap(KeyboardKeymapFunc func) override;
+    virtual GSError OnKeyboardEnter(KeyboardEnterFunc func) override;
+    virtual GSError OnKeyboardLeave(KeyboardLeaveFunc func) override;
+    virtual GSError OnKeyboardKey(KeyboardKeyFunc func) override;
+    virtual GSError OnKeyboardModifiers(KeyboardModifiersFunc func) override;
+    virtual GSError OnKeyboardRepeatInfo(KeyboardRepeatInfoFunc func) override;
 
     // touch listener
-    virtual WMError OnTouchDown(TouchDownFunc func) override;
-    virtual WMError OnTouchUp(TouchUpFunc func) override;
-    virtual WMError OnTouchMotion(TouchMotionFunc func) override;
-    virtual WMError OnTouchFrame(TouchFrameFunc func) override;
-    virtual WMError OnTouchCancel(TouchCancelFunc func) override;
-    virtual WMError OnTouchShape(TouchShapeFunc func) override;
-    virtual WMError OnTouchOrientation(TouchOrientationFunc func) override;
+    virtual GSError OnTouchDown(TouchDownFunc func) override;
+    virtual GSError OnTouchUp(TouchUpFunc func) override;
+    virtual GSError OnTouchMotion(TouchMotionFunc func) override;
+    virtual GSError OnTouchFrame(TouchFrameFunc func) override;
+    virtual GSError OnTouchCancel(TouchCancelFunc func) override;
+    virtual GSError OnTouchShape(TouchShapeFunc func) override;
+    virtual GSError OnTouchOrientation(TouchOrientationFunc func) override;
 
 private:
     WindowImpl() = default;
@@ -106,14 +106,14 @@ private:
 
     virtual void OnBufferAvailable() override;
 
-    static WMError CheckAndNew(sptr<WindowImpl> &wi,
+    static GSError CheckAndNew(sptr<WindowImpl> &wi,
                                const sptr<WindowOption> &option,
                                const sptr<IWindowManagerService> &wms);
 
-    static WMError CreateRemoteWindow(sptr<WindowImpl> &wi,
+    static GSError CreateRemoteWindow(sptr<WindowImpl> &wi,
                                       const sptr<WindowOption> &option);
 
-    static WMError CreateConsumerSurface(sptr<WindowImpl> &wi,
+    static GSError CreateConsumerSurface(sptr<WindowImpl> &wi,
                                          const sptr<WindowOption> &option);
 
     // base attribute

@@ -21,7 +21,7 @@
 #include <sys/time.h>
 
 #include <display_type.h>
-#include <graphic_bytrace.h>
+#include <scoped_bytrace.h>
 #include <securec.h>
 
 #include "inative_test.h"
@@ -88,16 +88,22 @@ void NativeTestSync::Sync(int64_t, void *data)
         rconfig = *reinterpret_cast<BufferRequestConfig *>(data);
     }
 
-    SurfaceError ret = surface->RequestBufferNoFence(buffer, rconfig);
-    if (ret == SURFACE_ERROR_NO_BUFFER) {
+    GSError ret = surface->RequestBufferNoFence(buffer, rconfig);
+    if (ret == GSERROR_NO_BUFFER) {
         RequestSync(std::bind(&NativeTestSync::Sync, this, SYNC_FUNC_ARG), data);
         return;
-    } else if (ret != SURFACE_ERROR_OK || buffer == nullptr) {
+    } else if (ret != GSERROR_OK || buffer == nullptr) {
         printf("NativeTestSync surface request buffer failed\n");
         return;
     }
 
-    draw(buffer->GetVirAddr(), rconfig.width, rconfig.height, count);
+    if (buffer->GetVirAddr() == nullptr) {
+        surface->CancelBuffer(buffer);
+        RequestSync(std::bind(&NativeTestSync::Sync, this, SYNC_FUNC_ARG), data);
+        return;
+    }
+
+    draw(reinterpret_cast<uint32_t *>(buffer->GetVirAddr()), rconfig.width, rconfig.height, count);
     count++;
 
     BufferFlushConfig fconfig = {
@@ -130,13 +136,13 @@ void NativeTestDrawer::SetDrawFunc(DrawFunc draw)
 
 void NativeTestDrawer::DrawOnce()
 {
-    if (isDrawing == false) {
+    if (!isDrawing) {
         RequestSync(std::bind(&NativeTestDrawer::Sync, this, SYNC_FUNC_ARG), data);
         isDrawing = true;
     }
 }
 
-void NativeTestDrawer::Sync(int64_t, void *data)
+void NativeTestDrawer::Sync(int64_t, void *)
 {
     ScopedBytrace trace(__func__);
     if (surface == nullptr) {
@@ -144,9 +150,7 @@ void NativeTestDrawer::Sync(int64_t, void *data)
         return;
     }
 
-    if (isDrawing == true) {
-        isDrawing = false;
-    }
+    isDrawing = false;
 
     sptr<SurfaceBuffer> buffer;
     BufferRequestConfig rconfig = {
@@ -161,16 +165,22 @@ void NativeTestDrawer::Sync(int64_t, void *data)
         rconfig = *reinterpret_cast<BufferRequestConfig *>(data);
     }
 
-    SurfaceError ret = surface->RequestBufferNoFence(buffer, rconfig);
-    if (ret == SURFACE_ERROR_NO_BUFFER) {
+    GSError ret = surface->RequestBufferNoFence(buffer, rconfig);
+    if (ret == GSERROR_NO_BUFFER) {
         DrawOnce();
         return;
-    } else if (ret != SURFACE_ERROR_OK || buffer == nullptr) {
+    } else if (ret != GSERROR_OK || buffer == nullptr) {
         printf("NativeTestDrawer surface request buffer failed\n");
         return;
     }
 
-    draw(buffer->GetVirAddr(), rconfig.width, rconfig.height, count);
+    if (buffer->GetVirAddr() == nullptr) {
+        surface->CancelBuffer(buffer);
+        RequestSync(std::bind(&NativeTestDrawer::Sync, this, SYNC_FUNC_ARG), data);
+        return;
+    }
+
+    draw(reinterpret_cast<uint32_t *>(buffer->GetVirAddr()), rconfig.width, rconfig.height, count);
     count++;
 
     BufferFlushConfig fconfig = {
@@ -182,13 +192,8 @@ void NativeTestDrawer::Sync(int64_t, void *data)
     surface->FlushBuffer(buffer, -1, fconfig);
 }
 
-void NativeTestDraw::FlushDraw(void *vaddr, uint32_t width, uint32_t height, uint32_t count)
+void NativeTestDraw::FlushDraw(uint32_t *addr, uint32_t width, uint32_t height, uint32_t count)
 {
-    auto addr = static_cast<uint8_t *>(vaddr);
-    if (addr == nullptr) {
-        return;
-    }
-
     constexpr uint32_t bpp = 4;
     constexpr uint32_t color1 = 0xff / 3 * 0;
     constexpr uint32_t color2 = 0xff / 3 * 1;
@@ -224,13 +229,8 @@ void NativeTestDraw::FlushDraw(void *vaddr, uint32_t width, uint32_t height, uin
     }
 }
 
-void NativeTestDraw::ColorDraw(void *vaddr, uint32_t width, uint32_t height, uint32_t count)
+void NativeTestDraw::ColorDraw(uint32_t *addr, uint32_t width, uint32_t height, uint32_t count)
 {
-    auto addr = static_cast<uint32_t *>(vaddr);
-    if (addr == nullptr) {
-        return;
-    }
-
     constexpr uint32_t wdiv = 2;
     constexpr uint32_t colorTable[][wdiv] = {
         {0xffff0000, 0xffff00ff},
@@ -255,25 +255,15 @@ void NativeTestDraw::ColorDraw(void *vaddr, uint32_t width, uint32_t height, uin
     }
 }
 
-void NativeTestDraw::BlackDraw(void *vaddr, uint32_t width, uint32_t height, uint32_t count)
+void NativeTestDraw::BlackDraw(uint32_t *addr, uint32_t width, uint32_t height, uint32_t count)
 {
-    auto addr = static_cast<uint32_t *>(vaddr);
-    if (addr == nullptr) {
-        return;
-    }
-
     for (uint32_t i = 0; i < width * height; i++) {
         addr[i] = 0xff000000;
     }
 }
 
-void NativeTestDraw::RainbowDraw(void *vaddr, uint32_t width, uint32_t height, uint32_t count)
+void NativeTestDraw::RainbowDraw(uint32_t *addr, uint32_t width, uint32_t height, uint32_t count)
 {
-    auto addr = static_cast<uint32_t *>(vaddr);
-    if (addr == nullptr) {
-        return;
-    }
-
     auto drawOneLine = [addr, width](uint32_t index, uint32_t color) {
         auto lineAddr = addr + index * width;
         for (uint32_t i = 0; i < width; i++) {
@@ -312,13 +302,8 @@ void NativeTestDraw::RainbowDraw(void *vaddr, uint32_t width, uint32_t height, u
     }
 }
 
-void NativeTestDraw::BoxDraw(void *vaddr, uint32_t width, uint32_t height, uint32_t count)
+void NativeTestDraw::BoxDraw(uint32_t *addr, uint32_t width, uint32_t height, uint32_t count)
 {
-    auto addr = static_cast<uint32_t *>(vaddr);
-    if (addr == nullptr) {
-        return;
-    }
-
     auto selectColor = [](int32_t index, int32_t total) {
         auto func = [](int32_t x, int32_t total) {
             int32_t h = total;
@@ -365,10 +350,9 @@ void NativeTestDraw::BoxDraw(void *vaddr, uint32_t width, uint32_t height, uint3
     drawOnce(abs((count + 1) % (framecount * 0x2 - 1) - framecount), color);
 }
 
-void NativeTestDraw::PureColorDraw(void *vaddr, uint32_t width, uint32_t height, uint32_t count, uint32_t *color)
+void NativeTestDraw::PureColorDraw(uint32_t *addr, uint32_t width, uint32_t height, uint32_t count, uint32_t *color)
 {
-    auto addr = static_cast<uint32_t *>(vaddr);
-    if (addr == nullptr || color == nullptr) {
+    if (color == nullptr) {
         return;
     }
 

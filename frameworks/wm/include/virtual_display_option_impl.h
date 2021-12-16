@@ -24,10 +24,10 @@ public:
     VirtualDisplayOptionImpl() = default;
     virtual ~VirtualDisplayOptionImpl() = default;
 
-    virtual WMError SetX(int32_t x) override;
-    virtual WMError SetY(int32_t y) override;
-    virtual WMError SetWidth(uint32_t width) override;
-    virtual WMError SetHeight(uint32_t height) override;
+    virtual GSError SetX(int32_t x) override;
+    virtual GSError SetY(int32_t y) override;
+    virtual GSError SetWidth(uint32_t width) override;
+    virtual GSError SetHeight(uint32_t height) override;
 
     virtual int32_t GetX() const override;
     virtual int32_t GetY() const override;

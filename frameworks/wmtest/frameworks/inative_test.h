@@ -38,8 +38,8 @@ enum class AutoLoadService : int32_t {
     WindowManager        = 1 << 0,
     WindowManagerService = 1 << 1,
 };
-enum AutoLoadService operator |(const enum AutoLoadService &l, const enum AutoLoadService &r);
-bool operator &(const enum AutoLoadService &l, const enum AutoLoadService &r);
+AutoLoadService operator |(const AutoLoadService &l, const AutoLoadService &r);
+bool operator &(const AutoLoadService &l, const AutoLoadService &r);
 
 class INativeTest {
 public:
@@ -58,7 +58,7 @@ public:
     virtual uint32_t GetLastTime() const;
 
     // auto load service
-    virtual enum AutoLoadService GetAutoLoadService() const;
+    virtual AutoLoadService GetAutoLoadService() const;
     sptr<WindowManager> windowManager = nullptr;
     sptr<IWindowManagerService> windowManagerService = nullptr;
 
