@@ -140,6 +140,14 @@ int32_t main(int32_t argc, const char **argv)
         return 1;
     }
 
+    if (option.systemAbilityID) {
+        auto ret = found->IPCClientConnectServer(option.systemAbilityID);
+        if (ret) {
+            GSLOG7SE(ERROR) << "exiting, return 1";
+            return 1;
+        }
+    }
+
     // run test
     auto runner = AppExecFwk::EventRunner::Create(false);
     found->SetEventHandler(std::move(std::make_shared<AppExecFwk::EventHandler>(runner)));
@@ -148,7 +156,8 @@ int32_t main(int32_t argc, const char **argv)
         found->PostTask(std::bind(&AppExecFwk::EventRunner::Stop, runner), found->GetLastTime());
     }
 
-    printf("%d %s run! pid=%d\n", found->GetID(), found->GetDescription().c_str(), getpid());
+    GSLOG7SO(INFO) << found->GetID() << " "
+        << found->GetDescription() << " run! pid=" << getpid();
     runner->Run();
     GSLOG7SO(INFO) << "exiting, return 0";
     return 0;

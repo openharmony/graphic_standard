@@ -29,6 +29,8 @@
 #include <window_manager.h>
 #include <window_manager_service_client.h>
 
+#include "native_test_ipc_stub.h"
+
 namespace OHOS {
 class INativeTest;
 using VisitTestFunc = std::function<bool(INativeTest *)>;
@@ -41,7 +43,7 @@ enum class AutoLoadService : int32_t {
 AutoLoadService operator |(const AutoLoadService &l, const AutoLoadService &r);
 bool operator &(const AutoLoadService &l, const AutoLoadService &r);
 
-class INativeTest {
+class INativeTest : public NativeTestIpcStub {
 public:
     enum {
         LAST_TIME_FOREVER = 999999999,
@@ -77,6 +79,11 @@ public:
     const char **processArgv = nullptr;
     std::vector<const char *> extraArgs;
     int32_t StartSubprocess(int32_t id);
+    int32_t IPCServerStart();
+    int32_t IPCServerStop();
+    GSError IPCClientConnectServer(int32_t said);
+    GSError IPCClientSendMessage(int32_t sequence, const std::string &message, const sptr<IRemoteObject> &robj = nullptr);
+    virtual void IPCClientOnMessage(int32_t sequence, const std::string &message, const sptr<IRemoteObject> &robj);
 
     // thread pool
     void SetEventHandler(const std::shared_ptr<AppExecFwk::EventHandler> &handler);
@@ -84,11 +91,19 @@ public:
     void ExitTest() const;
 
 private:
+    virtual GSError SendMessage(int32_t sequence, const std::string &message, const sptr<IRemoteObject> &robj) override;
+    virtual GSError Register(int32_t sequence, sptr<INativeTestIpc> &ipc) override;
+    virtual GSError OnMessage(int32_t sequence, const std::string &message, const sptr<IRemoteObject> &robj) override;
+
     static inline std::vector<INativeTest *> tests;
     std::shared_ptr<AppExecFwk::EventHandler> handler = nullptr;
     sptr<MMI::KeyEventHandler> keyHandler = nullptr;
     sptr<MMI::TouchEventHandler> touchHandler = nullptr;
     sptr<IRemoteObject> token = nullptr;
+    sptr<INativeTestIpc> remoteIpc = nullptr;
+    std::map<pid_t, int32_t> pidToSeq;
+    std::map<int32_t, sptr<INativeTestIpc>> ipcs;
+    int32_t said = 0;
 };
 } // namespace OHOS
 

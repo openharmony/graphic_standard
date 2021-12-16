@@ -13,22 +13,19 @@
  * limitations under the License.
  */
 
-#ifndef FRAMEWORKS_WMTEST_FRAMEWORKS_MAIN_OPTION_H
-#define FRAMEWORKS_WMTEST_FRAMEWORKS_MAIN_OPTION_H
+#ifndef FRAMEWORKS_WMTEST_FRAMEWORKS_INATIVE_TEST_IPC_STUB_H
+#define FRAMEWORKS_WMTEST_FRAMEWORKS_INATIVE_TEST_IPC_STUB_H
 
-#include <option_parser.h>
+#include <iremote_stub.h>
 
-class MainOption : public OptionParser {
+#include "inative_test_ipc.h"
+
+namespace OHOS {
+class NativeTestIpcStub : public IRemoteStub<INativeTestIpc> {
 public:
-    MainOption();
-    int32_t Parse(int32_t argc, const char **argv);
-
-    // attr
-    std::string domain = "";
-    int32_t testcase = -1;
-    int32_t displayID = 0;
-    int32_t processSequence = -1;
-    int32_t systemAbilityID = 0;
+    virtual int OnRemoteRequest(uint32_t code, MessageParcel &arguments,
+                                MessageParcel &reply, MessageOption &option) override;
 };
+} // namespace OHOS
 
-#endif // FRAMEWORKS_WMTEST_FRAMEWORKS_MAIN_OPTION_H
+#endif // FRAMEWORKS_WMTEST_FRAMEWORKS_INATIVE_TEST_IPC_STUB_H

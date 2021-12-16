@@ -21,6 +21,7 @@ MainOption::MainOption()
     AddArguments(testcase);
     AddOption("d", "display", displayID);
     AddOption("p", "process", processSequence);
+    AddOption("s", "said", systemAbilityID);
 }
 
 int32_t MainOption::Parse(int32_t argc, const char **argv)

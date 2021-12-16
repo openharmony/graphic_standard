@@ -18,11 +18,10 @@
 #include <algorithm>
 #include <codecvt>
 #include <gslogger.h>
+#include <iservice_registry.h>
 #include <sstream>
-#include <sys/shm.h>
-#include <sys/ipc.h>
-#include <vector>
 #include <unistd.h>
+#include <vector>
 
 #include "inative_test_key_event_handler.h"
 #include "inative_test_touch_event_handler.h"
@@ -144,6 +143,15 @@ int32_t INativeTest::StartSubprocess(int32_t id)
         ss << "--process=" << id;
         auto sss = ss.str();
         args.push_back(sss.c_str());
+
+        std::stringstream ss2;
+        std::string sss2;
+        if (said > 0) {
+            ss2 << "--said=" << said;
+            sss2 = ss2.str();
+            args.push_back(sss2.c_str());
+        }
+
         args.insert(args.end(), extraArgs.begin(), extraArgs.end());
         args.push_back(nullptr);
         auto ret = execvp(args[0], const_cast<char *const *>(args.data()));
@@ -152,6 +160,78 @@ int32_t INativeTest::StartSubprocess(int32_t id)
         return ret;
     }
     return 0;
+}
+
+int32_t INativeTest::IPCServerStart()
+{
+    GSLOG7SO(DEBUG) << "IPCServerStarting";
+    auto sam = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
+    constexpr int32_t sABegin = 4610;
+    constexpr int32_t sAEnd = 4700;
+    for (int32_t i = sABegin; i < sAEnd; i++) {
+        if (sam->AddSystemAbility(i, this) == ERR_OK) {
+            said = i;
+            return GSERROR_OK;
+        }
+    }
+
+    GSLOG7SE(ERROR) << "AddSystemAbility failed from " << sABegin << " to " << sAEnd;
+    return GSERROR_API_FAILED;
+}
+
+int32_t INativeTest::IPCServerStop()
+{
+    GSLOG7SO(DEBUG) << "IPCServerStoping";
+    if (said == 0) {
+        return GSERROR_INVALID_OPERATING;
+    }
+
+    for (auto &[_, ipc] : ipcs) {
+        ipc->OnMessage(GetProcessSequence(), "quit", nullptr);
+    }
+
+    ipcs.clear();
+    auto sam = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
+    sam->RemoveSystemAbility(said);
+    said = 0;
+    return GSERROR_OK;
+}
+
+GSError INativeTest::IPCClientConnectServer(int32_t said)
+{
+    auto sam = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
+    if (sam == nullptr) {
+        GSLOG7SE(ERROR) << "SystemAbilityManager is nullptr";
+        return GSERROR_CONNOT_CONNECT_SAMGR;
+    }
+
+    auto robj = sam->GetSystemAbility(said);
+    if (robj == nullptr) {
+        GSLOG7SE(ERROR) << "Remote Object is nullptr";
+        return GSERROR_CONNOT_CONNECT_SERVER;
+    }
+
+    remoteIpc = iface_cast<INativeTestIpc>(robj);
+    if (remoteIpc == nullptr) {
+        GSLOG7SE(ERROR) << "Cannot find proxy";
+        return GSERROR_PROXY_NOT_INCLUDE;
+    }
+
+    GSLOG7SO(INFO) << "server connected";
+    sptr<INativeTestIpc> ipc = this;
+    remoteIpc->Register(GetProcessSequence(), ipc);
+    return GSERROR_OK;
+}
+
+GSError INativeTest::IPCClientSendMessage(int32_t sequence, const std::string &message, const sptr<IRemoteObject> &robj)
+{
+    GSLOG7SO(INFO) << "send message from " << GetProcessSequence() << " to " << sequence << ": " << message;
+    return remoteIpc->SendMessage(sequence, message, robj);
+}
+
+void INativeTest::IPCClientOnMessage(int32_t sequence, const std::string &message, const sptr<IRemoteObject> &robj)
+{
+    GSLOG7SO(INFO) << "Received from " << sequence << ", message: " << message;
 }
 
 void INativeTest::SetEventHandler(const std::shared_ptr<AppExecFwk::EventHandler> &handler)
@@ -168,5 +248,46 @@ void INativeTest::ExitTest() const
 {
     GSLOG7SO(INFO) << "exiting, call PostTask(&AppExecFwk::EventRunner::Stop)";
     PostTask(std::bind(&AppExecFwk::EventRunner::Stop, handler->GetEventRunner()));
+}
+
+GSError INativeTest::SendMessage(int32_t sequence, const std::string &message, const sptr<IRemoteObject> &robj)
+{
+    GSLOG7SO(DEBUG) << "Received from " << pidToSeq[GetCallingPid()] << " to " << sequence
+        << ", message: " << message << ", robj: " << robj.GetRefPtr();
+    if (sequence != -1) {
+        auto it = ipcs.find(sequence);
+        if (it == ipcs.end()) {
+            GSLOG7SO(WARN) << "Cannot found send target! (-> " << sequence << ")";
+            return GSERROR_NO_ENTRY;
+        }
+
+        GSLOG7SO(DEBUG) << "Sending to " << it->second.GetRefPtr();
+        it->second->OnMessage(pidToSeq[GetCallingPid()], message, robj);
+    } else {
+        for (auto &[_, ipc] : ipcs) {
+            ipc->OnMessage(pidToSeq[GetCallingPid()], message, robj);
+        }
+    }
+    return GSERROR_OK;
+}
+
+GSError INativeTest::Register(int32_t sequence, sptr<INativeTestIpc> &ipc)
+{
+    GSLOG7SO(DEBUG) << "Register sequence: " << sequence << ", ipc: " << ipc.GetRefPtr();
+    pidToSeq[GetCallingPid()] = sequence;
+    ipcs[sequence] = ipc;
+    return GSERROR_OK;
+}
+
+GSError INativeTest::OnMessage(int32_t sequence, const std::string &message, const sptr<IRemoteObject> &robj)
+{
+    GSLOG7SO(INFO) << "Received from " << sequence << ", message: " << message;
+    if (sequence == -1 && message == "quit") {
+        ExitTest();
+        return GSERROR_OK;
+    }
+
+    IPCClientOnMessage(sequence, message, robj);
+    return GSERROR_OK;
 }
 } // namespace OHOS

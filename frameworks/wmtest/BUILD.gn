@@ -35,6 +35,8 @@ ohos_executable("wmtest") {
     "frameworks/main.cpp",
     "frameworks/main_option.cpp",
     "frameworks/native_test_class.cpp",
+    "frameworks/native_test_ipc_proxy.cpp",
+    "frameworks/native_test_ipc_stub.cpp",
     "frameworks/util.cpp",
   ]
 
