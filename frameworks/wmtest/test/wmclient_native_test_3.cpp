@@ -21,6 +21,7 @@
 #include <sstream>
 
 #include <display_type.h>
+#include <gslogger.h>
 #include <option_parser.h>
 #include <raw_parser.h>
 #include <window_manager.h>
@@ -37,7 +38,7 @@ class WMClientNativeTest3 : public INativeTest {
 public:
     std::string GetDescription() const override
     {
-        constexpr const char *desc = "raw parser";
+        constexpr const char *desc = "raw parser (filename [--rate=1 --rotate])";
         return desc;
     }
 
@@ -53,10 +54,9 @@ public:
         return id;
     }
 
-    uint32_t GetLastTime() const override
+    AutoLoadService GetAutoLoadService() const override
     {
-        constexpr uint32_t lastTime = LAST_TIME_FOREVER;
-        return lastTime;
+        return AutoLoadService::WindowManager | AutoLoadService::WindowManagerService;
     }
 
     void Run(int32_t argc, const char **argv) override
@@ -64,8 +64,10 @@ public:
         OptionParser oparser;
         std::string filename = "";
         oparser.AddArguments(filename);
-        oparser.AddArguments(vsyncRate);
+        oparser.AddOption("r", "rate", vsyncRate);
+        oparser.AddOption("o", "rotate", needRotate);
         if (oparser.Parse(argc, argv)) {
+            GSLOG2SE(ERROR) << oparser.GetErrorString();
             ExitTest();
             return;
         }
@@ -73,24 +75,13 @@ public:
         SetVsyncRate(vsyncRate);
         auto ret = resource.Parse(filename);
         if (ret) {
+            GSLOG2SE(ERROR) << "resource Parse " << filename << " failed with " << ret;
             ExitTest();
             return;
         }
-
-        auto initRet = WindowManager::GetInstance()->Init();
-        if (initRet) {
-            printf("init failed with %s\n", GSErrorStr(initRet).c_str());
-            ExitTest();
-            return;
-        }
-
-        auto wmsc = WindowManagerServiceClient::GetInstance();
-        wmsc->Init();
-        wms = wmsc->GetService();
 
         window = NativeTestFactory::CreateWindow(WINDOW_TYPE_FULL_SCREEN);
         if (window == nullptr) {
-            printf("NativeTestFactory::CreateWindow return nullptr\n");
             ExitTest();
             return;
         }
@@ -102,16 +93,32 @@ public:
 
         window->SwitchTop();
         auto surf = window->GetSurface();
-        windowSync = NativeTestSync::CreateSync(std::bind(&WMClientNativeTest3::Draw, this,
-            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4), surf);
+        auto func = std::bind(&WMClientNativeTest3::Draw, this,
+            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
+        windowSync = NativeTestSync::CreateSync(func, surf, &config);
+        config.width = surf->GetDefaultWidth();
+        config.height = surf->GetDefaultHeight();
+        config.strideAlignment = 0x8;
+        config.format = PIXEL_FMT_RGBA_8888;
+        config.usage = surf->GetDefaultUsage();
+        auto onSizeChange = [this](uint32_t w, uint32_t h) {
+            config.width = w;
+            config.height = h;
+        };
+        window->OnSizeChange(onSizeChange);
     }
 
     void Draw(uint32_t *vaddr, uint32_t width, uint32_t height, uint32_t count)
     {
+        if (!needRotate) {
+            resource.GetNextData(vaddr);
+            return;
+        }
+
         uint32_t rotationNumber = vsyncRate * 8;
         if (count % rotationNumber == (rotationNumber - 0x2)) {
             constexpr uint32_t degree = -90;
-            wms->StartRotationAnimation(0, degree);
+            windowManagerService->StartRotationAnimation(0, degree);
             rotationTime = GetNowTime();
         } else if (count % rotationNumber == (rotationNumber - 1)) {
             window->ScaleTo(winWidth, winHeight);
@@ -130,14 +137,15 @@ public:
     }
 
 private:
-    sptr<IWindowManagerService> wms = nullptr;
     sptr<Window> window = nullptr;
     sptr<NativeTestSync> windowSync = nullptr;
     RawParser resource;
-    int32_t winWidth;
-    int32_t winHeight;
+    int32_t winWidth = 0;
+    int32_t winHeight = 0;
     WindowRotateType rotateType;
-    int32_t vsyncRate = 0;
+    int32_t vsyncRate = 1;
+    bool needRotate = false;
     int64_t rotationTime = 0;
+    BufferRequestConfig config = {};
 } g_autoload;
 } // namespace
