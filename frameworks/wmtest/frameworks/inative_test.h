@@ -69,7 +69,6 @@ public:
     // input
     virtual bool OnKey(const KeyEvent &event);
     virtual bool OnTouch(const TouchEvent &event);
-    void GetToken();
     int32_t ListenWindowKeyEvent(int32_t windowID);
     int32_t ListenWindowTouchEvent(int32_t windowID);
     void ListenWindowInputEvent(int32_t windowID); // key and touch
@@ -99,11 +98,12 @@ private:
     virtual GSError OnMessage(int32_t sequence, const std::string &message, const sptr<IRemoteObject> &robj) override;
     void WaitingThreadMain();
     static void Signal(int32_t signum);
+    void GetToken();
 
     static inline std::vector<INativeTest *> tests;
     std::shared_ptr<AppExecFwk::EventHandler> handler = nullptr;
-    sptr<MMI::KeyEventHandler> keyHandler = nullptr;
-    sptr<MMI::TouchEventHandler> touchHandler = nullptr;
+    std::map<int32_t, sptr<MMI::KeyEventHandler>> keyHandlerMap;
+    std::map<int32_t, sptr<MMI::TouchEventHandler>> touchHandlerMap;
     sptr<IRemoteObject> token = nullptr;
     sptr<INativeTestIpc> remoteIpc = nullptr;
     std::map<pid_t, int32_t> pidToSeq;

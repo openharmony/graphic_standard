@@ -54,8 +54,6 @@ INativeTest *INativeTest::VisitTests(VisitTestFunc func)
 INativeTest::INativeTest()
 {
     tests.push_back(this);
-    keyHandler = new INativeTestKeyEventHandler(this);
-    touchHandler = new INativeTestTouchEventHandler(this);
 }
 
 uint32_t INativeTest::GetLastTime() const
@@ -102,13 +100,15 @@ void INativeTest::GetToken()
 int32_t INativeTest::ListenWindowKeyEvent(int32_t windowID)
 {
     GetToken();
-    return MMIEventHdl.RegisterStandardizedEventHandle(token, windowID, keyHandler);
+    keyHandlerMap[windowID] = new INativeTestKeyEventHandler(this);
+    return MMIEventHdl.RegisterStandardizedEventHandle(token, windowID, keyHandlerMap[windowID]);
 }
 
 int32_t INativeTest::ListenWindowTouchEvent(int32_t windowID)
 {
     GetToken();
-    return MMIEventHdl.RegisterStandardizedEventHandle(token, windowID, touchHandler);
+    touchHandlerMap[windowID] = new INativeTestTouchEventHandler(this);
+    return MMIEventHdl.RegisterStandardizedEventHandle(token, windowID, touchHandlerMap[windowID]);
 }
 
 void INativeTest::ListenWindowInputEvent(int32_t windowID)

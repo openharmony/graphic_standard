@@ -59,6 +59,7 @@ ohos_executable("wmtest") {
     "test/wmclient_native_test_19.cpp",
     "test/wmclient_native_test_2.cpp",
     "test/wmclient_native_test_20.cpp",
+    "test/wmclient_native_test_22.cpp",
     "test/wmclient_native_test_26.cpp",
     "test/wmclient_native_test_27.cpp",
     "test/wmclient_native_test_28.cpp",
