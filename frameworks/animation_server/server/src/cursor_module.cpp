@@ -18,6 +18,7 @@
 #include <display_type.h>
 #include <gslogger.h>
 #include <multimodal_event_handler.h>
+#include <unistd.h>
 
 namespace OHOS {
 namespace {
@@ -36,6 +37,10 @@ inline int32_t min(int32_t a, int32_t b)
 
 GSError CursorModule::Init()
 {
+    if (access("/data/cursor_enable", 0) == -1) {
+        return GSERROR_NOT_SUPPORT;
+    }
+
     handler = AppExecFwk::EventHandler::Current();
     auto wm = WindowManager::GetInstance();
     wm->GetDisplays(displays);
