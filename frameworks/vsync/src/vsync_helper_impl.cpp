@@ -200,7 +200,13 @@ GSError VsyncClient::RequestFrameCallback(const struct FrameCallback &cb)
         .callback_ = cb.callback_,
         .activeTime_ = cb.timestamp_ + GetNowTime(),
         .userdata_ = cb.userdata_,
+        .frequency_ = frequency,
     };
+
+    if (dumper == nullptr) {
+        dumper = GraphicDumperHelper::GetInstance();
+        dumpListener = dumper->AddDumpListener("client.vsync", std::bind(&VsyncClient::OnDump, this));
+    }
 
     {
         std::lock_guard<std::mutex> lockGuard(callbacksMapMutex_);
@@ -317,6 +323,13 @@ sptr<VsyncHelperImpl> VsyncHelperImpl::Current()
         VLOG_SUCCESS("new VsyncHelperImpl");
     }
     return currentHelper_;
+}
+
+void VsyncClient::OnDump()
+{
+    for (auto &[vid, eles] : callbacksMap_) {
+        dumper->SendInfo("client.vsync", "pid=%d, frequency is %d\n", getpid(), eles.top().frequency_);
+    }
 }
 
 VsyncHelperImpl::VsyncHelperImpl(std::shared_ptr<AppExecFwk::EventHandler>& handler)

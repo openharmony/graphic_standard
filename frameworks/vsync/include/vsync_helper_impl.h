@@ -22,6 +22,7 @@
 #include <mutex>
 #include <queue>
 
+#include <graphic_dumper_helper.h>
 #include <refbase.h>
 #include <vsync_helper.h>
 
@@ -34,6 +35,7 @@ struct VsyncElement {
     SyncFunc callback_;
     int64_t activeTime_;
     void *userdata_;
+    uint32_t frequency_;
 
     bool operator <(const struct VsyncElement &other) const
     {
@@ -62,6 +64,7 @@ private:
     GSError InitListener();
 
     void DispatchMain(int64_t timestamp);
+    void OnDump();
 
     std::map<uint32_t, std::priority_queue<struct VsyncElement>> callbacksMap_;
     std::mutex callbacksMapMutex_;
@@ -72,6 +75,8 @@ private:
     sptr<IVsyncManager> service_ = nullptr;
     std::mutex serviceMutex_;
     sptr<IVsyncCallback> listener_ = nullptr;
+    sptr<GraphicDumperHelper> dumper = nullptr;
+    int32_t dumpListener = -1;
 };
 
 class VsyncHelperImpl : public VsyncHelper {
@@ -96,9 +101,9 @@ public:
 
 class VsyncManagerDeathRecipient : public IRemoteObject::DeathRecipient {
 public:
-        VsyncManagerDeathRecipient() = default;
-        ~VsyncManagerDeathRecipient() = default;
-        void OnRemoteDied(const wptr<IRemoteObject> &remote);
+    VsyncManagerDeathRecipient() = default;
+    ~VsyncManagerDeathRecipient() = default;
+    void OnRemoteDied(const wptr<IRemoteObject> &remote);
 };
 } // namespace Vsync
 } // namespace OHOS

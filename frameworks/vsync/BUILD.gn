@@ -61,6 +61,7 @@ ohos_shared_library("libvsync_client") {
 
   public_deps = [
     "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
+    "//foundation/graphic/standard:libgraphic_dumper_client",
     "//utils/native/base:utils",
   ]
 
