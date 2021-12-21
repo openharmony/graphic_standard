@@ -106,11 +106,13 @@ public:
         if (event.GetAction() == TouchEnum::PRIMARY_POINT_DOWN) {
             downX = x;
             downY = y;
+            backupX = freeWindow->GetX();
+            backupY = freeWindow->GetY();
             return false;
         }
 
         if (event.GetAction() == TouchEnum::POINT_MOVE) {
-            freeWindow->Move(freeWindow->GetX() + x - downX, freeWindow->GetY() + y - downY)
+            freeWindow->Move(backupX + x - downX, backupY + y - downY)
                 ->Then(std::bind(&WMClientNativeTest27::OnMoveReturn, this, std::placeholders::_1));
             return false;
         }
@@ -133,5 +135,7 @@ private:
     BufferRequestConfig config = {};
     double downX = 0;
     double downY = 0;
+    double backupX = 0;
+    double backupY = 0;
 } g_autoload;
 } // namespace
