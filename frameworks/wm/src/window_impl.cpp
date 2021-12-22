@@ -426,6 +426,9 @@ GSError WindowImpl::EnterPIPMode(int32_t x, int32_t y,
     WMLOGFI("(%{public}d) %{public}d %{public}d %{public}u %{public}u",
             attr.GetID(), x, y, width, height);
     CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
+    if (GetPIPMode()) {
+        return GSERROR_INVALID_OPERATING;
+    }
 
     pipBackup.x = GetX();
     pipBackup.y = GetY();
@@ -456,6 +459,9 @@ GSError WindowImpl::ExitPIPMode()
 {
     WMLOGFI("(%{public}d)", attr.GetID());
     CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
+    if (!GetPIPMode()) {
+        return GSERROR_INVALID_OPERATING;
+    }
 
     Move(pipBackup.x, pipBackup.y);
     Resize(pipBackup.w, pipBackup.h);
