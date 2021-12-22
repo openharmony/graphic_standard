@@ -60,6 +60,7 @@ GSError VsyncClient::InitService()
 {
     std::lock_guard<std::mutex> lock(serviceMutex_);
     if (service_ == nullptr) {
+        ScopedBytrace func(__func__);
         auto sam = StaticCall::GetInstance()->GetSystemAbilityManager();
         if (sam == nullptr) {
             VLOG_FAILURE_RET(GSERROR_CONNOT_CONNECT_SAMGR);
@@ -146,6 +147,7 @@ GSError VsyncClient::Init(bool restart)
 GSError VsyncClient::InitListener()
 {
     while (listener_ == nullptr) {
+        ScopedBytrace func(__func__);
         auto vret = GSERROR_OK;
         {
             std::lock_guard<std::mutex> lock(serviceMutex_);
@@ -211,9 +213,9 @@ GSError VsyncClient::RequestFrameCallback(const struct FrameCallback &cb)
     {
         std::lock_guard<std::mutex> lockGuard(callbacksMapMutex_);
         callbacksMap_[vsyncID].push(ele);
-        InitListener();
     }
 
+    InitListener();
     VLOG_SUCCESS("RequestFrameCallback time: " VPUBI64 ", id: %{public}u", delayTime, vsyncID);
     return GSERROR_OK;
 }

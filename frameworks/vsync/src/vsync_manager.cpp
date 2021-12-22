@@ -15,6 +15,8 @@
 
 #include "vsync_manager.h"
 
+#include <scoped_bytrace.h>
+
 #include "vsync_callback_death_recipient.h"
 #include "vsync_callback_proxy.h"
 #include "vsync_log.h"
@@ -94,6 +96,7 @@ GSError VsyncManager::ListenVsync(sptr<IVsyncCallback>& cb)
         VLOGW("Failed to add death recipient");
     }
 
+    ScopedBytrace bytrace(__func__);
     std::lock_guard<std::mutex> lock(callbacksMutex_);
     callbacks_.push_back(cb);
     return GSERROR_OK;
@@ -101,6 +104,8 @@ GSError VsyncManager::ListenVsync(sptr<IVsyncCallback>& cb)
 
 GSError VsyncManager::RemoveVsync(sptr<IVsyncCallback>& callback)
 {
+    ScopedBytrace bytrace(__func__);
+    std::lock_guard<std::mutex> lock(callbacksMutex_);
     for (auto it = callbacks_.begin(); it != callbacks_.end(); it++) {
         if (*it == callback) {
             callbacks_.erase(it);
@@ -120,16 +125,28 @@ GSError VsyncManager::GetVsyncFrequency(uint32_t &freq)
 
 void VsyncManager::Callback(int64_t timestamp)
 {
-    std::lock_guard<std::mutex> lock(callbacksMutex_);
-
     using sptrIVsyncCallback = sptr<IVsyncCallback>;
-    std::list<sptrIVsyncCallback> okcbs;
-    for (const auto &cb : callbacks_) {
-        if (cb->OnVsync(timestamp) != GSERROR_BINDER) {
-            okcbs.push_back(cb);
+    std::list<sptrIVsyncCallback> okcbs, calling;
+    {
+        ScopedBytrace bytrace("callback 1");
+        std::lock_guard<std::mutex> lock(callbacksMutex_);
+        calling = callbacks_;
+    }
+
+    {
+        ScopedBytrace bytrace("callback 2");
+        for (const auto &cb : calling) {
+            if (cb->OnVsync(timestamp) != GSERROR_BINDER) {
+                okcbs.push_back(cb);
+            }
         }
     }
-    callbacks_ = okcbs;
+
+    {
+        ScopedBytrace bytrace("callback 3");
+        std::lock_guard<std::mutex> lock(callbacksMutex_);
+        callbacks_ = okcbs;
+    }
 }
 } // namespace Vsync
 } // namespace OHOS

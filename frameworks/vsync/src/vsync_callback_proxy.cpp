@@ -31,7 +31,7 @@ VsyncCallbackProxy::VsyncCallbackProxy(const sptr<IRemoteObject>& impl)
 
 GSError VsyncCallbackProxy::OnVsync(int64_t timestamp)
 {
-    MessageOption opt;
+    MessageOption opt(MessageOption::TF_ASYNC);
     MessageParcel arg;
     MessageParcel ret;
 
@@ -53,8 +53,7 @@ GSError VsyncCallbackProxy::OnVsync(int64_t timestamp)
         return GSERROR_BINDER;
     }
 
-    int result = ret.ReadInt32();
-    GSError err = (GSError)ReturnValueTester::Get<int>(result);
+    GSError err = (GSError)ReturnValueTester::Get<int>(GSERROR_OK);
     if (err != GSERROR_OK) {
         VLOG_FAILURE_NO(err);
         return err;
