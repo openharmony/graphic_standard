@@ -66,6 +66,7 @@ public:
     virtual void OnTypeChange(WindowTypeChangeFunc func) override;
     virtual void OnModeChange(WindowModeChangeFunc func) override;
     virtual void OnSplitStatusChange(SplitStatusChangeFunc func) override;
+    virtual void OnBeforeFrameSubmit(BeforeFrameSubmitFunc func) override;
 
     // pipMode
     virtual bool GetPIPMode() const override;

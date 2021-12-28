@@ -175,6 +175,11 @@ void SubwindowNormalImpl::OnSizeChange(WindowSizeChangeFunc func)
     attr.OnSizeChange(func);
 }
 
+void SubwindowNormalImpl::OnBeforeFrameSubmit(BeforeFrameSubmitFunc func)
+{
+    onBeforeFrameSubmitFunc = func;
+}
+
 SubwindowNormalImpl::~SubwindowNormalImpl()
 {
     Destroy();
@@ -207,6 +212,10 @@ void SubwindowNormalImpl::OnBufferAvailable()
         if (isDestroy == true) {
             WMLOGFI("object destroyed");
             return;
+        }
+
+        if (onBeforeFrameSubmitFunc != nullptr) {
+            onBeforeFrameSubmitFunc();
         }
 
         if (csurf == nullptr || wlSurface == nullptr) {

@@ -56,6 +56,7 @@ public:
     virtual void OnTypeChange(WindowTypeChangeFunc func) = 0;
     virtual void OnModeChange(WindowModeChangeFunc func) = 0;
     virtual void OnSplitStatusChange(SplitStatusChangeFunc func) = 0;
+    virtual void OnBeforeFrameSubmit(BeforeFrameSubmitFunc func) = 0;
 
     // pip Mode
     virtual bool GetPIPMode() const
