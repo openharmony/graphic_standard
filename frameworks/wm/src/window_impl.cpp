@@ -482,6 +482,11 @@ GSError WindowImpl::OnPIPModeChange(WindowPIPModeChangeFunc func)
     return GSERROR_OK;
 }
 
+void WindowImpl::OnBeforeFrameSubmit(BeforeFrameSubmitFunc func)
+{
+    onBeforeFrameSubmitFunc = func;
+}
+
 GSError WindowImpl::OnTouch(OnTouchFunc cb)
 {
     CHECK_DESTROY(GSERROR_DESTROYED_OBJECT);
@@ -512,6 +517,10 @@ void WindowImpl::OnBufferAvailable()
 {
     WMLOGFI("OnBufferAvailable enter");
     CHECK_DESTROY();
+
+    if (onBeforeFrameSubmitFunc != nullptr) {
+        onBeforeFrameSubmitFunc();
+    }
 
     sptr<SurfaceBuffer> sbuffer;
     int32_t flushFence;

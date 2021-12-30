@@ -40,6 +40,7 @@ public:
 
     virtual void OnPositionChange(WindowPositionChangeFunc func) override;
     virtual void OnSizeChange(WindowSizeChangeFunc func) override;
+    virtual void OnBeforeFrameSubmit(BeforeFrameSubmitFunc func) override;
 
 private:
     GSError CreateWlSurface(const sptr<WlSurface> &parentWlSurface);

@@ -33,6 +33,7 @@ public:
 
     virtual void OnPositionChange(WindowPositionChangeFunc func) = 0;
     virtual void OnSizeChange(WindowSizeChangeFunc func) = 0;
+    virtual void OnBeforeFrameSubmit(BeforeFrameSubmitFunc func) = 0;
 
     virtual GSError OnFrameAvailable(FrameAvailableFunc func)
     {

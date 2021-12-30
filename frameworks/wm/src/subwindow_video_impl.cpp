@@ -266,4 +266,9 @@ SubwindowVideoImpl::~SubwindowVideoImpl()
 {
     Destroy();
 }
+
+void SubwindowVideoImpl::OnBeforeFrameSubmit(BeforeFrameSubmitFunc func)
+{
+    onBeforeFrameSubmitFunc = func;
+}
 } // namespace OHOS
