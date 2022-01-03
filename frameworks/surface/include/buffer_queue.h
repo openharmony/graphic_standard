@@ -91,9 +91,12 @@ public:
     int32_t GetDefaultHeight();
     GSError SetDefaultUsage(uint32_t usage);
     uint32_t GetDefaultUsage();
-    uint64_t GetUniqueId() const;
 
     GSError CleanCache();
+
+    uint64_t GetUniqueId() const;
+
+    void Dump(std::string &result);
 
 private:
     GSError AllocBuffer(sptr<SurfaceBufferImpl>& buffer, const BufferRequestConfig &config);
@@ -109,6 +112,7 @@ private:
 
     GSError CheckRequestConfig(const BufferRequestConfig &config);
     GSError CheckFlushConfig(const BufferFlushConfig &config);
+    void DumpCache(const std::list<int32_t> &dumpList, std::string &result);
 
     int32_t defaultWidth = 0;
     int32_t defaultHeight = 0;

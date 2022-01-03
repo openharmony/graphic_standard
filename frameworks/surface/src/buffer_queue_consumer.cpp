@@ -115,4 +115,12 @@ GSError BufferQueueConsumer::SetDefaultUsage(uint32_t usage)
     }
     return bufferQueue_->SetDefaultUsage(usage);
 }
+
+void BufferQueueConsumer::Dump(std::string &result) const
+{
+    if (bufferQueue_ == nullptr) {
+        return;
+    }
+    return bufferQueue_->Dump(result);
+}
 } // namespace OHOS

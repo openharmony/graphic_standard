@@ -18,8 +18,6 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
-#include <memory>
-#include <unistd.h>
 #include <sys/time.h>
 #include <unistd.h>
 
@@ -41,6 +39,7 @@ static uint64_t GetUniqueIdImpl()
     static uint64_t id = static_cast<uint64_t>(::getpid()) << UNIQUE_ID_OFFSET;
     return id | counter++;
 }
+
 BufferQueue::BufferQueue(const std::string &name, bool isShared)
     : name_(name), uniqueId_(GetUniqueIdImpl()), isShared_(isShared)
 {
@@ -749,5 +748,40 @@ GSError BufferQueue::CleanCache()
 uint64_t BufferQueue::GetUniqueId() const
 {
     return uniqueId_;
+}
+
+void BufferQueue::DumpCache(const std::list<int32_t> &dumpList, std::string &result)
+{
+    for (auto it = dumpList.begin(); it != dumpList.end(); it++) {
+        BufferElement element = bufferQueueCache_.at(*it);
+        result += "    state = " + std::to_string(element.state) +
+            ", timestamp = " + std::to_string(element.timestamp);
+        result += ", damageRect = [" + std::to_string(element.damage.x) + ", " +
+            std::to_string(element.damage.y) + ", " +
+            std::to_string(element.damage.w) + ", " +
+            std::to_string(element.damage.h) + "],";
+        result += " config = [" + std::to_string(element.config.width) + "x" +
+            std::to_string(element.config.height) + ":" +
+            std::to_string(element.config.strideAlignment) + ", " +
+            std::to_string(element.config.format) +", " +
+            std::to_string(element.config.usage) + ", " +
+            std::to_string(element.config.timeout) + "]\n";
+    }
+}
+
+void BufferQueue::Dump(std::string &result)
+{
+    std::lock_guard<std::mutex> lockGuard(mutex_);
+    result.append("-- BufferQueue\n");
+    result += "  default-size = [" + std::to_string(defaultWidth) + "x" + std::to_string(defaultHeight) + "]\n";
+    result += "  FIFO = " + std::to_string(queueSize_) + "\n";
+    result += "  name = " + name_ + "\n";
+
+    result.append("  FreeList:\n");
+    DumpCache(freeList_, result);
+    result.append("  DirtyList:\n");
+    DumpCache(dirtyList_, result);
+    result.append("  DeletingList:\n");
+    DumpCache(deletingList_, result);
 }
 }; // namespace OHOS

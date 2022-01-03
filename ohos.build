@@ -15,6 +15,8 @@
 
         "//third_party/weston:default",
         "//foundation/graphic/standard:default",
+        "//foundation/graphic/standard/rosen/samples/composer:hello_composer",
+        "//foundation/graphic/standard/rosen/modules/composer:libcomposer",
         "//foundation/graphic/standard/rosen/modules/render_service_base:librender_service_base",
         "//foundation/graphic/standard/rosen/modules/render_service_client:librender_service_client"
       ],

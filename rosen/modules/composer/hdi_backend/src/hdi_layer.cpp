@@ -141,7 +141,6 @@ void HdiLayer::ReleaseBuffer()
         SurfaceError ret = ReleasePrevBuffer();
         if (ret != SURFACE_ERROR_OK) {
             HLOGE("ReleaseBuffer failed, ret is %{public}d", ret);
-            return;
         }
 
         /* copy currSbuffer to prevSbuffer */

@@ -53,7 +53,7 @@ RosenError HdiBackend::RegPrepareComplete(OnPrepareCompleteFunc func, void* data
 
 void HdiBackend::Repaint(std::vector<OutputPtr> &outputs)
 {
-    HLOGE("start Repaint");
+    HLOGD("start Repaint");
     if (device_ == nullptr) {
         HLOGE("device has not been initialized");
         return;
@@ -62,6 +62,9 @@ void HdiBackend::Repaint(std::vector<OutputPtr> &outputs)
     int32_t ret = DISPLAY_SUCCESS;
     for (auto &output : outputs) {
         const std::unordered_map<uint32_t, LayerPtr> layersMap = output->GetLayers();
+        if (layersMap.empty()) {
+            continue;
+        }
         uint32_t screenId = output->GetScreenId();
         for (auto iter = layersMap.begin(); iter != layersMap.end(); ++iter) {
             const LayerPtr &layer = iter->second;
@@ -69,7 +72,7 @@ void HdiBackend::Repaint(std::vector<OutputPtr> &outputs)
         }
 
         bool needFlush = false;
-        HLOGE("Repaint PrepareScreenLayers");
+        HLOGD("Repaint PrepareScreenLayers");
         ret = device_->PrepareScreenLayers(screenId, needFlush);
         if (ret != DISPLAY_SUCCESS) {
             HLOGE("PrepareScreenLayers failed, ret is %{public}d", ret);
@@ -88,11 +91,11 @@ void HdiBackend::Repaint(std::vector<OutputPtr> &outputs)
                 // return
             }
         }
-        HLOGE("Repaint need to OnPrepareComplete");
+        HLOGD("Repaint need to OnPrepareComplete");
         OnPrepareComplete(needFlush, output, changedLayerInfos, compTypes);
 
         if (needFlush) {
-            HLOGE("Repaint need to FlushScreen");
+            HLOGD("Repaint need to FlushScreen");
             if (FlushScreen(screenId, output, changedLayers) != DISPLAY_SUCCESS) {
                 // return [TODO]
                 HLOGE("faile to flushscreen");
@@ -100,13 +103,13 @@ void HdiBackend::Repaint(std::vector<OutputPtr> &outputs)
         }
 
         sptr<SyncFence> fbFence = SyncFence::INVALID_FENCE;
-        HLOGE("Repaint start to commit");
+        HLOGD("Repaint start to commit");
         ret = device_->Commit(screenId, fbFence);
         if (ret != DISPLAY_SUCCESS) {
             HLOGE("commit failed, ret is %{public}d", ret);
             // return [TODO]
         }
-        HLOGE("Repaint commit end");
+        HLOGD("Repaint commit end");
 
         ReleaseLayerBuffer(screenId, layersMap);
 
@@ -148,7 +151,7 @@ int32_t HdiBackend::GetCompChangedLayers(uint32_t screenId, std::vector<LayerPtr
 void HdiBackend::OnPrepareComplete(bool needFlush, OutputPtr &output,
         std::vector<LayerInfoPtr> &changedLayerInfos, std::vector<CompositionType> &compTypes)
 {
-    HLOGE("OnPrepareComplete begin");
+    HLOGD("OnPrepareComplete begin");
     struct PrepareCompleteParam param = {
         .needFlushFramebuffer = needFlush,
         .layers = changedLayerInfos,
@@ -158,7 +161,7 @@ void HdiBackend::OnPrepareComplete(bool needFlush, OutputPtr &output,
     sptr<Surface> producerSurface = output->GetProducerSurface();
 
     if (onPrepareCompleteCb_ != nullptr) {
-        HLOGE("onPrepareCompleteCb_ is not null call it");
+        HLOGD("onPrepareCompleteCb_ is not null call it");
         onPrepareCompleteCb_(producerSurface, param, onPrepareCompleteCbData_);
     }
 }
@@ -221,7 +224,7 @@ void HdiBackend::ReleaseLayerBuffer(uint32_t screenId, const std::unordered_map<
 
 void HdiBackend::OnHdiBackendHotPlugEvent(uint32_t screenId, bool connected, void *data)
 {
-    HLOGE("OnHdiBackendHotPlugEvent screenId [%{public}u] connected [%{public}u]", screenId,connected);
+    HLOGD("OnHdiBackendHotPlugEvent screenId [%{public}u] connected [%{public}u]", screenId,connected);
     HdiBackend *hdiBackend = nullptr;
     if (data != nullptr) {
         hdiBackend = static_cast<HdiBackend *>(data);
@@ -284,7 +287,7 @@ void HdiBackend::OnScreenHotplug(uint32_t screenId, bool connected)
 
 RosenError HdiBackend::InitDevice()
 {
-    HLOGE("InitDevice begin");
+    HLOGD("InitDevice begin");
     if (device_ != nullptr) {
         return ROSEN_ERROR_OK;
     }
@@ -309,7 +312,7 @@ RosenError HdiBackend::InitDevice()
         }
     }
     OnHdiBackendConnected(newScreenId_);
-    HLOGE("Init HdiDevice succeed");
+    HLOGD("Init HdiDevice succeed");
 
     return ROSEN_ERROR_OK;
 }

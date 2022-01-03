@@ -50,9 +50,11 @@ ohos_shared_library("surface") {
     "src/buffer_queue_producer.cpp",
     "src/buffer_utils.cpp",
     "src/consumer_surface.cpp",
+    "src/native_window.cpp",
     "src/producer_surface.cpp",
     "src/surface.cpp",
     "src/surface_buffer_impl.cpp",
+    "src/surface_utils.cpp",
   ]
 
   if (ace_enable_gpu) {
