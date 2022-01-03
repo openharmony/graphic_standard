@@ -19,27 +19,30 @@
 #include <surface.h>
 
 #include "platform/drawing/rs_surface.h"
+#ifdef ACE_ENABLE_GL
+#include "render_context/render_context.h"
+#endif
 
 namespace OHOS {
 namespace Rosen {
-
 class RSSurfaceOhos : public RSSurface {
 public:
-    RSSurfaceOhos() = default;
-    explicit RSSurfaceOhos(const sptr<Surface>& producer);
-    ~RSSurfaceOhos() = default;
+    RSSurfaceOhos(const sptr<Surface>& producer)
+        : producer_(producer) {}
 
-    bool IsValid() const override
+    sptr<Surface> GetSurface() const
     {
-        return producer_ != nullptr;
+        return producer_;
     }
-
-    std::unique_ptr<RSSurfaceFrame> RequestFrame(int32_t width, int32_t height) override;
-    bool FlushFrame(std::unique_ptr<RSSurfaceFrame>& frame) override;
-
-private:
+#ifdef ACE_ENABLE_GL
+    virtual RenderContext* GetRenderContext();
+    virtual void SetRenderContext(RenderContext* context);
+#endif
+protected:
     sptr<Surface> producer_;
-    friend class RSSurfaceConverter;
+#ifdef ACE_ENABLE_GL
+    RenderContext* context_;
+#endif
 };
 
 } // namespace Rosen

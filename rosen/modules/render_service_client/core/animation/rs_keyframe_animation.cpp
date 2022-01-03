@@ -46,7 +46,7 @@ namespace Rosen {
     animation->SetFillMode(GetFillMode());                                                                 \
     animation->SetDirection(GetDirection());                                                               \
     std::unique_ptr<RSCommand> command = std::make_unique<Command>(target->GetId(), std::move(animation)); \
-    RSTransactionProxy::GetInstance().AddCommand(command);
+    RSTransactionProxy::GetInstance().AddCommand(command, target->IsRenderServiceNode());
 
 template<>
 void RSKeyframeAnimation<int>::OnStart()

@@ -22,14 +22,17 @@ namespace OHOS {
 namespace Rosen {
 class RS_EXPORT RSRootNode : public RSNode {
 public:
-    static std::shared_ptr<RSNode> Create();
-
+    using WeakPtr = std::weak_ptr<RSRootNode >;
+    using SharedPtr = std::shared_ptr<RSRootNode >;
     virtual ~RSRootNode() {}
+
+    static std::shared_ptr<RSNode> Create(bool isRenderServiceNode = false);
+
 protected:
     void AttachSurface(uintptr_t surfaceProducer, int width, int height) const;
     void AttachRSSurface(std::shared_ptr<RSSurface> surfaceProducer, int width, int height) const;
 
-    RSRootNode();
+    RSRootNode(bool isRenderServiceNode);
     RSRootNode(const RSRootNode&) = delete;
     RSRootNode(const RSRootNode&&) = delete;
     RSRootNode& operator=(const RSRootNode&) = delete;

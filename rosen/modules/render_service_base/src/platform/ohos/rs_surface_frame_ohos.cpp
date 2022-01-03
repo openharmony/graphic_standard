@@ -19,56 +19,11 @@
 
 namespace OHOS {
 namespace Rosen {
-
-RSSurfaceFrameOhos::RSSurfaceFrameOhos(int32_t width, int32_t height)
+#ifdef ACE_ENABLE_GL
+void RSSurfaceFrameOhos::SetRenderContext(RenderContext* context)
 {
-    requestConfig_.width = width;
-    requestConfig_.height = height;
+    renderContext_ = context;
 }
-
-void RSSurfaceFrameOhos::SetDamageRegion(int32_t left, int32_t top, int32_t width, int32_t height)
-{
-    flushConfig_.damage.x = left;
-    flushConfig_.damage.y = top;
-    flushConfig_.damage.w = width;
-    flushConfig_.damage.h = height;
-}
-
-std::shared_ptr<SkCanvas> RSSurfaceFrameOhos::GetCanvas()
-{
-    if (buffer_ == nullptr || buffer_->GetWidth() <= 0 || buffer_->GetHeight() <= 0) {
-        ROSEN_LOGW("buffer is invalid");
-        return nullptr;
-    }
-    if (canvas_ == nullptr) {
-        CreateCanvas();
-    }
-
-    return canvas_;
-}
-
-void RSSurfaceFrameOhos::CreateCanvas()
-{
-    auto addr = static_cast<uint32_t*>(buffer_->GetVirAddr());
-    if (addr == nullptr ) {
-        ROSEN_LOGW("buffer addr is invalid");
-        return;
-    }
-    SkImageInfo info = SkImageInfo::Make(buffer_->GetWidth(), buffer_->GetHeight(),
-                                        kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-    auto uniqueCanvasPtr = SkCanvas::MakeRasterDirect(info, addr, buffer_->GetSize() / buffer_->GetHeight());
-    canvas_ = std::move(uniqueCanvasPtr);
-}
-
-int32_t RSSurfaceFrameOhos::GetReleaseFence() const
-{
-    return releaseFence_;
-}
-
-void RSSurfaceFrameOhos::SetReleaseFence(const int32_t& fence)
-{
-    releaseFence_ = fence;
-}
-
+#endif
 } // namespace Rosen
 } // namespace OHOS

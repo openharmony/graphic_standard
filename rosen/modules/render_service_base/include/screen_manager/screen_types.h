@@ -59,7 +59,7 @@ typedef enum : uint32_t {
     POWER_STATUS_SUSPEND,
     POWER_STATUS_OFF,
     POWER_STATUS_BUTT,
-    INVAILD_POWER_STATUS = 5,
+    INVAILD_POWER_STATUS,
 }ScreenPowerStatus;
 
 typedef enum : uint32_t {
@@ -75,6 +75,7 @@ typedef enum : uint32_t {
     DISP_INTF_MIPI,
     DISP_INTF_PANEL,
     DISP_INTF_BUTT,
+    DISP_INVALID,
 }ScreenInterfaceType;
 // get the underlying type of an enum value.
 template<typename EnumType>

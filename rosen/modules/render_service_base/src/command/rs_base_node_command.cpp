@@ -52,6 +52,16 @@ void BaseNodeCommandHelper::RemoveChild(RSContext& context, NodeId nodeId, NodeI
     }
 }
 
+void BaseNodeCommandHelper::RemoveFromTree(RSContext& context, NodeId nodeId)
+{
+    auto& nodeMap = context.GetNodeMap();
+    auto node = nodeMap.GetRenderNode<RSBaseRenderNode>(nodeId);
+    if (node == nullptr) {
+        return;
+    }
+    node->RemoveFromTree();
+}
+
 void BaseNodeCommandHelper::ClearChildren(RSContext& context, NodeId nodeId)
 {
     auto& nodeMap = context.GetNodeMap();

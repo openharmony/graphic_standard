@@ -64,13 +64,31 @@ protected:                                              \
     type memberName##_;
 
 template<typename T>
-inline const T ROSEN_EPSILON()
+inline bool ROSEN_EQ(const T& x, const T& y)
 {
-    return std::numeric_limits<T>::epsilon();
+    return x == y;
+}
+
+template<>
+inline bool ROSEN_EQ(const float& x, const float& y)
+{
+    return (std::abs((x) - (y)) <= (std::numeric_limits<float>::epsilon()));
+}
+
+template<>
+inline bool ROSEN_EQ(const double& x, const double& y)
+{
+    return (std::abs((x) - (y)) <= (std::numeric_limits<double>::epsilon()));
+}
+
+template<>
+inline bool ROSEN_EQ(const long double& x, const long double& y)
+{
+    return (std::abs((x) - (y)) <= (std::numeric_limits<long double>::epsilon()));
 }
 
 template<typename T>
-inline bool ROSEN_EQ(T x, T y, T epsilon = ROSEN_EPSILON<T>())
+inline bool ROSEN_EQ(T x, T y, T epsilon)
 {
     return (std::abs((x) - (y)) <= (epsilon));
 }

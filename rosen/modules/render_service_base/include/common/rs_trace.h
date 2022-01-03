@@ -16,7 +16,13 @@
 #ifndef RENDER_SERVICE_BASE_ADAPTER_GENERIC_RS_TRACE_H
 #define RENDER_SERVICE_BASE_ADAPTER_GENERIC_RS_TRACE_H
 
+#ifdef ROSEN_OHOS
+#include "bytrace.h"
+#define ROSEN_TRACE_BEGIN(tag, name) StartTrace(tag, name)
+#define ROSEN_TRACE_END(tag) FinishTrace(tag);
+#else
 #define ROSEN_TRACE_BEGIN(tag, name)
 #define ROSEN_TRACE_END(tag)
+#endif
 
 #endif // RENDER_SERVICE_BASE_ADAPTER_GENERIC_RS_TRACE_H

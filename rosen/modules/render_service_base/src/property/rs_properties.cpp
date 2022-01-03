@@ -29,7 +29,7 @@
 
 namespace OHOS {
 namespace Rosen {
-RSProperties::RSProperties(bool inRenderNode, NodeId id) : inRenderNode_(inRenderNode), id_(id)
+RSProperties::RSProperties(bool inRenderNode)
 {
 #ifdef ROSEN_OHOS
     if (inRenderNode) {
@@ -45,63 +45,36 @@ RSProperties::RSProperties(bool inRenderNode, NodeId id) : inRenderNode_(inRende
 
 RSProperties::~RSProperties() {}
 
-void RSProperties::SetBoundsWidth(float width, bool sendMsg)
+void RSProperties::SetBoundsWidth(float width)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeBoundsWidthChanged>(id_, width);
-        SendPropertyCommand(command);
-    }
     boundsGeo_->SetWidth(width);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetBoundsHeight(float height, bool sendMsg)
+void RSProperties::SetBoundsHeight(float height)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeBoundsHeightChanged>(id_, height);
-        SendPropertyCommand(command);
-    }
     boundsGeo_->SetHeight(height);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetBoundsPositionX(float positionX, bool sendMsg)
+void RSProperties::SetBoundsPositionX(float positionX)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeBoundsPositionXChanged>(id_, positionX);
-        SendPropertyCommand(command);
-    }
     boundsGeo_->SetX(positionX);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetBoundsPositionY(float positionY, bool sendMsg)
+void RSProperties::SetBoundsPositionY(float positionY)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeBoundsPositionYChanged>(id_, positionY);
-        SendPropertyCommand(command);
-    }
     boundsGeo_->SetY(positionY);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetBoundsPosition(Vector2f position, bool sendMsg)
+void RSProperties::SetBoundsPosition(Vector2f position)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> commandX = std::make_unique<RSPropertyNodeBoundsPositionXChanged>(id_, position[0]);
-        SendPropertyCommand(commandX);
-        std::unique_ptr<RSCommand> commandY = std::make_unique<RSPropertyNodeBoundsPositionYChanged>(id_, position[1]);
-        SendPropertyCommand(commandY);
-    }
     boundsGeo_->SetX(position[0]);
     boundsGeo_->SetY(position[1]);
     geoDirty_ = true;
@@ -133,63 +106,36 @@ Vector2f RSProperties::GetBoundsPosition() const
     return Vector2f(GetBoundsPositionX(), GetBoundsPositionY());
 }
 
-void RSProperties::SetFrameWidth(float width, bool sendMsg)
+void RSProperties::SetFrameWidth(float width)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeFrameWidthChanged>(id_, width);
-        SendPropertyCommand(command);
-    }
     frameGeo_->SetWidth(width);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetFrameHeight(float height, bool sendMsg)
+void RSProperties::SetFrameHeight(float height)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeFrameHeightChanged>(id_, height);
-        SendPropertyCommand(command);
-    }
     frameGeo_->SetHeight(height);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetFramePositionX(float positionX, bool sendMsg)
+void RSProperties::SetFramePositionX(float positionX)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeFramePositionXChanged>(id_, positionX);
-        SendPropertyCommand(command);
-    }
     frameGeo_->SetX(positionX);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetFramePositionY(float positionY, bool sendMsg)
+void RSProperties::SetFramePositionY(float positionY)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeFramePositionYChanged>(id_, positionY);
-        SendPropertyCommand(command);
-    }
     frameGeo_->SetY(positionY);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetFramePosition(Vector2f position, bool sendMsg)
+void RSProperties::SetFramePosition(Vector2f position)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> commandX = std::make_unique<RSPropertyNodeFramePositionXChanged>(id_, position[0]);
-        SendPropertyCommand(commandX);
-        std::unique_ptr<RSCommand> commandY = std::make_unique<RSPropertyNodeFramePositionYChanged>(id_, position[1]);
-        SendPropertyCommand(commandY);
-    }
     frameGeo_->SetX(position[0]);
     frameGeo_->SetY(position[1]);
     geoDirty_ = true;
@@ -268,13 +214,8 @@ bool RSProperties::UpdateGeometry(const RSProperties* parent, bool dirtyFlag)
     return dirtyFlag || geoDirty_;
 }
 
-void RSProperties::SetPositionZ(float positionZ, bool sendMsg)
+void RSProperties::SetPositionZ(float positionZ)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodePositionZChanged>(id_, positionZ);
-        SendPropertyCommand(command);
-    }
     boundsGeo_->SetZ(positionZ);
     frameGeo_->SetZ(positionZ);
     geoDirty_ = true;
@@ -286,25 +227,15 @@ float RSProperties::GetPositionZ() const
     return boundsGeo_->GetZ();
 }
 
-void RSProperties::SetPivotX(float pivotX, bool sendMsg)
+void RSProperties::SetPivotX(float pivotX)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodePivotXChanged>(id_, pivotX);
-        SendPropertyCommand(command);
-    }
     boundsGeo_->SetPivotX(pivotX);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetPivotY(float pivotY, bool sendMsg)
+void RSProperties::SetPivotY(float pivotY)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodePivotYChanged>(id_, pivotY);
-        SendPropertyCommand(command);
-    }
     boundsGeo_->SetPivotY(pivotY);
     geoDirty_ = true;
     SetDirty();
@@ -320,13 +251,8 @@ float RSProperties::GetPivotY() const
     return boundsGeo_->GetPivotY();
 }
 
-void RSProperties::SetCornerRadius(float cornerRadius, bool sendMsg)
+void RSProperties::SetCornerRadius(float cornerRadius)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeCornerRadiusChanged>(id_, cornerRadius);
-        SendPropertyCommand(command);
-    }
     if (!border_) {
         border_ = std::make_unique<Border>();
     }
@@ -339,126 +265,72 @@ float RSProperties::GetCornerRadius() const
     return border_ ? border_->cornerRadius_ : 0.f;
 }
 
-void RSProperties::SetQuaternion(Vector4f quaternion, bool sendMsg)
+void RSProperties::SetQuaternion(Vector4f quaternion)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeQuaternionChanged>(id_, quaternion);
-        SendPropertyCommand(command);
-    }
     boundsGeo_->SetQuaternion(quaternion);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetRotation(float degree, bool sendMsg)
+void RSProperties::SetRotation(float degree)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeRotationChanged>(id_, degree);
-        SendPropertyCommand(command);
-    }
     boundsGeo_->SetRotation(degree);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetRotationX(float degree, bool sendMsg)
+void RSProperties::SetRotationX(float degree)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeRotationXChanged>(id_, degree);
-        SendPropertyCommand(command);
-    }
     boundsGeo_->SetRotationX(degree);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetRotationY(float degree, bool sendMsg)
+void RSProperties::SetRotationY(float degree)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeRotationYChanged>(id_, degree);
-        SendPropertyCommand(command);
-    }
     boundsGeo_->SetRotationY(degree);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetScaleX(float sx, bool sendMsg)
+void RSProperties::SetScaleX(float sx)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeScaleXChanged>(id_, sx);
-        SendPropertyCommand(command);
-    }
     boundsGeo_->SetScaleX(sx);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetScaleY(float sy, bool sendMsg)
+void RSProperties::SetScaleY(float sy)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeScaleYChanged>(id_, sy);
-        SendPropertyCommand(command);
-    }
     boundsGeo_->SetScaleY(sy);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetTranslate(Vector2f translate, bool sendMsg)
+void RSProperties::SetTranslate(Vector2f translate)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> commandTranslateX =
-            std::make_unique<RSPropertyNodeTranslateXChanged>(id_, translate[0]);
-        SendPropertyCommand(commandTranslateX);
-        std::unique_ptr<RSCommand> commandTranslateY =
-            std::make_unique<RSPropertyNodeTranslateYChanged>(id_, translate[1]);
-        SendPropertyCommand(commandTranslateY);
-    }
     boundsGeo_->SetTranslateX(translate[0]);
     boundsGeo_->SetTranslateY(translate[1]);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetTranslateX(float translate, bool sendMsg)
+void RSProperties::SetTranslateX(float translate)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeTranslateXChanged>(id_, translate);
-        SendPropertyCommand(command);
-    }
     boundsGeo_->SetTranslateX(translate);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetTranslateY(float translate, bool sendMsg)
+void RSProperties::SetTranslateY(float translate)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeTranslateYChanged>(id_, translate);
-        SendPropertyCommand(command);
-    }
     boundsGeo_->SetTranslateY(translate);
     geoDirty_ = true;
     SetDirty();
 }
 
-void RSProperties::SetTranslateZ(float translate, bool sendMsg)
+void RSProperties::SetTranslateZ(float translate)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeTranslateZChanged>(id_, translate);
-        SendPropertyCommand(command);
-    }
     boundsGeo_->SetTranslateZ(translate);
     geoDirty_ = true;
     SetDirty();
@@ -514,13 +386,8 @@ float RSProperties::GetTranslateZ() const
     return boundsGeo_->GetTranslateZ();
 }
 
-void RSProperties::SetAlpha(float alpha, bool sendMsg)
+void RSProperties::SetAlpha(float alpha)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeAlphaChanged>(id_, alpha);
-        SendPropertyCommand(command);
-    }
     alpha_ = alpha;
     SetDirty();
 }
@@ -530,14 +397,8 @@ float RSProperties::GetAlpha() const
     return alpha_;
 }
 
-void RSProperties::SetSublayerTransform(Matrix3f sublayerTransform, bool sendMsg)
+void RSProperties::SetSublayerTransform(Matrix3f sublayerTransform)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command =
-            std::make_unique<RSPropertyNodeSublayerTransformChanged>(id_, sublayerTransform);
-        SendPropertyCommand(command);
-    }
     if (sublayerTransform_) {
         *sublayerTransform_ = sublayerTransform;
     } else {
@@ -552,13 +413,8 @@ Matrix3f RSProperties::GetSublayerTransform() const
 }
 
 // foreground properties
-void RSProperties::SetForegroundColor(Color color, bool sendMsg)
+void RSProperties::SetForegroundColor(Color color)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeForegroundColorChanged>(id_, color);
-        SendPropertyCommand(command);
-    }
     if (!decoration_) {
         decoration_ = std::make_unique<Decoration>();
     }
@@ -572,13 +428,8 @@ Color RSProperties::GetForegroundColor() const
 }
 
 // background properties
-void RSProperties::SetBackgroundColor(Color color, bool sendMsg)
+void RSProperties::SetBackgroundColor(Color color)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeBackgroundColorChanged>(id_, color);
-        SendPropertyCommand(command);
-    }
     if (!decoration_) {
         decoration_ = std::make_unique<Decoration>();
     }
@@ -591,13 +442,8 @@ Color RSProperties::GetBackgroundColor() const
     return decoration_ ? decoration_->backgroundColor_ : RgbPalette::Transparent();
 }
 
-void RSProperties::SetBackgroundShader(std::shared_ptr<RSShader> shader, bool sendMsg)
+void RSProperties::SetBackgroundShader(std::shared_ptr<RSShader> shader)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeBackgroundShaderChanged>(id_, shader);
-        SendPropertyCommand(command);
-    }
     if (!decoration_) {
         decoration_ = std::make_unique<Decoration>();
     }
@@ -610,13 +456,8 @@ std::shared_ptr<RSShader> RSProperties::GetBackgroundShader() const
     return decoration_ ? decoration_->bgShader_ : nullptr;
 }
 
-void RSProperties::SetBgImage(std::shared_ptr<RSImage> image, bool sendMsg)
+void RSProperties::SetBgImage(std::shared_ptr<RSImage> image)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeBgImageChanged>(id_, image);
-        SendPropertyCommand(command);
-    }
     if (!decoration_) {
         decoration_ = std::make_unique<Decoration>();
     }
@@ -629,13 +470,8 @@ std::shared_ptr<RSImage> RSProperties::GetBgImage() const
     return decoration_ ? decoration_->bgImage_ : nullptr;
 }
 
-void RSProperties::SetBgImageWidth(float width, bool sendMsg)
+void RSProperties::SetBgImageWidth(float width)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeBgImageWidthChanged>(id_, width);
-        SendPropertyCommand(command);
-    }
     if (!decoration_) {
         decoration_ = std::make_unique<Decoration>();
     }
@@ -643,13 +479,8 @@ void RSProperties::SetBgImageWidth(float width, bool sendMsg)
     SetDirty();
 }
 
-void RSProperties::SetBgImageHeight(float height, bool sendMsg)
+void RSProperties::SetBgImageHeight(float height)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeBgImageHeightChanged>(id_, height);
-        SendPropertyCommand(command);
-    }
     if (!decoration_) {
         decoration_ = std::make_unique<Decoration>();
     }
@@ -657,14 +488,8 @@ void RSProperties::SetBgImageHeight(float height, bool sendMsg)
     SetDirty();
 }
 
-void RSProperties::SetBgImagePositionX(float positionX, bool sendMsg)
+void RSProperties::SetBgImagePositionX(float positionX)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command =
-            std::make_unique<RSPropertyNodeBgImagePositionXChanged>(id_, positionX);
-        SendPropertyCommand(command);
-    }
     if (!decoration_) {
         decoration_ = std::make_unique<Decoration>();
     }
@@ -672,14 +497,8 @@ void RSProperties::SetBgImagePositionX(float positionX, bool sendMsg)
     SetDirty();
 }
 
-void RSProperties::SetBgImagePositionY(float positionY, bool sendMsg)
+void RSProperties::SetBgImagePositionY(float positionY)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command =
-            std::make_unique<RSPropertyNodeBgImagePositionYChanged>(id_, positionY);
-        SendPropertyCommand(command);
-    }
     if (!decoration_) {
         decoration_ = std::make_unique<Decoration>();
     }
@@ -708,13 +527,8 @@ float RSProperties::GetBgImagePositionY() const
 }
 
 // border properties
-void RSProperties::SetBorderColor(Color color, bool sendMsg)
+void RSProperties::SetBorderColor(Color color)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeBorderColorChanged>(id_, color);
-        SendPropertyCommand(command);
-    }
     if (!border_) {
         border_ = std::make_unique<Border>();
     }
@@ -722,13 +536,8 @@ void RSProperties::SetBorderColor(Color color, bool sendMsg)
     SetDirty();
 }
 
-void RSProperties::SetBorderWidth(float width, bool sendMsg)
+void RSProperties::SetBorderWidth(float width)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeBorderWidthChanged>(id_, width);
-        SendPropertyCommand(command);
-    }
     if (!border_) {
         border_ = std::make_unique<Border>();
     }
@@ -736,13 +545,8 @@ void RSProperties::SetBorderWidth(float width, bool sendMsg)
     SetDirty();
 }
 
-void RSProperties::SetBorderStyle(BorderStyle style, bool sendMsg)
+void RSProperties::SetBorderStyle(BorderStyle style)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeBorderStyleChanged>(id_, style);
-        SendPropertyCommand(command);
-    }
     if (!border_) {
         border_ = std::make_unique<Border>();
     }
@@ -765,25 +569,14 @@ BorderStyle RSProperties::GetBorderStyle() const
     return border_ ? border_->borderStyle_ : BorderStyle::SOLID;
 }
 
-void RSProperties::SetBackgroundFilter(std::shared_ptr<RSFilter> backgroundFilter, bool sendMsg)
+void RSProperties::SetBackgroundFilter(std::shared_ptr<RSFilter> backgroundFilter)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command =
-            std::make_unique<RSPropertyNodeBackgroundFilterChanged>(id_, backgroundFilter);
-        SendPropertyCommand(command);
-    }
     backgroundFilter_ = backgroundFilter;
     SetDirty();
 }
 
-void RSProperties::SetFilter(std::shared_ptr<RSFilter> filter, bool sendMsg)
+void RSProperties::SetFilter(std::shared_ptr<RSFilter> filter)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeFilterChanged>(id_, filter);
-        SendPropertyCommand(command);
-    }
     filter_ = filter;
     SetDirty();
 }
@@ -799,13 +592,8 @@ std::shared_ptr<RSFilter> RSProperties::GetFilter() const
 }
 
 // shadow properties
-void RSProperties::SetShadowColor(Color color, bool sendMsg)
+void RSProperties::SetShadowColor(Color color)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeShadowColorChanged>(id_, color);
-        SendPropertyCommand(command);
-    }
     if (shadow_ == nullptr) {
         shadow_ = std::make_unique<RSShadow>();
     }
@@ -813,13 +601,8 @@ void RSProperties::SetShadowColor(Color color, bool sendMsg)
     SetDirty();
 }
 
-void RSProperties::SetShadowOffsetX(float offsetX, bool sendMsg)
+void RSProperties::SetShadowOffsetX(float offsetX)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeShadowOffsetXChanged>(id_, offsetX);
-        SendPropertyCommand(command);
-    }
     if (shadow_ == nullptr) {
         shadow_ = std::make_unique<RSShadow>();
     }
@@ -827,13 +610,8 @@ void RSProperties::SetShadowOffsetX(float offsetX, bool sendMsg)
     SetDirty();
 }
 
-void RSProperties::SetShadowOffsetY(float offsetY, bool sendMsg)
+void RSProperties::SetShadowOffsetY(float offsetY)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeShadowOffsetYChanged>(id_, offsetY);
-        SendPropertyCommand(command);
-    }
     if (shadow_ == nullptr) {
         shadow_ = std::make_unique<RSShadow>();
     }
@@ -841,13 +619,8 @@ void RSProperties::SetShadowOffsetY(float offsetY, bool sendMsg)
     SetDirty();
 }
 
-void RSProperties::SetShadowAlpha(float alpha, bool sendMsg)
+void RSProperties::SetShadowAlpha(float alpha)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeShadowAlphaChanged>(id_, alpha);
-        SendPropertyCommand(command);
-    }
     if (shadow_ == nullptr) {
         shadow_ = std::make_unique<RSShadow>();
     }
@@ -855,13 +628,8 @@ void RSProperties::SetShadowAlpha(float alpha, bool sendMsg)
     SetDirty();
 }
 
-void RSProperties::SetShadowElevation(float elevation, bool sendMsg)
+void RSProperties::SetShadowElevation(float elevation)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeShadowElevationChanged>(id_, elevation);
-        SendPropertyCommand(command);
-    }
     if (shadow_ == nullptr) {
         shadow_ = std::make_unique<RSShadow>();
     }
@@ -869,13 +637,8 @@ void RSProperties::SetShadowElevation(float elevation, bool sendMsg)
     SetDirty();
 }
 
-void RSProperties::SetShadowRadius(float radius, bool sendMsg)
+void RSProperties::SetShadowRadius(float radius)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeShadowRadiusChanged>(id_, radius);
-        SendPropertyCommand(command);
-    }
     if (shadow_ == nullptr) {
         shadow_ = std::make_unique<RSShadow>();
     }
@@ -883,13 +646,8 @@ void RSProperties::SetShadowRadius(float radius, bool sendMsg)
     SetDirty();
 }
 
-void RSProperties::SetShadowPath(std::shared_ptr<RSPath> shadowPath, bool sendMsg)
+void RSProperties::SetShadowPath(std::shared_ptr<RSPath> shadowPath)
 {
-    if (sendMsg) {
-        // send a Command
-        std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeShadowPathChanged>(id_, shadowPath);
-        SendPropertyCommand(command);
-    }
     if (shadow_ == nullptr) {
         shadow_ = std::make_unique<RSShadow>();
     }
@@ -932,14 +690,9 @@ std::shared_ptr<RSPath> RSProperties::GetShadowPath() const
     return shadow_ ? shadow_->GetPath() : nullptr;
 }
 
-void RSProperties::SetFrameGravity(Gravity gravity, bool sendMsg)
+void RSProperties::SetFrameGravity(Gravity gravity)
 {
     if (frameGravity_ != gravity) {
-        if (sendMsg) {
-            // send a Command
-            std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeFrameGravityChanged>(id_, gravity);
-            SendPropertyCommand(command);
-        }
         frameGravity_ = gravity;
         SetDirty();
     }
@@ -950,14 +703,9 @@ Gravity RSProperties::GetFrameGravity() const
     return frameGravity_;
 }
 
-void RSProperties::SetClipBounds(std::shared_ptr<RSPath> path, bool sendMsg)
+void RSProperties::SetClipBounds(std::shared_ptr<RSPath> path)
 {
     if (clipPath_ != path) {
-        if (sendMsg) {
-            // send a Command
-            std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeClipBoundsChanged>(id_, path);
-            SendPropertyCommand(command);
-        }
         clipPath_ = path;
         SetDirty();
     }
@@ -968,14 +716,9 @@ std::shared_ptr<RSPath> RSProperties::GetClipBounds() const
     return clipPath_;
 }
 
-void RSProperties::SetClipToBounds(bool clipToBounds, bool sendMsg)
+void RSProperties::SetClipToBounds(bool clipToBounds)
 {
     if (clipToBounds_ != clipToBounds) {
-        if (sendMsg) {
-            // send a Command
-            std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeClipToBoundsChanged>(id_, clipToBounds);
-            SendPropertyCommand(command);
-        }
         clipToBounds_ = clipToBounds;
         SetDirty();
     }
@@ -986,14 +729,9 @@ bool RSProperties::GetClipToBounds() const
     return clipToBounds_;
 }
 
-void RSProperties::SetClipToFrame(bool clipToFrame, bool sendMsg)
+void RSProperties::SetClipToFrame(bool clipToFrame)
 {
     if (clipToFrame_ != clipToFrame) {
-        if (sendMsg) {
-            // send a Command
-            std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeClipToFrameChanged>(id_, clipToFrame);
-            SendPropertyCommand(command);
-        }
         clipToFrame_ = clipToFrame;
         SetDirty();
     }
@@ -1023,14 +761,9 @@ RectF RSProperties::GetBgImageRect() const
     return decoration_ ? decoration_->bgImageRect_ : RectF();
 }
 
-void RSProperties::SetVisible(bool visible, bool sendMsg)
+void RSProperties::SetVisible(bool visible)
 {
     if (visible_ != visible) {
-        if (sendMsg) {
-            // send a Command
-            std::unique_ptr<RSCommand> command = std::make_unique<RSPropertyNodeVisibleChanged>(id_, visible);
-            SendPropertyCommand(command);
-        }
         visible_ = visible;
         SetDirty();
     }
@@ -1067,25 +800,6 @@ bool RSProperties::NeedFilter() const
 bool RSProperties::NeedClip() const
 {
     return clipToBounds_ || clipToFrame_;
-}
-
-void RSProperties::SendPropertyCommand(std::unique_ptr<RSCommand>& command)
-{
-    if (inRenderNode_) {
-        // todo send cmds to ui
-        // RSMessageProcessor::Instance().AddUIMessage(msg);
-    } else {
-        RSTransactionProxy::GetInstance().AddCommand(command);
-    }
-}
-
-bool RSProperties::SetId(NodeId id)
-{
-    if (id_ != 0) {
-        return false;
-    }
-    id_ = id;
-    return true;
 }
 
 void RSProperties::SetDirty()

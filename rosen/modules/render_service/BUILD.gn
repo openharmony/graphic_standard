@@ -1,0 +1,88 @@
+# Copyright (c) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+## Build librender_service.so
+ohos_shared_library("librender_service") {
+  defines = [ "ROSEN_DEBUG" ]
+  sources = [
+    "core/pipeline/rs_hardware_processor.cpp",
+    "core/pipeline/rs_main_thread.cpp",
+    "core/pipeline/rs_processor.cpp",
+    "core/pipeline/rs_processor_factory.cpp",
+    "core/pipeline/rs_render_service.cpp",
+    "core/pipeline/rs_render_service_listener.cpp",
+    "core/pipeline/rs_render_service_visitor.cpp",
+    "core/pipeline/rs_software_processor.cpp",
+    "core/screen_manager/rs_screen.cpp",
+    "core/screen_manager/rs_screen_change_callback_death_recipient.cpp",
+    "core/screen_manager/rs_screen_manager.cpp",
+    "core/transaction/rs_render_service_stub.cpp",
+  ]
+
+  include_dirs = [
+    "core",
+    "//foundation/graphic/standard/rosen/include",
+    "//utils/native/base/include",
+    "//utils/system/safwk/native/include",
+  ]
+
+  deps = [
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
+    "//foundation/graphic/standard:libsurface",
+    "//foundation/graphic/standard:libwmclient",
+    "//foundation/graphic/standard/rosen/modules/composer:libcomposer",
+    "//foundation/graphic/standard/rosen/modules/render_service_base:librender_service_base",
+    "//utils/native/base:utils",
+  ]
+
+  public_deps = [ "//foundation/ace/ace_engine/build/external_config/flutter/skia:ace_skia_ohos" ]
+
+  external_deps = [
+    "bytrace_standard:bytrace_core",
+    "ipc:ipc_core",
+    "samgr_standard:samgr_proxy",
+  ]
+
+  part_name = "graphic_standard"
+  subsystem_name = "graphic"
+}
+
+## Build render_service.bin
+ohos_executable("render_service") {
+  sources = [ "core/main.cpp" ]
+
+  include_dirs = [
+    "core",
+    "//utils/native/base/include",
+  ]
+
+  deps = [
+    ":librender_service",
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
+    "//foundation/graphic/standard/rosen/modules/composer:libcomposer",
+    "//foundation/graphic/standard/rosen/modules/render_service_base:librender_service_base",
+  ]
+
+  external_deps = [ "ipc:ipc_core" ]
+
+  part_name = "graphic_standard"
+  subsystem_name = "graphic"
+}
+
+group("test") {
+  testonly = true
+
+  deps = [ "core/screen_manager/test:test" ]
+}

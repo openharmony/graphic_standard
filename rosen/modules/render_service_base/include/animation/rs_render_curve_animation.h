@@ -69,7 +69,7 @@ public:
     {
         RSRenderCurveAnimation* renderCurveAnimation = new RSRenderCurveAnimation<T>();
         if (!renderCurveAnimation->ParseParam(parcel)) {
-            ROSEN_LOGE("Unmarshaling RenderCurveAnimation failed");
+            ROSEN_LOGE("Unmarshalling RenderCurveAnimation failed");
             delete renderCurveAnimation;
             return nullptr;
         }
@@ -111,6 +111,9 @@ private:
     RSRenderCurveAnimation() = default;
     void OnAnimateInner(float fraction, const std::shared_ptr<RSInterpolator>& interpolator)
     {
+        if (RSRenderPropertyAnimation<T>::GetProperty() == RSAnimatableProperty::INVALID) {
+            return;
+        }
         auto interpolationValue =
             valueEstimator_->Estimate(interpolator_->Interpolate(fraction), startValue_, endValue_);
         RSRenderPropertyAnimation<T>::SetAnimationValue(interpolationValue);

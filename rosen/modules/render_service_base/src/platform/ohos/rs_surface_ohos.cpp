@@ -15,37 +15,18 @@
 
 #include "rs_surface_frame_ohos.h"
 #include "rs_surface_ohos.h"
-
 namespace OHOS {
 namespace Rosen {
-
-RSSurfaceOhos::RSSurfaceOhos(const sptr<Surface>& producer) : producer_(producer) {}
-
-std::unique_ptr<RSSurfaceFrame> RSSurfaceOhos::RequestFrame(int32_t width, int32_t height)
+#ifdef ACE_ENABLE_GL
+RenderContext* RSSurfaceOhos::GetRenderContext()
 {
-    if (producer_ == nullptr) {
-        return nullptr;
-    }
-    std::unique_ptr<RSSurfaceFrameOhos> frame = std::make_unique<RSSurfaceFrameOhos>(width, height);
-    SurfaceError err = producer_->RequestBuffer(frame->buffer_, frame->releaseFence_, frame->requestConfig_);
-    if (err != SURFACE_ERROR_OK) {
-        return nullptr;
-    }
-    std::unique_ptr<RSSurfaceFrame> ret(std::move(frame));
-    return ret;
+    return context_;
 }
 
-bool RSSurfaceOhos::FlushFrame(std::unique_ptr<RSSurfaceFrame>& frame)
+void RSSurfaceOhos::SetRenderContext(RenderContext* context)
 {
-    // RSSurfaceOhos is the class for platform OHOS, the input pointer should be the pointer to the class RSSurfaceFrameOhos.
-    // We use static_cast instead of RTTI and dynamic_cast which are not permitted
-    RSSurfaceFrameOhos* oriFramePtr = static_cast<RSSurfaceFrameOhos*>(frame.get());
-    SurfaceError ret = producer_->FlushBuffer(oriFramePtr->buffer_, oriFramePtr->releaseFence_, oriFramePtr->flushConfig_);
-    if (ret != SURFACE_ERROR_OK) {
-        return false;
-    }
-    return true;
+    context_ = context;
 }
-
+#endif
 } // namespace Rosen
 } // namespace OHOS

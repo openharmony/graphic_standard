@@ -24,15 +24,17 @@
 #include "platform/drawing/rs_surface_converter.h"
 #include "transaction/rs_render_service_client.h"
 #include "transaction/rs_transaction_proxy.h"
-#include "ui/rs_surface_extractor.h"
+#ifdef ACE_ENABLE_GL
+#include "render_context/render_context.h"
+#endif
 
 namespace OHOS {
 namespace Rosen {
 
-RSSurfaceNode::SharedPtr RSSurfaceNode::Create(const RSSurfaceNodeConfig& surfaceNodeConfig)
+RSSurfaceNode::SharedPtr RSSurfaceNode::Create(const RSSurfaceNodeConfig& surfaceNodeConfig, bool isWindow)
 {
-    ROSEN_LOGI("RSSurfaceNode::Create");
-    SharedPtr node(new RSSurfaceNode(surfaceNodeConfig));
+    SharedPtr node(new RSSurfaceNode(surfaceNodeConfig, isWindow));
+
     RSNodeMap::Instance().RegisterNode(node);
 
     // create node in RS
@@ -42,27 +44,30 @@ RSSurfaceNode::SharedPtr RSSurfaceNode::Create(const RSSurfaceNodeConfig& surfac
     }
 
     // create node in RT
-    std::unique_ptr<RSCommand> command = std::make_unique<RSSurfaceNodeCreate>(node->GetId());
-    RSTransactionProxy::GetInstance().AddCommand(command);
-
+    if (!isWindow) {
+        std::unique_ptr<RSCommand> command = std::make_unique<RSSurfaceNodeCreate>(node->GetId());
+        RSTransactionProxy::GetInstance().AddCommand(command, isWindow);
+    }
+    ROSEN_LOGI("RsDebug RSSurfaceNode::Create id:%llu", node->GetId());
     return node;
 }
 
 bool RSSurfaceNode::Marshalling(Parcel& parcel) const
 {
-    return parcel.WriteUint64(GetId()) && parcel.WriteString(name_);
+    return parcel.WriteUint64(GetId()) && parcel.WriteString(name_) && parcel.WriteBool(IsRenderServiceNode());
 }
 
 RSSurfaceNode* RSSurfaceNode::Unmarshalling(Parcel& parcel)
 {
     uint64_t id = UINT64_MAX;
     std::string name;
-    if (!(parcel.ReadUint64(id) && parcel.ReadString(name))) {
+    bool isRenderServiceNode = false;
+    if (!(parcel.ReadUint64(id) && parcel.ReadString(name) && parcel.ReadBool(isRenderServiceNode))) {
         return nullptr;
     }
     RSSurfaceNodeConfig config = { name };
 
-    RSSurfaceNode* surfaceNode = new RSSurfaceNode(config);
+    RSSurfaceNode* surfaceNode = new RSSurfaceNode(config, isRenderServiceNode);
     surfaceNode->SetId(id);
 
     return surfaceNode;
@@ -87,9 +92,11 @@ sptr<OHOS::Surface> RSSurfaceNode::GetSurface() const
 }
 #endif
 
-RSSurfaceNode::RSSurfaceNode() {}
+RSSurfaceNode::RSSurfaceNode(bool isRenderServiceNode) : RSPropertyNode(isRenderServiceNode) {}
 
-RSSurfaceNode::RSSurfaceNode(const RSSurfaceNodeConfig& config) : name_(config.SurfaceNodeName) {}
+RSSurfaceNode::RSSurfaceNode(const RSSurfaceNodeConfig& config, bool isRenderServiceNode)
+    : RSPropertyNode(isRenderServiceNode), name_(config.SurfaceNodeName)
+{}
 
 RSSurfaceNode::~RSSurfaceNode() {}
 

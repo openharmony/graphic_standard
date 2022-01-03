@@ -18,6 +18,12 @@
 #include "ipc_callbacks/screen_change_callback_stub.h"
 #include "rs_render_service_connect.h"
 #include "rs_surface_ohos.h"
+#include "backend/rs_surface_ohos_raster.h"
+#ifdef ACE_ENABLE_GL
+#include "backend/rs_surface_ohos_gl.h"
+#endif
+#include "platform/common/rs_log.h"
+
 namespace OHOS {
 namespace Rosen {
 std::shared_ptr<RSIRenderClient> RSIRenderClient::CreateRenderServiceClient()
@@ -41,7 +47,14 @@ std::shared_ptr<RSSurface> RSRenderServiceClient::CreateNodeAndSurface(const RSS
         return nullptr;
     }
     sptr<Surface> surface = renderService->CreateNodeAndSurface(config);
-    std::shared_ptr<RSSurface> producer = std::make_shared<RSSurfaceOhos>(surface);
+
+#ifdef ACE_ENABLE_GL
+    // GPU render
+    std::shared_ptr<RSSurface> producer = std::make_shared<RSSurfaceOhosGl>(surface);
+#else
+    // CPU render
+    std::shared_ptr<RSSurface> producer = std::make_shared<RSSurfaceOhosRaster>(surface);
+#endif
     return producer;
 }
 

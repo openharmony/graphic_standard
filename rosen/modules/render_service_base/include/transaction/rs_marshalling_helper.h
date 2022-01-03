@@ -58,6 +58,12 @@ public:
         return false;
     }
 
+    static bool Marshalling(Parcel& parcel, const std::shared_ptr<RSRenderPathAnimation>& val);
+    static bool Unmarshalling(Parcel& parcel, std::shared_ptr<RSRenderPathAnimation>& val);
+
+    static bool Marshalling(Parcel& parcel, const std::shared_ptr<RSRenderTransition>& val);
+    static bool Unmarshalling(Parcel& parcel, std::shared_ptr<RSRenderTransition>& val);
+
     // specialized marshalling & unmarshalling function for certain types
 #define DECLEAR_SPECIALIZATION(TYPE)                   \
     template<>                                         \
@@ -81,8 +87,6 @@ public:
     DECLEAR_SPECIALIZATION(SkPath)
     DECLEAR_SPECIALIZATION(RSShader)
     DECLEAR_SPECIALIZATION(RSPath)
-    DECLEAR_SPECIALIZATION(std::shared_ptr<RSRenderPathAnimation>)
-    DECLEAR_SPECIALIZATION(std::shared_ptr<RSRenderTransition>)
 #undef DECLEAR_SPECIALIZATION
 
 #define DECLEAR_TEMPLATE_OVERLOAD(TEMPLATE)                                           \

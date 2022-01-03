@@ -22,15 +22,19 @@
 
 namespace OHOS {
 namespace Rosen {
-
+#ifdef ACE_ENABLE_GL
+class RenderContext;
+#endif
 class RSSurfaceFrame {
 public:
     RSSurfaceFrame() = default;
     virtual ~RSSurfaceFrame() = default;
 
     virtual void SetDamageRegion(int32_t left, int32_t top, int32_t width, int32_t height) {};
-    virtual std::shared_ptr<SkCanvas> GetCanvas() = 0;
-
+    virtual SkCanvas* GetCanvas() = 0;
+#ifdef ACE_ENABLE_GL
+    virtual void SetRenderContext(RenderContext* context) = 0;
+#endif
 protected:
     std::shared_ptr<SkCanvas> canvas_;
 private:

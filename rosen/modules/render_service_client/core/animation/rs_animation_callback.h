@@ -23,8 +23,7 @@ namespace Rosen {
 class AnimationCallback {
 public:
     explicit AnimationCallback(const std::function<void()>& callback);
-    virtual ~AnimationCallback() = default;
-    virtual void Run();
+    virtual ~AnimationCallback();
 
 protected:
     std::function<void()> callback_;
@@ -32,13 +31,10 @@ protected:
 
 class AnimationFinishCallback : public AnimationCallback {
 public:
-    AnimationFinishCallback(const std::function<void()>& callback, int sharedAnimCnt = 1);
+    AnimationFinishCallback(const std::function<void()>& callback);
     virtual ~AnimationFinishCallback() = default;
-    void Run() override;
 
 private:
-    int sharedAnimCnt_;
-    friend class RSAnimation;
 };
 } // namespace Rosen
 } // namespace OHOS

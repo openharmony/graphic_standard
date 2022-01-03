@@ -116,10 +116,12 @@ private:
     template<typename T>
     void SetPropertyValue(RSPropertyNode& target, const RSAnimatableProperty& property, const T& value)
     {
-        std::shared_ptr<RSBasePropertyAccessors> propertyAccess =
-            RSBasePropertyAccessors::PROPERTY_ACCESSOR_LUT.at(property);
-        auto accessors = static_cast<RSPropertyAccessors<T>*>(propertyAccess.get());
-        (target.stagingProperties_.*accessors->UseSetProp())(value, false);
+        std::shared_ptr<RSBasePropertyAccessors> propertyAccess = RSBasePropertyAccessors::GetAccessor(property);
+        auto accessors = std::static_pointer_cast<RSPropertyAccessors<T>>(propertyAccess);
+        if (accessors->setter_ == nullptr) {
+            return;
+        }
+        (target.stagingProperties_.*accessors->setter_)(value);
     }
 
     std::stack<std::tuple<RSAnimationTimingProtocol, RSAnimationTimingCurve, std::function<void()>>>

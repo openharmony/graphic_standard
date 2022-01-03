@@ -46,7 +46,7 @@ void RSTransition::OnStart()
     transition->SetInterpolator(interpolator);
     std::unique_ptr<RSCommand> command =
         std::make_unique<RSAnimationCreateTransition>(target->GetId(), std::move(transition));
-    RSTransactionProxy::GetInstance().AddCommand(command);
+    RSTransactionProxy::GetInstance().AddCommand(command, target->IsRenderServiceNode());
 }
 } // namespace Rosen
 } // namespace OHOS

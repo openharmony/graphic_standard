@@ -30,24 +30,21 @@ public:
     using SharedPtr = std::shared_ptr<RSNode>;
     virtual ~RSNode();
 
-    static SharedPtr Create();
+    static SharedPtr Create(bool isRenderServiceNode = false);
 
     SkCanvas* BeginRecording(int width, int height);
     bool IsRecording() const;
+    void FinishRecording();
     void SetPaintOrder(bool drawContentLast);
 
 protected:
-    RSNode();
+    RSNode(bool isRenderServiceNode);
     RSNode(const RSNode&) = delete;
     RSNode(const RSNode&&) = delete;
     RSNode& operator=(const RSNode&) = delete;
     RSNode& operator=(const RSNode&&) = delete;
 
 private:
-    RSNode(NodeId id);
-    void OnUpdateRecording();
-    void UpdateRecording();
-
     SkCanvas* recordingCanvas_ = nullptr;
     bool drawContentLast_ = false;
 

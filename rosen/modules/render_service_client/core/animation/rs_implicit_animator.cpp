@@ -66,7 +66,8 @@ std::vector<std::shared_ptr<RSAnimation>> RSImplicitAnimator::CloseImplicitAnima
     currentAnimations = implicitAnimations_.top();
 
     for (const auto& [animationInfo, keyframeAnimation] : keyframeAnimations_.top()) {
-        auto target = std::static_pointer_cast<RSPropertyNode>(RSNodeMap::Instance().GetNode(animationInfo.first).lock());
+        auto target =
+            std::static_pointer_cast<RSPropertyNode>(RSNodeMap::Instance().GetNode(animationInfo.first).lock());
         if (target == nullptr) {
             ROSEN_LOGE(
                 "Failed to start implicit keyframe animation[%llu], target is null!", keyframeAnimation->GetId());
@@ -78,7 +79,7 @@ std::vector<std::shared_ptr<RSAnimation>> RSImplicitAnimator::CloseImplicitAnima
 
     std::shared_ptr<AnimationFinishCallback> animationFinishCallback;
     if (finishCallback != nullptr) {
-        animationFinishCallback = std::make_shared<AnimationFinishCallback>(finishCallback, currentAnimations.size());
+        animationFinishCallback = std::make_shared<AnimationFinishCallback>(finishCallback);
     }
 
     std::vector<std::shared_ptr<RSAnimation>> resultAnimations;

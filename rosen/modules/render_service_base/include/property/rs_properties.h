@@ -32,26 +32,26 @@ namespace OHOS {
 namespace Rosen {
 class RSProperties final {
 public:
-    RSProperties(bool inRenderNode, NodeId id = 0);
+    RSProperties(bool inRenderNode);
     virtual ~RSProperties();
 
     // geometry properties
-    void SetBoundsWidth(float width, bool sendMsg = true);
-    void SetBoundsHeight(float height, bool sendMsg = true);
-    void SetBoundsPosition(Vector2f position, bool sendMsg = true);
-    void SetBoundsPositionX(float positionX, bool sendMsg = true);
-    void SetBoundsPositionY(float positionY, bool sendMsg = true);
+    void SetBoundsWidth(float width);
+    void SetBoundsHeight(float height);
+    void SetBoundsPosition(Vector2f position);
+    void SetBoundsPositionX(float positionX);
+    void SetBoundsPositionY(float positionY);
     float GetBoundsWidth() const;
     float GetBoundsHeight() const;
     Vector2f GetBoundsPosition() const;
     float GetBoundsPositionX() const;
     float GetBoundsPositionY() const;
 
-    void SetFrameWidth(float width, bool sendMsg = true);
-    void SetFrameHeight(float height, bool sendMsg = true);
-    void SetFramePosition(Vector2f position, bool sendMsg = true);
-    void SetFramePositionX(float positionX, bool sendMsg = true);
-    void SetFramePositionY(float positionY, bool sendMsg = true);
+    void SetFrameWidth(float width);
+    void SetFrameHeight(float height);
+    void SetFramePosition(Vector2f position);
+    void SetFramePositionX(float positionX);
+    void SetFramePositionY(float positionY);
     float GetFrameWidth() const;
     float GetFrameHeight() const;
     Vector2f GetFramePosition() const;
@@ -60,28 +60,28 @@ public:
     float GetFrameOffsetX() const;
     float GetFrameOffsetY() const;
 
-    void SetPositionZ(float positionZ, bool sendMsg = true);
+    void SetPositionZ(float positionZ);
     float GetPositionZ() const;
 
-    void SetPivotX(float pivotX, bool sendMsg = true);
-    void SetPivotY(float pivotY, bool sendMsg = true);
+    void SetPivotX(float pivotX);
+    void SetPivotY(float pivotY);
     float GetPivotX() const;
     float GetPivotY() const;
 
-    void SetCornerRadius(float cornerRadius, bool sendMsg = true);
+    void SetCornerRadius(float cornerRadius);
     float GetCornerRadius() const;
 
-    void SetQuaternion(Vector4f quaternion, bool sendMsg = true);
-    void SetRotation(float degree, bool sendMsg = true);
-    void SetRotationX(float degree, bool sendMsg = true);
-    void SetRotationY(float degree, bool sendMsg = true);
-    void SetTranslate(Vector2f translate, bool sendMsg = true);
-    void SetTranslateX(float translate, bool sendMsg = true);
-    void SetTranslateY(float translate, bool sendMsg = true);
-    void SetTranslateZ(float translate, bool sendMsg = true);
-    void SetScale(float sx, float sy, bool sendMsg = true);
-    void SetScaleX(float sx, bool sendMsg = true);
-    void SetScaleY(float sy, bool sendMsg = true);
+    void SetQuaternion(Vector4f quaternion);
+    void SetRotation(float degree);
+    void SetRotationX(float degree);
+    void SetRotationY(float degree);
+    void SetTranslate(Vector2f translate);
+    void SetTranslateX(float translate);
+    void SetTranslateY(float translate);
+    void SetTranslateZ(float translate);
+    void SetScale(float sx, float sy);
+    void SetScaleX(float sx);
+    void SetScaleY(float sy);
     Vector4f GetQuaternion() const;
     float GetRotation() const;
     float GetRotationX() const;
@@ -93,54 +93,54 @@ public:
     float GetTranslateY() const;
     float GetTranslateZ() const;
 
-    void SetAlpha(float alpha, bool sendMsg = true);
+    void SetAlpha(float alpha);
     float GetAlpha() const;
 
-    void SetSublayerTransform(Matrix3f sublayerTransform, bool sendMsg = true);
+    void SetSublayerTransform(Matrix3f sublayerTransform);
     Matrix3f GetSublayerTransform() const;
 
     // foreground properties
-    void SetForegroundColor(Color color, bool sendMsg = true);
+    void SetForegroundColor(Color color);
     Color GetForegroundColor() const;
 
     // background properties
-    void SetBackgroundColor(Color color, bool sendMsg = true);
+    void SetBackgroundColor(Color color);
     Color GetBackgroundColor() const;
-    void SetBackgroundShader(std::shared_ptr<RSShader> shader, bool sendMsg = true);
+    void SetBackgroundShader(std::shared_ptr<RSShader> shader);
     std::shared_ptr<RSShader> GetBackgroundShader() const;
-    void SetBgImage(std::shared_ptr<RSImage> image, bool sendMsg = true);
+    void SetBgImage(std::shared_ptr<RSImage> image);
     std::shared_ptr<RSImage> GetBgImage() const;
-    void SetBgImageWidth(float width, bool sendMsg = true);
-    void SetBgImageHeight(float height, bool sendMsg = true);
-    void SetBgImagePositionX(float positionX, bool sendMsg = true);
-    void SetBgImagePositionY(float positionY, bool sendMsg = true);
+    void SetBgImageWidth(float width);
+    void SetBgImageHeight(float height);
+    void SetBgImagePositionX(float positionX);
+    void SetBgImagePositionY(float positionY);
     float GetBgImageWidth() const;
     float GetBgImageHeight() const;
     float GetBgImagePositionX() const;
     float GetBgImagePositionY() const;
 
     // border properties
-    void SetBorderColor(Color color, bool sendMsg = true);
-    void SetBorderWidth(float width, bool sendMsg = true);
-    void SetBorderStyle(BorderStyle style, bool sendMsg = true);
+    void SetBorderColor(Color color);
+    void SetBorderWidth(float width);
+    void SetBorderStyle(BorderStyle style);
     Color GetBorderColor() const;
     float GetBorderWidth() const;
     BorderStyle GetBorderStyle() const;
 
     // filter properties
-    void SetBackgroundFilter(std::shared_ptr<RSFilter> backgroundFilter, bool sendMsg = true);
-    void SetFilter(std::shared_ptr<RSFilter> filter, bool sendMsg = true);
+    void SetBackgroundFilter(std::shared_ptr<RSFilter> backgroundFilter);
+    void SetFilter(std::shared_ptr<RSFilter> filter);
     std::shared_ptr<RSFilter> GetBackgroundFilter() const;
     std::shared_ptr<RSFilter> GetFilter() const;
 
     // shadow properties
-    void SetShadowColor(Color color, bool sendMsg = true);
-    void SetShadowOffsetX(float offsetX, bool sendMsg = true);
-    void SetShadowOffsetY(float offsetY, bool sendMsg = true);
-    void SetShadowAlpha(float alpha, bool sendMsg = true);
-    void SetShadowElevation(float radius, bool sendMsg = true);
-    void SetShadowRadius(float radius, bool sendMsg = true);
-    void SetShadowPath(std::shared_ptr<RSPath> shadowpath, bool sendMsg = true);
+    void SetShadowColor(Color color);
+    void SetShadowOffsetX(float offsetX);
+    void SetShadowOffsetY(float offsetY);
+    void SetShadowAlpha(float alpha);
+    void SetShadowElevation(float radius);
+    void SetShadowRadius(float radius);
+    void SetShadowPath(std::shared_ptr<RSPath> shadowpath);
     Color GetShadowColor() const;
     float GetShadowOffsetX() const;
     float GetShadowOffsetY() const;
@@ -149,25 +149,25 @@ public:
     float GetShadowRadius() const;
     std::shared_ptr<RSPath> GetShadowPath() const;
 
-    void SetFrameGravity(Gravity gravity, bool sendMsg = true);
+    void SetFrameGravity(Gravity gravity);
     Gravity GetFrameGravity() const;
 
-    void SetClipBounds(std::shared_ptr<RSPath> path, bool sendMsg = true);
+    void SetClipBounds(std::shared_ptr<RSPath> path);
     std::shared_ptr<RSPath> GetClipBounds() const;
-    void SetClipToBounds(bool clipToBounds, bool sendMsg = true);
+    void SetClipToBounds(bool clipToBounds);
     bool GetClipToBounds() const;
-    void SetClipToFrame(bool clipToFrame, bool sendMsg = true);
+    void SetClipToFrame(bool clipToFrame);
     bool GetClipToFrame() const;
 
-    void SetVisible(bool visible, bool sendMsg = true);
+    void SetVisible(bool visible);
     bool GetVisible() const;
+    bool SetId(NodeId id);
 
 private:
     const std::shared_ptr<RSObjGeometry>& GetBoundsGeometry() const;
     const std::shared_ptr<RSObjGeometry>& GetFrameGeometry() const;
     bool UpdateGeometry(const RSProperties* parent, bool dirtyFlag);
 
-    bool SetId(NodeId id);
     void SetDirty();
     void ResetDirty();
     bool IsDirty() const;
@@ -182,9 +182,7 @@ private:
 
     bool NeedFilter() const;
     bool NeedClip() const;
-    void SendPropertyCommand(std::unique_ptr<RSCommand>& command);
 
-    bool inRenderNode_;
     bool visible_ = true;
     bool clipToBounds_ = false;
     bool clipToFrame_ = false;
@@ -207,8 +205,6 @@ private:
     std::shared_ptr<RSFilter> backgroundFilter_ = nullptr;
     std::shared_ptr<RSFilter> filter_ = nullptr;
     std::shared_ptr<RSPath> clipPath_ = nullptr;
-
-    NodeId id_;
 
     friend class RSPropertiesPainter;
     friend class RSTextureRenderNode;

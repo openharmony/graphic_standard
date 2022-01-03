@@ -25,6 +25,7 @@ enum RSBaseNodeCommandType : uint16_t {
     BASE_NODE_DESTROY,
     BASE_NODE_ADD_CHILD,
     BASE_NODE_REMOVE_CHILD,
+    BASE_NODE_REMOVE_FROM_TREE,
     BASE_NODE_CLEAR_CHILDREN,
 };
 
@@ -33,6 +34,7 @@ public:
     static void Destroy(RSContext& context, NodeId nodeId);
     static void AddChild(RSContext& context, NodeId nodeId, NodeId childNodeId, int32_t index);
     static void RemoveChild(RSContext& context, NodeId nodeId, NodeId childNodeId);
+    static void RemoveFromTree(RSContext& context, NodeId nodeId);
     static void ClearChildren(RSContext& context, NodeId nodeId);
 };
 
@@ -41,6 +43,8 @@ ADD_COMMAND(
     RSBaseNodeAddChild, ARG(BASE_NODE, BASE_NODE_ADD_CHILD, BaseNodeCommandHelper::AddChild, NodeId, NodeId, int32_t))
 ADD_COMMAND(
     RSBaseNodeRemoveChild, ARG(BASE_NODE, BASE_NODE_REMOVE_CHILD, BaseNodeCommandHelper::RemoveChild, NodeId, NodeId))
+ADD_COMMAND(
+    RSBaseNodeRemoveFromTree, ARG(BASE_NODE, BASE_NODE_REMOVE_FROM_TREE, BaseNodeCommandHelper::RemoveFromTree, NodeId))
 ADD_COMMAND(
     RSBaseNodeClearChild, ARG(BASE_NODE, BASE_NODE_CLEAR_CHILDREN, BaseNodeCommandHelper::ClearChildren, NodeId))
 

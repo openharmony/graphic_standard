@@ -28,7 +28,7 @@ public:
     {}
     ~RSCubicBezierInterpolator() = default;
 
-    float Interpolate(float input) override
+    float Interpolate(float input) const override
     {
         return GetCubicBezierValue(SEARCH_STEP * BinarySearch(input), controlly1_, controlly2_);
     }

@@ -44,15 +44,5 @@ void RSDisplayRenderNode::Process(const std::shared_ptr<RSNodeVisitor>& visitor)
     visitor->ProcessDisplayRenderNode(*this);
 }
 
-RSDisplayRenderNode::CompositeFlag RSDisplayRenderNode::GetFlag() const
-{
-    return flag_;
-}
-
-void RSDisplayRenderNode::SetCompositeFlag(RSDisplayRenderNode::CompositeFlag flag)
-{
-    flag_ = flag;
-}
-
 } // namespace Rosen
 } // namespace OHOS

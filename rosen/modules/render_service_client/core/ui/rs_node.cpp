@@ -29,23 +29,18 @@
 
 namespace OHOS {
 namespace Rosen {
-RSNode::SharedPtr RSNode::Create()
+RSNode::SharedPtr RSNode::Create(bool isRenderServiceNode)
 {
-    SharedPtr node(new RSNode());
+    SharedPtr node(new RSNode(isRenderServiceNode));
     RSNodeMap::Instance().RegisterNode(node);
 
     std::unique_ptr<RSCommand> command = std::make_unique<RSNodeCreate>(node->GetId());
-    RSTransactionProxy::GetInstance().AddCommand(command);
+    RSTransactionProxy::GetInstance().AddCommand(command, isRenderServiceNode);
     ROSEN_LOGI("RSNode::Create %llu", node->GetId());
     return node;
 }
 
-RSNode::RSNode(NodeId id)
-{
-    SetId(id);
-}
-
-RSNode::RSNode() {}
+RSNode::RSNode(bool isRenderServiceNode) : RSPropertyNode(isRenderServiceNode) {}
 
 RSNode::~RSNode() {}
 
@@ -63,7 +58,7 @@ bool RSNode::IsRecording() const
     return recordingCanvas_ != nullptr;
 }
 
-void RSNode::OnUpdateRecording()
+void RSNode::FinishRecording()
 {
 #ifdef ROSEN_OHOS
     if (!IsRecording()) {
@@ -74,24 +69,13 @@ void RSNode::OnUpdateRecording()
     delete recordingCanvas_;
     recordingCanvas_ = nullptr;
     std::unique_ptr<RSCommand> command = std::make_unique<RSNodeUpdateRecording>(GetId(), recording, drawContentLast_);
-    RSTransactionProxy::GetInstance().AddCommand(command);
+    RSTransactionProxy::GetInstance().AddCommand(command, IsRenderServiceNode());
 #endif
 }
 
 void RSNode::SetPaintOrder(bool drawContentLast)
 {
     drawContentLast_ = drawContentLast;
-}
-
-void RSNode::UpdateRecording()
-{
-    OnUpdateRecording();
-    for (auto child : GetChildren()) {
-        auto childPtr = std::static_pointer_cast<RSNode>(RSNodeMap::Instance().GetNode(child).lock());
-        if (childPtr != nullptr) {
-            childPtr->UpdateRecording();
-        }
-    }
 }
 
 } // namespace Rosen

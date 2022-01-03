@@ -35,11 +35,6 @@ public:
         return nodeMap;
     }
 
-    void SetGlobalRootRenderNode(const std::shared_ptr<RSBaseRenderNode>& rootNode)
-    {
-        globalRootRenderNode_ = rootNode;
-    }
-
     const std::shared_ptr<RSBaseRenderNode>& GetGlobalRootRenderNode() const
     {
         return globalRootRenderNode_;
@@ -47,7 +42,7 @@ public:
 
 private:
     static inline RSRenderNodeMap& nodeMap = RSRenderNodeMap::Instance();
-    std::shared_ptr<RSBaseRenderNode> globalRootRenderNode_ = nullptr;
+    std::shared_ptr<RSBaseRenderNode> globalRootRenderNode_ = std::make_shared<RSBaseRenderNode>(0);
 
     RSContext(const RSContext&) = delete;
     RSContext(const RSContext&&) = delete;

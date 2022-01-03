@@ -37,7 +37,7 @@ class RSImplicitAnimParam;
 class RSBasePropertyAccessors;
 class RSTransitionEffect;
 
-class RS_EXPORT RSPropertyNode : public RSBaseNode {
+class RS_EXPORT RSPropertyNode : public RSBaseNode, public std::enable_shared_from_this<RSPropertyNode> {
 public:
     using WeakPtr = std::weak_ptr<RSPropertyNode>;
     using SharedPtr = std::shared_ptr<RSPropertyNode>;
@@ -61,7 +61,7 @@ public:
     const std::shared_ptr<RSMotionPathOption> GetMotionPathOption() const;
 
     const RSProperties& GetStagingProperties() const;
-    const RSProperties& GetShowingProperties() const;
+    const RSProperties& GetShowingProperties() const { return stagingProperties_;}
 
     void SetBounds(float positionX, float positionY, float width, float height);
     void SetBoundsSize(float width, float height);
@@ -131,7 +131,7 @@ public:
     void SetVisible(bool visible);
 
 protected:
-    RSPropertyNode();
+    RSPropertyNode(bool isRenderServiceNode);
     RSPropertyNode(const RSPropertyNode&) = delete;
     RSPropertyNode(const RSPropertyNode&&) = delete;
     RSPropertyNode& operator=(const RSPropertyNode&) = delete;
@@ -153,12 +153,16 @@ private:
     std::shared_ptr<RSMotionPathOption> motionPathOption_;
 
     RSProperties stagingProperties_;
-    RSProperties showingProperties_;
 
     friend class RSAnimation;
-    friend class RSPathAnimation;
+    template<typename T>
+    friend class RSCurveAnimation;
+    template<typename T>
+    friend class RSKeyframeAnimation;
     template<typename T>
     friend class RSPropertyAnimation;
+    friend class RSPathAnimation;
+    friend class RSTransition;
     friend class RSUIDirector;
     friend class RSImplicitAnimator;
 };

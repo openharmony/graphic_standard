@@ -47,7 +47,7 @@ void RSBaseRenderNode::AddChild(SharedPtr child, int index)
         children_.insert(children_.begin() + index, child);
     }
     OnAddChild(child);
-    child->SetParent(shared_from_this());
+    child->SetParent(weak_from_this());
 }
 
 void RSBaseRenderNode::RemoveChild(SharedPtr child)
@@ -65,6 +65,7 @@ void RSBaseRenderNode::RemoveChild(SharedPtr child)
     }
     children_.erase(itr);
     OnRemoveChild(child);
+    child->ResetParent();
 }
 
 void RSBaseRenderNode::RemoveFromTree()
@@ -81,6 +82,7 @@ void RSBaseRenderNode::ClearChildren()
     for (auto child : children_) {
         if (auto c = child.lock()) {
             OnRemoveChild(c);
+            c->ResetParent();
         }
     }
     children_.clear();

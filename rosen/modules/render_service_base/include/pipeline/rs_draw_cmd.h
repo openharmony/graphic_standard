@@ -335,7 +335,7 @@ public:
 
 private:
     SkRect* rectPtr_ = nullptr;
-    SkRect rect_;
+    SkRect rect_ = SkRect::MakeEmpty();
     sk_sp<SkImageFilter> backdrop_;
     sk_sp<SkImage> mask_;
     SkMatrix matrix_;

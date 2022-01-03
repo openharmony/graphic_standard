@@ -270,7 +270,7 @@ public:
     }
     bool IsEmpty() const
     {
-        return width_ <= 0 || height_ <= 0;
+        return width_ <= 0 && height_ <= 0;
     }
     RSObjGeometry& operator=(const RSObjGeometry& geo)
     {

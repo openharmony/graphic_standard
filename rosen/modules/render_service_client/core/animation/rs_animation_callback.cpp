@@ -19,22 +19,16 @@ namespace OHOS {
 namespace Rosen {
 AnimationCallback::AnimationCallback(const std::function<void()>& callback) : callback_(callback) {}
 
-void AnimationCallback::Run()
+AnimationCallback::~AnimationCallback()
 {
     if (callback_ != nullptr) {
         callback_();
     }
 }
 
-AnimationFinishCallback::AnimationFinishCallback(const std::function<void()>& callback, int sharedAnimCnt)
-    : AnimationCallback(callback), sharedAnimCnt_(sharedAnimCnt)
+AnimationFinishCallback::AnimationFinishCallback(const std::function<void()>& callback)
+    : AnimationCallback(callback)
 {}
 
-void AnimationFinishCallback::Run()
-{
-    if (--sharedAnimCnt_ <= 0) {
-        AnimationCallback::Run();
-    }
-}
 } // namespace Rosen
 } // namespace OHOS

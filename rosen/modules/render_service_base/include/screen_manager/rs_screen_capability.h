@@ -60,11 +60,11 @@ private:
     bool WriteVector(const std::vector<RSScreenProps>& props, Parcel &parcel) const;
     static bool ReadVector(std::vector<RSScreenProps>& unmarProps, uint32_t unmarPropCount, Parcel &parcel);
     std::string name_;
-    ScreenInterfaceType type_;
-    uint32_t phyWidth_;
-    uint32_t phyHeight_;
-    uint32_t supportLayers_;
-    uint32_t virtualDispCount_;
+    ScreenInterfaceType type_ = DISP_INVALID;
+    uint32_t phyWidth_ = 0;
+    uint32_t phyHeight_ = 0;
+    uint32_t supportLayers_ = 0;
+    uint32_t virtualDispCount_ = 0;
     bool supportWriteback_;
     std::vector<RSScreenProps> props_;
 };

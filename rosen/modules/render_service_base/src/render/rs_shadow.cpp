@@ -77,7 +77,7 @@ float RSShadow::GetOffsetY() const
 
 float RSShadow::GetAlpha() const
 {
-    return color_.GetAlpha() / UINT8_MAX;
+    return static_cast<float>(color_.GetAlpha()) / UINT8_MAX;
 }
 
 float RSShadow::GetElevation() const

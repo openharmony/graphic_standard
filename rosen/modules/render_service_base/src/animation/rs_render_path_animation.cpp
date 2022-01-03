@@ -180,10 +180,10 @@ void RSRenderPathAnimation::SetPathValue(const Vector2f& position, float tangent
 
     switch (GetRotationMode()) {
         case RotationMode::ROTATE_AUTO:
-            target->GetRenderProperties().SetRotation(tangent, true);
+            target->GetRenderProperties().SetRotation(tangent);
             break;
         case RotationMode::ROTATE_AUTO_REVERSE:
-            target->GetRenderProperties().SetRotation(tangent + 180.0f, true);
+            target->GetRenderProperties().SetRotation(tangent + 180.0f);
             break;
         case RotationMode::ROTATE_NONE:
             break;

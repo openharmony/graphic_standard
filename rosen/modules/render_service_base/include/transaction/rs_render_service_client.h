@@ -32,6 +32,9 @@
 
 namespace OHOS {
 namespace Rosen {
+// normal callback functor for client users.
+using ScreenChangeCallback = std::function<void(ScreenId, ScreenEvent)>;
+
 class RSRenderServiceClient : public RSIRenderClient {
 public:
     RSRenderServiceClient() = default;

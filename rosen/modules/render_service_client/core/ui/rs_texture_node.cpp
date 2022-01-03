@@ -29,7 +29,7 @@ std::shared_ptr<RSNode> RSTextureNode::Create()
     RSNodeMap::Instance().RegisterNode(node);
 
     // RSMsgPtr msgPtr = std::make_unique<CreateTextureNodeMsg>(node->GetId());
-    // RSTransactionProxy::GetInstance().AddCommand(command);
+    // RSTransactionProxy::GetInstance().AddCommand(command, IsRenderServiceNode());
     return node;
 #else
     return RSNode::Create();
@@ -39,15 +39,15 @@ std::shared_ptr<RSNode> RSTextureNode::Create()
 void RSTextureNode::SetTextureRegistry(std::shared_ptr<flutter::OHOS::TextureRegistry> registry)
 {
     // RSMsgPtr msgPtr = std::make_unique<SetRegistryMsg>(registry);
-    // RSTransactionProxy::GetInstance().AddCommand(command);
+    // RSTransactionProxy::GetInstance().AddCommand(command, IsRenderServiceNode());
 }
 
-RSTextureNode::RSTextureNode() {}
+RSTextureNode::RSTextureNode(bool isRenderServiceNode) : RSNode(isRenderServiceNode) {}
 
 void RSTextureNode::UpdateTexture(int64_t textureId, bool freeze, RectF drawRect)
 {
     // RSMsgPtr msgPtr = std::make_unique<UpdateTextureMsg>(GetId(), textureId, freeze, drawRect);
-    // RSTransactionProxy::GetInstance().AddCommand(command);
+    // RSTransactionProxy::GetInstance().AddCommand(command, IsRenderServiceNode());
 }
 } // namespace Rosen
 } // namespace OHOS

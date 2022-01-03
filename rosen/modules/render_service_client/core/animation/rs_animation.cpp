@@ -25,15 +25,21 @@
 namespace OHOS {
 namespace Rosen {
 
-RSAnimation::RSAnimation()
+AnimationId RSAnimation::GenerateId()
 {
+    static pid_t pid_ = getpid();
+    static std::atomic<uint32_t> currentId_ = 0;
+
     ++currentId_;
     if (currentId_ == UINT32_MAX) {
         // TODO:handle the overflow situation
         ROSEN_LOGE("Animation Id overflow");
     }
-    id_ = ((AnimationId)pid_ << 32) | (currentId_);
+
+    return ((AnimationId)pid_ << 32) | (currentId_);
 }
+
+RSAnimation::RSAnimation() : id_(GenerateId()) {}
 
 void RSAnimation::SetFinishCallback(const std::function<void()>& finishCallback)
 {
@@ -47,17 +53,12 @@ void RSAnimation::SetFinishCallback(const std::function<void()>& finishCallback)
 
 void RSAnimation::SetFinishCallback(const std::shared_ptr<AnimationFinishCallback>& finishCallback)
 {
-    if (finishCallback_ != nullptr) {
-        finishCallback_->sharedAnimCnt_--;
-    }
     finishCallback_ = finishCallback;
 }
 
 void RSAnimation::CallFinishCallback()
 {
-    if (finishCallback_) {
-        finishCallback_->Run();
-    }
+    finishCallback_.reset();
     state_ = AnimationState::FINISHED;
 }
 
@@ -150,7 +151,7 @@ void RSAnimation::OnPause()
     }
 
     std::unique_ptr<RSCommand> command = std::make_unique<RSAnimationPause>(target->GetId(), id_);
-    RSTransactionProxy::GetInstance().AddCommand(command);
+    RSTransactionProxy::GetInstance().AddCommand(command, target->IsRenderServiceNode());
 }
 
 void RSAnimation::Resume()
@@ -179,7 +180,7 @@ void RSAnimation::OnResume()
     }
 
     std::unique_ptr<RSCommand> command = std::make_unique<RSAnimationResume>(target->GetId(), id_);
-    RSTransactionProxy::GetInstance().AddCommand(command);
+    RSTransactionProxy::GetInstance().AddCommand(command, target->IsRenderServiceNode());
 }
 
 void RSAnimation::Finish()
@@ -208,7 +209,7 @@ void RSAnimation::OnFinish()
     }
 
     std::unique_ptr<RSCommand> command = std::make_unique<RSAnimationFinish>(target->GetId(), id_);
-    RSTransactionProxy::GetInstance().AddCommand(command);
+    RSTransactionProxy::GetInstance().AddCommand(command, target->IsRenderServiceNode());
 }
 
 void RSAnimation::Reverse()
@@ -238,7 +239,7 @@ void RSAnimation::OnReverse()
     }
 
     std::unique_ptr<RSCommand> command = std::make_unique<RSAnimationReverse>(target->GetId(), id_, isReversed_);
-    RSTransactionProxy::GetInstance().AddCommand(command);
+    RSTransactionProxy::GetInstance().AddCommand(command, target->IsRenderServiceNode());
 }
 
 void RSAnimation::SetFraction(float fraction)
@@ -271,7 +272,7 @@ void RSAnimation::OnSetFraction(float fraction)
     }
 
     std::unique_ptr<RSCommand> command = std::make_unique<RSAnimationSetFraction>(target->GetId(), id_, fraction);
-    RSTransactionProxy::GetInstance().AddCommand(command);
+    RSTransactionProxy::GetInstance().AddCommand(command, target->IsRenderServiceNode());
 }
 
 RSAnimatableProperty RSAnimation::GetProperty() const

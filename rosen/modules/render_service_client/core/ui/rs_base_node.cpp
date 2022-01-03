@@ -26,27 +26,28 @@
 namespace OHOS {
 namespace Rosen {
 
-NodeId RSBaseNode::GenerateNodeId()
+NodeId RSBaseNode::GenerateId()
 {
+    static pid_t pid_ = getpid();
+    static std::atomic<uint32_t> currentId_ = 0;
+
     ++currentId_;
-    // TODO:process the overflow situations
     if (currentId_ == UINT32_MAX) {
+        // TODO:process the overflow situations
         ROSEN_LOGE("Node Id overflow");
     }
+
     return ((NodeId)pid_ << 32) | currentId_;
 }
 
-RSBaseNode::RSBaseNode()
-{
-    id_ = GenerateNodeId();
-}
+RSBaseNode::RSBaseNode(bool isRenderServiceNode) : id_(GenerateId()), isRenderServiceNode_(isRenderServiceNode) {}
 
 RSBaseNode::~RSBaseNode()
 {
     RemoveFromTree();
     RSNodeMap::Instance().UnregisterNode(id_);
     std::unique_ptr<RSCommand> command = std::make_unique<RSBaseNodeDestroy>(id_);
-    RSTransactionProxy::GetInstance().AddCommand(command);
+    RSTransactionProxy::GetInstance().AddCommand(command, IsRenderServiceNode());
 }
 
 void RSBaseNode::AddChild(SharedPtr child, int index)
@@ -55,7 +56,7 @@ void RSBaseNode::AddChild(SharedPtr child, int index)
         return;
     }
     NodeId childId = child->GetId();
-    if (child->GetParent() != 0) {
+    if (child->parent_ != 0) {
         child->RemoveFromTree();
     }
 
@@ -64,63 +65,65 @@ void RSBaseNode::AddChild(SharedPtr child, int index)
     } else {
         children_.insert(children_.begin() + index, childId);
     }
-    auto ptr = RSNodeMap::Instance().GetNode(id_).lock();
-    child->SetParent(ptr);
+    child->SetParent(id_);
     ROSEN_LOGI("RSBaseNode::AddChild %llu ---> %llu", id_, childId);
     child->OnAddChildren();
     std::unique_ptr<RSCommand> command = std::make_unique<RSBaseNodeAddChild>(id_, childId, index);
-    RSTransactionProxy::GetInstance().AddCommand(command);
+    RSTransactionProxy::GetInstance().AddCommand(command, IsRenderServiceNode());
 }
 
 void RSBaseNode::RemoveChild(SharedPtr child)
 {
-    if (child == nullptr) {
+    if (child == nullptr || child->parent_ != id_) {
         ROSEN_LOGE("RSBaseNode::RemoveChild: nullptr target");
         return;
     }
     NodeId childId = child->GetId();
+    RemoveChildById(childId);
+    child->OnRemoveChildren();
+    child->SetParent(0);
+    ROSEN_LOGI("RSBaseNode::RemoveChild %llu -/-> %llu", id_, childId);
+
+    std::unique_ptr<RSCommand> command = std::make_unique<RSBaseNodeRemoveChild>(id_, childId);
+    RSTransactionProxy::GetInstance().AddCommand(command, IsRenderServiceNode());
+}
+
+void RSBaseNode::RemoveChildById(NodeId childId)
+{
     auto itr = std::find(children_.begin(), children_.end(), childId);
     if (itr != children_.end()) {
-        child->OnRemoveChildren();
         children_.erase(itr);
-        child->SetParent(nullptr);
-        ROSEN_LOGI("RSBaseNode::RemoveChild %llu -/-> %llu", id_, childId);
-
-        std::unique_ptr<RSCommand> command = std::make_unique<RSBaseNodeRemoveChild>(id_, childId);
-        RSTransactionProxy::GetInstance().AddCommand(command);
     }
 }
 
 void RSBaseNode::RemoveFromTree()
 {
-    auto parentPtr = RSNodeMap::Instance().GetNode(parent_).lock();
-    if (parentPtr != nullptr) {
-        auto ptr = RSNodeMap::Instance().GetNode(id_).lock();
-        parentPtr->RemoveChild(ptr);
+    if (auto parentPtr = RSNodeMap::Instance().GetNode(parent_).lock()) {
+        parentPtr->RemoveChildById(id_);
+        OnRemoveChildren();
+        SetParent(0);
     }
+    // always send Remove-From-Tree command
+    std::unique_ptr<RSCommand> command = std::make_unique<RSBaseNodeRemoveFromTree>(id_);
+    RSTransactionProxy::GetInstance().AddCommand(command, IsRenderServiceNode());
 }
 
 void RSBaseNode::ClearChildren()
 {
     for (auto child : children_) {
-        auto c = RSNodeMap::Instance().GetNode(child).lock();
-        if (c != nullptr) {
-            c->SetParent(nullptr);
+        if (auto c = RSNodeMap::Instance().GetNode(child).lock()) {
+            c->SetParent(0);
         }
     }
     children_.clear();
 
     std::unique_ptr<RSCommand> command = std::make_unique<RSBaseNodeClearChild>(id_);
-    RSTransactionProxy::GetInstance().AddCommand(command);
+    RSTransactionProxy::GetInstance().AddCommand(command, IsRenderServiceNode());
 }
 
-void RSBaseNode::SetParent(SharedPtr parent)
+void RSBaseNode::SetParent(NodeId parentId)
 {
-    if (parent != nullptr) {
-        parent_ = parent->GetId();
-    } else {
-        parent_ = 0;
-    }
+    parent_ = parentId;
 }
 
 RSBaseNode::SharedPtr RSBaseNode::GetParent()

@@ -24,7 +24,9 @@ namespace Rosen {
 RSNodeMap::RSNodeMap()
 {
     // add animation fallback node
-    nodeMap_.emplace(0, new RSNode(0));
+    auto fallback_node = new RSNode(false);
+    fallback_node->SetId(0);
+    nodeMap_.emplace(0, fallback_node);
 }
 
 RSNodeMap& RSNodeMap::Instance()

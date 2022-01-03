@@ -27,8 +27,12 @@
 #include "common/rs_thread_looper.h"
 #include "transaction/rs_transaction_proxy.h"
 #include "pipeline/rs_render_node.h"
+#include "pipeline/rs_render_thread_visitor.h"
 #include "platform/drawing/rs_vsync_client.h"
 #include "transaction/rs_transaction_data.h"
+#ifdef ACE_ENABLE_GL
+#include "render_context/render_context.h"
+#endif
 
 namespace OHOS {
 namespace Rosen {
@@ -47,7 +51,12 @@ public:
     int32_t GetTid();
 
     std::string DumpRenderTree() const;
-
+#ifdef ACE_ENABLE_GL
+    RenderContext* GetRenderContext()
+    {
+        return renderContext_;
+    }
+#endif
 private:
     RSRenderThread();
     ~RSRenderThread();
@@ -78,6 +87,7 @@ private:
     std::mutex cmdMutex_;
     std::vector<std::unique_ptr<RSTransactionData>> cmds_;
     bool hasRunningAnimation_ = false;
+    std::shared_ptr<RSNodeVisitor> visitor_;
 
     std::unique_ptr<RSVsyncClient> vsyncClient_ = nullptr;
     uint64_t timestamp_ = 0;
@@ -86,6 +96,9 @@ private:
     int32_t tid_ = -1;
 
     RSContext context_;
+#ifdef ACE_ENABLE_GL
+    RenderContext* renderContext_;
+#endif
 };
 } // namespace Rosen
 } // namespace OHOS

@@ -29,33 +29,24 @@ public:
     RSBasePropertyAccessors() {}
     virtual ~RSBasePropertyAccessors() {}
 
+    static const std::shared_ptr<RSBasePropertyAccessors> GetAccessor(RSAnimatableProperty property);
+
+private:
     const static std::unordered_map<RSAnimatableProperty, std::shared_ptr<RSBasePropertyAccessors>>
         PROPERTY_ACCESSOR_LUT;
 };
 
 template<typename T>
 class RS_EXPORT RSPropertyAccessors : public RSBasePropertyAccessors {
-    typedef void (RSProperties::*SetProperty)(T value, bool sendMsg);
+    typedef void (RSProperties::*SetProperty)(T value);
     typedef T (RSProperties::*GetProperty)() const;
 
 public:
-    RSPropertyAccessors(SetProperty setter, GetProperty getter)
-        : RSBasePropertyAccessors(), setter_(setter), getter_(getter) {};
-    ~RSPropertyAccessors() override {}
+    explicit RSPropertyAccessors(SetProperty setter, GetProperty getter) : setter_(setter), getter_(getter) {};
+    ~RSPropertyAccessors() override = default;
 
-    const SetProperty UseSetProp() const
-    {
-        return setter_;
-    }
-
-    const GetProperty UseGetProp() const
-    {
-        return getter_;
-    }
-
-private:
-    SetProperty setter_;
-    GetProperty getter_;
+    const SetProperty setter_;
+    const GetProperty getter_;
 };
 } // namespace Rosen
 } // namespace OHOS

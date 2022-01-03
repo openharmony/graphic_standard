@@ -12,6 +12,7 @@
 # limitations under the License.
 
 import("//build/ohos.gni")
+import("//foundation/graphic/standard/graphic_config.gni")
 import("render_service_client.gni")
 
 config("render_service_client_config") {
@@ -24,7 +25,11 @@ config("render_service_client_config") {
 
 ohos_source_set("render_service_client_src") {
   defines = []
-  include_dirs = [ "core" ]
+  defines += gpu_defines
+  include_dirs = [
+    "core",
+    "//foundation/graphic/standard/rosen/modules/render_service_base/src",
+  ]
 
   sources = [
     #animation
@@ -82,6 +87,7 @@ ohos_source_set("render_service_client_src") {
     defines += [ "ENABLE_EXPORT_MACRO" ]
   }
 
+  external_deps = [ "bytrace_standard:bytrace_core" ]
   public_deps =
       [ "$rosen_root/modules/render_service_base:librender_service_base" ]
 
@@ -109,6 +115,7 @@ ohos_executable("render_service_client_demo") {
 
   deps = [
     ":librender_service_client",
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
     "//foundation/graphic/standard:libvsync_client",
     "//foundation/graphic/standard:libwmclient",
     "//foundation/graphic/standard/rosen/modules/render_service_base:librender_service_base",

@@ -110,7 +110,10 @@ ohos_shared_library("librender_service_base") {
 
   deps = []
 
-  public_deps = [ "src/platform:platform" ]
+  public_deps = [
+    "src/platform:platform",
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
+  ]
 
   part_name = "graphic_standard"
   subsystem_name = "graphic"

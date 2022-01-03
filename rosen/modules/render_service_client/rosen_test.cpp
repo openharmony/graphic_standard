@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include <surface.h>
+#include <vector>
 
 #include "command/rs_base_node_command.h"
 #include "command/rs_display_node_command.h"
@@ -172,41 +173,47 @@ int main()
     } else {
         cout << "Display " << id << " has no active mode!\n";
     }
-    cout << "-------------------------------------------------------" << endl;
+    cout << "1-------------------------------------------------------1" << endl;
 
     auto surfaceLauncher = CreateSurface();
     auto surfaceNode1 = CreateSurface();
-    auto surfaceNode2 = CreateSurface();
-    DrawSurface(SkRect::MakeXYWH(0, 0, 2800, 1600), 0xffffe4c4, SkRect::MakeXYWH(0, 0, 2800, 1600), surfaceLauncher);
-    DrawSurface(SkRect::MakeXYWH(80, 80, 200, 200), 0xffff0000, SkRect::MakeXYWH(0, 0, 200, 200), surfaceNode1);
-    DrawSurface(SkRect::MakeXYWH(300, 300, 200, 200), 0xff00ff00, SkRect::MakeXYWH(40, 40, 150, 150), surfaceNode2);
+    // auto surfaceNode2 = CreateSurface();
+    DrawSurface(SkRect::MakeXYWH(0, 0, 200, 200), 0xff0000ff, SkRect::MakeXYWH(0, 0, 200, 200), surfaceLauncher);
+    DrawSurface(SkRect::MakeXYWH(200, 200, 200, 200), 0xff0000ff, SkRect::MakeXYWH(0, 0, 200, 200), surfaceNode1);
+    // DrawSurface(SkRect::MakeXYWH(300, 300, 200, 200), 0xff00ff00, SkRect::MakeXYWH(40, 40, 150, 150), surfaceNode2);
     RSDisplayNodeConfig config;
     RSDisplayNode::SharedPtr displayNode = RSDisplayNode::Create(config);
     displayNode->AddChild(surfaceLauncher, -1);
     displayNode->AddChild(surfaceNode1, -1);
-    displayNode->AddChild(surfaceNode2, -1);
+    // displayNode->AddChild(surfaceNode2, -1);
     RSTransactionProxy::GetInstance().FlushImplicitTransaction();
-    sleep(4);
-    int positionX = 80;
-    int positionY = 80;
+    sleep(1);
+    // int positionX = 80;
+    // int positionY = 80;
+    std::vector<uint32_t> colors = {0xff0000ff, 0xff00ffff, 0xffff00ff};
+    uint32_t index = 0;
     while (1) {
-        displayNode->RemoveChild(surfaceNode1);
+        // displayNode->RemoveChild(surfaceLauncher);
+        // RSTransactionProxy::GetInstance().FlushImplicitTransaction();
+        // sleep(1);
+        // if (positionY == 80 && (positionX >= 80 && positionX <= 2160)) {
+        //     positionX += 80;
+        // } else if ((positionX == 2240) && (positionY >= 80 && positionY <= 1200)) {
+        //     positionY += 80;
+        // } else if ((positionX >= 160 && positionX <= 2240) && (positionY == 1280)) {
+        //     positionX -= 80;
+        // } else if ((positionX == 80) && (positionY >= 160 && positionY <= 1280)) {
+        //     positionY -= 80;
+        // }
+        // displayNode->AddChild(surfaceLauncher, -1);
+        DrawSurface(SkRect::MakeXYWH(0, 0, 200, 200), colors[index], SkRect::MakeXYWH(0, 0, 200, 200),
+             surfaceLauncher);
         RSTransactionProxy::GetInstance().FlushImplicitTransaction();
-        sleep(4);
-        if (positionY == 80 && (positionX >= 80 && positionX <= 2160)) {
-            positionX += 80;
-        } else if ((positionX == 2240) && (positionY >= 80 && positionY <= 1200)) {
-            positionY += 80;
-        } else if ((positionX >= 160 && positionX <= 2240) && (positionY == 1280)) {
-            positionX -= 80;
-        } else if ((positionX == 80) && (positionY >= 160 && positionY <= 1280)) {
-            positionY -= 80;
+        sleep(1);
+        index++;
+        if (index == colors.size()) {
+            index = 0;
         }
-        displayNode->AddChild(surfaceNode1, -1);
-        DrawSurface(SkRect::MakeXYWH(positionX, positionY, 200, 200), 0xffff0000, SkRect::MakeXYWH(0, 0, 200, 200),
-            surfaceNode1);
-        RSTransactionProxy::GetInstance().FlushImplicitTransaction();
-        sleep(4);
     }
     return 0;
 }

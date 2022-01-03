@@ -83,13 +83,12 @@ protected:
     void CallFinishCallback();
 
 private:
+    static AnimationId GenerateId();
+    const AnimationId id_;
+
     void SetFinishCallback(const std::shared_ptr<AnimationFinishCallback>& finishCallback);
     void UpdateStagingValue(bool isFirstStart);
 
-    static inline pid_t pid_ = getpid();
-    static inline std::atomic<uint32_t> currentId_ = 0;
-
-    AnimationId id_;
     bool isReversed_ { false };
     AnimationState state_ { AnimationState::INITIALIZED };
     std::weak_ptr<RSPropertyNode> target_;

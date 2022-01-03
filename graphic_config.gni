@@ -11,11 +11,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import("//build/config/clang/clang.gni")
+import("//build/ohos.gni")
 import("//build/ohos_var.gni")
 
-if ("${product_name}" == "rk3566" || "${product_name}" == "rk3568") {
-  ace_enable_gpu = true
+if ("${product_name}" == "rk3566" || "${product_name}" == "rk3568" ||
+    "${product_name}" == "m40") {
+  gpu_defines = [ "ACE_DISABLE_GL" ]
+  ace_enable_gpu = false  # temporary gpu
 } else {
+  gpu_defines = [ "ACE_DISABLE_GL" ]
   ace_enable_gpu = false
 }
 

@@ -25,9 +25,9 @@ namespace Rosen {
 
 enum RSSurfaceNodeCommandType : uint16_t {
     SURFACE_NODE_CREATE,
-    SET_MATRIX,
-    SET_ALPHA,
-    SET_PARENT_SURFACE,
+    SURFACE_NODE_SET_MATRIX,
+    SURFACE_NODE_SET_ALPHA,
+    SURFACE_NODE_SET_PARENT_SURFACE,
 };
 
 class SurfaceNodeCommandHelper {
@@ -40,11 +40,11 @@ public:
 
 ADD_COMMAND(RSSurfaceNodeCreate, ARG(SURFACE_NODE, SURFACE_NODE_CREATE, SurfaceNodeCommandHelper::Create, NodeId))
 ADD_COMMAND(
-    RSSurfaceNodeSetMatrix, ARG(SURFACE_NODE, SET_MATRIX, SurfaceNodeCommandHelper::SetMatrix, NodeId, SkMatrix))
+    RSSurfaceNodeSetMatrix, ARG(SURFACE_NODE, SURFACE_NODE_SET_MATRIX, SurfaceNodeCommandHelper::SetMatrix, NodeId, SkMatrix))
 ADD_COMMAND(
-    RSSurfaceNodeSetAlpha, ARG(SURFACE_NODE, SET_ALPHA, SurfaceNodeCommandHelper::SetAlpha, NodeId, float))
+    RSSurfaceNodeSetAlpha, ARG(SURFACE_NODE, SURFACE_NODE_SET_ALPHA, SurfaceNodeCommandHelper::SetAlpha, NodeId, float))
 ADD_COMMAND(RSSurfaceNodeSetParentSurface,
-    ARG(SURFACE_NODE, SET_PARENT_SURFACE, SurfaceNodeCommandHelper::SetParentSurface, NodeId, NodeId))
+    ARG(SURFACE_NODE, SURFACE_NODE_SET_PARENT_SURFACE, SurfaceNodeCommandHelper::SetParentSurface, NodeId, NodeId))
 
 } // namespace Rosen
 } // namespace OHOS

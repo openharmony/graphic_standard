@@ -23,29 +23,29 @@
 
 namespace OHOS {
 namespace Rosen {
-std::shared_ptr<RSNode> RSRootNode::Create()
+std::shared_ptr<RSNode> RSRootNode::Create(bool isRenderServiceNode)
 {
-    std::shared_ptr<RSRootNode> node(new RSRootNode());
+    std::shared_ptr<RSRootNode> node(new RSRootNode(isRenderServiceNode));
     RSNodeMap::Instance().RegisterNode(node);
 
     std::unique_ptr<RSCommand> command = std::make_unique<RSRootNodeCreate>(node->GetId());
-    RSTransactionProxy::GetInstance().AddCommand(command);
+    RSTransactionProxy::GetInstance().AddCommand(command, isRenderServiceNode);
     return node;
 }
 
-RSRootNode::RSRootNode() {}
+RSRootNode::RSRootNode(bool isRenderServiceNode) : RSNode(isRenderServiceNode) {}
 
 void RSRootNode::AttachSurface(uintptr_t surfaceProducer, int width, int height) const
 {
     std::unique_ptr<RSCommand> command = std::make_unique<RSRootNodeAttach>(GetId(), surfaceProducer, width, height);
-    RSTransactionProxy::GetInstance().AddCommand(command);
+    RSTransactionProxy::GetInstance().AddCommand(command, IsRenderServiceNode());
 }
 
 void RSRootNode::AttachRSSurface(std::shared_ptr<RSSurface> surfaceProducer, int width, int height) const
 {
     std::unique_ptr<RSCommand> command =
         std::make_unique<RSRootNodeAttachRSSurface>(GetId(), surfaceProducer, width, height);
-    RSTransactionProxy::GetInstance().AddCommand(command);
+    RSTransactionProxy::GetInstance().AddCommand(command, IsRenderServiceNode());
 }
 
 } // namespace Rosen

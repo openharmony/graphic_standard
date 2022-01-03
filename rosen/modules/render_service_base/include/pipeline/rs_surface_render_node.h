@@ -36,7 +36,8 @@ public:
     void SetConsumer(const sptr<Surface>& consumer);
     void SetBuffer(const sptr<SurfaceBuffer>& buffer);
     void SetFence(const int32_t fence);
-    void SetBufferAvailable(const bool bufferAvailable);
+    void IncreaseAvailableBuffer();
+    int32_t ReduceAvailableBuffer();
 
     sptr<SurfaceBuffer>& GetBuffer()
     {
@@ -53,9 +54,9 @@ public:
         return consumer_;
     }
 
-    bool GetBufferAvailable() const
+    int32_t GetAvailableBufferCount() const
     {
-        return bufferAvailable_;
+        return bufferAvailableCount_;
     }
 
     void Prepare(const std::shared_ptr<RSNodeVisitor>& visitor) override;
@@ -81,7 +82,7 @@ private:
     friend class RSRenderTransition;
     sptr<Surface> consumer_;
 
-    bool bufferAvailable_ = false;
+    int32_t bufferAvailableCount_ = 0;
     SkMatrix matrix_;
     float alpha_ = 0.0f;
     NodeId parentId_ = 0;

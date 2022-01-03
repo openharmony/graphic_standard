@@ -61,7 +61,7 @@ UnmarshallingFunc RSCommandFactory::GetUnmarshallingFunc(uint16_t type, uint16_t
     }
     return it->second;
 }
+#endif // ROSEN_OHOS
 
 } // namespace Rosen
 } // namespace OHOS
-#endif // ROSEN_OHOS

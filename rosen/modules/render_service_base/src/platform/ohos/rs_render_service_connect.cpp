@@ -54,27 +54,27 @@ bool RSRenderServiceConnect::Connect()
         return true;
     }
 
-    // sptr<ISystemAbilityManager> samgr = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
-    // if (samgr == nullptr) {
-    //     return false;
-    // }
+    sptr<ISystemAbilityManager> samgr = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
+    if (samgr == nullptr) {
+        return false;
+    }
 
-    // sptr<IRemoteObject> remoteObject = samgr->GetSystemAbility(RENDER_SERVICE);
-    // if (remoteObject == nullptr) {
-    //     return false;
-    // }
+    sptr<IRemoteObject> remoteObject = samgr->GetSystemAbility(RENDER_SERVICE);
+    if (remoteObject == nullptr) {
+        return false;
+    }
 
-    // if (deathRecipient_ == nullptr) {
-    //     deathRecipient_ = sptr<RenderServiceDeathRecipient>(new RenderServiceDeathRecipient());
-    // }
+    if (deathRecipient_ == nullptr) {
+        deathRecipient_ = sptr<RenderServiceDeathRecipient>(new RenderServiceDeathRecipient());
+    }
 
-    // if ((remoteObject->IsProxyObject()) && (!remoteObject->AddDeathRecipient(deathRecipient_))) {
-    // }
+    if ((remoteObject->IsProxyObject()) && (!remoteObject->AddDeathRecipient(deathRecipient_))) {
+    }
 
-    // renderService_ = iface_cast<RSRenderServiceProxy>(remoteObject);
-    // if (renderService_ == nullptr) {
-    //     return false;
-    // }
+    renderService_ = iface_cast<RSRenderServiceProxy>(remoteObject);
+    if (renderService_ == nullptr) {
+        return false;
+    }
 
     return true;
 }

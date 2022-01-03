@@ -25,15 +25,17 @@ namespace OHOS {
 namespace Rosen {
 class RS_EXPORT RSTextureNode : public RSNode {
 public:
-    static std::shared_ptr<RSNode> Create();
-    static void SetTextureRegistry(std::shared_ptr<flutter::OHOS::TextureRegistry> registry);
-
+    using WeakPtr = std::weak_ptr<RSTextureNode>;
+    using SharedPtr = std::shared_ptr<RSTextureNode>;
     virtual ~RSTextureNode() {}
 
+    static std::shared_ptr<RSNode> Create();
+
+    static void SetTextureRegistry(std::shared_ptr<flutter::OHOS::TextureRegistry> registry);
     void UpdateTexture(int64_t textureId, bool freeze, RectF drawRect);
 
 protected:
-    RSTextureNode();
+    RSTextureNode(bool isRenderServiceNode);
     RSTextureNode(const RSTextureNode&) = delete;
     RSTextureNode(const RSTextureNode&&) = delete;
     RSTextureNode& operator=(const RSTextureNode&) = delete;

@@ -32,9 +32,10 @@ public:
     virtual ~RSPropertyAnimation() = default;
 
 protected:
-    RSPropertyAnimation(const RSAnimatableProperty& property)
-        : property_(property), propertyAccess_(RSBasePropertyAccessors::PROPERTY_ACCESSOR_LUT.at(property))
+    RSPropertyAnimation(const RSAnimatableProperty& property) : property_(property)
     {
+        propertyAccess_ = std::static_pointer_cast<RSPropertyAccessors<T>>(
+            RSBasePropertyAccessors::GetAccessor(property));
         InitAdditiveMode();
     }
 
@@ -56,21 +57,21 @@ protected:
     void SetPropertyValue(const T& value)
     {
         auto target = GetTarget().lock();
-        if (target == nullptr || GetAccessor()->UseSetProp() == nullptr) {
+        if (target == nullptr || propertyAccess_->setter_ == nullptr) {
             return;
         }
 
-        (target->stagingProperties_.*GetAccessor()->UseSetProp())(value, false);
+        (target->stagingProperties_.*propertyAccess_->setter_)(value);
     }
 
     auto GetPropertyValue() const
     {
         auto target = GetTarget().lock();
-        if (target == nullptr || GetAccessor()->UseGetProp() == nullptr) {
+        if (target == nullptr || propertyAccess_->getter_ == nullptr) {
             return startValue_;
         }
 
-        return (target->stagingProperties_.*GetAccessor()->UseGetProp())();
+        return (target->stagingProperties_.*propertyAccess_->getter_)();
     }
 
     RSAnimatableProperty GetProperty() const override
@@ -152,13 +153,8 @@ private:
         }
     }
 
-    auto GetAccessor() const
-    {
-        return std::static_pointer_cast<RSPropertyAccessors<T>>(propertyAccess_);
-    }
-
     RSAnimatableProperty property_ { RSAnimatableProperty::INVALID };
-    const std::shared_ptr<RSBasePropertyAccessors> propertyAccess_;
+    std::shared_ptr<RSPropertyAccessors<T>> propertyAccess_;
 };
 } // namespace Rosen
 } // namespace OHOS

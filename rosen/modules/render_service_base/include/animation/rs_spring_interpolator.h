@@ -29,7 +29,7 @@ public:
 
     ~RSSpringInterpolator() override {};
 
-    float Interpolate(float input) override
+    float Interpolate(float input) const override
     {
         return InterpolateImpl(input * duration_);
     }

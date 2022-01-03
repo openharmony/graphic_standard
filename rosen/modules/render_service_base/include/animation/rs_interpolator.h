@@ -51,7 +51,7 @@ public:
     virtual bool Marshalling(Parcel& parcel) const override = 0;
 #endif
 
-    virtual float Interpolate(float input) = 0;
+    virtual float Interpolate(float input) const = 0;
 };
 
 class LinearInterpolator : public RSInterpolator {
@@ -69,7 +69,7 @@ public:
     }
 #endif
 
-    float Interpolate(float input) override
+    float Interpolate(float input) const override
     {
         return input;
     }
@@ -80,7 +80,7 @@ public:
     RSCustomInterpolator(const std::function<float(float)>& func, int duration);
     virtual ~RSCustomInterpolator() = default;
 
-    float Interpolate(float input) override;
+    float Interpolate(float input) const override;
 
 #ifdef ROSEN_OHOS
     bool Marshalling(Parcel& parcel) const override

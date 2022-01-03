@@ -65,8 +65,8 @@ RSColor RSColor::operator/(float scale) const
 
 uint32_t RSColor::AsRgbaInt() const
 {
-    return (std::clamp<int32_t>(alpha_, 0, UINT8_MAX)) | (std::clamp<int32_t>(red_, 0, UINT8_MAX) << 24) |
-           (std::clamp<int32_t>(green_, 0, UINT8_MAX) << 16) | (std::clamp<int32_t>(blue_, 0, UINT8_MAX) << 8);
+    return (std::clamp<uint32_t>(alpha_, 0, UINT8_MAX)) | (std::clamp<uint32_t>(red_, 0, UINT8_MAX) << 24) |
+           (std::clamp<uint32_t>(green_, 0, UINT8_MAX) << 16) | (std::clamp<uint32_t>(blue_, 0, UINT8_MAX) << 8);
 }
 
 RSColor RSColor::FromRgbaInt(uint32_t rgba)

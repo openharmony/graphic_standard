@@ -23,6 +23,9 @@
 #include "platform/drawing/rs_platform_canvas.h"
 #include "platform/drawing/rs_surface.h"
 #include "transaction/rs_transaction_proxy.h"
+#include "platform/common/rs_log.h"
+
+#include "pipeline/rs_render_thread.h"
 
 namespace OHOS {
 namespace Rosen {
@@ -41,10 +44,16 @@ void RSRenderThreadVisitor::PrepareBaseRenderNode(RSBaseRenderNode& node)
 
 void RSRenderThreadVisitor::PrepareRootRenderNode(RSRootRenderNode& node)
 {
-    dirtyManager_.Clear();
-    parent_ = nullptr;
-    dirtyFlag_ = false;
-    PrepareRenderNode(node);
+    if (isIdle_) {
+        dirtyManager_.Clear();
+        parent_ = nullptr;
+        dirtyFlag_ = false;
+        isIdle_ = false;
+        PrepareRenderNode(node);
+        isIdle_ = true;
+    } else {
+        PrepareRenderNode(node);
+    }
 }
 
 void RSRenderThreadVisitor::PrepareRenderNode(RSRenderNode& node)
@@ -75,10 +84,15 @@ void RSRenderThreadVisitor::ProcessBaseRenderNode(RSBaseRenderNode& node)
 void RSRenderThreadVisitor::ProcessRootRenderNode(RSRootRenderNode& node)
 {
     auto rsSurface = node.GetSurface();
+    if (!isIdle_) {
+        ProcessRenderNode(node);
+        return;
+    }
     if (rsSurface == nullptr) {
         // TODO: remove this branch after replace weston with RSSurface
         auto platformCanvas = node.GetPlatformCanvas();
         if (platformCanvas != nullptr) {
+            isIdle_ = false;
             canvas_ = new RSPaintFilterCanvas(platformCanvas->AcquireCanvas());
             ProcessRenderNode(node);
             platformCanvas->FlushBuffer();
@@ -91,22 +105,33 @@ void RSRenderThreadVisitor::ProcessRootRenderNode(RSRootRenderNode& node)
             ROSEN_LOGE("No RSSurface found");
             return;
         }
+#ifdef ACE_ENABLE_GL
+        RenderContext* rc = RSRenderThread::Instance().GetRenderContext();
+        rsSurface->SetRenderContext(rc);
+#endif
+        ROSEN_LOGE("mengkun RSRenderThreadVisitor RequestFrame start");
         auto surfaceFrame = rsSurface->RequestFrame(node.GetWidth(), node.GetHeight());
         if (surfaceFrame == nullptr) {
             ROSEN_LOGE("Request Frame Failed");
             return;
         }
-        canvas_ = new RSPaintFilterCanvas(surfaceFrame->GetCanvas().get());
+        canvas_ = new RSPaintFilterCanvas(surfaceFrame->GetCanvas());
+
+        isIdle_ = false;
         ProcessRenderNode(node);
+
+        ROSEN_LOGE("mengkun RSRenderThreadVisitor FlushFrame start");
         rsSurface->FlushFrame(surfaceFrame);
+
         delete canvas_;
         canvas_ = nullptr;
     }
+    isIdle_ = true;
 }
 
 void RSRenderThreadVisitor::ProcessRenderNode(RSRenderNode& node)
 {
-    if (!canvas_) {
+    if (!canvas_ || !node.GetRenderProperties().GetVisible()) {
         return;
     }
     node.ProcessRenderBeforeChildren(*canvas_);

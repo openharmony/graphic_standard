@@ -23,11 +23,6 @@ namespace OHOS {
 namespace Rosen {
 class RSDisplayRenderNode : public RSBaseRenderNode {
 public:
-    enum CompositeFlag {
-        SOFTWARE_TO_SURFACE = 0,
-        SOFTWARE_TO_LAYER,
-        HARDWARE_TO_LAYER
-    };
     using WeakPtr = std::weak_ptr<RSDisplayRenderNode>;
     using SharedPtr = std::shared_ptr<RSDisplayRenderNode>;
     static inline constexpr RSRenderNodeType Type = RSRenderNodeType::DISPLAY_NODE;
@@ -46,8 +41,6 @@ public:
 
     void Prepare(const std::shared_ptr<RSNodeVisitor>& visitor) override;
     void Process(const std::shared_ptr<RSNodeVisitor>& visitor) override;
-    void SetCompositeFlag(CompositeFlag flag);
-    CompositeFlag GetFlag() const;
 
     RSRenderNodeType GetType() override
     {
@@ -58,7 +51,6 @@ protected:
 
 private:
     uint64_t screenId_;
-    CompositeFlag flag_ = CompositeFlag::HARDWARE_TO_LAYER;
 };
 } // namespace Rosen
 } // namespace OHOS

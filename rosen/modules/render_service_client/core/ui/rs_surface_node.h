@@ -19,9 +19,7 @@
 
 #include <parcel.h>
 #include <refbase.h>
-#ifdef ROSEN_OHOS
 #include "surface.h"
-#endif
 
 #include <transaction/rs_transaction_proxy.h>
 #include "platform/drawing/rs_surface.h"
@@ -41,7 +39,7 @@ public:
     using SharedPtr = std::shared_ptr<RSSurfaceNode>;
     virtual ~RSSurfaceNode();
 
-    static SharedPtr Create(const RSSurfaceNodeConfig& surfaceNodeConfig);
+    static SharedPtr Create(const RSSurfaceNodeConfig& surfaceNodeConfig, bool isWindow = true);
 
     bool Marshalling(Parcel& parcel) const override;
     static RSSurfaceNode* Unmarshalling(Parcel& parcel);
@@ -49,8 +47,8 @@ public:
     sptr<OHOS::Surface> GetSurface() const;
 #endif
 protected:
-    RSSurfaceNode();
-    explicit RSSurfaceNode(const RSSurfaceNodeConfig& config);
+    RSSurfaceNode(bool isRenderServiceNode);
+    explicit RSSurfaceNode(const RSSurfaceNodeConfig& config, bool isRenderServiceNode);
     RSSurfaceNode(const RSSurfaceNode&) = delete;
     RSSurfaceNode(const RSSurfaceNode&&) = delete;
     RSSurfaceNode& operator=(const RSSurfaceNode&) = delete;

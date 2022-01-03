@@ -35,9 +35,6 @@ public:
 
     virtual void OnScreenChanged(ScreenId id, ScreenEvent event) = 0;
 };
-
-// normal callback functor for client users.
-using ScreenChangeCallback = std::function<void(ScreenId, ScreenEvent)>;
 } // namespace Rosen
 } // namespace OHOS
 #endif // ROSEN_OHOS

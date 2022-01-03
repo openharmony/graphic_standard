@@ -41,7 +41,6 @@ public:
     virtual void Prepare(const std::shared_ptr<RSNodeVisitor>& visitor);
     virtual void Process(const std::shared_ptr<RSNodeVisitor>& visitor);
 
-    void SetParent(WeakPtr parent);
     WeakPtr GetParent();
     void ResetParent();
 
@@ -111,6 +110,7 @@ private:
     NodeId id_;
     WeakPtr parent_;
     std::vector<WeakPtr> children_;
+    void SetParent(WeakPtr parent);
 
     NodeDirty dirtyStatus_ = NodeDirty::DIRTY;
     bool pendingRemoval_ = false;

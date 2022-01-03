@@ -171,21 +171,25 @@ bool RSMarshallingHelper::Unmarshalling(Parcel& parcel, RSPath& val)
     return true;
 }
 
-#define MARSHALLING_AND_UNMARSHALLING(TYPE)                                                 \
-    template<>                                                                              \
-    bool RSMarshallingHelper::Marshalling(Parcel& parcel, const std::shared_ptr<TYPE>& val) \
-    {                                                                                       \
-        return parcel.WriteParcelable(val.get());                                           \
-    }                                                                                       \
-    template<>                                                                              \
-    bool RSMarshallingHelper::Unmarshalling(Parcel& parcel, std::shared_ptr<TYPE>& val)     \
-    {                                                                                       \
-        val.reset(parcel.ReadParcelable<TYPE>());                                           \
-        return val != nullptr;                                                              \
-    }
-MARSHALLING_AND_UNMARSHALLING(RSRenderPathAnimation)
-MARSHALLING_AND_UNMARSHALLING(RSRenderTransition)
-#undef MARSHALLING_AND_UNMARSHALLING
+bool RSMarshallingHelper::Marshalling(Parcel& parcel, const std::shared_ptr<RSRenderPathAnimation>& val)
+{
+    return parcel.WriteParcelable(val.get());
+}
+bool RSMarshallingHelper::Unmarshalling(Parcel& parcel, std::shared_ptr<RSRenderPathAnimation>& val)
+{
+    val.reset(parcel.ReadParcelable<RSRenderPathAnimation>());
+    return val != nullptr;
+}
+
+bool RSMarshallingHelper::Marshalling(Parcel& parcel, const std::shared_ptr<RSRenderTransition>& val)
+{
+    return parcel.WriteParcelable(val.get());
+}
+bool RSMarshallingHelper::Unmarshalling(Parcel& parcel, std::shared_ptr<RSRenderTransition>& val)
+{
+    val.reset(parcel.ReadParcelable<RSRenderTransition>());
+    return val != nullptr;
+}
 
 #define MARSHALLING_AND_UNMARSHALLING(TEMPLATE)                                                    \
     template<typename T>                                                                           \

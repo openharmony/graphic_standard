@@ -1,0 +1,108 @@
+# Copyright (c) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+config("libwm_config") {
+  visibility = [ ":*" ]
+
+  include_dirs = [
+    "include",
+    "//utils/system/safwk/native/include",
+    "//foundation/graphic/standard/rosen/modules/window/wmserver/include",
+
+    # for abilityContext
+    "//foundation/aafwk/standard/frameworks/kits/ability/ability_runtime/include",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/appexecfwk_base/include",
+    "//base/global/resmgr_standard/interfaces/innerkits/include",
+    "//third_party/node/deps/icu-small/source/common",
+    "//foundation/aafwk/standard/interfaces/innerkits/ability_manager/include",
+    "//foundation/aafwk/standard/interfaces/innerkits/want/include/ohos/aafwk/content",
+    "//foundation/distributedschedule/dmsfwk/services/dtbschedmgr/include",
+    "//foundation/aafwk/standard/interfaces/innerkits/base/include",
+
+    # weston adater
+    "//foundation/graphic/standard/rosen/modules/window/adapter/include",
+    "//foundation/graphic/standard/interfaces/innerkits",
+    "//foundation/graphic/standard/interfaces/innerkits/wm",
+    "//foundation/graphic/standard/interfaces/innerkits/common",
+  ]
+
+  cflags = [
+    "-Wall",
+    "-Werror",
+    "-g3",
+  ]
+}
+
+config("libwm_public_config") {
+  include_dirs = [ "//foundation/graphic/standard/rosen/modules/window/interfaces/innerkits/wm" ]
+}
+
+## Build libwmutil.so
+ohos_shared_library("libwmutil") {
+  sources = [
+    "//foundation/graphic/standard/rosen/modules/window/wm/src/window_proxy.cpp",
+    "//foundation/graphic/standard/rosen/modules/window/wmserver/src/window_manager_proxy.cpp",
+    "src/window_property.cpp",
+  ]
+
+  configs = [ ":libwm_config" ]
+
+  public_configs = [ ":libwm_public_config" ]
+
+  deps = [
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
+    "//utils/native/base:utils",
+  ]
+
+  external_deps = [ "ipc:ipc_core" ]
+
+  part_name = "graphic_standard"
+  subsystem_name = "graphic"
+}
+
+## Build libwm.so
+ohos_shared_library("libwm") {
+  sources = [
+    "src/window.cpp",
+    "src/window_adapter.cpp",
+    "src/window_agent.cpp",
+    "src/window_impl.cpp",
+    "src/window_scene.cpp",
+    "src/window_stub.cpp",
+  ]
+
+  configs = [ ":libwm_config" ]
+
+  public_configs = [ ":libwm_public_config" ]
+
+  deps = [
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
+    "//foundation/distributedschedule/safwk/interfaces/innerkits/safwk:system_ability_fwk",
+    "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy:samgr_proxy",
+    "//foundation/graphic/standard/rosen/modules/window/wm:libwmutil",
+    "//utils/native/base:utils",
+
+    # weston adapter
+    "//foundation/graphic/standard/rosen/modules/window/adapter:libwmadaptertest",
+  ]
+
+  external_deps = [
+    "aafwk_standard:ability_context_native",
+    "ipc:ipc_core",
+  ]
+
+  part_name = "graphic_standard"
+  subsystem_name = "graphic"
+}

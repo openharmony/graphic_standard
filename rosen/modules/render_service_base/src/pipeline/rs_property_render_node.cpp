@@ -28,7 +28,7 @@
 namespace OHOS {
 namespace Rosen {
 RSPropertyRenderNode::RSPropertyRenderNode(NodeId id)
-    : RSBaseRenderNode(id), renderProperties_(true, id), animationManager_(this)
+    : RSBaseRenderNode(id), renderProperties_(true), animationManager_(this)
 {}
 
 RSPropertyRenderNode::~RSPropertyRenderNode()

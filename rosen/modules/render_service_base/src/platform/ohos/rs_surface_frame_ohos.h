@@ -20,46 +20,22 @@
 #include <surface.h>
 
 #include "platform/drawing/rs_surface_frame.h"
+#ifdef ACE_ENABLE_GL
+#include "render_context/render_context.h"
+#endif
 
 namespace OHOS {
 namespace Rosen {
 
 class RSSurfaceFrameOhos : public RSSurfaceFrame {
 public:
-    RSSurfaceFrameOhos(int32_t width, int32_t height);
-    ~RSSurfaceFrameOhos() = default;
-
-    std::shared_ptr<SkCanvas> GetCanvas() override;
-
-    sptr<SurfaceBuffer> GetBuffer() const
-    {
-        return buffer_;
-    }
-    void SetDamageRegion(int32_t left, int32_t top, int32_t width, int32_t height) override;
-    int32_t GetReleaseFence() const;
-    void SetReleaseFence(const int32_t& fence);
-    friend class RSSurfaceOhos;
-private:
-    sptr<SurfaceBuffer> buffer_;
-    int32_t releaseFence_ = 0;
-    BufferRequestConfig requestConfig_ = {
-        .width = 0x100,
-        .height = 0x100,
-        .strideAlignment = 0x8,
-        .format = PIXEL_FMT_RGBA_8888,
-        .usage = HBM_USE_CPU_READ | HBM_USE_CPU_WRITE | HBM_USE_MEM_DMA,
-        .timeout = 0,
-    };
-    BufferFlushConfig flushConfig_ = {
-        .damage = {
-            .x = 0,
-            .y = 0,
-            .w = 0x100,
-            .h = 0x100,
-        },
-    };
-
-    void CreateCanvas();
+#ifdef ACE_ENABLE_GL
+    virtual void SetRenderContext(RenderContext* context);
+#endif
+protected:
+#ifdef ACE_ENABLE_GL
+    RenderContext* renderContext_;
+#endif
 };
 
 } // namespace Rosen

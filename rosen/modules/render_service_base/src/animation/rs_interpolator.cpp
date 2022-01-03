@@ -91,7 +91,7 @@ void RSCustomInterpolator::Convert(int duration)
     }
 }
 
-float RSCustomInterpolator::Interpolate(float input)
+float RSCustomInterpolator::Interpolate(float input) const
 {
     if (input < times_[0] + EPSILON) {
         return times_[0];

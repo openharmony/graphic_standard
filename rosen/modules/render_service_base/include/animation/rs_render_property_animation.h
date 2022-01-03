@@ -66,9 +66,11 @@ public:
 #endif
 protected:
     RSRenderPropertyAnimation(AnimationId id, const RSAnimatableProperty& property, const T& originValue)
-        : RSRenderAnimation(id), property_(property), originValue_(originValue), lastValue_(originValue),
-          propertyAccess_(RSBasePropertyAccessors::PROPERTY_ACCESSOR_LUT.at(property))
-    {}
+        : RSRenderAnimation(id), property_(property), originValue_(originValue), lastValue_(originValue)
+    {
+        propertyAccess_ = std::static_pointer_cast<RSPropertyAccessors<T>>(
+            RSBasePropertyAccessors::GetAccessor(property));
+    }
     RSRenderPropertyAnimation() =default;
 #ifdef ROSEN_OHOS
     bool ParseParam(Parcel& parcel) override
@@ -83,7 +85,8 @@ protected:
             return false;
         }
         property_ = static_cast<RSAnimatableProperty>(property);
-        propertyAccess_ = RSBasePropertyAccessors::PROPERTY_ACCESSOR_LUT.at(property_);
+        propertyAccess_ = std::static_pointer_cast<RSPropertyAccessors<T>>(
+            RSBasePropertyAccessors::GetAccessor(property_));
 
         return true;
     }
@@ -91,22 +94,22 @@ protected:
     void SetPropertyValue(const T& value)
     {
         auto target = GetTarget();
-        if (target == nullptr || GetAccessor()->UseGetProp() == nullptr) {
+        if (target == nullptr || propertyAccess_->getter_ == nullptr) {
             ROSEN_LOGE("Failed to set property value, target is null!");
             return;
         }
-        (target->GetRenderProperties().*GetAccessor()->UseSetProp())(value, true);
+        (target->GetRenderProperties().*propertyAccess_->setter_)(value);
     }
 
     auto GetPropertyValue() const
     {
         auto target = GetTarget();
-        if (target == nullptr || GetAccessor()->UseGetProp() == nullptr) {
+        if (target == nullptr || propertyAccess_->getter_ == nullptr) {
             ROSEN_LOGE("Failed to get property value, target is null!");
             return lastValue_;
         }
 
-        return (target->GetRenderProperties().*GetAccessor()->UseGetProp())();
+        return (target->GetRenderProperties().*propertyAccess_->getter_)();
     }
 
     auto GetOriginValue() const
@@ -145,16 +148,11 @@ protected:
     }
 
 private:
-    auto GetAccessor() const
-    {
-        return std::static_pointer_cast<RSPropertyAccessors<T>>(propertyAccess_);
-    }
-
     RSAnimatableProperty property_ { RSAnimatableProperty::INVALID };
     T originValue_;
     T lastValue_;
     bool isAdditive_ { true };
-    std::shared_ptr<RSBasePropertyAccessors> propertyAccess_;
+    std::shared_ptr<RSPropertyAccessors<T>> propertyAccess_;
 };
 } // namespace Rosen
 } // namespace OHOS

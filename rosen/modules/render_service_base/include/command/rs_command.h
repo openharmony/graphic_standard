@@ -37,7 +37,11 @@ enum RSCommandType : uint16_t {
     ANIMATION,
 };
 
+#ifdef ROSEN_OHOS
+class RSCommand : public Parcelable {
+#else
 class RSCommand {
+#endif
 public:
     virtual ~RSCommand() noexcept = default;
     virtual void Process(RSContext& context) const = 0;

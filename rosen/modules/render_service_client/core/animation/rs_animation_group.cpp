@@ -86,8 +86,8 @@ void RSAnimationGroup::OnStart()
         return;
     }
 
-    std::shared_ptr<AnimationFinishCallback> finishCallback = std::make_shared<AnimationFinishCallback>(
-        [weakTarget = target_, weakAnimation = weak_from_this()]() {
+    std::shared_ptr<AnimationFinishCallback> finishCallback =
+        std::make_shared<AnimationFinishCallback>([weakTarget = target_, weakAnimation = weak_from_this()]() {
             auto target = weakTarget.lock();
             if (target == nullptr) {
                 ROSEN_LOGE("Failed to finish group animation, target is null!");
@@ -101,8 +101,7 @@ void RSAnimationGroup::OnStart()
             }
 
             target->RemoveAnimation(animation);
-        },
-        animations_.size());
+        });
 
     for (auto& animation : animations_) {
         int duration = duration_ < animation->GetDuration() ? duration_ : animation->GetDuration();

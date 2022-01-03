@@ -92,14 +92,14 @@ void RSUIDirector::SetRSSurfaceNode(std::shared_ptr<RSSurfaceNode> surfaceNode)
         std::static_pointer_cast<RSRootNode>(node)->AttachRSSurface(0, 0, 0);
     } else {
         std::static_pointer_cast<RSRootNode>(node)->AttachRSSurface(
-            RSSurfaceExtractor::ExtractRSSurface(surfaceNode_),
-            static_cast<int>(surfaceNode_->GetStagingProperties().GetBoundsWidth()),
-            static_cast<int>(surfaceNode_->GetStagingProperties().GetBoundsHeight()));
+            RSSurfaceExtractor::ExtractRSSurface(surfaceNode_), surfaceWidth_, surfaceHeight_);
     }
 }
 
 void RSUIDirector::SetSurfaceNodeSize(int width, int height)
 {
+    surfaceWidth_ = width;
+    surfaceHeight_ = height;
     if ((root_ == 0) || (surfaceNode_ == nullptr)) {
         ROSEN_LOGE("No root or SurfaceNode exists");
         return;
@@ -107,13 +107,14 @@ void RSUIDirector::SetSurfaceNodeSize(int width, int height)
     auto node = RSNodeMap::Instance().GetNode(root_).lock();
     if (node != nullptr) {
         std::static_pointer_cast<RSRootNode>(node)->AttachRSSurface(
-            RSSurfaceExtractor::ExtractRSSurface(surfaceNode_), width, height);
+            RSSurfaceExtractor::ExtractRSSurface(surfaceNode_), surfaceWidth_, surfaceHeight_);
     }
 }
 // end of new version
 
 void RSUIDirector::SetRoot(NodeId root)
 {
+    ROSEN_LOGE("mengkun SetRoot");
     if (root_ == root) {
         return;
     }
@@ -133,9 +134,7 @@ void RSUIDirector::SetRoot(NodeId root)
         std::static_pointer_cast<RSRootNode>(node)->AttachSurface(surface_, surfaceWidth_, surfaceHeight_);
     } else {
         std::static_pointer_cast<RSRootNode>(node)->AttachRSSurface(
-            RSSurfaceExtractor::ExtractRSSurface(surfaceNode_),
-            static_cast<int>(surfaceNode_->GetStagingProperties().GetBoundsWidth()),
-            static_cast<int>(surfaceNode_->GetStagingProperties().GetBoundsHeight()));
+            RSSurfaceExtractor::ExtractRSSurface(surfaceNode_), surfaceWidth_, surfaceHeight_);
     }
 }
 
@@ -151,13 +150,9 @@ void RSUIDirector::SetUITaskRunner(const TaskRunner& uiTaskRunner)
 
 void RSUIDirector::SendMessages()
 {
-    ROSEN_TRACE_BEGIN("", "SendCommands");
-    auto nodePtr = std::static_pointer_cast<RSNode>(RSNodeMap::Instance().GetNode(root_).lock());
-    if (nodePtr != nullptr) {
-        nodePtr->UpdateRecording();
-    }
+    ROSEN_TRACE_BEGIN(BYTRACE_TAG_GRAPHIC_AGP, "SendCommands");
     RSTransactionProxy::GetInstance().FlushImplicitTransaction();
-    ROSEN_TRACE_END("");
+    ROSEN_TRACE_END(BYTRACE_TAG_GRAPHIC_AGP);
 }
 
 void RSUIDirector::RecvMessages()

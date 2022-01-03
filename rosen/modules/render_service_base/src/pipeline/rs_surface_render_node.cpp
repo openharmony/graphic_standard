@@ -45,9 +45,14 @@ void RSSurfaceRenderNode::SetFence(int32_t fence)
     fence_ = fence;
 }
 
-void RSSurfaceRenderNode::SetBufferAvailable(bool bufferAvailable)
+void RSSurfaceRenderNode::IncreaseAvailableBuffer()
 {
-    bufferAvailable_ = bufferAvailable;
+    bufferAvailableCount_++;
+}
+
+int32_t RSSurfaceRenderNode::ReduceAvailableBuffer()
+{
+    return --bufferAvailableCount_;
 }
 
 void RSSurfaceRenderNode::Prepare(const std::shared_ptr<RSNodeVisitor>& visitor)

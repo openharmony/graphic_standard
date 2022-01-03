@@ -141,7 +141,7 @@ void RSPathAnimation::OnStart()
     animation->SetBeginFraction(GetBeginFraction());
     animation->SetEndFraction(GetEndFraction());
     std::unique_ptr<RSCommand> command = std::make_unique<RSAnimationCreatePath>(target->GetId(), std::move(animation));
-    RSTransactionProxy::GetInstance().AddCommand(command);
+    RSTransactionProxy::GetInstance().AddCommand(command, target->IsRenderServiceNode());
 }
 
 void RSPathAnimation::InitInterpolationValue()
@@ -206,7 +206,7 @@ void RSPathAnimation::OnUpdateStagingValue(bool isFirstStart)
         }
     }
 
-    target->stagingProperties_.SetRotation(targetRotation, false);
+    target->stagingProperties_.SetRotation(targetRotation);
 }
 
 void RSPathAnimation::ReplaceSubString(

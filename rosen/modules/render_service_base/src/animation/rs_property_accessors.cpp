@@ -17,10 +17,21 @@
 
 #include "common/rs_color.h"
 #include "common/rs_matrix3.h"
+#include "platform/common/rs_log.h"
 #include "render/rs_filter.h"
 
 namespace OHOS {
 namespace Rosen {
+const std::shared_ptr<RSBasePropertyAccessors> RSBasePropertyAccessors::GetAccessor(RSAnimatableProperty property)
+{
+    auto it = PROPERTY_ACCESSOR_LUT.find(property);
+    if (it == PROPERTY_ACCESSOR_LUT.end()) {
+        ROSEN_LOGE("Accessor for property %d could not be found", property);
+        return PROPERTY_ACCESSOR_LUT.at(RSAnimatableProperty::INVALID);
+    }
+    return it->second;
+}
+
 const std::unordered_map<RSAnimatableProperty, std::shared_ptr<RSBasePropertyAccessors>>
     RSBasePropertyAccessors::PROPERTY_ACCESSOR_LUT = {
         { RSAnimatableProperty::INVALID,

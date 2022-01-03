@@ -47,6 +47,7 @@ private:
     RSDirtyRegionManager dirtyManager_;
     RSRenderNode* parent_ = nullptr;
     bool dirtyFlag_ = false;
+    bool isIdle_ = true;
     RSPaintFilterCanvas* canvas_;
 };
 } // namespace Rosen

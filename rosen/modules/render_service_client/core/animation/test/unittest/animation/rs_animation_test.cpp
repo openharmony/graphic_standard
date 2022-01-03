@@ -14,6 +14,9 @@
  */
 
 #include "rs_animation_test.h"
+
+#include <gtest/gtest.h>
+
 #include "rs_animation_callback.h"
 #include "rs_animation_group.h"
 #include "rs_animation_timing_curve.h"
@@ -439,7 +442,7 @@ HWTEST_F(RSAnimationTest, AnimationCallbackTest001, TestSize.Level1)
     /**
      * @tc.steps: step2. start animation callback test
      */
-    callback->Run();
+    callback.reset();
     EXPECT_EQ(1, testData);
 }
 
@@ -457,13 +460,12 @@ HWTEST_F(RSAnimationTest, AnimationFinishCallbackTest001, TestSize.Level1)
      * @tc.steps: step1. init animation finishCallback and test data
      */
     int testData = 0;
-    int count = 1;
-    std::unique_ptr<AnimationFinishCallback> callback =
-        std::make_unique<AnimationFinishCallback>([&]() { testData += 1; }, count);
+    std::shared_ptr<AnimationFinishCallback> callback =
+        std::make_shared<AnimationFinishCallback>([&]() { testData += 1; });
     /**
      * @tc.steps: step2. start animation finishCallback test
      */
-    callback->Run();
+    callback.reset();
     EXPECT_EQ(1, testData);
 }
 
@@ -481,13 +483,13 @@ HWTEST_F(RSAnimationTest, AnimationFinishCallbackTest002, TestSize.Level1)
      * @tc.steps: step1. init animation finishCallback and test data
      */
     int testData = 0;
-    int count = 2;
-    std::unique_ptr<AnimationFinishCallback> callback =
-        std::make_unique<AnimationFinishCallback>([&]() { testData += 1; }, count);
+    std::shared_ptr<AnimationFinishCallback> callback =
+        std::make_shared<AnimationFinishCallback>([&]() { testData += 1; });
+    std::shared_ptr<AnimationFinishCallback> callbackCopy = callback;
     /**
      * @tc.steps: step2. start animation finishCallback test
      */
-    callback->Run();
+    callback.reset();
     EXPECT_EQ(0, testData);
 }
 
