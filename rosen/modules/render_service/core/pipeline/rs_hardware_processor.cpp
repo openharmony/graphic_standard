@@ -123,7 +123,7 @@ void RSHardwareProcessor::Redraw(sptr<Surface>& surface, const struct PrepareCom
 
     for (auto layer : param.layers) {
         ROSEN_LOGE("RsDebug RSHardwareProcessor::Redraw layer composition Type:%d", layer->GetCompositionType());
-        if (layer == nullptr) {
+        if (layer == nullptr || layer->GetCompositionType() == CompositionType::COMPOSITION_DEVICE) {
             continue;
         }
         SkMatrix matrix;
