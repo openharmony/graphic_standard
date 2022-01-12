@@ -56,6 +56,8 @@ RosenError HdiBackend::RegPrepareComplete(OnPrepareCompleteFunc func, void* data
 void HdiBackend::Repaint(std::vector<OutputPtr> &outputs)
 {
     ScopedBytrace bytrace(__func__);
+    HLOGD("%{public}s: start", __func__);
+
     if (device_ == nullptr) {
         HLOGE("device has not been initialized");
         return;
@@ -120,6 +122,7 @@ void HdiBackend::Repaint(std::vector<OutputPtr> &outputs)
 
         // wrong check
         output->ReleaseFramebuffer(fbFence);
+        HLOGD("%{public}s: end", __func__);
     }
 }
 

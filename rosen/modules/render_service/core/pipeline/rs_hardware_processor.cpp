@@ -100,6 +100,8 @@ void RSHardwareProcessor::ProcessSurface(RSSurfaceRenderNode &node)
         .alpha = alpha_,
         .buffer = node.GetBuffer(),
         .fence = node.GetFence(),
+        .preBuffer = node.GetPreBuffer(),
+        .preFence = node.GetPreFence(),
     };
     std::shared_ptr<HdiLayerInfo> layer = HdiLayerInfo::CreateHdiLayerInfo();
     ROSEN_LOGE("RsDebug RSHardwareProcessor::ProcessSurface surfaceNode id:%llu [%d %d %d %d]"\

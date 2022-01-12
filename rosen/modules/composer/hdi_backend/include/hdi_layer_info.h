@@ -78,10 +78,13 @@ public:
         cSurface_ = surface;
     }
 
-    void SetBuffer(const sptr<SurfaceBuffer> &sbuffer, int32_t acquireFence)
+    void SetBuffer(const sptr<SurfaceBuffer> &sbuffer, int32_t acquireFence,
+        const sptr<SurfaceBuffer> &preBuffer, int32_t preAcquireFence)
     {
         sbuffer_ = sbuffer;
         acquireFence_ = new SyncFence(acquireFence);
+        preBuffer_ = preBuffer;
+        preAcquireFence_ = new SyncFence(preAcquireFence);
     }
 
     void SetZorder(int32_t zOrder)
@@ -157,6 +160,11 @@ public:
         return sbuffer_;
     }
 
+    sptr<SurfaceBuffer> GetPreBuffer() const
+    {
+        return preBuffer_;
+    }
+
     uint32_t GetZorder() const
     {
         return zOrder_;
@@ -165,6 +173,11 @@ public:
     sptr<SyncFence> GetAcquireFence() const
     {
         return acquireFence_;
+    }
+
+    sptr<SyncFence> GetPreAcquireFence() const
+    {
+        return preAcquireFence_;
     }
 
     /* const */ LayerAlpha& GetAlpha()
@@ -253,7 +266,6 @@ public:
 private:
     uint32_t zOrder_ = 0;
     uint32_t visibleNum_ = 0;
-    sptr<SyncFence> acquireFence_ = SyncFence::INVALID_FENCE;
     IRect layerRect_;
     IRect visibleRegion_;
     IRect dirtyRegion_;
@@ -265,7 +277,11 @@ private:
 
     void *additionalInfo_ = nullptr;
     sptr<Surface> cSurface_ = nullptr;
+    sptr<SyncFence> acquireFence_ = SyncFence::INVALID_FENCE;
     sptr<SurfaceBuffer> sbuffer_ = nullptr;
+
+    sptr<SyncFence> preAcquireFence_ = SyncFence::INVALID_FENCE;
+    sptr<SurfaceBuffer> preBuffer_ = nullptr;
 
     bool preMulti_ = false;
 };

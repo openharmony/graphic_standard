@@ -26,7 +26,7 @@ void RsRenderServiceUtil::ComposeSurface(std::shared_ptr<HdiLayerInfo> layer, sp
     std::vector<LayerInfoPtr>& layers,  ComposeInfo info)
 {
     layer->SetSurface(consumerSurface);
-    layer->SetBuffer(info.buffer, info.fence);
+    layer->SetBuffer(info.buffer, info.fence, info.preBuffer, info.preFence);
     layer->SetZorder(info.zOrder);
     layer->SetAlpha(info.alpha);
     layer->SetLayerSize(info.dstRect);
