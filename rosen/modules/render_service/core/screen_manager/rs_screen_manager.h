@@ -25,7 +25,6 @@
 #include <hdi_backend.h>
 #include <hilog/log.h>
 #include <ipc_callbacks/screen_change_callback.h>
-#include <iremote_object.h>
 #include <refbase.h>
 #include <screen_manager/rs_screen_props.h>
 #include <screen_manager/rs_screen_mode_info.h>
@@ -100,7 +99,7 @@ public:
 
     virtual void AddScreenChangeCallback(const sptr<RSIScreenChangeCallback> &callback) = 0;
 
-    virtual void OnRemoteScreenChangeCallbackDied(const wptr<IRemoteObject> &remote) = 0;
+    virtual void RemoveScreenChangeCallback(const sptr<RSIScreenChangeCallback> &callback) = 0;
 
     virtual void ProcessScreenHotPlugEvents() = 0;
 
@@ -172,7 +171,7 @@ public:
 
     void AddScreenChangeCallback(const sptr<RSIScreenChangeCallback> &callback) override;
 
-    void OnRemoteScreenChangeCallbackDied(const wptr<IRemoteObject> &remote) override;
+    void RemoveScreenChangeCallback(const sptr<RSIScreenChangeCallback> &callback) override;
 
     void ProcessScreenHotPlugEvents() override;
 

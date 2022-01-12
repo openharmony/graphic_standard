@@ -15,7 +15,6 @@
 
 #include "rs_screen_manager.h"
 #include "pipeline/rs_main_thread.h"
-#include "rs_screen_change_callback_death_recipient.h"
 
 #include <cinttypes>
 
@@ -497,11 +496,6 @@ void RSScreenManager::AddScreenChangeCallback(const sptr<RSIScreenChangeCallback
         return;
     }
 
-    sptr<IRemoteObject::DeathRecipient> deathRecipient(new RSScreenChangeCallbackDeathRecipient(instance_));
-    if (callback->AsObject()->AddDeathRecipient(deathRecipient) == false) {
-        HiLog::Warn(LOG_LABEL, "%{public}s: Failed to add callback's death recipient.", __func__);
-    }
-
     std::lock_guard<std::mutex> lock(mutex_);
     // when the callback first registered, maybe there were some physical screens already connected,
     // so notify to remote immediately.
@@ -514,16 +508,11 @@ void RSScreenManager::AddScreenChangeCallback(const sptr<RSIScreenChangeCallback
     HiLog::Debug(LOG_LABEL, "%{public}s: add a remote callback succeed.", __func__);
 }
 
-void RSScreenManager::OnRemoteScreenChangeCallbackDied(const wptr<IRemoteObject> &remote)
+void RSScreenManager::RemoveScreenChangeCallback(const sptr<RSIScreenChangeCallback> &callback)
 {
-    auto sptrRemote = remote.promote();
-    if (sptrRemote == nullptr) {
-        return;
-    }
-
     std::lock_guard<std::mutex> lock(mutex_);
     for (auto it = screenChangeCallbacks_.begin(); it != screenChangeCallbacks_.end(); it++) {
-        if ((*it)->AsObject() == sptrRemote) {
+        if (*it == callback) {
             screenChangeCallbacks_.erase(it);
             HiLog::Debug(LOG_LABEL, "%{public}s: remove a remote callback succeed.", __func__);
             break;

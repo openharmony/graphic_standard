@@ -59,6 +59,7 @@ class RSMainThread {
 public:
     static RSMainThread* Instance();
 
+    void Init();
     void Start();
     void RecvRSTransactionData(std::unique_ptr<RSTransactionData>& rsTransactionData);
     void RequestNextVSync();

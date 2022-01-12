@@ -21,19 +21,16 @@
 #include <message_parcel.h>
 
 #include "platform/ohos/rs_irender_service.h"
-#include "screen_manager/screen_types.h"
 
 namespace OHOS {
 namespace Rosen {
-
 class RSRenderServiceStub : public IRemoteStub<RSIRenderService> {
 public:
     RSRenderServiceStub() = default;
-    ~RSRenderServiceStub() = default;
+    ~RSRenderServiceStub() noexcept = default;
 
     int OnRemoteRequest(uint32_t code, MessageParcel& data, MessageParcel& reply, MessageOption& option) override;
 };
-
 } // namespace Rosen
 } // namespace OHOS
 

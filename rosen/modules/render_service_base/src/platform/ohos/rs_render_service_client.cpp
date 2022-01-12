@@ -21,7 +21,7 @@
 #include "ipc_callbacks/screen_change_callback_stub.h"
 #include "ipc_callbacks/surface_capture_callback_stub.h"
 #include "platform/common/rs_log.h"
-#include "rs_render_service_connect.h"
+#include "rs_render_service_connect_hub.h"
 #include "rs_surface_ohos.h"
 
 namespace OHOS {
@@ -34,7 +34,7 @@ std::shared_ptr<RSIRenderClient> RSIRenderClient::CreateRenderServiceClient()
 
 void RSRenderServiceClient::CommitTransaction(std::unique_ptr<RSTransactionData>& transactionData)
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService != nullptr) {
         renderService->CommitTransaction(transactionData);
     }
@@ -42,7 +42,7 @@ void RSRenderServiceClient::CommitTransaction(std::unique_ptr<RSTransactionData>
 
 void RSRenderServiceClient::ExecuteSynchronousTask(const std::shared_ptr<RSSyncTask>& task)
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService != nullptr) {
         renderService->ExecuteSynchronousTask(task);
     }
@@ -50,7 +50,7 @@ void RSRenderServiceClient::ExecuteSynchronousTask(const std::shared_ptr<RSSyncT
 
 std::shared_ptr<RSSurface> RSRenderServiceClient::CreateNodeAndSurface(const RSSurfaceRenderNodeConfig& config)
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
         return nullptr;
     }
@@ -104,7 +104,7 @@ private:
 
 bool RSRenderServiceClient::TakeSurfaceCapture(NodeId id, std::shared_ptr<SurfaceCaptureCallback> callback)
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
         ROSEN_LOGE("RSRenderServiceClient::TakeSurfaceCapture renderService == nullptr!");
         return false;
@@ -131,7 +131,7 @@ bool RSRenderServiceClient::TakeSurfaceCapture(NodeId id, std::shared_ptr<Surfac
 
 ScreenId RSRenderServiceClient::GetDefaultScreenId()
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
         return INVALID_SCREEN_ID;
     }
@@ -147,7 +147,7 @@ ScreenId RSRenderServiceClient::CreateVirtualScreen(
     ScreenId mirrorId,
     int32_t flags)
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
         return INVALID_SCREEN_ID;
     }
@@ -157,7 +157,7 @@ ScreenId RSRenderServiceClient::CreateVirtualScreen(
 
 void RSRenderServiceClient::RemoveVirtualScreen(ScreenId id)
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
         return;
     }
@@ -184,7 +184,7 @@ private:
 
 void RSRenderServiceClient::SetScreenChangeCallback(const ScreenChangeCallback &callback)
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
         return;
     }
@@ -195,7 +195,7 @@ void RSRenderServiceClient::SetScreenChangeCallback(const ScreenChangeCallback &
 
 void RSRenderServiceClient::SetScreenActiveMode(ScreenId id, uint32_t modeId)
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
         return;
     }
@@ -205,7 +205,7 @@ void RSRenderServiceClient::SetScreenActiveMode(ScreenId id, uint32_t modeId)
 
 void RSRenderServiceClient::SetScreenPowerStatus(ScreenId id, ScreenPowerStatus status)
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
         return;
     }
@@ -215,7 +215,7 @@ void RSRenderServiceClient::SetScreenPowerStatus(ScreenId id, ScreenPowerStatus 
 
 RSScreenModeInfo RSRenderServiceClient::GetScreenActiveMode(ScreenId id)
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
         return RSScreenModeInfo {}; // return empty RSScreenModeInfo.
     }
@@ -225,7 +225,7 @@ RSScreenModeInfo RSRenderServiceClient::GetScreenActiveMode(ScreenId id)
 
 std::vector<RSScreenModeInfo> RSRenderServiceClient::GetScreenSupportedModes(ScreenId id)
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
         return {};
     }
@@ -235,7 +235,7 @@ std::vector<RSScreenModeInfo> RSRenderServiceClient::GetScreenSupportedModes(Scr
 
 RSScreenCapability RSRenderServiceClient::GetScreenCapability(ScreenId id)
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
         return RSScreenCapability {};
     }
@@ -245,7 +245,7 @@ RSScreenCapability RSRenderServiceClient::GetScreenCapability(ScreenId id)
 
 ScreenPowerStatus RSRenderServiceClient::GetScreenPowerStatus(ScreenId id)
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
         return ScreenPowerStatus::INVALID_POWER_STATUS;
     }
@@ -255,7 +255,7 @@ ScreenPowerStatus RSRenderServiceClient::GetScreenPowerStatus(ScreenId id)
 
 RSScreenData RSRenderServiceClient::GetScreenData(ScreenId id)
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
         return RSScreenData {};
     }
@@ -265,7 +265,7 @@ RSScreenData RSRenderServiceClient::GetScreenData(ScreenId id)
 
 int32_t RSRenderServiceClient::GetScreenBacklight(ScreenId id)
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
         return INVALID_BACKLIGHT_VALUE;
     }
@@ -275,7 +275,7 @@ int32_t RSRenderServiceClient::GetScreenBacklight(ScreenId id)
 
 void RSRenderServiceClient::SetScreenBacklight(ScreenId id, uint32_t level)
 {
-    auto renderService = RSRenderServiceConnect::GetRenderService();
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
         return;
     }

@@ -15,73 +15,39 @@
 
 #ifndef RENDER_SERVICE_PIPELINE_RS_RENDER_SERVICE_H
 #define RENDER_SERVICE_PIPELINE_RS_RENDER_SERVICE_H
-#include <string>
+#include <map>
 
 #include "screen_manager/rs_screen_manager.h"
-
 #include "transaction/rs_render_service_stub.h"
 
 namespace OHOS {
 namespace Rosen {
 class RSMainThread;
 class RSSyncTask;
+class RSRenderServiceConnection;
 
 class RSRenderService : public RSRenderServiceStub {
 public:
-    static RSRenderService& GetInstance();
+    RSRenderService();
+    ~RSRenderService() noexcept;
+
     RSRenderService(const RSRenderService&) = delete;
     RSRenderService& operator=(const RSRenderService&) = delete;
 
     bool Init();
     void Run();
-    int Dump(int fd, const std::vector<std::u16string>& args) override;
 
 private:
-    RSRenderService();
-    ~RSRenderService() noexcept;
-
-    void CommitTransaction(std::unique_ptr<RSTransactionData>& transactionData) override;
-    void ExecuteSynchronousTask(const std::shared_ptr<RSSyncTask>& task) override;
-
-    sptr<Surface> CreateNodeAndSurface(const RSSurfaceRenderNodeConfig& config) override;
-
-    ScreenId GetDefaultScreenId() override;
-
-    ScreenId CreateVirtualScreen(
-        const std::string &name,
-        uint32_t width,
-        uint32_t height,
-        sptr<Surface> surface,
-        ScreenId mirrorId,
-        int32_t flags) override;
-
-    void RemoveVirtualScreen(ScreenId id) override;
-
-    void SetScreenChangeCallback(sptr<RSIScreenChangeCallback> callback) override;
-
-    void SetScreenActiveMode(ScreenId id, uint32_t modeId) override;
-
-    void SetScreenPowerStatus(ScreenId id, ScreenPowerStatus status) override;
-
-    void TakeSurfaceCapture(NodeId id, sptr<RSISurfaceCaptureCallback> callback) override;
-
-    RSScreenModeInfo GetScreenActiveMode(ScreenId id) override;
-
-    std::vector<RSScreenModeInfo> GetScreenSupportedModes(ScreenId id) override;
-
-    RSScreenCapability GetScreenCapability(ScreenId id) override;
-
-    ScreenPowerStatus GetScreenPowerStatus(ScreenId id) override;
-
-    RSScreenData GetScreenData(ScreenId id) override;
-
-    int32_t GetScreenBacklight(ScreenId id) override;
-
-    void SetScreenBacklight(ScreenId id, uint32_t level) override;
+    int Dump(int fd, const std::vector<std::u16string>& args) override;
+    sptr<RSIRenderServiceConnection> CreateConnection(const sptr<RSIConnectionToken>& token) override;
+    void RemoveConnection(sptr<IRemoteObject> token);
 
     RSMainThread* mainThread_ = nullptr;
-
     sptr<RSScreenManager> screenManager_;
+
+    friend class RSRenderServiceConnection;
+    mutable std::mutex mutex_;
+    std::map<sptr<IRemoteObject>, sptr<RSIRenderServiceConnection>> connections_;
 };
 } // Rosen
 } // OHOS

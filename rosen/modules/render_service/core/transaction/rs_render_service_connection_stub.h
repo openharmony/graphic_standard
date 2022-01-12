@@ -13,27 +13,25 @@
  * limitations under the License.
  */
 
-#ifndef ROSEN_RENDER_SERVICE_BASE_TRANSACTION_RS_RENDER_SERVICE_PROXY_H
-#define ROSEN_RENDER_SERVICE_BASE_TRANSACTION_RS_RENDER_SERVICE_PROXY_H
+#ifndef ROSEN_RENDER_SERVICE_BASE_TRANSACTION_RS_RENDER_SERVICE_CONNECTION_STUB_H
+#define ROSEN_RENDER_SERVICE_BASE_TRANSACTION_RS_RENDER_SERVICE_CONNECTION_STUB_H
 
-#include <iremote_proxy.h>
-#include <platform/ohos/rs_irender_service.h>
+#include <iremote_stub.h>
+#include <message_option.h>
+#include <message_parcel.h>
+
+#include "platform/ohos/rs_irender_service_connection.h"
 
 namespace OHOS {
 namespace Rosen {
-
-class RSRenderServiceProxy : public IRemoteProxy<RSIRenderService> {
+class RSRenderServiceConnectionStub : public IRemoteStub<RSIRenderServiceConnection> {
 public:
-    explicit RSRenderServiceProxy(const sptr<IRemoteObject>& impl);
-    virtual ~RSRenderServiceProxy() noexcept = default;
+    RSRenderServiceConnectionStub() = default;
+    ~RSRenderServiceConnectionStub() noexcept = default;
 
-    sptr<RSIRenderServiceConnection> CreateConnection(const sptr<RSIConnectionToken>& token) override;
-
-private:
-    static inline BrokerDelegator<RSRenderServiceProxy> delegator_;
+    int OnRemoteRequest(uint32_t code, MessageParcel& data, MessageParcel& reply, MessageOption& option) override;
 };
-
 } // namespace Rosen
 } // namespace OHOS
 
-#endif // ROSEN_RENDER_SERVICE_BASE_TRANSACTION_RS_RENDER_SERVICE_PROXY_H
+#endif // ROSEN_RENDER_SERVICE_BASE_TRANSACTION_RS_RENDER_SERVICE_CONNECTION_STUB_H

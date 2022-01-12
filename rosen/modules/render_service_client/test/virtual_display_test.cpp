@@ -461,6 +461,11 @@ private:
 
 int main()
 {
+    auto transactionProxy = RSTransactionProxy::GetInstance();
+    if (transactionProxy == nullptr) {
+        return -1;
+    }
+
     DisplayId id = g_dms.GetDefaultDisplayId();
     std::cout << "level =" << g_dms.GetDisplayBacklight(id) << std::endl;
     int lightValue = 0;
@@ -484,12 +489,11 @@ int main()
     auto surfaceNode = CreateSurface();
     DrawSurface(SkRect::MakeXYWH(0, 0, 200, 200), 0xffa10f1b, SkRect::MakeXYWH(0, 0, 200, 200), surfaceNode);
     displayNode->AddChild(surfaceNode, -1);
-    RSTransactionProxy::GetInstance()->FlushImplicitTransaction();
-    sleep(4);
+    transactionProxy->FlushImplicitTransaction();
     while (1) {
-        DrawSurface(SkRect::MakeXYWH(0, 0, 200, 200), 0xffa10f1b, SkRect::MakeXYWH(0, 0, 200, 200), surfaceNode);
-        RSTransactionProxy::GetInstance()->FlushImplicitTransaction();
         sleep(detail::SLEEP_TIME);
+        DrawSurface(SkRect::MakeXYWH(0, 0, 200, 200), 0xffa10f1b, SkRect::MakeXYWH(0, 0, 200, 200), surfaceNode);
+        transactionProxy->FlushImplicitTransaction();
     }
 
     return 0;

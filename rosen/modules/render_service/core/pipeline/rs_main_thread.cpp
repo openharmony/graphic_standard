@@ -38,7 +38,7 @@ RSMainThread::~RSMainThread() noexcept
 {
 }
 
-void RSMainThread::Start()
+void RSMainThread::Init()
 {
     mainLoop_ = [&]() {
         ROSEN_LOGE("RsDebug mainLoop start");
@@ -55,7 +55,11 @@ void RSMainThread::Start()
     if (vsyncClient_) {
         vsyncClient_->SetVsyncCallback(std::bind(&RSMainThread::OnVsync, this, std::placeholders::_1));
     }
-    while (1) {
+}
+
+void RSMainThread::Start()
+{
+    while (true) {
         threadLooper_->ProcessAllMessages(-1);
     }
 }
