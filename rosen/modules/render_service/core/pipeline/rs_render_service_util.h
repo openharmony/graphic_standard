@@ -34,6 +34,8 @@ struct ComposeInfo {
     LayerAlpha alpha;
     sptr<SurfaceBuffer> buffer;
     int32_t fence;
+    sptr<SurfaceBuffer> preBuffer;
+    int32_t preFence;
 };
 
 class RsRenderServiceUtil {

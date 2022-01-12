@@ -34,11 +34,6 @@ HdiLayer::HdiLayer(uint32_t screenId) : screenId_(screenId)
 HdiLayer::~HdiLayer()
 {
     CloseLayer();
-
-    SurfaceError ret = ReleasePrevBuffer();
-    if (ret != SURFACE_ERROR_OK) {
-        HLOGE("Destory hdiLayer, ReleaseBuffer failed, ret is %{public}d", ret);
-    }
 }
 
 bool HdiLayer::Init(const LayerInfoPtr &layerInfo)
@@ -183,6 +178,8 @@ void HdiLayer::UpdateLayerInfo(const LayerInfoPtr &layerInfo)
 
     currSbuffer_->sbuffer_ = layerInfo_->GetBuffer();
     currSbuffer_->acquireFence_ = layerInfo_->GetAcquireFence();
+    prevSbuffer_->sbuffer_ = layerInfo_->GetPreBuffer();
+    prevSbuffer_->acquireFence_ = layerInfo_->GetPreAcquireFence();
 }
 
 void HdiLayer::ReleaseBuffer()
@@ -195,8 +192,6 @@ void HdiLayer::ReleaseBuffer()
         }
 
         /* copy currSbuffer to prevSbuffer */
-        prevSbuffer_->sbuffer_ = currSbuffer_->sbuffer_;
-        prevSbuffer_->acquireFence_ = currSbuffer_->acquireFence_;
         prevSbuffer_->releaseFence_ = currSbuffer_->releaseFence_;
     } else {
         prevSbuffer_->acquireFence_ = Merge(currSbuffer_->acquireFence_, prevSbuffer_->acquireFence_);

@@ -49,6 +49,16 @@ public:
         return fence_;
     }
 
+    sptr<SurfaceBuffer>& GetPreBuffer()
+    {
+        return preBuffer_;
+    }
+
+    int32_t GetPreFence() const
+    {
+        return preFence_;
+    }
+
     const sptr<Surface>& GetConsumer() const
     {
         return consumer_;
@@ -87,7 +97,9 @@ private:
     float alpha_ = 0.0f;
     NodeId parentId_ = 0;
     sptr<SurfaceBuffer> buffer_;
-    int32_t fence_ = 0;
+    sptr<SurfaceBuffer> preBuffer_;
+    int32_t fence_ = -1;
+    int32_t preFence_ = -1;
 };
 } // namespace Rosen
 } // namespace OHOS

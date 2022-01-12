@@ -126,7 +126,7 @@ public:
         LayerAlpha alpha = { .enPixelAlpha = true };
 
         hdiLayer_->SetSurface(cSurface_);
-        hdiLayer_->SetBuffer(cbuffer, fence);
+        hdiLayer_->SetBuffer(cbuffer, fence, nullptr, -1);
         hdiLayer_->SetZorder(zorder_);
         hdiLayer_->SetAlpha(alpha);
         hdiLayer_->SetTransform(TransformType::ROTATE_NONE);

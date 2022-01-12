@@ -82,7 +82,11 @@ bool RSProcessor::ConsumeAndUpdateBuffer(RSSurfaceRenderNode& node, SpecialTask&
                 mainThread->RequestNextVSync();
             }
         }
+    } else {
+        node.SetBuffer(node.GetBuffer());
+        node.SetFence(node.GetFence());
     }
+
     return true;
 }
 

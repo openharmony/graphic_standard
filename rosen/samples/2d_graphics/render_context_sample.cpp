@@ -152,7 +152,7 @@ bool RenderContextSample::FillLayer(std::shared_ptr<HdiLayerInfo> &showLayer, OH
     LayerAlpha alpha = { .enPixelAlpha = true };
 
     showLayer->SetSurface(cSurface);
-    showLayer->SetBuffer(cbuffer, fence);
+    showLayer->SetBuffer(cbuffer, fence, nullptr, -1);
     showLayer->SetZorder(zorder);
     showLayer->SetAlpha(alpha);
     showLayer->SetTransform(TransformType::ROTATE_NONE);

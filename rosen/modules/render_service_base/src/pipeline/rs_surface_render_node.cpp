@@ -37,11 +37,17 @@ void RSSurfaceRenderNode::SetConsumer(const sptr<Surface>& consumer)
 
 void RSSurfaceRenderNode::SetBuffer(const sptr<SurfaceBuffer>& buffer)
 {
-    buffer_ = buffer;
+    if (buffer_ != nullptr) {
+        preBuffer_ = buffer_;
+        buffer_ = buffer;
+    } else {
+        buffer_ = buffer;
+    }
 }
 
 void RSSurfaceRenderNode::SetFence(int32_t fence)
 {
+    preFence_ = fence_;
     fence_ = fence;
 }
 
