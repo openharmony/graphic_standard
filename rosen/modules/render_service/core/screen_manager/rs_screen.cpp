@@ -15,6 +15,7 @@
 
 #include "rs_screen.h"
 
+#include <algorithm>
 #include <cinttypes>
 
 #include "screen_manager/screen_types.h"
@@ -172,13 +173,13 @@ std::optional<DisplayModeInfo> RSScreen::GetActiveMode() const
         return {};
     }
 
-    if (supportedModes_.empty() || modeId >= supportedModes_.size()) {
-        HiLog::Error(LOG_LABEL, "%{public}s: RSScreen(id %{public}" PRIu64 ") exceed mode size.",
-            __func__, id_);
+    auto iter = std::find_if(supportedModes_.cbegin(), supportedModes_.cend(),
+        [modeId](const auto &mode) { return mode.id == modeId; });
+    if (iter == supportedModes_.cend()) {
         return {};
     }
 
-    return supportedModes_[modeId];
+    return *iter;
 }
 
 const std::vector<DisplayModeInfo>& RSScreen::GetSupportedModes() const
