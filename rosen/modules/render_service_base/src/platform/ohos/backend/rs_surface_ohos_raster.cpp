@@ -55,7 +55,7 @@ bool RSSurfaceOhosRaster::FlushFrame(std::unique_ptr<RSSurfaceFrame>& frame)
     // We use static_cast instead of RTTI and dynamic_cast which are not permitted
 
     RSSurfaceFrameOhosRaster* oriFramePtr = static_cast<RSSurfaceFrameOhosRaster*>(frame.get());
-    SurfaceError err = producer_->FlushBuffer(oriFramePtr->buffer_, oriFramePtr->releaseFence_, oriFramePtr->flushConfig_);
+    SurfaceError err = producer_->FlushBuffer(oriFramePtr->buffer_, -1, oriFramePtr->flushConfig_);
     if (err != SURFACE_ERROR_OK) {
         ROSEN_LOGE("RSSurfaceOhosRaster::Flushframe Failed, error is : %s", SurfaceErrorStr(err).c_str());
         return false;
