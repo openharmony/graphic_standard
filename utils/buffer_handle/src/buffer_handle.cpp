@@ -32,13 +32,6 @@ static constexpr OHOS::HiviewDFX::HiLogLabel LOG_LABEL = { LOG_CORE, 0xD001400, 
 
 BufferHandle *AllocateBufferHandle(uint32_t reserveFds, uint32_t reserveInts)
 {
-    constexpr int32_t bufferHandleMaxReserveInts = 64;
-    constexpr int32_t bufferHandleMaxReserveFds = 64;
-    if (reserveFds > bufferHandleMaxReserveFds || reserveFds < 0 ||
-        reserveInts > bufferHandleMaxReserveInts || reserveInts < 0) {
-        UTILS_LOGE("InitBufferHandle with illegal params reserveInts:%d, reserveFds:%d", reserveFds, reserveFds);
-        return nullptr;
-    }
     size_t handleSize = sizeof(BufferHandle) + (sizeof(int32_t) * (reserveFds + reserveInts));
     BufferHandle *handle = static_cast<BufferHandle *>(malloc(handleSize));
     if (handle != nullptr) {

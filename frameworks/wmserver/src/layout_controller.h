@@ -19,7 +19,6 @@
 #include "layout_header.h"
 
 #ifdef __cplusplus
-#include <filesystem>
 #include <functional>
 #include <map>
 #include <string>
@@ -42,8 +41,6 @@ private:
     void InitByParseSCSS();
     bool CalcNormalRect(struct layout &layout);
     const std::string searchCSSDirectory = "/system/etc/wmlayout.d";
-
-    void ParseSCSS(const std::filesystem::path &file);
 
     bool init = false;
     int32_t displayWidth = 0;

@@ -17,7 +17,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <regex>
@@ -27,7 +26,6 @@
 #include "rects.h"
 #include "weston.h"
 
-namespace fs = std::filesystem;
 
 #define LOG_LABEL "wms-wmlayout"
 
@@ -173,32 +171,7 @@ void LayoutController::InitByDefaultValue()
 
 void LayoutController::InitByParseSCSS()
 {
-    fs::path dir{searchCSSDirectory};
-    if (!fs::exists(dir)) {
-        LOGE("%{public}s not exist dir", searchCSSDirectory.c_str());
-        return;
-    }
-
-    fs::directory_entry entry{dir};
-    if (entry.status().type() != fs::file_type::directory) {
-        LOGE("%{public}s is not dir", searchCSSDirectory.c_str());
-        return;
-    }
-
-    std::vector<fs::path> orderedFiles;
-    fs::directory_iterator files{dir};
-    for (const auto &file : files) {
-        LOGI("found file: %{public}s", file.path().string().c_str());
-        if (file.is_regular_file() && file.path().extension().string() == ".scss") {
-            orderedFiles.push_back(file.path());
-        }
-    }
-
-    auto fspathLessOperator = [](const auto &a, const auto &b) { return a.string() < b.string(); };
-    std::sort(orderedFiles.begin(), orderedFiles.end(), fspathLessOperator);
-    for (const auto &file : orderedFiles) {
-        ParseSCSS(file);
-    }
+    return;
 }
 
 bool LayoutController::CalcNormalRect(struct layout &layout)
@@ -230,32 +203,4 @@ bool LayoutController::CalcNormalRect(struct layout &layout)
     return false;
 }
 
-void LayoutController::ParseSCSS(const fs::path &file)
-{
-    std::ifstream ifs{file};
-    int32_t size = 0;
-    ifs >> size;
-
-    int32_t mode = 0;
-    int32_t type = 0;
-    struct Layout layout = {};
-    for (size_t i = 0; i < size; i++) {
-        ifs >> mode >> type >> layout;
-        if (layout.isZIndexSetting) {
-            modeLayoutMap[mode][type].zIndex = layout.zIndex;
-        }
-        if (layout.isPositionTypeSetting) {
-            modeLayoutMap[mode][type].positionType = layout.positionType;
-        }
-        if (layout.isPositionXTypeSetting) {
-            modeLayoutMap[mode][type].pTypeX = layout.pTypeX;
-        }
-        if (layout.isPositionYTypeSetting) {
-            modeLayoutMap[mode][type].pTypeY = layout.pTypeY;
-        }
-        if (layout.isLayoutSetting) {
-            modeLayoutMap[mode][type].layout = layout.layout;
-        }
-    }
-}
 } // namespace OHOS::WMServer
