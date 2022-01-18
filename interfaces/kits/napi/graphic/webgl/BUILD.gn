@@ -22,6 +22,7 @@ config("render_config") {
 
 ohos_source_set("webgl_src") {
   include_dirs = [
+    "//foundation/graphic/standard/interfaces/innerkits/surface",
     "src",
     "//third_party/node/src",
     "//utils/native/base/include",
@@ -36,6 +37,7 @@ ohos_source_set("webgl_src") {
   deps = [
     "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
     "//foundation/ace/napi:ace_napi",
+    "//foundation/graphic/standard:libsurface",
     "//third_party/libuv:uv_static",
     "//utils/native/base:utils",
     "//utils/native/base:utilsecurec",
