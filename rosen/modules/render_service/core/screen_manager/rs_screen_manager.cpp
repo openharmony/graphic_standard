@@ -317,7 +317,7 @@ ScreenId RSScreenManager::CreateVirtualScreen(
         if (screenSurface == nullptr) {
             continue;
         }
-        if (screenSurface->GetUniqueId()) {
+        if (screenSurface->GetUniqueId() == surfaceId) {
             HiLog::Error(LOG_LABEL, "surface %{public}" PRIu64 " is used, create virtualscreen failed!", surfaceId);
             return INVALID_SCREEN_ID;
         }

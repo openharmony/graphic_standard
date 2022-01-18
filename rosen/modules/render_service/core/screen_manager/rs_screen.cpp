@@ -330,6 +330,9 @@ void RSScreen::DisplayDump(int32_t screenIndex, std::string& dumpString)
 
 void RSScreen::SurfaceDump(int32_t screenIndex, std::string& dumpString)
 {
+    if (hdiOutput_ == nullptr) {
+        return;
+    }
     hdiOutput_->Dump(dumpString);
 }
 

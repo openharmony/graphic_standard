@@ -41,6 +41,7 @@ int main()
     (void)remoteObject->Dump(sfd[1], args);
     char buf[1024];
     bzero(buf, sizeof(buf));
+    close(sfd[1]);
     while (read(sfd[0], buf, sizeof(buf)-1) > 0) {
         std::cout<< buf;
         bzero(buf, sizeof(buf));
