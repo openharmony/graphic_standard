@@ -50,7 +50,7 @@ void RSProcessor::FlushBuffer(sptr<Surface> surface, BufferFlushConfig flushConf
         ROSEN_LOGE("RSProcessor::FlushBuffer surface or buffer is nullptr");
         return;
     }
-    surface->FlushBuffer(buffer_, releaseFence_, flushConfig);
+    surface->FlushBuffer(buffer_, -1, flushConfig);
 }
 
 bool RSProcessor::ConsumeAndUpdateBuffer(RSSurfaceRenderNode& node, SpecialTask& task, sptr<SurfaceBuffer>& buffer)
