@@ -25,8 +25,10 @@
 
 namespace OHOS {
 namespace Rosen {
-RSSurfaceRenderNode::RSSurfaceRenderNode(NodeId id) : RSRenderNode(id) {}
-RSSurfaceRenderNode::RSSurfaceRenderNode(const RSSurfaceRenderNodeConfig& config) : RSRenderNode(config.id) {}
+RSSurfaceRenderNode::RSSurfaceRenderNode(NodeId id, std::weak_ptr<RSContext> context) : RSRenderNode(id, context) {}
+RSSurfaceRenderNode::RSSurfaceRenderNode(const RSSurfaceRenderNodeConfig& config, std::weak_ptr<RSContext> context)
+    : RSRenderNode(config.id, context)
+{}
 
 RSSurfaceRenderNode::~RSSurfaceRenderNode() {}
 

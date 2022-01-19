@@ -224,10 +224,10 @@ bool IsValid(const Vector4f& value)
     } else if (HasPropertyAnimation(property)) {                                                        \
         std::unique_ptr<RSCommand> command =                                                            \
             std::make_unique<RSNodeSet##propertyName##Delta>(GetId(), value - currentValue);            \
-            auto transactionProxy = RSTransactionProxy::GetInstance();                                  \
-            if (transactionProxy != nullptr) {                                                          \
-                transactionProxy->AddCommand(command, IsRenderServiceNodeForProperty());                \
-            }                                                                                           \
+        auto transactionProxy = RSTransactionProxy::GetInstance();                                      \
+        if (transactionProxy != nullptr) {                                                              \
+            transactionProxy->AddCommand(command, IsRenderServiceNodeForProperty());                    \
+        }                                                                                               \
         stagingProperties_.Set##propertyName(value);                                                    \
     } else {                                                                                            \
         std::unique_ptr<RSCommand> command = std::make_unique<RSNodeSet##propertyName>(GetId(), value); \
@@ -250,17 +250,17 @@ bool IsValid(const Vector4f& value)
     }                                                                                               \
     stagingProperties_.Set##propertyName(value);
 
-#define GET_ANIMATABLE_PROPERTY(propertyName, property)                                        \
-    if (HasPropertyAnimation(property)) {                                                      \
-        auto task = std::make_shared<RSNodeGet##propertyName>(GetId());                        \
-        auto transactionProxy = RSTransactionProxy::GetInstance();                             \
-        if (transactionProxy != nullptr) {                                                     \
-            transactionProxy->ExecuteSynchronousTask(task, IsRenderServiceNodeForProperty());  \
-        }                                                                                      \
-        if (task->GetResult()) {                                                               \
-            return task->GetValue();                                                           \
-        }                                                                                      \
-    }                                                                                          \
+#define GET_ANIMATABLE_PROPERTY(propertyName, property)                                       \
+    if (HasPropertyAnimation(property)) {                                                     \
+        auto task = std::make_shared<RSNodeGet##propertyName>(GetId());                       \
+        auto transactionProxy = RSTransactionProxy::GetInstance();                            \
+        if (transactionProxy != nullptr) {                                                    \
+            transactionProxy->ExecuteSynchronousTask(task, IsRenderServiceNodeForProperty()); \
+        }                                                                                     \
+        if (task->GetResult()) {                                                              \
+            return task->GetValue();                                                          \
+        }                                                                                     \
+    }                                                                                         \
     return stagingProperties_.Get##propertyName();
 
 #define GET_NONANIMATABLE_PROPERTY(propertyName) return stagingProperties_.Get##propertyName();
@@ -812,7 +812,6 @@ RSColor RSNode::GetShadowColor()
     GET_ANIMATABLE_PROPERTY(ShadowColor, RSAnimatableProperty::SHADOW_COLOR);
 }
 
-
 void RSNode::SetShadowOffset(float offsetX, float offsetY)
 {
     SetShadowOffsetX(offsetX);
@@ -839,7 +838,6 @@ float RSNode::GetShadowOffsetY()
     GET_ANIMATABLE_PROPERTY(ShadowOffsetY, RSAnimatableProperty::SHADOW_OFFSET_Y);
 }
 
-
 void RSNode::SetShadowAlpha(float alpha)
 {
     SET_ANIMATABLE_PROPERTY(ShadowAlpha, alpha, RSAnimatableProperty::SHADOW_ALPHA);
@@ -850,7 +848,6 @@ float RSNode::GetShadowAlpha()
     GET_ANIMATABLE_PROPERTY(ShadowAlpha, RSAnimatableProperty::SHADOW_ALPHA);
 }
 
-
 void RSNode::SetShadowElevation(float elevation)
 {
     SET_ANIMATABLE_PROPERTY(ShadowElevation, elevation, RSAnimatableProperty::SHADOW_ELEVATION);
@@ -860,7 +857,6 @@ float RSNode::GetShadowElevation()
 {
     GET_ANIMATABLE_PROPERTY(ShadowElevation, RSAnimatableProperty::SHADOW_ELEVATION);
 }
-
 
 void RSNode::SetShadowRadius(float radius)
 {
@@ -912,7 +908,6 @@ bool RSNode::GetClipToBounds()
     GET_NONANIMATABLE_PROPERTY(ClipToBounds);
 }
 
-
 void RSNode::SetClipToFrame(bool clipToFrame)
 {
     SET_NONANIMATABLE_PROPERTY(ClipToFrame, clipToFrame);
@@ -922,7 +917,6 @@ bool RSNode::GetClipToFrame()
 {
     GET_NONANIMATABLE_PROPERTY(ClipToFrame);
 }
-
 
 void RSNode::SetVisible(bool visible)
 {
@@ -941,7 +935,7 @@ void RSNode::NotifyTransition(const std::vector<RSTransitionEffect> effects, Nod
     if (!RSImplicitAnimator::Instance().NeedImplicitAnimaton() || effects.empty()) {
         return;
     }
-    auto node = std::static_pointer_cast<RSNode>(RSNodeMap::Instance().GetNode(nodeId).lock());
+    auto node = RSNodeMap::Instance().GetNode<RSNode>(nodeId);
     if (node == nullptr) {
         ROSEN_LOGE("RSNode::NotifyTransition, node is nullptr");
         return;
@@ -952,7 +946,7 @@ void RSNode::NotifyTransition(const std::vector<RSTransitionEffect> effects, Nod
             continue;
         }
         RSImplicitAnimator::Instance().BeginImplicitTransition(effect);
-        RSImplicitAnimator::Instance().CreateImplicitTransition(*(node.get()));
+        RSImplicitAnimator::Instance().CreateImplicitTransition(*node);
         RSImplicitAnimator::Instance().EndImplicitTransition();
     }
 }

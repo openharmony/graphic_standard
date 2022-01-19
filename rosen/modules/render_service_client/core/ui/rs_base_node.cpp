@@ -111,7 +111,7 @@ void RSBaseNode::RemoveChildById(NodeId childId)
 
 void RSBaseNode::RemoveFromTree()
 {
-    if (auto parentPtr = RSNodeMap::Instance().GetNode(parent_).lock()) {
+    if (auto parentPtr = RSNodeMap::Instance().GetNode(parent_)) {
         parentPtr->RemoveChildById(id_);
         OnRemoveChildren();
         SetParent(0);
@@ -127,8 +127,8 @@ void RSBaseNode::RemoveFromTree()
 void RSBaseNode::ClearChildren()
 {
     for (auto child : children_) {
-        if (auto c = RSNodeMap::Instance().GetNode(child).lock()) {
-            c->SetParent(0);
+        if (auto childPtr = RSNodeMap::Instance().GetNode(child)) {
+            childPtr->SetParent(0);
         }
     }
     children_.clear();
@@ -147,13 +147,13 @@ void RSBaseNode::SetParent(NodeId parentId)
 
 RSBaseNode::SharedPtr RSBaseNode::GetParent()
 {
-    return RSNodeMap::Instance().GetNode(parent_).lock();
+    return RSNodeMap::Instance().GetNode(parent_);
 }
 
 void RSBaseNode::DumpTree(std::string& out)
 {
     out += "id: " + std::to_string(GetId()) + "\n";
-    auto p = RSNodeMap::Instance().GetNode(parent_).lock();
+    auto p = RSNodeMap::Instance().GetNode(parent_);
     if (p != nullptr) {
         out += "parent: " + std::to_string(p->GetId()) + "\n";
     } else {
@@ -161,7 +161,7 @@ void RSBaseNode::DumpTree(std::string& out)
     }
 
     for (unsigned i = 0; i < children_.size(); ++i) {
-        auto c = RSNodeMap::Instance().GetNode(children_[i]).lock();
+        auto c = RSNodeMap::Instance().GetNode(children_[i]);
         if (c != nullptr) {
             out += "child[" + std::to_string(i) + "]: " + std::to_string(c->GetId()) + "\n";
         } else {
@@ -170,7 +170,7 @@ void RSBaseNode::DumpTree(std::string& out)
     }
 
     for (auto child : children_) {
-        auto c = RSNodeMap::Instance().GetNode(child).lock();
+        auto c = RSNodeMap::Instance().GetNode(child);
         if (c != nullptr) {
             c->DumpTree(out);
         }

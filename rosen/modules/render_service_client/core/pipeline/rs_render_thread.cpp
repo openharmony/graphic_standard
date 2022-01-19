@@ -14,6 +14,7 @@
  */
 
 #include "pipeline/rs_render_thread.h"
+
 #include "pipeline/rs_root_render_node.h"
 
 #ifdef ROSEN_OHOS
@@ -49,7 +50,7 @@ RSRenderThread& RSRenderThread::Instance()
 RSRenderThread::RSRenderThread()
 {
 #ifdef ACE_ENABLE_GL
-    //renderContext_ = *(RenderContextFactory::GetInstance().CreateEngine());
+    // renderContext_ = *(RenderContextFactory::GetInstance().CreateEngine());
     renderContext_ = new RenderContext();
     ROSEN_LOGD("Create RenderContext, its pointer is %p", renderContext_);
 #endif
@@ -237,9 +238,7 @@ void RSRenderThread::Animate(uint64_t timestamp)
     ROSEN_TRACE_BEGIN(BYTRACE_TAG_GRAPHIC_AGP, "Animate");
     hasRunningAnimation_ = false;
     for (const auto& [id, node] : context_.GetNodeMap().renderNodeMap_) {
-        if (auto renderNode = RSBaseRenderNode::ReinterpretCast<RSRenderNode>(node)) {
-            hasRunningAnimation_ = renderNode->Animate(timestamp) || hasRunningAnimation_;
-        }
+        hasRunningAnimation_ = node->Animate(timestamp) || hasRunningAnimation_;
     }
 
     if (hasRunningAnimation_) {
