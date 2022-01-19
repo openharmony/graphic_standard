@@ -53,7 +53,6 @@ enum class RSRenderNodeType {
 
 struct RSSurfaceRenderNodeConfig {
     NodeId id = 0;
-    std::string name = "SurfaceNode";
 };
 
 struct RSDisplayNodeConfig {
