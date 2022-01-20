@@ -183,15 +183,9 @@ HWTEST_F(RSInterfacesTest, SetScreenActiveMode002, Function | SmallTest | Level2
     auto supportedScreenModes = rsInterfaces->GetScreenSupportedModes(screenId);
     EXPECT_GT(supportedScreenModes.size(), 0);
 
-    if (supportedScreenModes.size() > 1) {
-        rsInterfaces->SetScreenActiveMode(screenId, supportedScreenModes.size() - 1);
-        auto modeInfo = rsInterfaces->GetScreenActiveMode(screenId);
-        EXPECT_EQ(modeInfo.GetScreenModeId(), supportedScreenModes.size() - 1);
-    } else {
-        rsInterfaces->SetScreenActiveMode(screenId, 0);
-        auto modeInfo = rsInterfaces->GetScreenActiveMode(screenId);
-        EXPECT_EQ(modeInfo.GetScreenModeId(), 0);
-    }
+    rsInterfaces->SetScreenActiveMode(screenId, 0);
+    auto modeInfo = rsInterfaces->GetScreenActiveMode(screenId);
+    EXPECT_EQ(modeInfo.GetScreenModeId(), 0);
 }
 
 /*
@@ -357,7 +351,6 @@ HWTEST_F(RSInterfacesTest, GetScreenCapability001, Function | SmallTest | Level2
     std::string emptyName;
     EXPECT_GT(screenCapability.GetPhyWidth(), 0);
     EXPECT_GT(screenCapability.GetPhyHeight(), 0);
-    EXPECT_NE(screenCapability.GetName(), emptyName);
     EXPECT_NE(screenCapability.GetType(), DISP_INVALID);
 }
 
@@ -396,7 +389,6 @@ HWTEST_F(RSInterfacesTest, GetScreenData001, Function | SmallTest | Level2)
     std::string emptyName;
     EXPECT_GT(screenCapability.GetPhyWidth(), 0);
     EXPECT_GT(screenCapability.GetPhyHeight(), 0);
-    EXPECT_NE(screenCapability.GetName(), emptyName);
     EXPECT_NE(screenCapability.GetType(), DISP_INVALID);
 
     auto modeInfo = screenData.GetActivityModeInfo();
