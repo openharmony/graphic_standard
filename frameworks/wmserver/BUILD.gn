@@ -130,11 +130,4 @@ ohos_static_library("layout_header") {
 
   public_configs = [ ":layout_header_public_config" ]
 }
-
 ## Build layout_header.a }}}
-
-group("test") {
-  testonly = true
-
-  deps = [ "test:test" ]
-}
