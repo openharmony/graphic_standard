@@ -40,7 +40,6 @@ group("graphic_standard_test") {
     "frameworks/fence:test",
     "frameworks/surface:test",
     "frameworks/vsync:test",
-    "frameworks/wm:test",
     "frameworks/wmtest:wmtest",
     "rosen/modules/composer:test",
   ]
