@@ -21,6 +21,8 @@
 #include <vsync_helper.h>
 
 namespace OHOS {
+static const int MAX_FILE_NAME = 512;
+static const int READ_SIZE = 8192;
 int64_t GetNowTime()
 {
     struct timeval start = {};
@@ -34,6 +36,189 @@ void PostTask(std::function<void()> func, uint32_t delayTime)
     auto handler = AppExecFwk::EventHandler::Current();
     if (handler) {
         handler->PostTask(func, delayTime);
+    }
+}
+
+bool UnzipFile(const std::string& srcFilePath, const std::string& dstFilePath)
+{
+    zlib_filefunc_def *zipFuncPtrs = nullptr;
+    unzFile zipfile = unzOpen2(srcFilePath.c_str(), zipFuncPtrs);
+    if (zipfile == nullptr) {
+        LOG("zip file not found");
+        return false;
+    }
+
+    unz_global_info globalInfo;
+    if (unzGetGlobalInfo(zipfile, &globalInfo) != UNZ_OK) {
+        LOG("could not read file global info");
+        unzClose(zipfile);
+        return false;
+    }
+
+    char readBuffer[READ_SIZE];
+    RemoveDir(dstFilePath.c_str());
+    int ret = mkdir(dstFilePath.c_str(), 0700);
+    LOG("create dir bootpic, ret: %{public}d", ret);
+    if (ret == -1) {
+        LOG("pic dir is already exist");
+        return true;
+    }
+
+    for (int i = 0; i < globalInfo.number_entry; ++i) {
+        unz_file_info fileInfo;
+        char filename[MAX_FILE_NAME];
+        if (unzGetCurrentFileInfo(
+            zipfile,
+            &fileInfo,
+            filename,
+            MAX_FILE_NAME,
+            nullptr, 0, nullptr, 0) != UNZ_OK) {
+            LOG("could not read file info");
+            unzClose(zipfile);
+            return false;
+        }
+
+        const size_t fileNameLength = strlen(filename);
+
+        std::string fileStr(dstFilePath + "/" + filename);
+        if (filename[fileNameLength - 1] == '/') {
+            LOG("mkdir: %{public}s", filename);
+            mkdir(fileStr.c_str(), 0700);
+        } else {
+            if (unzOpenCurrentFile(zipfile) != UNZ_OK) {
+                LOG("could not open file");
+                unzClose(zipfile);
+                return false;
+            }
+
+            FILE *out = fopen(fileStr.c_str(), "wb");
+            if (out == nullptr) {
+                LOG("could not open destination file");
+                unzCloseCurrentFile(zipfile);
+                unzClose(zipfile);
+                return false;
+            }
+            int error = UNZ_OK;
+            do {
+                error = unzReadCurrentFile(zipfile, readBuffer, READ_SIZE);
+                if (error < 0) {
+                    LOG("unzReadCurrentFile error %{public}d", error);
+                    unzCloseCurrentFile(zipfile);
+                    unzClose(zipfile);
+                    return false;
+                }
+                if (error > 0) {
+                    fwrite(readBuffer, error, 1, out);
+                }
+            } while (error > 0);
+            fclose(out);
+        }
+        unzCloseCurrentFile(zipfile);
+
+        if (i < (globalInfo.number_entry - 1)) {
+            if (unzGoToNextFile(zipfile) != UNZ_OK) {
+                LOG("could not read next file");
+                unzClose(zipfile);
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+int RemoveDir(const char *dir)
+{
+    char curDir[] = ".";
+    char upDir[] = "..";
+    char dirName[128];
+    DIR *dirp;
+    struct dirent *dp;
+    struct stat dirStat;
+
+    if (access(dir, F_OK) != 0) {
+        LOG("can not access dir");
+        return 0;
+    }
+    int statRet = stat(dir, &dirStat);
+    if (statRet < 0) {
+        LOG("dir statRet: %{public}d", statRet);
+        return -1;
+    }
+
+    if (S_ISREG(dirStat.st_mode)) {
+        remove(dir);
+    } else if (S_ISDIR(dirStat.st_mode)) {
+        dirp = opendir(dir);
+        while ((dp = readdir(dirp)) != nullptr) {
+            if ((strcmp(curDir, dp->d_name) == 0) || (strcmp(upDir, dp->d_name) == 0)) {
+                continue;
+            }
+            strcpy(dirName, dir);
+            strcat(dirName, "/");
+            strcat(dirName, dp->d_name);
+            RemoveDir(dirName);
+        }
+        closedir(dirp);
+        LOG("remove empty dir finally");
+        rmdir(dir);
+    } else {
+        LOG("unknown file type");
+    }
+    return 0;
+}
+
+int CountPicNum(const char *dir, int32_t& picNum)
+{
+    char curDir[] = ".";
+    char upDir[] = "..";
+    char dirName[128];
+    DIR *dirp;
+    struct dirent *dp;
+    struct stat dirStat;
+
+    if (access(dir, F_OK) != 0) {
+        LOG("can not access dir");
+        return picNum;
+    }
+    int statRet = stat(dir, &dirStat);
+    if (statRet < 0) {
+        LOG("dir statRet: %{public}d", statRet);
+        return picNum;
+    }
+    if (S_ISREG(dirStat.st_mode)) {
+        picNum += 1;
+    } else  if (S_ISDIR(dirStat.st_mode)) {
+        dirp = opendir(dir);
+        while ((dp = readdir(dirp)) != nullptr) {
+            if ((strcmp(curDir, dp->d_name) == 0) || (strcmp(upDir, dp->d_name) == 0)) {
+                continue;
+            }
+            strcpy(dirName, dir);
+            strcat(dirName, "/");
+            strcat(dirName, dp->d_name);
+            CountPicNum(dirName, picNum);
+        }
+        closedir(dirp);
+        return picNum;
+        LOG("remove empty dir finally");
+    } else {
+        LOG("unknown file type");
+    }
+    return picNum;
+}
+
+void WaitRenderServiceInit()
+{
+    while (true) {
+        sptr<ISystemAbilityManager> samgr = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
+        sptr<IRemoteObject> remoteObject = samgr->GetSystemAbility(RENDER_SERVICE);
+        if (remoteObject != nullptr) {
+            LOG("renderService is inited");
+            break;
+        } else {
+            LOG("renderService is not inited, wait");
+            sleep(1);
+        }
     }
 }
 } // namespace OHOS

@@ -30,8 +30,8 @@ ohos_executable("bootanimation") {
   install_enable = true
 
   sources = [
+    "src/boot_animation.cpp",
     "src/main.cpp",
-    "src/raw_parser.cpp",
     "src/util.cpp",
   ]
 
@@ -41,14 +41,32 @@ ohos_executable("bootanimation") {
   ]
 
   deps = [
+    "//base/global/resmgr_standard/frameworks/resmgr:global_resmgr",
     "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
+    "//foundation/ace/ace_engine/build/external_config/flutter/skia:ace_skia_ohos",
+    "//foundation/distributedschedule/dmsfwk/services/dtbschedmgr:distributedschedsvr",
+    "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy:samgr_proxy",
+    "//foundation/graphic/standard:libsurface",
     "//foundation/graphic/standard:libvsync_client",
     "//foundation/graphic/standard:libwmclient",
     "//foundation/graphic/standard:libwmservice",
+    "//foundation/graphic/standard/rosen/modules/2d_graphics:2d_graphics",
+    "//foundation/graphic/standard/rosen/modules/render_service_base/src/platform:platform",
+    "//foundation/graphic/standard/rosen/modules/render_service_client:librender_service_client",
+    "//foundation/windowmanager/dm:libdm",
+    "//foundation/windowmanager/dmserver:libdms",
+    "//foundation/windowmanager/wm:libwm",
+    "//foundation/windowmanager/wmserver:libwms",
     "//third_party/zlib:libz",
   ]
 
   external_deps = [ "ipc:ipc_core" ]
+
+  if (is_standard_system) {
+    external_deps += [ "startup_l2:syspara" ]
+  } else {
+    external_deps += [ "startup:syspara" ]
+  }
 
   part_name = "graphic_standard"
   subsystem_name = "graphic"
@@ -56,10 +74,11 @@ ohos_executable("bootanimation") {
 
 ## Build bootanimation }}}
 
-## Install data/bootanimation-480x960.raw to /system/etc/bootanimation-480x960.raw {{{
-ohos_prebuilt_etc("bootanimation-480x960.raw") {
-  source = "data/bootanimation-480x960.raw"
+## Install data/*.jpg to /system/etc/init/ {{{
+ohos_prebuilt_etc("bootanimation_pics") {
+  source = "data/bootpic.zip"
+  relative_install_dir = "init"
   part_name = "graphic_standard"
   subsystem_name = "graphic"
 }
-## Install data/bootanimation-480x960.raw to /system/etc/bootanimation-480x960.raw }}}
+## Install data/*.jpg to /system/etc/init/ }}}

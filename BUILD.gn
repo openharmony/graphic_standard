@@ -22,7 +22,7 @@ group("default") {
     "frameworks/animation_server:animation_server",
     "frameworks/animation_server:cursor.raw",
     "frameworks/bootanimation:bootanimation",
-    "frameworks/bootanimation:bootanimation-480x960.raw",
+    "frameworks/bootanimation:bootanimation_pics",
     "frameworks/dumper:gdumper",
     "frameworks/dumper:gdumper.ini",
     "frameworks/dumper:graphic_dumper_server",

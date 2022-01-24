@@ -13,245 +13,32 @@
  * limitations under the License.
  */
 
-#include <cinttypes>
-#include <cstdio>
-#include <cstdlib>
-#include <fstream>
-#include <memory>
-#include <securec.h>
-#include <sstream>
-#include <unistd.h>
+#include "boot_animation.h"
+#include "util.h"
 
 #include <display_type.h>
-#include <vsync_helper.h>
-#include <window_manager.h>
-#include <window_manager_service_client.h>
-
-#include "raw_parser.h"
-#include "util.h"
+#include <display_manager.h>
 
 using namespace OHOS;
 
-class Main : public IWindowChangeListenerClazz {
-public:
-    void Init(int32_t width, int32_t height);
-    int32_t DoDraw(uint8_t *addr, uint32_t width, uint32_t height, uint32_t count);
-    void Draw();
-    void Sync(int64_t time, void *data);
-    void OnWindowCreate(int32_t pid, int32_t wid) override;
-    void OnWindowDestroy(int32_t pid, int32_t wid) override;
-
-private:
-    sptr<Window> window = nullptr;
-    int32_t freq = 30;
-};
-
-int32_t Main::DoDraw(uint8_t *addr, uint32_t width, uint32_t height, uint32_t count)
-{
-    constexpr uint32_t stride = 4;
-    int32_t addrSize = width * height * stride;
-    static auto frame = std::make_unique<uint8_t[]>(addrSize);
-    static uint32_t last = -1;
-
-    int64_t start = GetNowTime();
-
-    uint8_t *data = nullptr;
-    uint32_t length;
-    uint32_t offset;
-    if (RawParser::GetInstance()->GetData(count, data, offset, length)) {
-        return -1;
-    }
-
-    if (last != count && length > 0) {
-        if (memcpy_s(frame.get() + offset, addrSize - offset, data, length) != EOK) {
-            LOG("memcpy_s failed");
-            return -1;
-        }
-    }
-
-    if (memcpy_s(addr, addrSize, frame.get(), addrSize) != EOK) {
-        LOG("memcpy_s failed");
-        return -1;
-    }
-    last = count;
-    LOG("GetData time: %{public}" PRIu64 ", data: %{public}p, length: %{public}d",
-        GetNowTime() - start, data, length);
-    return 0;
-}
-
-void Main::Draw()
-{
-    sptr<Surface> surf = window->GetSurface();
-    if (surf == nullptr) {
-        LOG("surf is nullptr");
-        return;
-    }
-
-    do {
-        sptr<SurfaceBuffer> buffer;
-        BufferRequestConfig config = {
-            .width = surf->GetDefaultWidth(),
-            .height = surf->GetDefaultHeight(),
-            .strideAlignment = 0x8,
-            .format = PIXEL_FMT_RGBA_8888,
-            .usage = surf->GetDefaultUsage(),
-        };
-
-        GSError ret = surf->RequestBufferNoFence(buffer, config);
-        if (ret == GSERROR_NO_BUFFER) {
-            break;
-        }
-        if (ret) {
-            LOG("RequestBuffer failed: %{public}s", GSErrorStr(ret).c_str());
-            break;
-        }
-        if (buffer == nullptr) {
-            break;
-        }
-
-        static uint32_t count = 0;
-        auto addr = static_cast<uint8_t *>(buffer->GetVirAddr());
-        while (true) {
-            int32_t drawRet = DoDraw(addr, buffer->GetWidth(), buffer->GetHeight(), count);
-            if (drawRet && count == 0) {
-                exit(1);
-            }
-            if (drawRet) {
-                count--;
-                continue;
-            }
-            break;
-        }
-
-        BufferFlushConfig flushConfig = {
-            .damage = {
-                .w = buffer->GetWidth(),
-                .h = buffer->GetHeight(),
-            },
-        };
-        ret = surf->FlushBuffer(buffer, -1, flushConfig);
-
-        LOG("Sync %{public}d %{public}s", count, GSErrorStr(ret).c_str());
-        count++;
-    } while (false);
-}
-
-void Main::Sync(int64_t time, void *data)
-{
-    (void)time;
-    Draw();
-    struct FrameCallback cb = {
-        .frequency_ = freq,
-        .timestamp_ = 0,
-        .userdata_ = data,
-        .callback_ = std::bind(&Main::Sync, this, SYNC_FUNC_ARG),
-    };
-
-    GSError ret = VsyncHelper::Current()->RequestFrameCallback(cb);
-    if (ret) {
-        LOG("RequestFrameCallback inner %{public}d\n", ret);
-    }
-}
-
-void Main::Init(int32_t width, int32_t height)
-{
-    const auto &wmi = WindowManager::GetInstance();
-    auto option = WindowOption::Get();
-    option->SetWindowType(WINDOW_TYPE_NORMAL);
-    option->SetWidth(width);
-    option->SetHeight(height);
-    option->SetX(0);
-    option->SetY(0);
-
-    auto wret = wmi->CreateWindow(window, option);
-    if (wret != GSERROR_OK || window == nullptr) {
-        LOG("WindowManager::CreateWindow() return %{public}s", GSErrorStr(wret).c_str());
-        exit(1);
-    }
-    window->SwitchTop();
-
-    const auto &wmsc = WindowManagerServiceClient::GetInstance();
-    wret = wmsc->Init();
-    if (wret != GSERROR_OK) {
-        LOG("WindowManagerServiceClient::Init() return %{public}s", GSErrorStr(wret).c_str());
-        exit(1);
-    }
-
-    std::vector<uint32_t> freqs;
-    VsyncHelper::Current()->GetSupportedVsyncFrequencys(freqs);
-    if (freqs.size() >= 0x2) {
-        freq = freqs[1];
-    }
-
-    const auto &wms = wmsc->GetService();
-    wms->OnWindowListChange(this);
-
-    Sync(0, nullptr);
-
-    constexpr int32_t exitTime = 15 * 1000;
-    PostTask(std::bind(exit, 0), exitTime);
-}
-
-void Main::OnWindowCreate(int32_t pid, int32_t wid)
-{
-    (void)wid;
-    std::stringstream ss;
-    ss << "/proc/" << pid << "/cmdline";
-    std::ifstream ifs(ss.str(), std::ios::in);
-    if (ifs.is_open()) {
-        constexpr const char *systemui = "com.ohos.systemui";
-        constexpr const char *launcher = "com.ohos.launcher";
-        char cmdline[0x100] = {};
-        if (ifs.getline(cmdline, sizeof(cmdline))) {
-            bool have = false;
-            have = have || strstr(cmdline, systemui) == cmdline;
-            have = have || strstr(cmdline, launcher) == cmdline;
-            if (have) {
-                LOG("exiting");
-                exit(0);
-            }
-        }
-    }
-}
-
-void Main::OnWindowDestroy(int32_t pid, int32_t wid)
-{
-    (void)pid;
-    (void)wid;
-}
-
 int main(int argc, const char *argv[])
 {
-    const auto &wmi = WindowManager::GetInstance();
-    auto wret = wmi->Init();
-    if (wret != GSERROR_OK) {
-        LOG("WindowManager::Init() return %{public}s", GSErrorStr(wret).c_str());
-        return 1;
+    LOG("main enter");
+    WaitRenderServiceInit();
+
+    auto& dms = OHOS::Rosen::DisplayManager::GetInstance();
+    std::vector<const sptr<OHOS::Rosen::Display>> displays = dms.GetAllDisplays();
+    while (displays.empty()) {
+        LOG("displays is empty, retry to get displays");
+        displays = dms.GetAllDisplays();
+        sleep(1);
     }
 
-    std::vector<struct WMDisplayInfo> displays;
-    wret = wmi->GetDisplays(displays);
-    if (wret != GSERROR_OK) {
-        LOG("WindowManager::GetDisplays() return %{public}s", GSErrorStr(wret).c_str());
-        return 1;
-    }
-
-    if (displays.size() == 0) {
-        LOG("no display, cannot continue");
-        return 1;
-    }
-
-    int64_t start = GetNowTime();
-    if (RawParser::GetInstance()->Parse(displays[0].width, displays[0].height)) {
-        return -1;
-    }
-    LOG("time: %{public}" PRIu64 "", GetNowTime() - start);
-
-    Main m;
-
+    BootAnimation bootAnimation;
     auto runner = AppExecFwk::EventRunner::Create(false);
     auto handler = std::make_shared<AppExecFwk::EventHandler>(runner);
-    handler->PostTask(std::bind(&Main::Init, &m, displays[0].width, displays[0].height));
+    handler->PostTask(std::bind(&BootAnimation::Init, &bootAnimation,
+                                displays[0]->GetWidth(), displays[0]->GetHeight()));
     runner->Run();
     return 0;
 }
