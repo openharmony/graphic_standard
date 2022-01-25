@@ -164,7 +164,7 @@ sptr<Surface> RSRenderServiceConnection::CreateNodeAndSurface(const RSSurfaceRen
         ROSEN_LOGE("RSRenderService::CreateNodeAndSurface CreateNode fail");
         return nullptr;
     }
-    sptr<Surface> surface = Surface::CreateSurfaceAsConsumer();
+    sptr<Surface> surface = Surface::CreateSurfaceAsConsumer(config.name);
     if (surface == nullptr) {
         ROSEN_LOGE("RSRenderService::CreateNodeAndSurface get consumer surface fail");
         return nullptr;

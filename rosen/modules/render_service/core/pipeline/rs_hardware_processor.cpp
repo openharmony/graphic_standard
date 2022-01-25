@@ -116,9 +116,9 @@ void RSHardwareProcessor::ProcessSurface(RSSurfaceRenderNode &node)
         .preFence = node.GetPreFence(),
     };
     std::shared_ptr<HdiLayerInfo> layer = HdiLayerInfo::CreateHdiLayerInfo();
-    ROSEN_LOGE("RsDebug RSHardwareProcessor::ProcessSurface surfaceNode id:%llu [%d %d %d %d]"\
-        "buffer [%d %d] requestSize [%d %d] buffaddr:%p, z:%f, globalZOrder:%d", node.GetId(), info.dstRect.x,
-        info.dstRect.y, info.dstRect.w, info.dstRect.h, info.srcRect.w, info.srcRect.h,
+    ROSEN_LOGE("RsDebug RSHardwareProcessor::ProcessSurface surfaceNode id:%llu name:[%s] [%d %d %d %d]"\
+        "buffer [%d %d] requestSize [%d %d] buffaddr:%p, z:%f, globalZOrder:%d", node.GetId(), node.GetName().c_str(),
+        info.dstRect.x, info.dstRect.y, info.dstRect.w, info.dstRect.h, info.srcRect.w, info.srcRect.h,
         node.GetBuffer()->GetWidth(), node.GetBuffer()->GetHeight(), node.GetBuffer().GetRefPtr(),
         node.GetRenderProperties().GetPositionZ(), info.zOrder);
     RsRenderServiceUtil::ComposeSurface(layer, node.GetConsumer(), layers_, info);

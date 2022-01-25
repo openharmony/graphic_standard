@@ -81,7 +81,9 @@ sptr<Surface> RSRenderServiceConnectionProxy::CreateNodeAndSurface(const RSSurfa
     if (!data.WriteUint64(config.id)) {
         return nullptr;
     }
-
+    if (!data.WriteString(config.name)) {
+        return nullptr;
+    }
     option.SetFlags(MessageOption::TF_SYNC);
     int32_t err = Remote()->SendRequest(RSIRenderServiceConnection::CREATE_NODE_AND_SURFACE, data, reply, option);
     if (err != NO_ERROR) {
