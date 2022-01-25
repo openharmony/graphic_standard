@@ -75,6 +75,11 @@ public:
         return bufferAvailableCount_;
     }
 
+    std::string GetName() const
+    {
+        return name_;
+    }
+
     void Prepare(const std::shared_ptr<RSNodeVisitor>& visitor) override;
     void Process(const std::shared_ptr<RSNodeVisitor>& visitor) override;
 
@@ -114,6 +119,7 @@ private:
     int32_t fence_ = -1;
     int32_t preFence_ = -1;
     Rect damageRect_;
+    std::string name_;
 };
 } // namespace Rosen
 } // namespace OHOS

@@ -34,7 +34,7 @@ int main()
         transactionProxy->FlushImplicitTransaction();
     }
     // create surface
-    RSSurfaceRenderNodeConfig config = {.id=0};
+    RSSurfaceRenderNodeConfig config = {.id=0, .name="testSurface"};
     std::shared_ptr<RSSurface> testSurface =
         std::static_pointer_cast<RSRenderServiceClient>(renderClient)->CreateNodeAndSurface(config);
     auto frame = testSurface->RequestFrame(1600, 1600);
