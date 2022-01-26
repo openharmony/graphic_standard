@@ -52,6 +52,11 @@ public:
         return id_;
     }
 
+    bool IsOnTheTree() const
+    {
+        return isOnTheTree_;
+    }
+
     std::vector<WeakPtr>& GetChildren()
     {
         return children_;
@@ -120,6 +125,7 @@ private:
 
     const std::weak_ptr<RSContext> context_;
     NodeDirty dirtyStatus_ = NodeDirty::DIRTY;
+    bool isOnTheTree_ = false;
 };
 } // namespace Rosen
 } // namespace OHOS

@@ -46,6 +46,7 @@ void RSBaseRenderNode::AddChild(const SharedPtr& child, int index)
     }
 
     OnAddChild(child);
+    child->isOnTheTree_ = true;
 }
 
 void RSBaseRenderNode::RemoveChild(const SharedPtr& child)
@@ -64,6 +65,7 @@ void RSBaseRenderNode::RemoveChild(const SharedPtr& child)
     SetDirty();
 
     OnRemoveChild(child);
+    child->isOnTheTree_ = false;
 }
 
 void RSBaseRenderNode::OnAddChild(const SharedPtr& child)
