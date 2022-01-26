@@ -23,6 +23,7 @@
 #include <refbase.h>
 #include <surface.h>
 
+#include "ipc_callbacks/buffer_available_callback.h"
 #include "ipc_callbacks/iapplication_render_thread.h"
 #include "ipc_callbacks/screen_change_callback.h"
 #include "ipc_callbacks/surface_capture_callback.h"
@@ -37,6 +38,7 @@ namespace OHOS {
 namespace Rosen {
 // normal callback functor for client users.
 using ScreenChangeCallback = std::function<void(ScreenId, ScreenEvent)>;
+using BufferAvailableCallback = std::function<void(bool)>;
 class SurfaceCaptureCallback {
 public:
     SurfaceCaptureCallback() {}
@@ -86,10 +88,13 @@ public:
 
     void SetScreenBacklight(ScreenId id, uint32_t level);
 
+    bool RegisterBufferAvailableListener(NodeId id, const BufferAvailableCallback &callback);
+
 private:
     void TriggerSurfaceCaptureCallback(NodeId id, Media::PixelMap* pixelmap);
     std::mutex mutex_;
     sptr<RSIScreenChangeCallback> screenChangeCb_;
+    sptr<RSIBufferAvailableCallback> bufferAvailableCb_;
     sptr<RSISurfaceCaptureCallback> surfaceCaptureCbDirector_;
     std::map<NodeId, std::shared_ptr<SurfaceCaptureCallback>> surfaceCaptureCbMap_;
 

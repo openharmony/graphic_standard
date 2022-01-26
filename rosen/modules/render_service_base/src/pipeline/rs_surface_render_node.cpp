@@ -19,6 +19,7 @@
 #include "pipeline/rs_root_render_node.h"
 #include "platform/common/rs_log.h"
 #include "transaction/rs_transaction_proxy.h"
+#include "transaction/rs_render_service_client.h"
 #include "visitor/rs_node_visitor.h"
 
 namespace OHOS {
@@ -175,5 +176,43 @@ void RSSurfaceRenderNode::SendPropertyCommand(std::unique_ptr<RSCommand>& comman
         transactionProxy->AddCommand(command, true);
     }
 }
+
+bool RSSurfaceRenderNode::IsBlendTypeSetToSrc()
+{
+    return isBlendTypeSetToSrc_;
+}
+
+void RSSurfaceRenderNode::SetBlendTypeToSrc(bool isBlendTypeSetToSrc)
+{
+    isBlendTypeSetToSrc_ = isBlendTypeSetToSrc;
+}
+
+void RSSurfaceRenderNode::RegisterBufferAvailableListener(sptr<RSIBufferAvailableCallback> callback)
+{
+    callback_ = callback;
+}
+
+void RSSurfaceRenderNode::SetBufferAvailableListener()
+{
+    auto renderServiceClinet =
+    std::static_pointer_cast<RSRenderServiceClient>(RSIRenderClient::CreateRenderServiceClient());
+    if (renderServiceClinet != nullptr) {
+        renderServiceClinet->RegisterBufferAvailableListener(GetId(),
+            [this](bool isBufferAvailable) {
+                this->NotifyBufferAvailable(isBufferAvailable);
+            });
+    }
+}
+
+void RSSurfaceRenderNode::NotifyBufferAvailable(bool isBufferAvailable)
+{
+    isBufferAvailable_ = isBufferAvailable;
+}
+
+bool RSSurfaceRenderNode::IsBufferAvailable() const
+{
+    return isBufferAvailable_;
+}
+
 } // namespace Rosen
 } // namespace OHOS

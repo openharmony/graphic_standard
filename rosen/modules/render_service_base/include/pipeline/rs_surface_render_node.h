@@ -19,6 +19,8 @@
 #include <surface.h>
 
 #include "pipeline/rs_render_node.h"
+#include "ipc_callbacks/buffer_available_callback.h"
+#include "refbase.h"
 
 class SkCanvas;
 namespace OHOS {
@@ -105,6 +107,17 @@ public:
 
     static void SendPropertyCommand(std::unique_ptr<RSCommand>& command);
 
+    bool IsBlendTypeSetToSrc();
+    void SetBlendTypeToSrc(bool isBlendTypeSetToSrc);
+
+    void RegisterBufferAvailableListener(sptr<RSIBufferAvailableCallback> callback);
+    void SetBufferAvailableListener();
+
+    void NotifyBufferAvailable(bool isBufferAvailable);
+    bool IsBufferAvailable() const;
+
+    sptr<RSIBufferAvailableCallback> callback_ = nullptr;
+
 private:
     friend class RSRenderTransition;
     sptr<Surface> consumer_;
@@ -120,6 +133,8 @@ private:
     int32_t preFence_ = -1;
     Rect damageRect_;
     std::string name_;
+    bool isBlendTypeSetToSrc_ = false;
+    std::atomic<bool> isBufferAvailable_ = false;
 };
 } // namespace Rosen
 } // namespace OHOS

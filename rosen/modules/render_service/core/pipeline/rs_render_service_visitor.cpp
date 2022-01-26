@@ -158,6 +158,7 @@ void RSRenderServiceVisitor::PrepareSurfaceRenderNode(RSSurfaceRenderNode &node)
             ROSEN_LOGI("RSRenderServiceVisitor::PrepareSurfaceRenderNode this child is not SurfaceNode");
             continue;
         }
+        surfaceChild->SetBlendTypeToSrc(true);
         auto childGeoPtr = std::static_pointer_cast<RSObjAbsGeometry>(
             surfaceChild->GetRenderProperties().GetBoundsGeometry());
         if (childGeoPtr != nullptr) {
@@ -173,10 +174,10 @@ void RSRenderServiceVisitor::ProcessSurfaceRenderNode(RSSurfaceRenderNode &node)
         ROSEN_LOGE("RSRenderServiceVisitor::ProcessSurfaceRenderNode processor is nullptr");
         return;
     }
+    ProcessBaseRenderNode(node);
     node.SetGlobalZOrder(globalZOrder_);
     globalZOrder_ = globalZOrder_ + 1;
     processor_->ProcessSurface(node);
-    ProcessBaseRenderNode(node);
 }
 
 void RSRenderServiceVisitor::SortZOrder(RSBaseRenderNode &node)

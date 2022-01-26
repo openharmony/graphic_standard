@@ -174,9 +174,9 @@ protected:
     void OnRemoveChildren() override;
     void AnimationFinish(long long animationId);
 
-    virtual bool IsRenderServiceNodeForProperty() const
+    virtual bool IsMessageNeedSendToBothSide() const
     {
-        return IsRenderServiceNode();
+        return false;
     }
 
 private:

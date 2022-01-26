@@ -36,6 +36,7 @@ struct ComposeInfo {
     int32_t fence;
     sptr<SurfaceBuffer> preBuffer;
     int32_t preFence;
+    bool isSetBlendTypeToSrc;
 };
 
 class RsRenderServiceUtil {

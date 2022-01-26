@@ -72,6 +72,8 @@ ohos_shared_library("librender_service_base") {
     "src/ipc_callbacks/screen_change_callback_stub.cpp",
     "src/ipc_callbacks/surface_capture_callback_proxy.cpp",
     "src/ipc_callbacks/surface_capture_callback_stub.cpp",
+    "src/ipc_callbacks/buffer_available_callback_proxy.cpp",
+    "src/ipc_callbacks/buffer_available_callback_stub.cpp",
 
     #pipeline
     "src/pipeline/rs_base_render_node.cpp",
