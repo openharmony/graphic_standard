@@ -99,13 +99,13 @@ void RSHardwareProcessor::ProcessSurface(RSSurfaceRenderNode &node)
         ROSEN_LOGE("RsDebug RSHardwareProcessor::ProcessSurface geoPtr == nullptr");
         return;
     }
-
+    bool needUseBufferRegion = node.GetDamageRegion().w <= 0 || node.GetDamageRegion().h <= 0;
     ComposeInfo info = {
         .srcRect = {
             .x = 0,
             .y = 0,
-            .w = node.GetDamageRegion().w,
-            .h = node.GetDamageRegion().h,
+            .w = needUseBufferRegion ? node.GetBuffer()->GetWidth() : node.GetDamageRegion().w,
+            .h = needUseBufferRegion ? node.GetBuffer()->GetHeight() : node.GetDamageRegion().h,
         },
         .dstRect = {
             .x = geoPtr->GetAbsRect().left_,
@@ -123,10 +123,11 @@ void RSHardwareProcessor::ProcessSurface(RSSurfaceRenderNode &node)
     };
     std::shared_ptr<HdiLayerInfo> layer = HdiLayerInfo::CreateHdiLayerInfo();
     ROSEN_LOGE("RsDebug RSHardwareProcessor::ProcessSurface surfaceNode id:%llu name:[%s] [%d %d %d %d]"\
-        "buffer [%d %d] requestSize [%d %d] buffaddr:%p, z:%f, globalZOrder:%d, IsBlendTypeSetToSrc = %s",
-        node.GetId(), node.GetName().c_str(),
-        info.dstRect.x, info.dstRect.y, info.dstRect.w, info.dstRect.h, info.srcRect.w, info.srcRect.h,
-        node.GetBuffer()->GetWidth(), node.GetBuffer()->GetHeight(), node.GetBuffer().GetRefPtr(),
+        "SrcRect [%d %d] bufferSize [%d %d] DamageSize [%d %d] buffaddr:%p, z:%f, globalZOrder:%d, IsBlendTypeSetToSrc = %s",
+        node.GetId(),node.GetName().c_str(),
+        info.dstRect.x, info.dstRect.y, info.dstRect.w, info.dstRect.h,
+        info.srcRect.w, info.srcRect.h, node.GetBuffer()->GetWidth(), node.GetBuffer()->GetHeight(),
+        node.GetDamageRegion().w, node.GetDamageRegion().h, node.GetBuffer().GetRefPtr(),
         node.GetRenderProperties().GetPositionZ(), info.zOrder, info.isSetBlendTypeToSrc ? "true" : "false");
     RsRenderServiceUtil::ComposeSurface(layer, node.GetConsumer(), layers_, info);
 }
@@ -148,7 +149,7 @@ void RSHardwareProcessor::Redraw(sptr<Surface>& surface, const struct PrepareCom
         .height = curScreenInfo_.GetScreenHeight(),
         .strideAlignment = 0x8,
         .format = PIXEL_FMT_RGBA_8888,      // [TODO] different soc need different format
-        .usage = HBM_USE_CPU_READ | HBM_USE_CPU_WRITE | HBM_USE_MEM_DMA,
+        .usage = HBM_USE_CPU_READ | HBM_USE_CPU_WRITE | HBM_USE_MEM_DMA | HBM_USE_MEM_FB,
         .timeout = 0,
     };
     auto canvas = CreateCanvas(surface, requestConfig);
