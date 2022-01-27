@@ -27,7 +27,7 @@ void SkiaColorFilter::InitWithBlendMode(ColorQuad c, BlendMode mode)
     filter_ = SkColorFilters::Blend(static_cast<SkColor>(c), static_cast<SkBlendMode>(mode));
 }
 
-void SkiaColorFilter::InitWithColorMatrix(ColorMatrix& m)
+void SkiaColorFilter::InitWithColorMatrix(const ColorMatrix& m)
 {
     scalar dst[20];
     m.GetArray(dst);

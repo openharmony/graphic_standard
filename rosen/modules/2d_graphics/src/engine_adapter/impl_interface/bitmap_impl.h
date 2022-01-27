@@ -39,11 +39,11 @@ public:
     virtual int GetHeight() = 0;
     virtual void* GetPixels() = 0;
     virtual void SetPixels(void* pixel) = 0;
-    virtual void CopyPixels(Bitmap& dst, int srcLeft, int srcTop, int width, int height) = 0;
-    virtual void ClearWithColor(const ColorQuad& color) = 0;
-    virtual ColorQuad GetColor(int x, int y) = 0;
+    virtual void CopyPixels(Bitmap& dst, int srcLeft, int srcTop, int width, int height) const = 0;
+    virtual void ClearWithColor(const ColorQuad& color) const = 0;
+    virtual ColorQuad GetColor(int x, int y) const = 0;
     virtual void Free() = 0;
-    virtual bool IsValid() = 0;
+    virtual bool IsValid() const = 0;
 };
 } // namespace Drawing
 } // namespace Rosen

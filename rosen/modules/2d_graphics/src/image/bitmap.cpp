@@ -59,22 +59,22 @@ void* Bitmap::GetPixels()
     return pixels_;
 }
 
-void Bitmap::CopyPixels(Bitmap& dst, int srcLeft, int srcTop, int width, int height)
+void Bitmap::CopyPixels(Bitmap& dst, int srcLeft, int srcTop, int width, int height) const
 {
     bmpImplPtr->CopyPixels(dst, srcLeft, srcTop, width, height);
 }
 
-void Bitmap::ClearWithColor(const ColorQuad& color)
+void Bitmap::ClearWithColor(const ColorQuad& color) const
 {
     bmpImplPtr->ClearWithColor(color);
 }
 
-bool Bitmap::IsValid()
+bool Bitmap::IsValid() const
 {
     return bmpImplPtr->IsValid();
 }
 
-ColorQuad Bitmap::GetColor(int x, int y)
+ColorQuad Bitmap::GetColor(int x, int y) const
 {
     return bmpImplPtr->GetColor(x, y);
 }
@@ -84,7 +84,7 @@ void Bitmap::Free()
     bmpImplPtr->Free();
 }
 
-BitmapFormat Bitmap::GetFormat()
+BitmapFormat Bitmap::GetFormat() const
 {
     return format_;
 }

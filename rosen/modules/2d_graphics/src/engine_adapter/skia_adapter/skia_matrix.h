@@ -40,10 +40,10 @@ public:
     void Scale(scalar sx, scalar sy, scalar px, scalar py) override;
     const SkMatrix& ExportSkiaMatrix() const;
     void Multiply(const Matrix& a, const Matrix& b) override;
-    bool Equals(const Matrix& a, const Matrix& b) override;
+    bool Equals(const Matrix& a, const Matrix& b) const override;
     void SetMatrix(scalar scaleX, scalar skewX, scalar transX, scalar skewY, scalar scaleY, scalar transY,
         scalar persp0, scalar persp1, scalar persp2) override;
-    scalar Get(int index) override;
+    scalar Get(int index) const override;
 
 private:
     SkMatrix skMatrix_;

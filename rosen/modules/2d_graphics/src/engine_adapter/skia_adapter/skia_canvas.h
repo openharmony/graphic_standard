@@ -103,7 +103,7 @@ public:
     const std::shared_ptr<SkCanvas> ExportSkiaCanvas() const;
 
 private:
-    void RoundRectCastToSkRRect(const RoundRect& roundRect, SkRRect& skRRect);
+    void RoundRectCastToSkRRect(const RoundRect& roundRect, SkRRect& skRRect) const;
     std::shared_ptr<SkCanvas> skiaCanvas_;
     SkiaPaint skiaPaint_;
 };

@@ -99,7 +99,7 @@ const SkBitmap& SkiaBitmap::ExportSkiaBitmap() const
     return skiaBitmap_;
 }
 
-void SkiaBitmap::CopyPixels(Bitmap& dst, int srcLeft, int srcTop, int width, int height)
+void SkiaBitmap::CopyPixels(Bitmap& dst, int srcLeft, int srcTop, int width, int height) const
 {
     int w = dst.GetWidth();
     int h = dst.GetHeight();
@@ -114,13 +114,13 @@ void SkiaBitmap::CopyPixels(Bitmap& dst, int srcLeft, int srcTop, int width, int
     skiaBitmap_.readPixels(imageInfo, dstPixels, dstRowBytes, srcX, srcY);
 }
 
-void SkiaBitmap::ClearWithColor(const ColorQuad& color)
+void SkiaBitmap::ClearWithColor(const ColorQuad& color) const
 {
     SkColor skColor = static_cast<SkColor>(color);
     skiaBitmap_.eraseColor(skColor);
 }
 
-ColorQuad SkiaBitmap::GetColor(int x, int y)
+ColorQuad SkiaBitmap::GetColor(int x, int y) const
 {
     SkColor color;
     color = skiaBitmap_.getColor(x, y);
@@ -132,7 +132,7 @@ void SkiaBitmap::Free()
     skiaBitmap_.reset();
 }
 
-bool SkiaBitmap::IsValid()
+bool SkiaBitmap::IsValid() const
 {
     return skiaBitmap_.drawsNothing();
 }

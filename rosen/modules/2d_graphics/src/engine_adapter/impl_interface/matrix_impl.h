@@ -38,10 +38,10 @@ public:
     virtual void Translate(scalar dx, scalar dy) = 0;
     virtual void Scale(scalar sx, scalar sy, scalar px, scalar py) = 0;
     virtual void Multiply(const Matrix& a, const Matrix& b) = 0;
-    virtual bool Equals(const Matrix& a, const Matrix& b) = 0;
+    virtual bool Equals(const Matrix& a, const Matrix& b) const = 0;
     virtual void SetMatrix(scalar scaleX, scalar skewX, scalar transX, scalar skewY, scalar scaleY, scalar transY,
         scalar persp0, scalar persp1, scalar persp2) = 0;
-    virtual scalar Get(int index) = 0;
+    virtual scalar Get(int index) const = 0;
 };
 } // namespace Drawing
 } // namespace Rosen

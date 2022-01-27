@@ -51,7 +51,7 @@ void SkiaMatrix::Multiply(const Matrix& a, const Matrix& b)
     }
 }
 
-bool SkiaMatrix::Equals(const Matrix& a, const Matrix& b)
+bool SkiaMatrix::Equals(const Matrix& a, const Matrix& b) const
 {
     auto m1 = a.GetImpl<SkiaMatrix>();
     auto m2 = b.GetImpl<SkiaMatrix>();
@@ -67,7 +67,7 @@ void SkiaMatrix::SetMatrix(scalar scaleX, scalar skewX, scalar transX, scalar sk
     skMatrix_.setAll(scaleX, skewX, transX, skewY, scaleY, transY, persp0, persp1, persp2);
 }
 
-scalar SkiaMatrix::Get(int index)
+scalar SkiaMatrix::Get(int index) const
 {
     return skMatrix_.get(index);
 }
