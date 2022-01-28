@@ -16,6 +16,8 @@
 #ifdef ROSEN_OHOS
 #include "buffer_available_callback_stub.h"
 
+#include "platform/common/rs_log.h"
+
 namespace OHOS {
 namespace Rosen {
 int RSBufferAvailableCallbackStub::OnRemoteRequest(
@@ -35,6 +37,7 @@ int RSBufferAvailableCallbackStub::OnRemoteRequest(
         }
         default: {
             ret = ERR_UNKNOWN_TRANSACTION;
+            ROSEN_LOGE("RSBufferAvailableCallbackStub::OnRemoteRequest error");
             break;
         }
     }
