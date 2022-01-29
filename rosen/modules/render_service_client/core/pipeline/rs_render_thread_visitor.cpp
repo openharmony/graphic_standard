@@ -174,8 +174,15 @@ void RSRenderThreadVisitor::ProcessSurfaceRenderNode(RSSurfaceRenderNode& node)
     canvas_->clipRect({node.GetRenderProperties().GetBoundsPositionX(), node.GetRenderProperties().GetBoundsPositionY(),
                        node.GetRenderProperties().GetBoundsWidth(), node.GetRenderProperties().GetBoundsHeight()});
     if (node.IsBufferAvailable() == true) {
+        ROSEN_LOGI("RSRenderThreadVisitor::ProcessSurfaceRenderNode CILP (set transparent)");
         canvas_->clear(SK_ColorTRANSPARENT);
     } else {
+        ROSEN_LOGI("RSRenderThreadVisitor::ProcessSurfaceRenderNode NOT CILP (set black)");
+        if (node.NeedSetCallbackForRenderThreadRefresh() == true) {
+            node.SetCallbackForRenderThreadRefresh([] {
+                RSRenderThread::Instance().RequestNextVSync();
+            });
+        }
         canvas_->clear(SK_ColorBLACK);
     }
     canvas_->restore();

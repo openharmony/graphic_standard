@@ -91,6 +91,7 @@ void RSHardwareProcessor::ProcessSurface(RSSurfaceRenderNode &node)
     }
     if (node.IsBufferAvailable() == false) {
         // Only ipc for one time.
+        ROSEN_LOGI("RsDebug RSHardwareProcessor::ProcessSurface id = %llu Notify RT buffer available", node.GetId());
         node.NotifyBufferAvailable(true);
     }
     auto geoPtr = std::static_pointer_cast<RSObjAbsGeometry>(node.GetRenderProperties().GetBoundsGeometry());
