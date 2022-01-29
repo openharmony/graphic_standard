@@ -20,6 +20,7 @@
 #include "animation/rs_animation_timing_protocol.h"
 #include "animation/rs_motion_path_option.h"
 #include "animation/rs_property_accessors.h"
+#include "animation/rs_transition_effect.h"
 #include "common/rs_vector2.h"
 #include "common/rs_vector4.h"
 #include "pipeline/rs_recording_canvas.h"
@@ -36,7 +37,6 @@ class RSAnimation;
 class RSCommand;
 class RSImplicitAnimParam;
 class RSBasePropertyAccessors;
-class RSTransitionEffect;
 
 class RS_EXPORT RSNode : public RSBaseNode {
 public:
@@ -56,7 +56,8 @@ public:
     static void AddKeyFrame(
         float fraction, const RSAnimationTimingCurve& timingCurve, const PropertyCallback& callback);
     static void AddKeyFrame(float fraction, const PropertyCallback& callback);
-    static void NotifyTransition(const std::vector<RSTransitionEffect> effects, NodeId nodeId);
+
+    void NotifyTransition(const std::shared_ptr<const RSTransitionEffect>& effect, bool appearing);
 
     void AddAnimation(const std::shared_ptr<RSAnimation>& animation);
     void RemoveAllAnimations();
@@ -157,6 +158,11 @@ public:
     void SetVisible(bool visible);
     void SetPaintOrder(bool drawContentLast);
 
+    void SetTransitionEffect(const std::shared_ptr<RSTransitionEffect>& effect)
+    {
+        transitionEffect_ = effect;
+    }
+
     RSUINodeType GetType() const override
     {
         return RSUINodeType::RS_NODE;
@@ -190,6 +196,8 @@ private:
     std::map<AnimationId, std::shared_ptr<RSAnimation>> animations_;
     std::map<RSAnimatableProperty, int> animatingPropertyNum_;
     std::shared_ptr<RSMotionPathOption> motionPathOption_;
+
+    std::shared_ptr<const RSTransitionEffect> transitionEffect_ = RSTransitionEffect::OPACITY;
 
     RSProperties stagingProperties_;
 
