@@ -22,25 +22,25 @@
 extern "C" {
 #endif
 
-struct NativeWindow* OH_NATIVE_WINDOW_CreateNativeWindowFromSurface(void* pSurface);
-void OH_NATIVE_WINDOW_DestoryNativeWindow(struct NativeWindow* window);
+struct NativeWindow* OH_NativeWindow_CreateNativeWindowFromSurface(void* pSurface);
+void OH_NativeWindow_DestoryNativeWindow(struct NativeWindow* window);
 
-struct NativeWindowBuffer* OH_NATIVE_WINDOW_CreateNativeWindowBufferFromSurfaceBuffer(void* pSurfaceBuffer);
-void OH_NATIVE_WINDOW_DestoryNativeWindowBuffer(struct NativeWindowBuffer* buffer);
+struct NativeWindowBuffer* OH_NativeWindow_CreateNativeWindowBufferFromSurfaceBuffer(void* pSurfaceBuffer);
+void OH_NativeWindow_DestoryNativeWindowBuffer(struct NativeWindowBuffer* buffer);
 
-int32_t OH_NATIVE_WINDOW_NativeWindowRequestBuffer(struct NativeWindow *window,
+int32_t OH_NativeWindow_NativeWindowRequestBuffer(struct NativeWindow *window,
     /* [out] */ struct NativeWindowBuffer **buffer,
     /* [out] get release fence */ int *fenceFd);
-int32_t OH_NATIVE_WINDOW_NativeWindowFlushBuffer(struct NativeWindow *window, struct NativeWindowBuffer *buffer,
+int32_t OH_NativeWindow_NativeWindowFlushBuffer(struct NativeWindow *window, struct NativeWindowBuffer *buffer,
     int fenceFd, Region region);
-int32_t OH_NATIVE_WINDOW_NativeWindowCancelBuffer(struct NativeWindow *window, struct NativeWindowBuffer *buffer);
+int32_t OH_NativeWindow_NativeWindowCancelBuffer(struct NativeWindow *window, struct NativeWindowBuffer *buffer);
 
-int32_t OH_NATIVE_WINDOW_NativeWindowHandleOpt(struct NativeWindow *window, int code, ...);
-BufferHandle *OH_NATIVE_WINDOW_GetBufferHandleFromNative(struct NativeWindowBuffer *buffer);
+int32_t OH_NativeWindow_NativeWindowHandleOpt(struct NativeWindow *window, int code, ...);
+BufferHandle *OH_NativeWindow_GetBufferHandleFromNative(struct NativeWindowBuffer *buffer);
 
-int32_t OH_NATIVE_WINDOW_NativeObjectReference(void *obj);
-int32_t OH_NATIVE_WINDOW_NativeObjectUnreference(void *obj);
-int32_t OH_NATIVE_WINDOW_GetNativeObjectMagic(void *obj);
+int32_t OH_NativeWindow_NativeObjectReference(void *obj);
+int32_t OH_NativeWindow_NativeObjectUnreference(void *obj);
+int32_t OH_NativeWindow_GetNativeObjectMagic(void *obj);
 
 #ifdef __cplusplus
 }
