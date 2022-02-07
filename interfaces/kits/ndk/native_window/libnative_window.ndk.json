@@ -1,14 +1,14 @@
 [
-    { "name": "OH_NATIVE_WINDOW_CreateNativeWindowFromSurface" },
-    { "name": "OH_NATIVE_WINDOW_DestoryNativeWindow" },
-    { "name": "OH_NATIVE_WINDOW_CreateNativeWindowBufferFromSurfaceBuffer" },
-    { "name": "OH_NATIVE_WINDOW_DestoryNativeWindowBuffer" },
-    { "name": "OH_NATIVE_WINDOW_NativeWindowRequestBuffer" },
-    { "name": "OH_NATIVE_WINDOW_NativeWindowFlushBuffer" },
-    { "name": "OH_NATIVE_WINDOW_NativeWindowCancelBuffer" },
-    { "name": "OH_NATIVE_WINDOW_NativeWindowHandleOpt" },
-    { "name": "OH_NATIVE_WINDOW_GetBufferHandleFromNative" },
-    { "name": "OH_NATIVE_WINDOW_NativeObjectReference" },
-    { "name": "OH_NATIVE_WINDOW_NativeObjectUnreference" },
-    { "name": "OH_NATIVE_WINDOW_GetNativeObjectMagic" }
+    { "name": "OH_NativeWindow_CreateNativeWindowFromSurface" },
+    { "name": "OH_NativeWindow_DestoryNativeWindow" },
+    { "name": "OH_NativeWindow_CreateNativeWindowBufferFromSurfaceBuffer" },
+    { "name": "OH_NativeWindow_DestoryNativeWindowBuffer" },
+    { "name": "OH_NativeWindow_NativeWindowRequestBuffer" },
+    { "name": "OH_NativeWindow_NativeWindowFlushBuffer" },
+    { "name": "OH_NativeWindow_NativeWindowCancelBuffer" },
+    { "name": "OH_NativeWindow_NativeWindowHandleOpt" },
+    { "name": "OH_NativeWindow_GetBufferHandleFromNative" },
+    { "name": "OH_NativeWindow_NativeObjectReference" },
+    { "name": "OH_NativeWindow_NativeObjectUnreference" },
+    { "name": "OH_NativeWindow_GetNativeObjectMagic" }
 ]
