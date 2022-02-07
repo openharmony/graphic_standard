@@ -14,39 +14,16 @@
  */
 
 #include <chrono>
-#include <cstdint>
-#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
-#include <string>
-#include <surface.h>
-#include <unistd.h>
 
-#include "command/rs_base_node_command.h"
-#include "command/rs_display_node_command.h"
-#include "command/rs_surface_node_command.h"
-#include "common/rs_common_def.h"
-#include "display_type.h"
-#include "include/core/SkCanvas.h"
-#include "include/core/SkImageInfo.h"
-#include "pipeline/rs_render_result.h"
-#include "pipeline/rs_render_thread.h"
 #include "png.h"
-#include "render_context/render_context.h"
-#include "string_ex.h"
-#include "surface_buffer.h"
-#include "ui/rs_node.h"
-#include "ui/rs_surface_extractor.h"
-#include "ui/rs_ui_director.h"
-#include "unique_fd.h"
 #include "transaction/rs_interfaces.h"
 #include "ui/rs_display_node.h"
+#include "ui/rs_surface_extractor.h"
 #include "ui/rs_surface_node.h"
-// temporary debug
-#include "foundation/graphic/standard/rosen/modules/render_service_base/src/platform/ohos/rs_surface_frame_ohos.h"
-#include "foundation/graphic/standard/rosen/modules/render_service_base/src/platform/ohos/rs_surface_ohos.h"
-
+#include "unique_fd.h"
 
 using namespace OHOS;
 using namespace OHOS::Rosen;
