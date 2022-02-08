@@ -62,9 +62,11 @@ void RSRenderService::Run()
 
 sptr<RSIRenderServiceConnection> RSRenderService::CreateConnection(const sptr<RSIConnectionToken>& token)
 {
+    pid_t remotePid = GetCallingPid();
+
     auto tokenObj = token->AsObject();
     sptr<RSIRenderServiceConnection> newConn(
-        new RSRenderServiceConnection(this, mainThread_, screenManager_, tokenObj));
+        new RSRenderServiceConnection(remotePid, this, mainThread_, screenManager_, tokenObj));
 
     sptr<RSIRenderServiceConnection> tmp;
     std::unique_lock<std::mutex> lock(mutex_);

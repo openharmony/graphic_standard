@@ -29,6 +29,7 @@ namespace Rosen {
 class RSRenderServiceConnection : public RSRenderServiceConnectionStub {
 public:
     RSRenderServiceConnection(
+        pid_t remotePid,
         wptr<RSRenderService> renderService,
         RSMainThread* mainThread,
         sptr<RSScreenManager> screenManager,
@@ -43,6 +44,8 @@ public:
     }
 
 private:
+    void CleanVirtualScreens() noexcept;
+    void CleanRenderNodes() noexcept;
     void CleanAll(bool toDelete = false) noexcept;
 
     // IPC RSIRenderServiceConnection Interfaces
@@ -91,6 +94,7 @@ private:
 
     void RegisterBufferAvailableListener(NodeId id, sptr<RSIBufferAvailableCallback> callback) override;
 
+    pid_t remotePid_;
     wptr<RSRenderService> renderService_;
     RSMainThread* mainThread_ = nullptr;
     sptr<RSScreenManager> screenManager_;

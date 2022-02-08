@@ -25,14 +25,24 @@
 
 namespace OHOS {
 namespace Rosen {
+namespace Detail {
+static inline bool BelongThisConnection(const std::shared_ptr<RSBaseRenderNode>& node, pid_t remotePid)
+{
+    auto nodePid = static_cast<pid_t>(node->GetId() >> 32); // High 32 bits is the remote pid of this node.
+    return nodePid == remotePid;
+}
+} // namespace Detail
+
 // we guarantee that when constructing this object,
 // all these pointers are valid, so will not check them.
 RSRenderServiceConnection::RSRenderServiceConnection(
+    pid_t remotePid,
     wptr<RSRenderService> renderService,
     RSMainThread* mainThread,
     sptr<RSScreenManager> screenManager,
     sptr<IRemoteObject> token)
-    : renderService_(renderService),
+    : remotePid_(remotePid),
+      renderService_(renderService),
       mainThread_(mainThread),
       screenManager_(screenManager),
       token_(token),
@@ -49,6 +59,60 @@ RSRenderServiceConnection::~RSRenderServiceConnection() noexcept
     CleanAll();
 }
 
+void RSRenderServiceConnection::CleanVirtualScreens() noexcept
+{
+    std::lock_guard<std::mutex> lock(mutex_);
+
+    for (const auto id : virtualScreenIds_) {
+        screenManager_->RemoveVirtualScreen(id);
+    }
+    virtualScreenIds_.clear();
+
+    if (screenChangeCallback_ != nullptr) {
+        screenManager_->RemoveScreenChangeCallback(screenChangeCallback_);
+        screenChangeCallback_ = nullptr;
+    }
+}
+
+void RSRenderServiceConnection::CleanRenderNodes() noexcept
+{
+    auto& context = mainThread_->GetContext();
+    auto rootNode = context.GetGlobalRootRenderNode();
+    if (rootNode == nullptr) {
+        return;
+    }
+
+    std::vector<RSBaseRenderNode::SharedPtr> nodesToRemove;
+    std::queue<RSBaseRenderNode::SharedPtr> nodes;
+
+    // Traversal the RenderNode tree and find all nodes that were created by this connection,
+    // then store them with the vector "nodesToRemove" and remove them from the tree later.
+    nodes.push(rootNode);
+    while (!nodes.empty()) {
+        auto tmpNode = nodes.front();
+        nodes.pop();
+
+        for (const auto& child : tmpNode->GetChildren()) {
+            auto existingChild = child.lock();
+            if (existingChild == nullptr) {
+                continue;
+            }
+
+            if (Detail::BelongThisConnection(existingChild, remotePid_)) {
+                nodesToRemove.push_back(existingChild);
+            }
+            nodes.push(existingChild);
+        }
+    }
+
+    // remove the nodes from the tree and unregister them from the nodeMap.
+    auto& nodeMap = context.GetMutableNodeMap();
+    for (auto& node : nodesToRemove) {
+        node->RemoveFromTree();
+        nodeMap.UnregisterRenderNode(node->GetId());
+    }
+}
+
 void RSRenderServiceConnection::CleanAll(bool toDelete) noexcept
 {
     {
@@ -60,15 +124,8 @@ void RSRenderServiceConnection::CleanAll(bool toDelete) noexcept
 
     ROSEN_LOGD("RSRenderServiceConnection::CleanAll() start.");
     mainThread_->ScheduleTask([this]() {
-        std::lock_guard<std::mutex> lock(mutex_);
-        for (auto &id : virtualScreenIds_) {
-            screenManager_->RemoveVirtualScreen(id);
-        }
-        virtualScreenIds_.clear();
-        if (screenChangeCallback_ != nullptr) {
-            screenManager_->RemoveScreenChangeCallback(screenChangeCallback_);
-            screenChangeCallback_ = nullptr;
-        }
+        CleanVirtualScreens();
+        CleanRenderNodes();
     }).wait();
 
     {
