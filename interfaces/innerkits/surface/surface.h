@@ -87,7 +87,8 @@ public:
     virtual void Dump(std::string &result) const = 0;
 
     virtual GSError CleanCache() = 0;
-
+    virtual GSError SetColorGamut(SurfaceColorGamut colorGamut) = 0;
+    virtual GSError GetColorGamut(SurfaceColorGamut &colorGamut) = 0;
 protected:
     Surface() = default;
 };

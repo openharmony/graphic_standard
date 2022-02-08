@@ -98,6 +98,9 @@ public:
 
     void Dump(std::string &result);
 
+    GSError SetColorGamut(SurfaceColorGamut colorGamut);
+    GSError GetColorGamut(SurfaceColorGamut &colorGamut);
+
 private:
     GSError AllocBuffer(sptr<SurfaceBufferImpl>& buffer, const BufferRequestConfig &config);
     GSError FreeBuffer(sptr<SurfaceBufferImpl>& buffer);
@@ -131,6 +134,7 @@ private:
     OnReleaseFunc onBufferRelease = nullptr;
     bool isShared_ = false;
     std::condition_variable waitReqCon_;
+    SurfaceColorGamut colorGamut_;
 };
 }; // namespace OHOS
 

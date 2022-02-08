@@ -64,6 +64,21 @@ using BufferFlushConfig = struct BufferFlushConfig {
     Rect damage;
     int64_t timestamp;
 };
+
+typedef enum {
+    COLOR_GAMUT_INVALID = -1,
+    COLOR_GAMUT_NATIVE = 0,
+    COLOR_GAMUT_SATNDARD_BT601 = 1,
+    COLOR_GAMUT_STANDARD_BT709 = 2,
+    COLOR_GAMUT_DCI_P3 = 3,
+    COLOR_GAMUT_SRGB = 4,
+    COLOR_GAMUT_ADOBE_RGB = 5,
+    COLOR_GAMUT_DISPLAY_P3 = 6,
+    COLOR_GAMUT_BT2020 = 7,
+    COLOR_GAMUT_BT2100_PQ = 8,
+    COLOR_GAMUT_BT2100_HLG = 9,
+    COLOR_GAMUT_DISPLAY_BT2020 = 10,
+} SurfaceColorGamut;
 } // namespace OHOS
 
 #endif // INTERFACES_INNERKITS_SURFACE_SURFACE_TYPE_H

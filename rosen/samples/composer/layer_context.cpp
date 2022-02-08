@@ -106,6 +106,14 @@ SurfaceError LayerContext::DrawBufferColor()
         LOGE("FlushBuffer failed");
     }
 
+    SurfaceColorGamut colorgamut = SurfaceColorGamut::COLOR_GAMUT_DCI_P3;
+    ret = pSurface_->SetColorGamut(colorgamut);
+    if (ret != 0) {
+        LOGE("SetColorGamut failed: %{public}s", SurfaceErrorStr(ret).c_str());
+    } else {
+        LOGI("SetColorGamut : %{public}d", colorgamut);
+    }
+
     return ret;
 }
 
@@ -119,6 +127,12 @@ SurfaceError LayerContext::FillHDILayer()
     if (ret != SURFACE_ERROR_OK) {
         LOGE("Acquire buffer failed");
         return ret;
+    }
+
+    SurfaceColorGamut colorgamut;
+    ret = cSurface_->GetColorGamut(colorgamut);
+    if (ret == 0) {
+        LOGI("GetColorGamut : %{public}d", colorgamut);
     }
 
     LayerAlpha alpha = { .enPixelAlpha = true };

@@ -145,6 +145,56 @@ void HdiLayer::SetHdiLayerInfo()
     CheckRet(ret, "SetLayerPreMulti");
 }
 
+int32_t HdiLayer::SetLayerColorTransform(const float *matrix) const
+{
+    HdiDevice *device = HdiDevice::GetInstance();
+    if (device == nullptr || matrix == nullptr) {
+        return DISPLAY_NULL_PTR;
+    }
+
+    return device->SetLayerColorTransform(screenId_, layerId_, matrix);
+}
+
+int32_t HdiLayer::SetLayerColorDataSpace(ColorDataSpace colorSpace) const
+{
+    HdiDevice *device = HdiDevice::GetInstance();
+    if (device == nullptr) {
+        return DISPLAY_NULL_PTR;
+    }
+
+    return device->SetLayerColorDataSpace(screenId_, layerId_, colorSpace);
+}
+
+int32_t HdiLayer::GetlayerColorDataSpace(ColorDataSpace &colorSpace) const
+{
+    HdiDevice *device = HdiDevice::GetInstance();
+    if (device == nullptr) {
+        return DISPLAY_NULL_PTR;
+    }
+
+    return device->GetlayerColorDataSpace(screenId_, layerId_, colorSpace);
+}
+
+int32_t HdiLayer::SetLayerMetaData(const std::vector<HDRMetaData> &metaData) const
+{
+    HdiDevice *device = HdiDevice::GetInstance();
+    if (device == nullptr) {
+        return DISPLAY_NULL_PTR;
+    }
+
+    return device->SetLayerMetaData(screenId_, layerId_, metaData);
+}
+
+int32_t HdiLayer::SetLayerMetaDataSet(HDRMetadataKey key, const std::vector<uint8_t> &metaData) const
+{
+    HdiDevice *device = HdiDevice::GetInstance();
+    if (device == nullptr) {
+        return DISPLAY_NULL_PTR;
+    }
+
+    return device->SetLayerMetaDataSet(screenId_, layerId_, key, metaData);
+}
+
 uint32_t HdiLayer::GetLayerId() const
 {
     return layerId_;

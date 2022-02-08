@@ -225,4 +225,14 @@ void ConsumerSurface::Dump(std::string &result) const
 {
     return consumer_->Dump(result);
 }
+
+GSError ConsumerSurface::SetColorGamut(SurfaceColorGamut colorGamut)
+{
+    return producer_->SetColorGamut(colorGamut);
+}
+
+GSError ConsumerSurface::GetColorGamut(SurfaceColorGamut &colorGamut)
+{
+    return consumer_->GetColorGamut(colorGamut);
+}
 } // namespace OHOS
