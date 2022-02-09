@@ -131,8 +131,8 @@ int32_t NativeWindowFlushBuffer(struct NativeWindow *window, struct NativeWindow
     }  else {
         config.damage.x = 0;
         config.damage.y = 0;
-        config.damage.w = 0;
-        config.damage.h = 0;
+        config.damage.w = window->config.width;
+        config.damage.h = window->config.height;
         config.timestamp = 0;
     }
 
@@ -299,15 +299,15 @@ NativeWindowBuffer::NativeWindowBuffer() : NativeWindowMagic(NATIVE_OBJECT_MAGIC
     BLOGD("NativeWindowBuffer  %p", this);
 }
 
-weak_alias(CreateNativeWindowFromSurface, OH_NATIVE_WINDOW_CreateNativeWindowFromSurface);
-weak_alias(DestoryNativeWindow, OH_NATIVE_WINDOW_DestoryNativeWindow);
-weak_alias(CreateNativeWindowBufferFromSurfaceBuffer, OH_NATIVE_WINDOW_CreateNativeWindowBufferFromSurfaceBuffer);
-weak_alias(DestoryNativeWindowBuffer, OH_NATIVE_WINDOW_DestoryNativeWindowBuffer);
-weak_alias(NativeWindowRequestBuffer, OH_NATIVE_WINDOW_NativeWindowRequestBuffer);
-weak_alias(NativeWindowFlushBuffer, OH_NATIVE_WINDOW_NativeWindowFlushBuffer);
-weak_alias(NativeWindowCancelBuffer, OH_NATIVE_WINDOW_NativeWindowCancelBuffer);
-weak_alias(NativeWindowHandleOpt, OH_NATIVE_WINDOW_NativeWindowHandleOpt);
-weak_alias(GetBufferHandleFromNative, OH_NATIVE_WINDOW_GetBufferHandleFromNative);
-weak_alias(NativeObjectReference, OH_NATIVE_WINDOW_NativeObjectReference);
-weak_alias(NativeObjectUnreference, OH_NATIVE_WINDOW_NativeObjectUnreference);
-weak_alias(GetNativeObjectMagic, OH_NATIVE_WINDOW_GetNativeObjectMagic);
+weak_alias(CreateNativeWindowFromSurface, OH_NativeWindow_CreateNativeWindowFromSurface);
+weak_alias(DestoryNativeWindow, OH_NativeWindow_DestoryNativeWindow);
+weak_alias(CreateNativeWindowBufferFromSurfaceBuffer, OH_NativeWindow_CreateNativeWindowBufferFromSurfaceBuffer);
+weak_alias(DestoryNativeWindowBuffer, OH_NativeWindow_DestoryNativeWindowBuffer);
+weak_alias(NativeWindowRequestBuffer, OH_NativeWindow_NativeWindowRequestBuffer);
+weak_alias(NativeWindowFlushBuffer, OH_NativeWindow_NativeWindowFlushBuffer);
+weak_alias(NativeWindowCancelBuffer, OH_NativeWindow_NativeWindowCancelBuffer);
+weak_alias(NativeWindowHandleOpt, OH_NativeWindow_NativeWindowHandleOpt);
+weak_alias(GetBufferHandleFromNative, OH_NativeWindow_GetBufferHandleFromNative);
+weak_alias(NativeObjectReference, OH_NativeWindow_NativeObjectReference);
+weak_alias(NativeObjectUnreference, OH_NativeWindow_NativeObjectUnreference);
+weak_alias(GetNativeObjectMagic, OH_NativeWindow_GetNativeObjectMagic);

@@ -44,7 +44,7 @@ void SkiaPaint::ApplyPenToStroke(const Pen& pen)
     PenToSkPaint(pen, stroke_->paint);
 }
 
-void SkiaPaint::BrushToSkPaint(const Brush& brush, SkPaint& paint)
+void SkiaPaint::BrushToSkPaint(const Brush& brush, SkPaint& paint) const
 {
     paint.setColor(brush.GetColor().CastToColorQuad());
 
@@ -72,7 +72,7 @@ void SkiaPaint::BrushToSkPaint(const Brush& brush, SkPaint& paint)
     paint.setStyle(SkPaint::kFill_Style);
 }
 
-void SkiaPaint::PenToSkPaint(const Pen& pen, SkPaint& paint)
+void SkiaPaint::PenToSkPaint(const Pen& pen, SkPaint& paint) const
 {
     paint.setColor(pen.GetColor().CastToColorQuad());
 
@@ -149,7 +149,7 @@ void SkiaPaint::DisableFill()
     fill_->isEnabled = false;
 }
 
-std::vector<std::shared_ptr<PaintData>> SkiaPaint::GetSortedPaints()
+std::vector<std::shared_ptr<PaintData>> SkiaPaint::GetSortedPaints() const
 {
     std::vector<std::shared_ptr<PaintData>> paints;
     if (IsStrokeFirst() && stroke_->isEnabled && fill_->isEnabled) {
@@ -172,12 +172,12 @@ void SkiaPaint::SetStrokeFirst(bool isStrokeFirst)
     isStrokeFirst_ = isStrokeFirst;
 }
 
-bool SkiaPaint::IsStrokeFirst()
+bool SkiaPaint::IsStrokeFirst() const
 {
     return isStrokeFirst_;
 }
 
-void SkiaPaint::ApplyFilter(SkPaint& paint, const Filter& filter)
+void SkiaPaint::ApplyFilter(SkPaint& paint, const Filter& filter) const
 {
 #if !defined(USE_CANVASKIT0310_SKIA)
     switch (filter.GetFilterQuality()) {

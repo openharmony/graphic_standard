@@ -15,6 +15,7 @@
 #ifndef RENDER_SERVICE_CLIENT_CORE_PIPELINE_RS_SURFACE_RENDER_NODE_H
 #define RENDER_SERVICE_CLIENT_CORE_PIPELINE_RS_SURFACE_RENDER_NODE_H
 
+#include <functional>
 #include <memory>
 #include <surface.h>
 
@@ -121,6 +122,15 @@ public:
     void NotifyBufferAvailable(bool isBufferAvailable);
     bool IsBufferAvailable() const;
 
+    // UI Thread would not be notified when SurfaceNode created by Video/Camera in RenderService has available buffer.
+    // And RenderThread does not call mainFunc_ if nothing in UI thread is changed
+    // which would cause callback for "clip" on parent SurfaceNode cannot be triggered
+    // for "clip" is executed in RenderThreadVisitor::ProcessSurfaceRenderNode.
+    // To fix this bug, we set callback which would call RSRenderThread::RequestNextVSync() to forcely "refresh"
+    // RenderThread when SurfaceNode in RenderService has available buffer and execute RSIBufferAvailableCallback.
+    void SetCallbackForRenderThreadRefresh(std::function<void(void)> callback);
+    bool NeedSetCallbackForRenderThreadRefresh();
+
 private:
     friend class RSRenderTransition;
     sptr<Surface> consumer_;
@@ -140,6 +150,7 @@ private:
     BlendType blendType_ = BlendType::BLEND_SRCOVER;
     std::atomic<bool> isBufferAvailable_ = false;
     sptr<RSIBufferAvailableCallback> callback_ = nullptr;
+    std::function<void(void)> callbackForRenderThreadRefresh_ = nullptr;
 };
 } // namespace Rosen
 } // namespace OHOS

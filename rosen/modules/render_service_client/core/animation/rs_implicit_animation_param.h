@@ -134,14 +134,14 @@ private:
 class RSImplicitTransitionParam : public RSImplicitAnimationParam {
 public:
     RSImplicitTransitionParam(const RSAnimationTimingProtocol& timingProtocol,
-        const RSAnimationTimingCurve& timingCurve, const RSTransitionEffect& effect);
+        const RSAnimationTimingCurve& timingCurve, const std::shared_ptr<const RSTransitionEffect>& effect);
     virtual ~RSImplicitTransitionParam() = default;
 
-    std::shared_ptr<RSAnimation> CreateAnimation();
+    std::shared_ptr<RSAnimation> CreateAnimation(bool appearing);
 
 private:
     RSAnimationTimingCurve timingCurve_;
-    RSTransitionEffect effect_;
+    const std::shared_ptr<const RSTransitionEffect> effect_;
 };
 } // namespace Rosen
 } // namespace OHOS

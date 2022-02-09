@@ -26,6 +26,7 @@
 
 #include "display_type.h"
 #include "wm/window.h"
+#include "wm/window_scene.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkImageInfo.h"
@@ -163,14 +164,20 @@ void Init(std::shared_ptr<RSUIDirector> rsUiDirector, int width, int height)
 int main()
 {
     std::cout << "rs SurfaceNode demo start!" << std::endl;
+
     sptr<WindowOption> option = new WindowOption();
     option->SetWindowMode(WindowMode::WINDOW_MODE_FLOATING);
     // SetWindowRect also can be {200, 200, 1501, 1200}
-    option->SetWindowRect( {120, 120, 500, 500} );
+    option->SetWindowRect({120, 120, 500, 500});
 
-    auto window = Window::Create("SurfaceNode_demo", option);
+    auto scene = new WindowScene();
 
-    window->Show();
+    std::shared_ptr<AbilityRuntime::Context> context = nullptr;
+    sptr<IWindowLifeCycle> listener = nullptr;
+    scene->Init(0, context, listener, option);
+    auto window = scene->GetMainWindow();
+    scene->GoForeground();
+
     auto rect = window->GetRect();
     std::cout << "rs SurfaceNode demo create window " << rect.width_ << " " << rect.height_ << std::endl;
     auto windowSurfaceNode = window->GetSurfaceNode();

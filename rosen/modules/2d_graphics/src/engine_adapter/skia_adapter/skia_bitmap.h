@@ -39,11 +39,11 @@ public:
     void* GetPixels() override;
     void SetPixels(void* pixels) override;
     const SkBitmap& ExportSkiaBitmap() const;
-    void CopyPixels(Bitmap& dst, int srcLeft, int srcTop, int width, int height) override;
-    void ClearWithColor(const ColorQuad& color) override;
-    ColorQuad GetColor(int x, int y) override;
+    void CopyPixels(Bitmap& dst, int srcLeft, int srcTop, int width, int height) const override;
+    void ClearWithColor(const ColorQuad& color) const override;
+    ColorQuad GetColor(int x, int y) const override;
     void Free() override;
-    bool IsValid() override;
+    bool IsValid() const override;
 
 private:
     SkBitmap skiaBitmap_;

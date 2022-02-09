@@ -42,13 +42,13 @@ enum class RSUINodeType {
 };
 
 static const std::map<RSUINodeType, std::string> RSUINodeTypeStrs = {
-    {RSUINodeType::BASE_NODE,        "BaseNode"},
-    {RSUINodeType::DISPLAY_NODE,     "DisplayNode"},
-    {RSUINodeType::RS_NODE,          "RsNode"},
-    {RSUINodeType::SURFACE_NODE,     "SurfaceNode"},
-    {RSUINodeType::CANVAS_NODE,      "CanvasNode"},
-    {RSUINodeType::ROOT_NODE,        "RootNode"},
-    {RSUINodeType::TEXTURE_NODE,     "TextureNode"},
+    {RSUINodeType::BASE_NODE,    "BaseNode"},
+    {RSUINodeType::DISPLAY_NODE, "DisplayNode"},
+    {RSUINodeType::RS_NODE,      "RsNode"},
+    {RSUINodeType::SURFACE_NODE, "SurfaceNode"},
+    {RSUINodeType::CANVAS_NODE,  "CanvasNode"},
+    {RSUINodeType::ROOT_NODE,    "RootNode"},
+    {RSUINodeType::TEXTURE_NODE, "TextureNode"},
 };
 
 // types for RenderNode

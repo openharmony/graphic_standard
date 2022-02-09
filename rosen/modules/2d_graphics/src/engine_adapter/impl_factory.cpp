@@ -20,7 +20,6 @@
 namespace OHOS {
 namespace Rosen {
 namespace Drawing {
-
 using EngineImplFactory = SkiaImplFactory;
 
 std::unique_ptr<CoreCanvasImpl> ImplFactory::CreateCoreCanvasImpl()

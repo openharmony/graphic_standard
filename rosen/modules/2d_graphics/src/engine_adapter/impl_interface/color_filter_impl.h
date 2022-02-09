@@ -37,7 +37,7 @@ public:
     }
 
     virtual void InitWithBlendMode(ColorQuad c, BlendMode mode) = 0;
-    virtual void InitWithColorMatrix(ColorMatrix& m) = 0;
+    virtual void InitWithColorMatrix(const ColorMatrix& m) = 0;
     virtual void InitWithLinearToSrgbGamma() = 0;
     virtual void InitWithSrgbGammaToLinear() = 0;
     virtual void InitWithCompose(const ColorFilter& f1, const ColorFilter& f2) = 0;

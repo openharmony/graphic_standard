@@ -40,18 +40,18 @@ public:
     void ApplyBrushToFill(const Brush& brush);
     void ApplyPenToStroke(const Pen& pen);
 
-    void BrushToSkPaint(const Brush& brush, SkPaint& paint);
-    void PenToSkPaint(const Pen& pen, SkPaint& paint);
+    void BrushToSkPaint(const Brush& brush, SkPaint& paint) const;
+    void PenToSkPaint(const Pen& pen, SkPaint& paint) const;
 
     void DisableStroke();
     void DisableFill();
 
-    std::vector<std::shared_ptr<PaintData>> GetSortedPaints();
+    std::vector<std::shared_ptr<PaintData>> GetSortedPaints() const;
     void SetStrokeFirst(bool isStrokeFirst);
-    bool IsStrokeFirst();
+    bool IsStrokeFirst() const;
 
 private:
-    void ApplyFilter(SkPaint& paint, const Filter& filter);
+    void ApplyFilter(SkPaint& paint, const Filter& filter) const;
 
     std::shared_ptr<PaintData> stroke_;
     std::shared_ptr<PaintData> fill_;

@@ -78,7 +78,7 @@ bool RSRenderNode::Update(RSDirtyRegionManager& dirtyManager, const RSProperties
     return dirty;
 }
 
-RSProperties& RSRenderNode::GetRenderProperties()
+RSProperties& RSRenderNode::GetMutableRenderProperties()
 {
     return renderProperties_;
 }
@@ -113,7 +113,9 @@ void RSRenderNode::ProcessRenderBeforeChildren(RSPaintFilterCanvas& canvas)
     canvas.SaveAlpha();
     canvas.MultiplyAlpha(GetRenderProperties().GetAlpha());
     auto boundsGeo = std::static_pointer_cast<RSObjAbsGeometry>(GetRenderProperties().GetBoundsGeometry());
-    canvas.concat(boundsGeo->GetMatrix());
+    if (boundsGeo && !boundsGeo->IsEmpty()) {
+        canvas.concat(boundsGeo->GetMatrix());
+    }
     GetAnimationManager().DoTransition(canvas, GetRenderProperties());
 #endif
 }
@@ -121,7 +123,7 @@ void RSRenderNode::ProcessRenderBeforeChildren(RSPaintFilterCanvas& canvas)
 void RSRenderNode::ProcessRenderAfterChildren(RSPaintFilterCanvas& canvas)
 {
 #ifdef ROSEN_OHOS
-    GetRenderProperties().ResetBounds();
+    GetMutableRenderProperties().ResetBounds();
     canvas.RestoreAlpha();
     canvas.restore();
 #endif

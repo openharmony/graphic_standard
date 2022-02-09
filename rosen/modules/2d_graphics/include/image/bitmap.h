@@ -35,12 +35,12 @@ public:
     int GetHeight();
     void* GetPixels();
     void SetPixels(void* pixel);
-    void CopyPixels(Bitmap& dst, int srcLeft, int srcTop, int width, int height);
-    void ClearWithColor(const ColorQuad& color);
-    bool IsValid();
-    ColorQuad GetColor(int x, int y);
+    void CopyPixels(Bitmap& dst, int srcLeft, int srcTop, int width, int height) const;
+    void ClearWithColor(const ColorQuad& color) const;
+    bool IsValid() const;
+    ColorQuad GetColor(int x, int y) const;
     void Free();
-    BitmapFormat GetFormat();
+    BitmapFormat GetFormat() const;
     template<typename T>
     const std::shared_ptr<T> GetImpl() const
     {

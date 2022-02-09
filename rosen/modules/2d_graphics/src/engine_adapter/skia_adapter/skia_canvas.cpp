@@ -442,7 +442,7 @@ void SkiaCanvas::DetachBrush()
     skiaPaint_.DisableFill();
 }
 
-void SkiaCanvas::RoundRectCastToSkRRect(const RoundRect& roundRect, SkRRect& skRRect)
+void SkiaCanvas::RoundRectCastToSkRRect(const RoundRect& roundRect, SkRRect& skRRect) const
 {
     Rect rect = roundRect.GetRect();
     SkRect outer = SkRect::MakeLTRB(rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());

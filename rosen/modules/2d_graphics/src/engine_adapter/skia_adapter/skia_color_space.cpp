@@ -22,7 +22,7 @@
 namespace OHOS {
 namespace Rosen {
 namespace Drawing {
-SkiaColorSpace::SkiaColorSpace() noexcept : colorSpace_() {}
+SkiaColorSpace::SkiaColorSpace() noexcept : colorSpace_(nullptr) {}
 
 void SkiaColorSpace::InitWithSRGB()
 {
