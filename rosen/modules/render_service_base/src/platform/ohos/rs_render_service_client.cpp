@@ -329,7 +329,7 @@ int32_t RSRenderServiceClient::GetScreenSupportedColorGamuts(ScreenId id, std::v
 {
     auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
-        return RS_NOT_CONNECTED;
+        return RENDER_SERVICE_NULL;
     }
     return renderService->GetScreenSupportedColorGamuts(id, mode);
 }
@@ -338,7 +338,7 @@ int32_t RSRenderServiceClient::GetScreenColorGamut(ScreenId id, ScreenColorGamut
 {
     auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
-        return RS_NOT_CONNECTED;
+        return RENDER_SERVICE_NULL;
     }
     return renderService->GetScreenColorGamut(id, mode);
 }
@@ -347,7 +347,7 @@ int32_t RSRenderServiceClient::SetScreenColorGamut(ScreenId id, int32_t modeIdx)
 {
     auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
-        return RS_NOT_CONNECTED;
+        return RENDER_SERVICE_NULL;
     }
     return renderService->SetScreenColorGamut(id, modeIdx);
 }
@@ -356,7 +356,7 @@ int32_t RSRenderServiceClient::SetScreenGamutMap(ScreenId id, ScreenGamutMap mod
 {
     auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
-        return RS_NOT_CONNECTED;
+        return RENDER_SERVICE_NULL;
     }
     return renderService->SetScreenGamutMap(id, mode);
 }
@@ -365,7 +365,7 @@ int32_t RSRenderServiceClient::GetScreenGamutMap(ScreenId id, ScreenGamutMap& mo
 {
     auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService == nullptr) {
-        return RS_NOT_CONNECTED;
+        return RENDER_SERVICE_NULL;
     }
     return renderService->GetScreenGamutMap(id, mode);
 }
