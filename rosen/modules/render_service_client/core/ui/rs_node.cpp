@@ -20,10 +20,8 @@
 #include <string>
 
 #include "animation/rs_animation.h"
-#include "animation/rs_curve_animation.h"
 #include "animation/rs_implicit_animator.h"
 #include "command/rs_node_command.h"
-#include "command/rs_node_showing_command.h"
 #include "common/rs_color.h"
 #include "common/rs_obj_geometry.h"
 #include "pipeline/rs_node_map.h"

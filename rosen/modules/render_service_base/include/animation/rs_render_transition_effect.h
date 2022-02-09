@@ -30,6 +30,7 @@ namespace Rosen {
 class RSCanvasRenderNode;
 class RSPaintFilterCanvas;
 class RSProperties;
+class RSTransitionProperties;
 
 #ifdef ROSEN_OHOS
 class RSRenderTransitionEffect : public Parcelable {
@@ -39,7 +40,7 @@ class RSRenderTransitionEffect {
 public:
     RSRenderTransitionEffect() = default;
     virtual ~RSRenderTransitionEffect() = default;
-    virtual void OnTransition(RSPaintFilterCanvas& canvas, const RSProperties& renderProperties, float fraction) = 0;
+    virtual void OnTransition(const std::unique_ptr<RSTransitionProperties>& transitionProperties, float fraction) = 0;
 
 #ifdef ROSEN_OHOS
     virtual bool Marshalling(Parcel& parcel) const override = 0;
@@ -53,7 +54,7 @@ class RSTransitionFade : public RSRenderTransitionEffect {
 public:
     explicit RSTransitionFade(float alpha) : alpha_(alpha = 0.0f) {}
     virtual ~RSTransitionFade() = default;
-    void OnTransition(RSPaintFilterCanvas& canvas, const RSProperties& renderProperties, float fraction) override;
+    void OnTransition(const std::unique_ptr<RSTransitionProperties>& transitionProperties, float fraction) override;
 
 #ifdef ROSEN_OHOS
     bool Marshalling(Parcel& parcel) const override;
@@ -66,12 +67,11 @@ private:
 class RSTransitionScale : public RSRenderTransitionEffect {
 public:
     RSTransitionScale() = default;
-    explicit RSTransitionScale(
-        float scaleX = 0.0f, float scaleY = 0.0f, float scaleZ = 0.0f, float pivotX = 0.5, float pivotY = 0.5)
-        : scaleX_(scaleX), scaleY_(scaleY), scaleZ_(scaleZ), pivotX_(pivotX), pivotY_(pivotY)
+    explicit RSTransitionScale(float scaleX = 0.0f, float scaleY = 0.0f, float scaleZ = 0.0f)
+        : scaleX_(scaleX), scaleY_(scaleY), scaleZ_(scaleZ)
     {}
     virtual ~RSTransitionScale() = default;
-    void OnTransition(RSPaintFilterCanvas& canvas, const RSProperties& renderProperties, float fraction) override;
+    void OnTransition(const std::unique_ptr<RSTransitionProperties>& transitionProperties, float fraction) override;
 
 #ifdef ROSEN_OHOS
     bool Marshalling(Parcel& parcel) const override;
@@ -81,8 +81,6 @@ private:
     float scaleX_;
     float scaleY_;
     float scaleZ_;
-    float pivotX_;
-    float pivotY_;
 };
 
 class RSTransitionTranslate : public RSRenderTransitionEffect {
@@ -92,7 +90,7 @@ public:
         : translateX_(translateX), translateY_(translateY), translateZ_(translateZ)
     {}
     virtual ~RSTransitionTranslate() = default;
-    void OnTransition(RSPaintFilterCanvas& canvas, const RSProperties& renderProperties, float fraction) override;
+    void OnTransition(const std::unique_ptr<RSTransitionProperties>& transitionProperties, float fraction) override;
 
 #ifdef ROSEN_OHOS
     bool Marshalling(Parcel& parcel) const override;
@@ -107,11 +105,9 @@ private:
 class RSTransitionRotate : public RSRenderTransitionEffect {
 public:
     RSTransitionRotate() = default;
-    explicit RSTransitionRotate(float dx, float dy, float dz, float angle, float pivotX = 0.5, float pivotY = 0.5)
-        : dx_(dx), dy_(dy), dz_(dz), angle_(angle), pivotX_(pivotX), pivotY_(pivotY)
-    {}
+    explicit RSTransitionRotate(float dx, float dy, float dz, float angle) : dx_(dx), dy_(dy), dz_(dz), angle_(angle) {}
     virtual ~RSTransitionRotate() = default;
-    void OnTransition(RSPaintFilterCanvas& canvas, const RSProperties& renderProperties, float fraction) override;
+    void OnTransition(const std::unique_ptr<RSTransitionProperties>& transitionProperties, float fraction) override;
 
 #ifdef ROSEN_OHOS
     bool Marshalling(Parcel& parcel) const override;
@@ -122,8 +118,6 @@ private:
     float dy_;
     float dz_;
     float angle_;
-    float pivotX_;
-    float pivotY_;
 };
 } // namespace Rosen
 } // namespace OHOS

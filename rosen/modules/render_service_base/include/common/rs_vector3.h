@@ -17,7 +17,7 @@
 #define RENDER_SERVICE_CLIENT_CORE_COMMON_RS_VECTOR3_H
 #include <cmath>
 
-#include "common/rs_macros.h"
+#include "common/rs_common_def.h"
 
 namespace OHOS {
 namespace Rosen {

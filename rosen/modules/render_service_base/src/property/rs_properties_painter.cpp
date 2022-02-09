@@ -15,25 +15,24 @@
 
 #include "property/rs_properties_painter.h"
 
+#include "common/rs_obj_abs_geometry.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkColorFilter.h"
+#include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPoint3.h"
 #include "include/core/SkRRect.h"
 #include "include/effects/Sk1DPathEffect.h"
 #include "include/effects/SkDashPathEffect.h"
-#include "include/core/SkColorFilter.h"
-#include "include/core/SkPoint3.h"
 #include "include/utils/SkShadowUtils.h"
-#include "include/core/SkMaskFilter.h"
-
-#include "platform/common/rs_log.h"
-#include "common/rs_obj_abs_geometry.h"
-#include "pipeline/rs_render_node_map.h"
+#include "pipeline/rs_draw_cmd_list.h"
 #include "pipeline/rs_paint_filter_canvas.h"
-#include "pipeline/rs_render_node.h"
+#include "platform/common/rs_log.h"
+#include "property/rs_transition_properties.h"
+#include "render/rs_blur_filter.h"
 #include "render/rs_image.h"
 #include "render/rs_path.h"
 #include "render/rs_shader.h"
-#include "render/rs_blur_filter.h"
 #include "render/rs_skia_filter.h"
 
 namespace OHOS {
@@ -133,8 +132,7 @@ void SetBorderEffect(SkPaint& paint, BorderStyle style, float width, float space
             spaceBetweenDot = width * PARAM_DOUBLE;
         }
         dotPath.addCircle(0.0f, 0.0f, width / PARAM_DOUBLE);
-        paint.setPathEffect(
-            SkPath1DPathEffect::Make(dotPath, spaceBetweenDot, 0.0, SkPath1DPathEffect::kRotate_Style));
+        paint.setPathEffect(SkPath1DPathEffect::Make(dotPath, spaceBetweenDot, 0.0, SkPath1DPathEffect::kRotate_Style));
     } else if (style == BorderStyle::DASHED) {
         double addLen = 0.0; // When left < 2 * gap, splits left to gaps.
         double delLen = 0.0; // When left > 2 * gap, add one dash and shortening them.
@@ -143,12 +141,12 @@ void SetBorderEffect(SkPaint& paint, BorderStyle style, float width, float space
             float leftLen = fmod((count - DASHED_LINE_LENGTH), (DASHED_LINE_LENGTH + 1));
             if (leftLen > DASHED_LINE_LENGTH - 1) {
                 delLen = (DASHED_LINE_LENGTH + 1 - leftLen) * width /
-                    static_cast<int>((count - DASHED_LINE_LENGTH) / (DASHED_LINE_LENGTH + 1) + 2);
+                         static_cast<int>((count - DASHED_LINE_LENGTH) / (DASHED_LINE_LENGTH + 1) + 2);
             } else {
                 addLen = leftLen * width / static_cast<int>((count - DASHED_LINE_LENGTH) / (DASHED_LINE_LENGTH + 1));
             }
         }
-        const float intervals[] = { width * DASHED_LINE_LENGTH - delLen, width  + addLen };
+        const float intervals[] = { width * DASHED_LINE_LENGTH - delLen, width + addLen };
         paint.setPathEffect(SkDashPathEffect::Make(intervals, SK_ARRAY_COUNT(intervals), 0.0));
     } else {
         paint.setPathEffect(nullptr);
@@ -194,8 +192,8 @@ void RSPropertiesPainter::DrawShadow(const RSProperties& properties, SkCanvas& c
     }
 }
 
-void RSPropertiesPainter::SaveLayerForFilter(const RSProperties& properties, SkCanvas& canvas,
-    std::shared_ptr<RSSkiaFilter>& filter)
+void RSPropertiesPainter::SaveLayerForFilter(
+    const RSProperties& properties, SkCanvas& canvas, std::shared_ptr<RSSkiaFilter>& filter)
 {
     SkPaint paint;
     paint.setAntiAlias(true);
@@ -309,8 +307,8 @@ void RSPropertiesPainter::DrawBorder(const RSProperties& properties, SkCanvas& c
                 rect.GetRight() - borderWidth / PARAM_DOUBLE, rect.GetBottom(), paint);
             // draw top and bottom border
             SetBorderEffect(paint, borderStyle, borderWidth, borderLengthHoriz / rawNumberHoriz, borderLengthHoriz);
-            canvas.drawLine(rect.left_ + addLen * borderWidth, rect.top_ + borderWidth / PARAM_DOUBLE,
-                rect.GetRight(), rect.top_ + borderWidth / PARAM_DOUBLE, paint);
+            canvas.drawLine(rect.left_ + addLen * borderWidth, rect.top_ + borderWidth / PARAM_DOUBLE, rect.GetRight(),
+                rect.top_ + borderWidth / PARAM_DOUBLE, paint);
             canvas.drawLine(rect.left_ + addLen * borderWidth, rect.GetBottom() - borderWidth / PARAM_DOUBLE,
                 rect.GetRight(), rect.GetBottom() - borderWidth / PARAM_DOUBLE, paint);
         }
@@ -335,5 +333,28 @@ void RSPropertiesPainter::DrawForegroundColor(const RSProperties& properties, Sk
     paint.setAntiAlias(true);
     canvas.drawRRect(RRect2SkRRect(properties.GetRRect()), paint);
 }
+
+void RSPropertiesPainter::DrawTransitionProperties(const std::unique_ptr<RSTransitionProperties>& transitionProperties,
+    const RSProperties& properties, RSPaintFilterCanvas& canvas)
+{
+    if (transitionProperties == nullptr) {
+        return;
+    }
+    // alpha
+    canvas.MultiplyAlpha(transitionProperties->GetAlpha());
+
+    // translate, currently translateZ is not used
+    auto translate = transitionProperties->GetTranslate();
+    canvas.translate(translate.x_, translate.y_);
+
+    // scale and rotate about the center of node, currently scaleZ is not used
+    auto center = properties.GetBoundsSize() * 0.5f;
+    auto scale = transitionProperties->GetScale();
+    canvas.translate(center.x_, center.y_);
+    canvas.scale(scale.x_, scale.y_);
+    canvas.concat(transitionProperties->GetRotate());
+    canvas.translate(-center.x_, -center.y_);
+}
+
 } // namespace Rosen
 } // namespace OHOS

@@ -59,11 +59,12 @@ public:
         return false;
     }
 
-    // specialized marshalling & unmarshalling function for certain types
+    // reloaded marshalling & unmarshalling function for types
 #define DECLARE_FUNCTION_OVERLOAD(TYPE)                       \
     static bool Marshalling(Parcel& parcel, const TYPE& val); \
     static bool Unmarshalling(Parcel& parcel, TYPE& val);
 
+    // basic types
     DECLARE_FUNCTION_OVERLOAD(bool)
     DECLARE_FUNCTION_OVERLOAD(int8_t)
     DECLARE_FUNCTION_OVERLOAD(uint8_t)
@@ -75,16 +76,19 @@ public:
     DECLARE_FUNCTION_OVERLOAD(uint64_t)
     DECLARE_FUNCTION_OVERLOAD(float)
     DECLARE_FUNCTION_OVERLOAD(double)
+    // skia types
     DECLARE_FUNCTION_OVERLOAD(sk_sp<SkData>)
     DECLARE_FUNCTION_OVERLOAD(sk_sp<SkFlattenable>)
     DECLARE_FUNCTION_OVERLOAD(SkPath)
     DECLARE_FUNCTION_OVERLOAD(RSShader)
     DECLARE_FUNCTION_OVERLOAD(RSPath)
+    // animation
     DECLARE_FUNCTION_OVERLOAD(std::shared_ptr<RSRenderPathAnimation>)
     DECLARE_FUNCTION_OVERLOAD(std::shared_ptr<RSRenderTransition>)
     DECLARE_FUNCTION_OVERLOAD(std::shared_ptr<RSRenderTransitionEffect>)
 #undef DECLARE_FUNCTION_OVERLOAD
 
+    // reloaded marshalling & unmarshalling function for animation template
 #define DECLARE_TEMPLATE_OVERLOAD(TEMPLATE)                                           \
     template<typename T>                                                              \
     static bool Marshalling(Parcel& parcel, const std::shared_ptr<TEMPLATE<T>>& val); \
@@ -95,6 +99,7 @@ public:
     DECLARE_TEMPLATE_OVERLOAD(RSRenderKeyframeAnimation)
 #undef DECLARE_TEMPLATE_OVERLOAD
 
+    // reloaded marshalling & unmarshalling function for std::vector
     template<typename T>
     static bool Marshalling(Parcel& parcel, const std::vector<T>& val);
     template<typename T>

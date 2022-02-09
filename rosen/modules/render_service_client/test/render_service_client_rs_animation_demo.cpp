@@ -17,6 +17,7 @@
 #include <iostream>
 
 #include "animation/rs_curve_animation.h"
+#include "animation/rs_transition.h"
 #include "display_type.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkImageInfo.h"
@@ -139,6 +140,18 @@ int main()
         std::cout << "animation1 finish" << std::endl;
     });
     surfaceNode->AddAnimation(animation1);
+
+    RSTransaction::FlushImplicitTransaction();
+    sleep(5);
+
+    std::cout << "adding transition" << std::endl;
+    auto animation2 = std::make_shared<RSTransition>(RSTransitionEffect::OPACITY, true);
+    animation2->SetDuration(100);
+    animation2->SetTimingCurve(RSAnimationTimingCurve::EASE_IN_OUT);
+    animation2->SetFinishCallback([]() {
+        std::cout << "animation2 finish" << std::endl;
+    });
+    surfaceNode->AddAnimation(animation2);
 
     RSTransaction::FlushImplicitTransaction();
     sleep(5);

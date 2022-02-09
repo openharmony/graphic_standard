@@ -19,9 +19,12 @@
 
 #include "animation/rs_render_animation.h"
 #include "common/rs_obj_abs_geometry.h"
+#include "pipeline/rs_context.h"
 #include "platform/common/rs_log.h"
 #ifdef ROSEN_OHOS
 #include "pipeline/rs_paint_filter_canvas.h"
+#include "property/rs_properties_painter.h"
+#include "property/rs_transition_properties.h"
 #endif
 
 namespace OHOS {
@@ -116,7 +119,8 @@ void RSRenderNode::ProcessRenderBeforeChildren(RSPaintFilterCanvas& canvas)
     if (boundsGeo && !boundsGeo->IsEmpty()) {
         canvas.concat(boundsGeo->GetMatrix());
     }
-    GetAnimationManager().DoTransition(canvas, GetRenderProperties());
+    auto transitionProperties = GetAnimationManager().GetTransitionProperties();
+    RSPropertiesPainter::DrawTransitionProperties(transitionProperties, GetRenderProperties(), canvas);
 #endif
 }
 

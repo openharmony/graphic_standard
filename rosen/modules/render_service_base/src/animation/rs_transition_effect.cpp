@@ -22,7 +22,7 @@ namespace Rosen {
 const std::shared_ptr<const RSTransitionEffect> RSTransitionEffect::OPACITY = RSTransitionEffect::Create()->Opacity(0);
 
 const std::shared_ptr<const RSTransitionEffect> RSTransitionEffect::SCALE =
-    RSTransitionEffect::Create()->Scale({ 0.f, 0.f, 0.f }, { 0.5f, 0.5f });
+    RSTransitionEffect::Create()->Scale({ 0.f, 0.f, 0.f });
 
 const std::shared_ptr<const RSTransitionEffect> RSTransitionEffect::EMPTY = RSTransitionEffect::Create();
 
@@ -39,9 +39,9 @@ std::shared_ptr<RSTransitionEffect> RSTransitionEffect::Opacity(float opacity)
     return shared_from_this();
 }
 
-std::shared_ptr<RSTransitionEffect> RSTransitionEffect::Scale(const Vector3f& scale, const Vector2f& pivot)
+std::shared_ptr<RSTransitionEffect> RSTransitionEffect::Scale(const Vector3f& scale)
 {
-    auto scaleEffect = std::make_shared<RSTransitionScale>(scale.x_, scale.y_, scale.z_, pivot.x_, pivot.y_);
+    auto scaleEffect = std::make_shared<RSTransitionScale>(scale.x_, scale.y_, scale.z_);
     transitionInEffects_.push_back(scaleEffect);
     transitionOutEffects_.push_back(scaleEffect);
     return shared_from_this();
@@ -55,10 +55,9 @@ std::shared_ptr<RSTransitionEffect> RSTransitionEffect::Translate(const Vector3f
     return shared_from_this();
 }
 
-std::shared_ptr<RSTransitionEffect> RSTransitionEffect::Rotate(const Vector4f& axisAngle, const Vector2f& pivot)
+std::shared_ptr<RSTransitionEffect> RSTransitionEffect::Rotate(const Vector4f& axisAngle)
 {
-    auto rotateEffect = std::make_shared<RSTransitionRotate>(
-        axisAngle.x_, axisAngle.y_, axisAngle.z_, axisAngle.w_, pivot.x_, pivot.y_);
+    auto rotateEffect = std::make_shared<RSTransitionRotate>(axisAngle.x_, axisAngle.y_, axisAngle.z_, axisAngle.w_);
     transitionInEffects_.push_back(rotateEffect);
     transitionOutEffects_.push_back(rotateEffect);
     return shared_from_this();
