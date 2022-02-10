@@ -52,18 +52,31 @@ void RSUIDirector::Init()
     AnimationCommandHelper::SetFinisCallbackProcessor(AnimationCallbackProcessor);
 
     RSRenderThread::Instance().Start();
+    GoForeground();
 }
 
 void RSUIDirector::GoForeground()
 {
     ROSEN_LOGI("RSUIDirector::GoForeground");
-    RSRenderThread::Instance().SetBackgroundStatus(false);
+    if (!isActive_) {
+        RSRenderThread::Instance().UpdateWindowStatus(true);
+        isActive_ = true;
+        if (auto node = RSNodeMap::Instance().GetNode<RSRootNode>(root_)) {
+            node->SetVisible(true);
+        }
+    }
 }
 
 void RSUIDirector::GoBackground()
 {
     ROSEN_LOGI("RSUIDirector::GoBackground");
-    RSRenderThread::Instance().SetBackgroundStatus(true);
+    if (isActive_) {
+        RSRenderThread::Instance().UpdateWindowStatus(false);
+        isActive_ = false;
+        if (auto node = RSNodeMap::Instance().GetNode<RSRootNode>(root_)) {
+            node->SetVisible(false);
+        }
+    }
 }
 
 void RSUIDirector::Destory()
@@ -72,38 +85,20 @@ void RSUIDirector::Destory()
         RSRenderThread::Instance().Detach(root_);
         root_ = 0;
     }
+    GoBackground();
 }
 
 void RSUIDirector::SetRSSurfaceNode(std::shared_ptr<RSSurfaceNode> surfaceNode)
 {
     surfaceNode_ = surfaceNode;
-    if (surfaceNode == nullptr) {
-        ROSEN_LOGE("RSUIDirector::SetRSSurfaceNode, no surfaceNode is ready to be set");
-        return;
-    }
-    if (root_ == 0) {
-        ROSEN_LOGE("RSUIDirector::SetRSSurfaceNode, no root exists");
-        return;
-    }
-    auto node = RSNodeMap::Instance().GetNode<RSRootNode>(root_);
-    if (node == nullptr) {
-        ROSEN_LOGE("RSUIDirector::SetRSSurfaceNode, get root node failed");
-        return;
-    }
-    node->AttachRSSurfaceNode(surfaceNode_, surfaceWidth_, surfaceHeight_);
+    AttachSurface();
 }
 
 void RSUIDirector::SetSurfaceNodeSize(int width, int height)
 {
     surfaceWidth_ = width;
     surfaceHeight_ = height;
-    if ((root_ == 0) || (surfaceNode_ == nullptr)) {
-        ROSEN_LOGE("RSUIDirector::SetSurfaceNodeSize, No root or SurfaceNode exists");
-        return;
-    }
-    if (auto node = RSNodeMap::Instance().GetNode<RSRootNode>(root_)) {
-        node->AttachRSSurfaceNode(surfaceNode_, surfaceWidth_, surfaceHeight_);
-    }
+    AttachSurface();
 }
 
 void RSUIDirector::SetRoot(NodeId root)
@@ -113,17 +108,18 @@ void RSUIDirector::SetRoot(NodeId root)
         return;
     }
     root_ = root;
-    auto node = RSNodeMap::Instance().GetNode<RSRootNode>(root_);
-    if (node == nullptr) {
-        ROSEN_LOGE("RSUIDirector::SetRoot, fail to get node");
-        return;
-    }
-    if (surfaceNode_ == nullptr) {
-        ROSEN_LOGE("RSUIDirector::SetRoot, No SurfaceNode found");
-        return;
-    }
+    AttachSurface();
+}
 
-    node->AttachRSSurfaceNode(surfaceNode_, surfaceWidth_, surfaceHeight_);
+void RSUIDirector::AttachSurface()
+{
+    auto node = RSNodeMap::Instance().GetNode<RSRootNode>(root_);
+    if (node != nullptr && surfaceNode_ != nullptr) {
+        node->AttachRSSurfaceNode(surfaceNode_, surfaceWidth_, surfaceHeight_);
+        ROSEN_LOGD("RSUIDirector::AttachSurface [%llu]", surfaceNode_->GetId());
+    } else {
+        ROSEN_LOGD("RSUIDirector::AttachSurface not ready");
+    }
 }
 
 void RSUIDirector::SetTimeStamp(uint64_t timeStamp)

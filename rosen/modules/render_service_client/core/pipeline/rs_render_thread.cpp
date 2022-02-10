@@ -96,7 +96,6 @@ void RSRenderThread::Start()
 {
     ROSEN_LOGD("RSRenderThread start.");
     running_.store(true);
-    SetBackgroundStatus(false);
     if (thread_ == nullptr) {
         thread_ = std::make_unique<std::thread>(&RSRenderThread::RenderLoop, this);
     }
@@ -190,15 +189,20 @@ void RSRenderThread::OnVsync(uint64_t timestamp)
     mValue = (mValue + 1) % 2;
     RS_TRACE_INT("Vsync-client", mValue);
     timestamp_ = timestamp;
-    if (!backgroundStatus_.load()) {
+    if (activeWindowCnt_.load() > 0) {
         StartTimer(0); // start render-loop now
     }
     ROSEN_TRACE_END(BYTRACE_TAG_GRAPHIC_AGP);
 }
 
-void RSRenderThread::SetBackgroundStatus(bool status)
+void RSRenderThread::UpdateWindowStatus(bool active)
 {
-    backgroundStatus_.store(status);
+    if (active) {
+        activeWindowCnt_++;
+    } else {
+        activeWindowCnt_--;
+    }
+    ROSEN_LOGD("RSRenderThread UpdateWindowStatus %d, cur activeWindowCnt_ %d", active, activeWindowCnt_.load());
 }
 
 void RSRenderThread::StartTimer(uint64_t interval)

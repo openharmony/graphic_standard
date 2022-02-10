@@ -15,6 +15,7 @@
 #ifndef RENDER_SERVICE_CLIENT_CORE_UI_RS_UI_DIRECTOR_H
 #define RENDER_SERVICE_CLIENT_CORE_UI_RS_UI_DIRECTOR_H
 
+#include <atomic>
 #include <mutex>
 
 #include "common/rs_common_def.h"
@@ -45,6 +46,7 @@ public:
 
 private:
     void Destory();
+    void AttachSurface();
     static void RecvMessages();
     static void RecvMessages(std::shared_ptr<RSTransactionData> cmds);
     static void ProcessMessages(std::shared_ptr<RSTransactionData> cmds); // receive message
@@ -59,6 +61,7 @@ private:
     std::mutex mutex_;
     NodeId root_ = 0;
 
+    bool isActive_ = false;
     uint64_t refreshPeriod_ = 16666667;
     uint64_t timeStamp_ = 0;
     std::shared_ptr<RSSurfaceNode> surfaceNode_ = nullptr;
