@@ -37,14 +37,17 @@ ohos_shared_library("librender_service") {
   include_dirs = [
     "core",
     "//foundation/graphic/standard/rosen/include",
+    "//foundation/graphic/standard/rosen/modules/composer/vsync/include",
     "//foundation/graphic/standard/rosen/modules/utils",
     "//utils/native/base/include",
     "//utils/system/safwk/native/include",
     "//foundation/graphic/standard/utils/log",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler/include",
   ]
 
   deps = [
     "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
     "//foundation/graphic/standard:libsurface",
     "//foundation/graphic/standard:libwmclient",
     "//foundation/graphic/standard/rosen/modules/composer:libcomposer",

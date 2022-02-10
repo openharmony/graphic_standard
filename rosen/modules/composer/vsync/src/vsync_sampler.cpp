@@ -48,7 +48,7 @@ VSyncSampler::VSyncSampler()
 
 void VSyncSampler::Reset()
 {
-    std::lock_guard<std::recursive_mutex> lock(mutex_);
+    std::lock_guard<std::mutex> lock(mutex_);
     period_ = 0;
     phase_ = 0;
     referenceTime_ = 0;
@@ -58,9 +58,8 @@ void VSyncSampler::Reset()
     modeUpdated_ = false;
 }
 
-void VSyncSampler::ResetError()
+void VSyncSampler::ResetErrorLocked()
 {
-    std::lock_guard<std::recursive_mutex> lock(mutex_);
     presentFenceTimeOffset_ = 0;
     error_ = 0;
     for (uint32_t i = 0; i < NUM_PRESENT; i++) {
@@ -70,7 +69,7 @@ void VSyncSampler::ResetError()
 
 void VSyncSampler::BeginSample()
 {
-    std::lock_guard<std::recursive_mutex> lock(mutex_);
+    std::lock_guard<std::mutex> lock(mutex_);
     numSamples_ = 0;
     modeUpdated_ = false;
 }
@@ -81,7 +80,7 @@ bool VSyncSampler::AddSample(int64_t timeStamp)
         return false;
     }
 
-    std::lock_guard<std::recursive_mutex> lock(mutex_);
+    std::lock_guard<std::mutex> lock(mutex_);
     if (numSamples_ == 0) {
         firstSampleIndex_ = 0;
         referenceTime_ = timeStamp;
@@ -97,10 +96,10 @@ bool VSyncSampler::AddSample(int64_t timeStamp)
     uint32_t index = (firstSampleIndex_ + numSamples_ - 1) % MAX_SAMPLES;
     samples_[index] = timeStamp;
 
-    UpdateMode();
+    UpdateModeLocked();
 
     if (numResyncSamplesSincePresent_++ > MAX_SAMPLES_WITHOUT_PRESENT) {
-        ResetError();
+        ResetErrorLocked();
     }
 
     // 1/2 just a empirical value
@@ -108,7 +107,7 @@ bool VSyncSampler::AddSample(int64_t timeStamp)
 }
 
 
-void VSyncSampler::UpdateMode()
+void VSyncSampler::UpdateModeLocked()
 {
     if (numSamples_ >= MIN_SAMPLES_FOR_UPDATE) {
         int64_t sum = 0;
@@ -146,7 +145,7 @@ void VSyncSampler::UpdateMode()
     }
 }
 
-void VSyncSampler::UpdateError()
+void VSyncSampler::UpdateErrorLocked()
 {
     if (!modeUpdated_) {
         return;
@@ -184,7 +183,7 @@ void VSyncSampler::UpdateError()
 
 bool VSyncSampler::AddPresentFenceTime(int64_t timestamp)
 {
-    std::lock_guard<std::recursive_mutex> lock(mutex_);
+    std::lock_guard<std::mutex> lock(mutex_);
     presentFenceTime_[presentFenceTimeOffset_] = timestamp;
     presentFenceTimeOffset_ = (presentFenceTimeOffset_ + 1) % NUM_PRESENT;
     numResyncSamplesSincePresent_ = 0;
@@ -193,7 +192,7 @@ bool VSyncSampler::AddPresentFenceTime(int64_t timestamp)
         return false;
     }
 
-    UpdateError();
+    UpdateErrorLocked();
 
     return error_ > g_errorThreshold;
 }

@@ -25,6 +25,7 @@
 #include "hdi_layer.h"
 #include "hdi_output.h"
 #include "surface_type.h"
+#include "vsync_sampler.h"
 
 namespace OHOS {
 namespace Rosen {
@@ -78,6 +79,9 @@ private:
     int32_t UpdateLayerCompType(uint32_t screenId, const std::unordered_map<uint32_t, LayerPtr> &layersMap);
 
     inline void CheckRet(int32_t ret, const char* func);
+
+    sptr<VSyncSampler> sampler_ = nullptr;
+    sptr<SyncFence> lastPresentFence_ = SyncFence::INVALID_FENCE;
 };
 } // namespace Rosen
 } // namespace OHOS

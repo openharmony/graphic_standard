@@ -32,6 +32,8 @@ public:
 
     sptr<Surface> CreateNodeAndSurface(const RSSurfaceRenderNodeConfig& config) override;
 
+    virtual sptr<IVSyncConnection> CreateVSyncConnection(const std::string& name) override;
+
     ScreenId GetDefaultScreenId() override;
 
     // mirrorId: decide which screen id to mirror, INVALID_SCREEN_ID means do not mirror any screen.

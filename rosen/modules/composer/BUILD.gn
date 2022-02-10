@@ -46,6 +46,13 @@ ohos_shared_library("libcomposer") {
     "hdi_backend/src/hdi_output.cpp",
     "hdi_backend/src/hdi_screen.cpp",
     "vsync/src/vsync.cpp",
+    "vsync/src/vsync_connection_proxy.cpp",
+    "vsync/src/vsync_connection_stub.cpp",
+    "vsync/src/vsync_controller.cpp",
+    "vsync/src/vsync_distributor.cpp",
+    "vsync/src/vsync_generator.cpp",
+    "vsync/src/vsync_receiver.cpp",
+    "vsync/src/vsync_sampler.cpp",
   ]
 
   include_dirs = [ "//foundation/graphic/standard/utils/log" ]
@@ -66,10 +73,12 @@ ohos_shared_library("libcomposer") {
   ]
 
   public_deps = [
+    "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
     "//foundation/communication/ipc/interfaces/innerkits/ipc_core:ipc_core",
     "//foundation/graphic/standard/utils:buffer_handle",
     "//foundation/graphic/standard/utils:scoped_bytrace",
     "//foundation/graphic/standard/utils:semaphore",
+    "//foundation/graphic/standard/utils:socketpair",
     "//foundation/graphic/standard/utils:sync_fence",
     "//utils/native/base:utils",
   ]

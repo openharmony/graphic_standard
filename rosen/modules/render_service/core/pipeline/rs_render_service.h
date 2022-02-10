@@ -19,6 +19,8 @@
 
 #include "screen_manager/rs_screen_manager.h"
 #include "transaction/rs_render_service_stub.h"
+#include "vsync_controller.h"
+#include "vsync_distributor.h"
 
 namespace OHOS {
 namespace Rosen {
@@ -48,6 +50,12 @@ private:
     friend class RSRenderServiceConnection;
     mutable std::mutex mutex_;
     std::map<sptr<IRemoteObject>, sptr<RSIRenderServiceConnection>> connections_;
+
+    sptr<VSyncController> rsVSyncController_;
+    sptr<VSyncController> appVSyncController_;
+
+    sptr<VSyncDistributor> rsVSyncDistributor_;
+    sptr<VSyncDistributor> appVSyncDistributor_;
 };
 } // Rosen
 } // OHOS

@@ -33,6 +33,7 @@
 #include "screen_manager/rs_screen_data.h"
 #include "screen_manager/rs_screen_mode_info.h"
 #include "screen_manager/screen_types.h"
+#include "vsync_receiver.h"
 
 namespace OHOS {
 namespace Rosen {
@@ -58,6 +59,10 @@ public:
     void ExecuteSynchronousTask(const std::shared_ptr<RSSyncTask>& task) override;
 
     std::shared_ptr<RSSurface> CreateNodeAndSurface(const RSSurfaceRenderNodeConfig& config);
+
+    std::shared_ptr<VSyncReceiver> CreateVSyncReceiver(
+        const std::string& name,
+        const std::shared_ptr<OHOS::AppExecFwk::EventHandler> &looper = nullptr);
 
     bool TakeSurfaceCapture(NodeId id, std::shared_ptr<SurfaceCaptureCallback> callback);
 

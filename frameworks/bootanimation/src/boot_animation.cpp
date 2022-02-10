@@ -16,6 +16,8 @@
 #include "boot_animation.h"
 #include "util.h"
 #include "rs_trace.h"
+#include "transaction/rs_render_service_client.h"
+#include "transaction/rs_interfaces.h"
 
 using namespace OHOS;
 static const std::string BOOT_PIC_ZIP = "/system/etc/init/bootpic.zip";
@@ -77,24 +79,29 @@ void BootAnimation::Draw()
     RequestNextVsync();
 }
 
-void BootAnimation::Init(int32_t width, int32_t height)
+void BootAnimation::Init(int32_t width, int32_t height, const std::shared_ptr<AppExecFwk::EventHandler>& handler)
 {
     ROSEN_TRACE_BEGIN(BYTRACE_TAG_GRAPHIC_AGP, "BootAnimation::Init");
     windowWidth_ = width;
     windowHeight_ = height;
     LOG("Init enter, width: %{public}d, height: %{public}d", width, height);
 
+    auto& rsClient = OHOS::Rosen::RSInterfaces::GetInstance();
+    while (receiver_ == nullptr) {
+        receiver_ = rsClient.CreateVSyncReceiver("BootAnimation", handler);
+    }
+    receiver_->Init();
+
     InitBootWindow();
     InitRsSurface();
     InitPicCoordinates();
 
-    std::vector<uint32_t> freqs;
-    VsyncHelper::Current()->GetSupportedVsyncFrequencys(freqs);
+    std::vector<uint32_t> freqs = {60, 30};
     if (freqs.size() >= 0x2) {
-        freq_ = freqs[1];
+        freq_ = freqs[0];
     }
 
-    LOG("ready to unzip pics");
+    LOG("ready to unzip pics, freq is %{public}d", freq_);
     UnzipFile(BOOT_PIC_ZIP, DST_FILE_PATH);
     CountPicNum(DST_FILE_PATH.c_str(), maxPicNum_);
     LOG("unzip pics finish, maxPicNum: %{public}d", maxPicNum_);
@@ -165,17 +172,12 @@ void BootAnimation::RequestNextVsync()
     if (needCheckExit) {
         CheckExitAnimation();
     }
-    struct FrameCallback cb = {
-        .frequency_ = freq_,
-        .timestamp_ = 0,
-        .userdata_ = nullptr,
+
+    OHOS::Rosen::VSyncReceiver::FrameCallback fcb = {
+        .userData_ = this,
         .callback_ = std::bind(&BootAnimation::Draw, this),
     };
-
-    GSError ret = VsyncHelper::Current()->RequestFrameCallback(cb);
-    if (ret) {
-        LOG("RequestFrameCallback inner %{public}d", ret);
-    }
+    receiver_->RequestNextVSync(fcb);
 }
 
 void BootAnimation::CheckExitAnimation()
