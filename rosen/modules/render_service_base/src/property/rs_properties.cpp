@@ -18,10 +18,8 @@
 #include <algorithm>
 #include <securec.h>
 
-#include "command/rs_node_command.h"
 #include "platform/common/rs_log.h"
 #include "render/rs_filter.h"
-#include "transaction/rs_transaction_proxy.h"
 #ifdef ROSEN_OHOS
 #include "common/rs_obj_abs_geometry.h"
 #else

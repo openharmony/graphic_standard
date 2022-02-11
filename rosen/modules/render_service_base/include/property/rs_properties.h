@@ -18,7 +18,6 @@
 
 #include <vector>
 
-#include "command/rs_command.h"
 #include "common/rs_matrix3.h"
 #include "common/rs_vector4.h"
 #include "property/rs_properties_def.h"

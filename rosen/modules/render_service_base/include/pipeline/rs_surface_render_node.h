@@ -20,14 +20,14 @@
 #include <surface.h>
 
 #include "display_type.h"
-
-#include "pipeline/rs_render_node.h"
 #include "ipc_callbacks/buffer_available_callback.h"
+#include "pipeline/rs_render_node.h"
 #include "refbase.h"
 
 class SkCanvas;
 namespace OHOS {
 namespace Rosen {
+class RSCommand;
 class RSSurfaceRenderNode : public RSRenderNode {
 public:
     using WeakPtr = std::weak_ptr<RSSurfaceRenderNode>;

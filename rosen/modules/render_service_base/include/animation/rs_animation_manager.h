@@ -30,10 +30,11 @@ class RSPaintFilterCanvas;
 class RSProperties;
 class RSRenderAnimation;
 class RSRenderNode;
+class RSTransitionProperties;
 
 class RSAnimationManager {
 public:
-    using TransitionCallback = std::function<void(RSPaintFilterCanvas& canvas, const RSProperties& renderProperties)>;
+    using TransitionCallback = std::function<void(const std::unique_ptr<RSTransitionProperties>& transitionProperties)>;
     RSAnimationManager() = default;
     ~RSAnimationManager() = default;
 
@@ -45,7 +46,7 @@ public:
 
     void RegisterTransition(AnimationId id, const TransitionCallback& transition);
     void UnregisterTransition(AnimationId id);
-    void DoTransition(RSPaintFilterCanvas& canvas, const RSProperties& renderProperties);
+    std::unique_ptr<RSTransitionProperties> GetTransitionProperties();
     bool HasTransition() const;
 
 private:

@@ -24,8 +24,8 @@
 #include "pipeline/rs_dirty_region_manager.h"
 #include "pipeline/rs_paint_filter_canvas.h"
 #include "pipeline/rs_render_node.h"
-#include "pipeline/rs_render_node_map.h"
 #include "platform/common/rs_log.h"
+#include "property/rs_transition_properties.h"
 
 namespace OHOS {
 namespace Rosen {
@@ -134,16 +134,18 @@ void RSAnimationManager::ClearTransition(AnimationId id)
     });
 }
 
-void RSAnimationManager::DoTransition(RSPaintFilterCanvas& canvas, const RSProperties& renderProperties)
+std::unique_ptr<RSTransitionProperties> RSAnimationManager::GetTransitionProperties()
 {
     if (transition_.empty()) {
-        return;
+        return nullptr;
     }
+    auto transitionProperties = std::make_unique<RSTransitionProperties>();
     for (auto& [animationId, transition] : transition_) {
         if (transition != nullptr) {
-            transition(canvas, renderProperties);
+            transition(transitionProperties);
         }
     }
+    return transitionProperties;
 }
 
 bool RSAnimationManager::HasTransition() const

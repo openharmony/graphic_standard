@@ -20,7 +20,6 @@
 #include <vector>
 
 #include "common/rs_macros.h"
-#include "common/rs_vector2.h"
 #include "common/rs_vector3.h"
 #include "common/rs_vector4.h"
 
@@ -42,9 +41,9 @@ public:
         const std::shared_ptr<RSTransitionEffect>& transitionOut);
 
     std::shared_ptr<RSTransitionEffect> Opacity(float opacity = 0.0f);
-    std::shared_ptr<RSTransitionEffect> Scale(const Vector3f& scale, const Vector2f& pivot = { 0.5f, 0.5f });
+    std::shared_ptr<RSTransitionEffect> Scale(const Vector3f& scale);
     std::shared_ptr<RSTransitionEffect> Translate(const Vector3f& translate);
-    std::shared_ptr<RSTransitionEffect> Rotate(const Vector4f& axisAngle, const Vector2f& pivot = { 0.5f, 0.5f });
+    std::shared_ptr<RSTransitionEffect> Rotate(const Vector4f& axisAngle);
 
 private:
     RSTransitionEffect() = default;

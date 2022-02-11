@@ -16,7 +16,7 @@
 #include "animation/rs_render_transition.h"
 
 #include "animation/rs_transition_effect.h"
-#include "pipeline/rs_canvas_render_node.h"
+#include "pipeline/rs_render_node.h"
 #include "platform/common/rs_log.h"
 #include "transaction/rs_marshalling_helper.h"
 
@@ -100,9 +100,9 @@ void RSRenderTransition::OnAttach()
         return;
     }
     target->GetAnimationManager().RegisterTransition(
-        GetAnimationId(), [=](RSPaintFilterCanvas& canvas, const RSProperties& renderProperties) {
+        GetAnimationId(), [=](const std::unique_ptr<RSTransitionProperties>& transitionProperties) {
             for (auto& effect : effects_) {
-                effect->OnTransition(canvas, renderProperties, currentFraction_);
+                effect->OnTransition(transitionProperties, currentFraction_);
             }
         });
 }

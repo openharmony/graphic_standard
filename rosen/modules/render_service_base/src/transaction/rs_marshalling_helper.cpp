@@ -225,7 +225,7 @@ bool RSMarshallingHelper::Marshalling(Parcel& parcel, const std::vector<T>& val)
 template<typename T>
 bool RSMarshallingHelper::Unmarshalling(Parcel& parcel, std::vector<T>& val)
 {
-    auto size = parcel.ReadUint32();
+    uint32_t size = 0;
     if (!Unmarshalling(parcel, size)) {
         return false;
     }

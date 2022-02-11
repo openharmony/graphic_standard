@@ -16,13 +16,15 @@
 #ifndef RENDER_SERVICE_CLIENT_CORE_PROPERTY_RS_PROPERTIES_PAINTER_H
 #define RENDER_SERVICE_CLIENT_CORE_PROPERTY_RS_PROPERTIES_PAINTER_H
 
-#include "pipeline/rs_draw_cmd_list.h"
 #include "property/rs_properties.h"
 
 namespace OHOS {
 namespace Rosen {
+class DrawCmdList;
 class RSSkiaFilter;
 class RSPaintFilterCanvas;
+class RSTransitionProperties;
+
 class RSPropertiesPainter {
 public:
     static void Clip(SkCanvas& canvas, RectF rect);
@@ -35,6 +37,8 @@ public:
         const RSProperties& properties, SkCanvas& canvas, std::shared_ptr<RSSkiaFilter>& filter);
     static void RestoreForFilter(SkCanvas& canvas);
     static void DrawForegroundColor(const RSProperties& properties, SkCanvas& canvas);
+    static void DrawTransitionProperties(const std::unique_ptr<RSTransitionProperties>& transitionProperties,
+        const RSProperties& properties, RSPaintFilterCanvas& canvas);
 };
 } // namespace Rosen
 } // namespace OHOS
