@@ -47,6 +47,14 @@ public:
     MOCK_METHOD3(SetScreenClientDamage, int32_t(uint32_t, uint32_t, IRect&));
     MOCK_METHOD2(SetScreenVsyncEnabled, int32_t(uint32_t, bool));
     MOCK_METHOD3(GetScreenReleaseFence, int32_t(uint32_t, std::vector<uint32_t>&, std::vector<sptr<SyncFence>>&));
+    MOCK_METHOD2(GetScreenSupportedColorGamuts, int32_t(uint32_t, std::vector<ColorGamut>&));
+    MOCK_METHOD2(SetScreenColorGamut, int32_t(uint32_t, ColorGamut));
+    MOCK_METHOD2(GetScreenColorGamut, int32_t(uint32_t, ColorGamut&));
+    MOCK_METHOD2(SetScreenGamutMap, int32_t(uint32_t, GamutMap));
+    MOCK_METHOD2(GetScreenGamutMap, int32_t(uint32_t, GamutMap&));
+    MOCK_METHOD2(SetScreenColorTransform, int32_t(uint32_t, const float*));
+    MOCK_METHOD2(GetHDRCapabilityInfos, int32_t(uint32_t, HDRCapability&));
+    MOCK_METHOD2(GetSupportedMetaDataKey, int32_t(uint32_t, std::vector<HDRMetadataKey>&));
     MOCK_METHOD2(Commit, int32_t(uint32_t, sptr<SyncFence>&));
     /* set & get device screen info end */
 
@@ -62,6 +70,11 @@ public:
     MOCK_METHOD3(SetLayerCrop, int32_t(uint32_t, uint32_t, IRect&));
     MOCK_METHOD3(SetLayerZorder, int32_t(uint32_t, uint32_t, uint32_t));
     MOCK_METHOD3(SetLayerPreMulti, int32_t(uint32_t, uint32_t, bool));
+    MOCK_METHOD3(SetLayerColorTransform, int32_t(uint32_t, uint32_t, const float*));
+    MOCK_METHOD3(SetLayerColorDataSpace, int32_t(uint32_t, uint32_t, ColorDataSpace));
+    MOCK_METHOD3(GetlayerColorDataSpace, int32_t(uint32_t, uint32_t, ColorDataSpace&));
+    MOCK_METHOD3(SetLayerMetaData, int32_t(uint32_t, uint32_t, const std::vector<HDRMetaData>&));
+    MOCK_METHOD4(SetLayerMetaDataSet, int32_t(uint32_t, uint32_t, HDRMetadataKey, const std::vector<uint8_t>&));
     /* set & get device layer info end */
 
     MOCK_METHOD3(CreateLayer, int32_t(uint32_t, const LayerInfo&, uint32_t&));

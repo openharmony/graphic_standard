@@ -800,4 +800,16 @@ void BufferQueue::Dump(std::string &result)
     result.append("      bufferQueueCache:\n");
     DumpCache(result);
 }
+
+GSError BufferQueue::SetColorGamut(SurfaceColorGamut colorGamut)
+{
+    colorGamut_ = colorGamut;
+    return GSERROR_OK;
+}
+
+GSError BufferQueue::GetColorGamut(SurfaceColorGamut &colorGamut)
+{
+    colorGamut = colorGamut_;
+    return GSERROR_OK;
+}
 }; // namespace OHOS

@@ -251,6 +251,72 @@ int32_t HdiDevice::GetScreenReleaseFence(uint32_t screenId, std::vector<uint32_t
     return ret;
 }
 
+int32_t HdiDevice::GetScreenSupportedColorGamuts(uint32_t screenId, std::vector<ColorGamut> &gamuts)
+{
+    uint32_t mockGamutsNum = 1;
+    gamuts.resize(mockGamutsNum);
+    gamuts.push_back(ColorGamut::COLOR_GAMUT_SRGB);
+    return DISPLAY_SUCCESS;
+}
+
+int32_t HdiDevice::SetScreenColorGamut(uint32_t screenId, ColorGamut gamut)
+{
+    return DISPLAY_SUCCESS;
+}
+
+int32_t HdiDevice::GetScreenColorGamut(uint32_t screenId, ColorGamut &gamut)
+{
+    gamut = ColorGamut::COLOR_GAMUT_SRGB;
+    return DISPLAY_SUCCESS;
+}
+
+int32_t HdiDevice::SetScreenGamutMap(uint32_t screenId, GamutMap gamutMap)
+{
+    return DISPLAY_SUCCESS;
+}
+
+int32_t HdiDevice::GetScreenGamutMap(uint32_t screenId, GamutMap &gamutMap)
+{
+    gamutMap = GamutMap::GAMUT_MAP_CONSTANT;
+    return DISPLAY_SUCCESS;
+}
+
+int32_t HdiDevice::SetScreenColorTransform(uint32_t screenId, const float *matrix)
+{
+    return DISPLAY_SUCCESS;
+}
+
+int32_t HdiDevice::GetHDRCapabilityInfos(uint32_t screenId, HDRCapability &info)
+{
+    info.formatCount = 0;
+    info.formats = nullptr;
+    info.maxLum = 1000;  // mock data, 1000 is maxLum
+    info.maxAverageLum = 600;  // mock data, 600 is maxAverageLum
+    info.minLum = 200;  // mock data, 200 is minLum
+    return DISPLAY_SUCCESS;
+}
+
+int32_t HdiDevice::GetSupportedMetaDataKey(uint32_t screenId, std::vector<HDRMetadataKey> &keys)
+{
+    uint32_t keysNum = 14;  // keys number is 14
+    keys.resize(keysNum);
+    keys.push_back(HDRMetadataKey::MATAKEY_RED_PRIMARY_X);
+    keys.push_back(HDRMetadataKey::MATAKEY_RED_PRIMARY_Y);
+    keys.push_back(HDRMetadataKey::MATAKEY_GREEN_PRIMARY_X);
+    keys.push_back(HDRMetadataKey::MATAKEY_GREEN_PRIMARY_Y);
+    keys.push_back(HDRMetadataKey::MATAKEY_BLUE_PRIMARY_X);
+    keys.push_back(HDRMetadataKey::MATAKEY_BLUE_PRIMARY_Y);
+    keys.push_back(HDRMetadataKey::MATAKEY_WHITE_PRIMARY_X);
+    keys.push_back(HDRMetadataKey::MATAKEY_WHITE_PRIMARY_Y);
+    keys.push_back(HDRMetadataKey::MATAKEY_MAX_LUMINANCE);
+    keys.push_back(HDRMetadataKey::MATAKEY_MIN_LUMINANCE);
+    keys.push_back(HDRMetadataKey::MATAKEY_MAX_CONTENT_LIGHT_LEVEL);
+    keys.push_back(HDRMetadataKey::MATAKEY_MAX_FRAME_AVERAGE_LIGHT_LEVEL);
+    keys.push_back(HDRMetadataKey::MATAKEY_HDR10_PLUS);
+    keys.push_back(HDRMetadataKey::MATAKEY_HDR_VIVID);
+    return DISPLAY_SUCCESS;
+}
+
 int32_t HdiDevice::Commit(uint32_t screenId, sptr<SyncFence> &fence)
 {
     ScopedBytrace bytrace(__func__);
@@ -342,6 +408,33 @@ int32_t HdiDevice::SetLayerPreMulti(uint32_t screenId, uint32_t layerId, bool is
 {
     CHECK_FUNC(layerFuncs_, layerFuncs_->SetLayerPreMulti);
     return layerFuncs_->SetLayerPreMulti(screenId, layerId, isPreMulti);
+}
+
+int32_t HdiDevice::SetLayerColorTransform(uint32_t screenId, uint32_t layerId, const float *matrix)
+{
+    return DISPLAY_SUCCESS;
+}
+
+int32_t HdiDevice::SetLayerColorDataSpace(uint32_t screenId, uint32_t layerId, ColorDataSpace colorSpace)
+{
+    return DISPLAY_SUCCESS;
+}
+
+int32_t HdiDevice::GetlayerColorDataSpace(uint32_t screenId, uint32_t layerId, ColorDataSpace &colorSpace)
+{
+    colorSpace = ColorDataSpace::BT709_SRGB_FULL;
+    return DISPLAY_SUCCESS;
+}
+
+int32_t HdiDevice::SetLayerMetaData(uint32_t screenId, uint32_t layerId, const std::vector<HDRMetaData> &metaData)
+{
+    return DISPLAY_SUCCESS;
+}
+
+int32_t HdiDevice::SetLayerMetaDataSet(uint32_t screenId, uint32_t layerId, HDRMetadataKey key,
+                                       const std::vector<uint8_t> &metaData)
+{
+    return DISPLAY_SUCCESS;
 }
 /* set & get device layer info end */
 

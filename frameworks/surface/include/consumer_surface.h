@@ -82,6 +82,9 @@ public:
 
     GSError CleanCache() override;
 
+    GSError SetColorGamut(SurfaceColorGamut colorGamut) override;
+    GSError GetColorGamut(SurfaceColorGamut &colorGamut) override;
+
 private:
     std::map<std::string, std::string> userData_;
     sptr<BufferQueueProducer> producer_ = nullptr;

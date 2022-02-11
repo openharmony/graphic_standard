@@ -51,6 +51,7 @@ public:
     uint64_t     GetUniqueId() override;
 
     GSError CleanCache() override;
+    GSError SetColorGamut(SurfaceColorGamut colorGamut) override;
 
     virtual GSError AttachBuffer(sptr<SurfaceBuffer>& buffer) override;
     virtual GSError DetachBuffer(sptr<SurfaceBuffer>& buffer) override;

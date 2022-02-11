@@ -46,6 +46,15 @@ public:
     int32_t SetScreenBacklight(uint32_t level) const;
     int32_t SetScreenVsyncEnabled(bool enabled) const;
 
+    int32_t GetScreenSupportedColorGamuts(std::vector<ColorGamut> &gamuts) const;
+    int32_t SetScreenColorGamut(ColorGamut gamut) const;
+    int32_t GetScreenColorGamut(ColorGamut &gamut) const;
+    int32_t SetScreenGamutMap(GamutMap gamutMap) const;
+    int32_t GetScreenGamutMap(GamutMap &gamutMap) const;
+    int32_t SetScreenColorTransform(const float *matrix) const;
+    int32_t GetHDRCapabilityInfos(HDRCapability &info) const;
+    int32_t GetSupportedMetaDataKey(std::vector<HDRMetadataKey> &keys) const;
+
     static void OnVsync(uint32_t sequence, uint64_t ns, void *data);
 
     /* only used for mock tests */
