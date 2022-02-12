@@ -16,6 +16,7 @@
 #include "rs_render_service.h"
 #include "rs_main_thread.h"
 #include "rs_render_service_connection.h"
+#include "vsync_generator.h"
 
 #include <unordered_set>
 #include <unistd.h>
@@ -38,10 +39,19 @@ bool RSRenderService::Init()
         return false;
     }
 
+    auto generator = CreateVSyncGenerator();
+
+    // The offset needs to be set
+    rsVSyncController_ = new VSyncController(generator, 0);
+    appVSyncController_ = new VSyncController(generator, 0);
+    rsVSyncDistributor_ = new VSyncDistributor(rsVSyncController_, "rs");
+    appVSyncDistributor_ = new VSyncDistributor(appVSyncController_, "app");
+
     mainThread_ = RSMainThread::Instance();
     if (mainThread_ == nullptr) {
         return false;
     }
+    mainThread_->rsVSyncDistributor_ = rsVSyncDistributor_;
     mainThread_->Init();
  
     auto samgr = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
@@ -66,7 +76,7 @@ sptr<RSIRenderServiceConnection> RSRenderService::CreateConnection(const sptr<RS
 
     auto tokenObj = token->AsObject();
     sptr<RSIRenderServiceConnection> newConn(
-        new RSRenderServiceConnection(remotePid, this, mainThread_, screenManager_, tokenObj));
+        new RSRenderServiceConnection(remotePid, this, mainThread_, screenManager_, tokenObj, appVSyncDistributor_));
 
     sptr<RSIRenderServiceConnection> tmp;
     std::unique_lock<std::mutex> lock(mutex_);

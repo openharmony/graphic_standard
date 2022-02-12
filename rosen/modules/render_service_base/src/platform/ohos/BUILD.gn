@@ -21,6 +21,7 @@ group("ohos") {
 config("export_config") {
   include_dirs = [
     "//foundation/graphic/standard/rosen/include",
+    "//foundation/graphic/standard/rosen/modules/composer/vsync/include",
     "//utils/native/base/include",
     "//utils/system/safwk/native/include",
     "//foundation/graphic/standard/frameworks/surface/src",
@@ -74,6 +75,7 @@ ohos_source_set("rosen_ohos_sources") {
     "//foundation/ace/ace_engine/build/external_config/flutter/skia:ace_skia_ohos",
     "//foundation/graphic/standard:libsurface",
     "//foundation/graphic/standard:libvsync_client",
+    "//foundation/graphic/standard/rosen/modules/composer:libcomposer",
     "//foundation/graphic/standard/utils:sync_fence",
     "//foundation/multimedia/image_standard/interfaces/innerkits:image_native",
     "//utils/native/base:utils",

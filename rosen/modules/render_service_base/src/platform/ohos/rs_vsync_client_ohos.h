@@ -20,6 +20,7 @@
 #include <vector>
 
 #include <vsync_helper.h>
+#include "vsync_receiver.h"
 
 #include "platform/drawing/rs_vsync_client.h"
 
@@ -42,6 +43,7 @@ private:
     std::shared_ptr<AppExecFwk::EventRunner> runner_ = nullptr;
     std::shared_ptr<AppExecFwk::EventHandler> handler_ = nullptr;
     RSVsyncClient::VsyncCallback vsyncCallback_ = nullptr;
+    std::shared_ptr<VSyncReceiver> receiver_ = nullptr;
 };
 } // namespace Rosen
 } // namespace OHOS

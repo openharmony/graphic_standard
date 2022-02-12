@@ -95,6 +95,24 @@ sptr<Surface> RSRenderServiceConnectionProxy::CreateNodeAndSurface(const RSSurfa
     return surface;
 }
 
+sptr<IVSyncConnection> RSRenderServiceConnectionProxy::CreateVSyncConnection(const std::string& name)
+{
+    MessageParcel data;
+    MessageParcel reply;
+    MessageOption option;
+
+    data.WriteString(name);
+    option.SetFlags(MessageOption::TF_SYNC);
+    int32_t err = Remote()->SendRequest(RSIRenderServiceConnection::CREATE_VSYNC_CONNECTION, data, reply, option);
+    if (err != NO_ERROR) {
+        return nullptr;
+    }
+
+    sptr<IRemoteObject> rObj = reply.ReadRemoteObject();
+    sptr<IVSyncConnection> conn = iface_cast<IVSyncConnection>(rObj);
+    return conn;
+}
+
 ScreenId RSRenderServiceConnectionProxy::GetDefaultScreenId()
 {
     MessageParcel data;

@@ -14,6 +14,7 @@
  */
 
 #include "rs_render_service_connection_stub.h"
+#include "ivsync_connection.h"
 
 #include "command/rs_command_factory.h"
 
@@ -365,6 +366,12 @@ int RSRenderServiceConnectionStub::OnRemoteRequest(
                 break;
             }
             reply.WriteUint32(mode);
+            break;
+        }
+        case CREATE_VSYNC_CONNECTION: {
+            std::string name = data.ReadString();
+            sptr<IVSyncConnection> conn = CreateVSyncConnection(name);
+            reply.WriteRemoteObject(conn->AsObject());
             break;
         }
         default: {

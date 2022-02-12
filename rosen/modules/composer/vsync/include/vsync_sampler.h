@@ -65,9 +65,9 @@ private:
     VSyncSampler();
     ~VSyncSampler() noexcept override;
 
-    void UpdateMode();
-    void UpdateError();
-    void ResetError();
+    void UpdateModeLocked();
+    void UpdateErrorLocked();
+    void ResetErrorLocked();
 
     int64_t period_;
     int64_t phase_;
@@ -81,7 +81,7 @@ private:
     uint32_t numResyncSamplesSincePresent_ = 0;
     uint32_t presentFenceTimeOffset_ = 0;
 
-    std::recursive_mutex mutex_;
+    std::mutex mutex_;
 
     static std::once_flag createFlag_;
     static sptr<OHOS::Rosen::VSyncSampler> instance_;

@@ -63,6 +63,10 @@ void HdiBackend::Repaint(std::vector<OutputPtr> &outputs)
         return;
     }
 
+    if (sampler_ == nullptr) {
+        sampler_ = CreateVSyncSampler();
+    }
+
     int32_t ret = DISPLAY_SUCCESS;
     for (auto &output : outputs) {
         const std::unordered_map<uint32_t, LayerPtr> &layersMap = output->GetLayers();
@@ -122,6 +126,16 @@ void HdiBackend::Repaint(std::vector<OutputPtr> &outputs)
 
         // wrong check
         output->ReleaseFramebuffer(fbFence);
+
+        int64_t timestamp = lastPresentFence_->SyncFileReadTimestamp();
+        bool ret = false;
+        if (timestamp > 0) {
+            ret = sampler_->AddPresentFenceTime(timestamp);
+        }
+        if (ret) {
+            sampler_->BeginSample();
+        }
+        lastPresentFence_ = fbFence;
         HLOGD("%{public}s: end", __func__);
     }
 }

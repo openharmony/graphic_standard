@@ -123,11 +123,10 @@ void VSyncDistributor::ThreadMain()
                     waitForVSync = true;
                 }
             }
-
             // no vsync signal
             if (timestamp == 0) {
                 // there is some connections request next vsync, enable vsync if vsync disable and
-                // and start the software vsync with wait_for
+                // and start the software vsync with wait_for function
                 if (waitForVSync == true) {
                     EnableVSync();
                     if (con_.wait_for(locker, std::chrono::milliseconds(SOFT_VSYNC_PERIOD)) ==

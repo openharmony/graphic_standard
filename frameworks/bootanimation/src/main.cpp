@@ -38,7 +38,7 @@ int main(int argc, const char *argv[])
     auto runner = AppExecFwk::EventRunner::Create(false);
     auto handler = std::make_shared<AppExecFwk::EventHandler>(runner);
     handler->PostTask(std::bind(&BootAnimation::Init, &bootAnimation,
-                                displays[0]->GetWidth(), displays[0]->GetHeight()));
+                                displays[0]->GetWidth(), displays[0]->GetHeight(), handler));
     runner->Run();
     return 0;
 }

@@ -40,14 +40,16 @@ RSRenderServiceConnection::RSRenderServiceConnection(
     wptr<RSRenderService> renderService,
     RSMainThread* mainThread,
     sptr<RSScreenManager> screenManager,
-    sptr<IRemoteObject> token)
+    sptr<IRemoteObject> token,
+    sptr<VSyncDistributor> distributor)
     : remotePid_(remotePid),
       renderService_(renderService),
       mainThread_(mainThread),
       screenManager_(screenManager),
       token_(token),
       connDeathRecipient_(new RSConnectionDeathRecipient(this)),
-      ApplicationDeathRecipient_(new RSApplicationRenderThreadDeathRecipient(this))
+      ApplicationDeathRecipient_(new RSApplicationRenderThreadDeathRecipient(this)),
+      appVSyncDistributor_(distributor)
 {
     if (!token_->AddDeathRecipient(connDeathRecipient_)) {
         ROSEN_LOGW("RSRenderServiceConnection: Failed to set death recipient.");
@@ -121,7 +123,6 @@ void RSRenderServiceConnection::CleanAll(bool toDelete) noexcept
             return;
         }
     }
-
     ROSEN_LOGD("RSRenderServiceConnection::CleanAll() start.");
     mainThread_->ScheduleTask([this]() {
         CleanVirtualScreens();
@@ -141,6 +142,7 @@ void RSRenderServiceConnection::CleanAll(bool toDelete) noexcept
             renderService->RemoveConnection(GetToken());
         }
     }
+    appVSyncDistributor_->RemoveConnection(conn_);
 
     ROSEN_LOGD("RSRenderServiceConnection::CleanAll() end.");
 }
@@ -239,6 +241,14 @@ sptr<Surface> RSRenderServiceConnection::CreateNodeAndSurface(const RSSurfaceRen
         return nullptr;
     }
     return surface;
+}
+
+sptr<IVSyncConnection> RSRenderServiceConnection::CreateVSyncConnection(const std::string& name)
+{
+    sptr<VSyncConnection> conn = new VSyncConnection(appVSyncDistributor_, name);
+    conn_ = conn;
+    appVSyncDistributor_->AddConnection(conn);
+    return conn;
 }
 
 ScreenId RSRenderServiceConnection::GetDefaultScreenId()

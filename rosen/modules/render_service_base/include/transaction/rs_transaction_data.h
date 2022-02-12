@@ -19,15 +19,15 @@
 #include <memory>
 #include <vector>
 
+#include "command/rs_command.h"
+#include "pipeline/rs_context.h"
+
 #ifdef ROSEN_OHOS
 #include <parcel.h>
 #endif
 
 namespace OHOS {
 namespace Rosen {
-class RSCommand;
-class RSContext;
-
 #ifdef ROSEN_OHOS
 class RSTransactionData : public Parcelable {
 #else

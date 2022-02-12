@@ -65,6 +65,7 @@ public:
     VSyncDistributor &operator=(const VSyncDistributor &) = delete;
 
     void AddConnection(const sptr<VSyncConnection>& connection);
+    void RemoveConnection(const sptr<VSyncConnection> &connection);
     void RequestNextVSync(const sptr<VSyncConnection>& connection);
     VsyncError SetVSyncRate(int32_t rate, const sptr<VSyncConnection>& connection);
 
@@ -76,7 +77,6 @@ private:
         int64_t vsyncCount;
     };
     void ThreadMain();
-    void RemoveConnection(const sptr<VSyncConnection> &connection);
     void EnableVSync();
     void DisableVSync();
     void OnVSyncEvent(int64_t now);

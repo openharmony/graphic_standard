@@ -67,6 +67,18 @@ std::shared_ptr<RSSurface> RSRenderServiceClient::CreateNodeAndSurface(const RSS
     return producer;
 }
 
+std::shared_ptr<VSyncReceiver> RSRenderServiceClient::CreateVSyncReceiver(
+    const std::string& name,
+    const std::shared_ptr<OHOS::AppExecFwk::EventHandler> &looper)
+{
+    auto renderService = RSRenderServiceConnectHub::GetRenderService();
+    if (renderService == nullptr) {
+        return nullptr;
+    }
+    sptr<IVSyncConnection> conn = renderService->CreateVSyncConnection(name);
+    return std::make_shared<VSyncReceiver>(conn, looper);
+}
+
 void RSRenderServiceClient::TriggerSurfaceCaptureCallback(NodeId id, Media::PixelMap* pixelmap)
 {
     ROSEN_LOGI("RSRenderServiceClient::Into TriggerSurfaceCaptureCallback nodeId:[%llu]", id);
