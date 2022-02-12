@@ -33,8 +33,8 @@ public:
     static void DrawFrame(
         const RSProperties& properties, RSPaintFilterCanvas& canvas, std::shared_ptr<DrawCmdList>& drawCmdList);
     static void DrawShadow(const RSProperties& properties, SkCanvas& canvas);
-    static void SaveLayerForFilter(
-        const RSProperties& properties, SkCanvas& canvas, std::shared_ptr<RSSkiaFilter>& filter);
+    static void SaveLayerForFilter(const RSProperties& properties, SkCanvas& canvas,
+        std::shared_ptr<RSSkiaFilter>& filter, const std::unique_ptr<SkRect>& rect = nullptr);
     static void RestoreForFilter(SkCanvas& canvas);
     static void DrawForegroundColor(const RSProperties& properties, SkCanvas& canvas);
     static void DrawTransitionProperties(const std::unique_ptr<RSTransitionProperties>& transitionProperties,

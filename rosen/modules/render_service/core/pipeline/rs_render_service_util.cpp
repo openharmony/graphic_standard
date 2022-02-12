@@ -23,6 +23,8 @@
 #include "include/core/SkBitmap.h"
 #include "platform/common/rs_log.h"
 #include "property/rs_properties.h"
+#include "property/rs_properties_painter.h"
+#include "render/rs_blur_filter.h"
 
 namespace OHOS {
 namespace Rosen {
@@ -50,6 +52,10 @@ bool RsRenderServiceUtil::IsNeedClient(RSSurfaceRenderNode* node)
     if (node == nullptr) {
         ROSEN_LOGE("RsRenderServiceUtil::ComposeSurface node is empty");
         return false;
+    }
+    auto filter = node->GetRenderProperties().GetBackgroundFilter();
+    if (filter != nullptr) {
+        return true;
     }
     auto transitionProperties = node->GetAnimationManager().GetTransitionProperties();
     if (!transitionProperties) {
@@ -109,6 +115,8 @@ void RsRenderServiceUtil::DrawBuffer(SkCanvas* canvas, sptr<OHOS::SurfaceBuffer>
     paint.setAlphaf(node.GetAlpha() * node.GetRenderProperties().GetAlpha());
     if (bitmap.installPixels(pixmap)) {
         canvas->save();
+        std::unique_ptr<SkRect> rect =
+            std::make_unique<SkRect>(SkRect::MakeXYWH(0, 0, buffer->GetWidth(), buffer->GetHeight()));
         if (isDrawnOnDisplay) {
             const RSProperties& property = node.GetRenderProperties();
             auto geotry = std::static_pointer_cast<RSObjAbsGeometry>(property.GetBoundsGeometry());
@@ -116,8 +124,13 @@ void RsRenderServiceUtil::DrawBuffer(SkCanvas* canvas, sptr<OHOS::SurfaceBuffer>
                 canvas->setMatrix(geotry->GetAbsMatrix());
             }
             DealAnimation(canvas, paint, property, node.GetAnimationManager().GetTransitionProperties());
+            auto filter = std::static_pointer_cast<RSSkiaFilter>(property.GetBackgroundFilter());
+            if (filter != nullptr) {
+                RSPropertiesPainter::SaveLayerForFilter(property, (*canvas), filter, rect);
+                RSPropertiesPainter::RestoreForFilter(*canvas);
+            }
         }
-        canvas->drawBitmapRect(bitmap, SkRect::MakeXYWH(0, 0, buffer->GetWidth(), buffer->GetHeight()), &paint);
+        canvas->drawBitmapRect(bitmap, (*rect), &paint);
         canvas->restore();
     }
 }

@@ -192,13 +192,15 @@ void RSPropertiesPainter::DrawShadow(const RSProperties& properties, SkCanvas& c
     }
 }
 
-void RSPropertiesPainter::SaveLayerForFilter(
-    const RSProperties& properties, SkCanvas& canvas, std::shared_ptr<RSSkiaFilter>& filter)
+void RSPropertiesPainter::SaveLayerForFilter(const RSProperties& properties, SkCanvas& canvas,
+    std::shared_ptr<RSSkiaFilter>& filter, const std::unique_ptr<SkRect>& rect)
 {
     SkPaint paint;
     paint.setAntiAlias(true);
     filter->ApplyTo(paint);
-    if (properties.GetClipBounds() != nullptr) {
+    if (rect != nullptr) {
+        canvas.clipRect((*rect), true);
+    } else if (properties.GetClipBounds() != nullptr) {
         canvas.clipPath(properties.GetClipBounds()->GetSkiaPath(), true);
     } else {
         canvas.clipRRect(RRect2SkRRect(properties.GetRRect()), true);
