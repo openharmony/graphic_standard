@@ -30,9 +30,16 @@ RSNodeMap::RSNodeMap()
 
 RSNodeMap::~RSNodeMap()  noexcept
 {
+    // In this deconstructor, the object's member nodeMap_ will be cleared, but the nodes in nodeMap_,
+    // whose deconstrcutor will indirectly call RSNodeMap::GetNode() that accesses incomplete nodeMap_
+    // in the clearing progress, which will cause a segment error.
+
+    // To work-around for this case, we put these nodes' releasing work after clearing the nodeMap_.
+    std::vector<std::shared_ptr<RSBaseNode>> delayReleasedNodes;
     for (auto &[id, node] : nodeMap_) {
-        node = nullptr;
+        delayReleasedNodes.push_back(node);
     }
+    nodeMap_.clear();
 }
 
 RSNodeMap& RSNodeMap::MutableInstance()

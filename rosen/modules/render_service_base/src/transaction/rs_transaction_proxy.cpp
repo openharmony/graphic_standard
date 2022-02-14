@@ -33,7 +33,6 @@ RSTransactionProxy::RSTransactionProxy()
 
 RSTransactionProxy::~RSTransactionProxy()
 {
-    FlushImplicitTransaction();
 }
 
 void RSTransactionProxy::Init()
@@ -44,10 +43,7 @@ void RSTransactionProxy::Init()
 
 void RSTransactionProxy::Destory()
 {
-    if (instance_ != nullptr) {
-        delete instance_;
-        instance_ = nullptr;
-    }
+    instance_ = nullptr;
 }
 
 void RSTransactionProxy::SetRenderThreadClient(std::unique_ptr<RSIRenderClient>& renderThreadClient)
