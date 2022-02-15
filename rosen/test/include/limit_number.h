@@ -19,6 +19,11 @@
 #include <limits>
 
 namespace OHOS::Rosen::TestSrc::limitNumber {
+    constexpr static float floatLimit[] = {
+        0.0f, 485.44f, -34.4f,
+        std::numeric_limits<float>::max(), std::numeric_limits<float>::min(),
+        };
+
     static constexpr uint64_t Uint64[] = {
         std::numeric_limits<uint64_t>::min(),
         std::numeric_limits<uint64_t>::max(),
