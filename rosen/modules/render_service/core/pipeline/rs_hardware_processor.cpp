@@ -222,19 +222,19 @@ void RSHardwareProcessor::OnRotate()
         switch (rotation_) {
             case ScreenRotation::ROTATION_90: {
                 ROSEN_LOGI("RsDebug RSHardwareProcessor::OnRotate 90.");
-                layer->SetLayerSize({width - rect.y - rect.h, rect.x, rect.h, rect.w});
+                layer->SetLayerSize({ width - rect.y - rect.h, rect.x, rect.h, rect.w });
                 layer->SetTransform(TransformType::ROTATE_90);
                 break;
             }
             case ScreenRotation::ROTATION_180: {
                 ROSEN_LOGI("RsDebug RSHardwareProcessor::OnRotate 180.");
-                layer->SetLayerSize({width - rect.x - rect.w, height - rect.y - rect.h, rect.w, rect.h});
+                layer->SetLayerSize({ width - rect.x - rect.w, height - rect.y - rect.h, rect.w, rect.h });
                 layer->SetTransform(TransformType::ROTATE_180);
                 break;
             }
             case ScreenRotation::ROTATION_270: {
                 ROSEN_LOGI("RsDebug RSHardwareProcessor::OnRotate 270.");
-                layer->SetLayerSize({rect.y, height - rect.x - rect.w, rect.h, rect.w});
+                layer->SetLayerSize({ rect.y, height - rect.x - rect.w, rect.h, rect.w });
                 layer->SetTransform(TransformType::ROTATE_270);
                 break;
             }

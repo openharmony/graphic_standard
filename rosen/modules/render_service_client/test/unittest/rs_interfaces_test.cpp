@@ -627,5 +627,100 @@ HWTEST_F(RSInterfacesTest, SetScreenChangeCallback, Function | SmallTest | Level
         EXPECT_EQ(screenEvent, ScreenEvent::UNKNOWN);
     }
 }
+
+/*
+* Function: RequestRotation
+* Type: Function
+* Rank: Important(2)
+* EnvConditions: N/A
+* CaseDescription: 1. call RequestRotation with default screenId
+*                  2. check ret
+*/
+HWTEST_F(RSInterfacesTest, RequestRotation001, Function | SmallTest | Level2)
+{
+    auto screenId = rsInterfaces->GetDefaultScreenId();
+    EXPECT_NE(screenId, INVALID_SCREEN_ID);
+
+    bool res = rsInterfaces->RequestRotation(screenId, ScreenRotation::ROTATION_90);
+    ASSERT_EQ(res, true);
+
+    res = rsInterfaces->RequestRotation(screenId, ScreenRotation::ROTATION_180);
+    ASSERT_EQ(res, true);
+
+    res = rsInterfaces->RequestRotation(screenId, ScreenRotation::ROTATION_270);
+    ASSERT_EQ(res, true);
+
+    res = rsInterfaces->RequestRotation(screenId, ScreenRotation::ROTATION_0);
+    ASSERT_EQ(res, true);
+}
+
+/*
+* Function: RequestRotation
+* Type: Function
+* Rank: Important(2)
+* EnvConditions: N/A
+* CaseDescription: 1. call RequestRotation with invalid screenId
+*                  2. check ret
+*/
+HWTEST_F(RSInterfacesTest, RequestRotation002, Function | SmallTest | Level2)
+{
+    ScreenId screenId = INVALID_SCREEN_ID;
+
+    bool res = rsInterfaces->RequestRotation(screenId, ScreenRotation::ROTATION_90);
+    ASSERT_EQ(res, false);
+}
+
+/*
+* Function: GetRotation
+* Type: Function
+* Rank: Important(2)
+* EnvConditions: N/A
+* CaseDescription: 1. call GetRotation with default screenId
+*                  2. check ret
+*/
+HWTEST_F(RSInterfacesTest, GetRotation001, Function | SmallTest | Level2)
+{
+    auto screenId = rsInterfaces->GetDefaultScreenId();
+    EXPECT_NE(screenId, INVALID_SCREEN_ID);
+
+    ScreenRotation rotation = rsInterfaces->GetRotation(screenId);
+    ASSERT_EQ(rotation, ScreenRotation::ROTATION_0);
+}
+
+/*
+* Function: GetRotation
+* Type: Function
+* Rank: Important(2)
+* EnvConditions: N/A
+* CaseDescription: 1. call GetRotation with default screenId
+*                  2. check ret
+*/
+HWTEST_F(RSInterfacesTest, GetRotation002, Function | SmallTest | Level2)
+{
+    auto screenId = rsInterfaces->GetDefaultScreenId();
+    EXPECT_NE(screenId, INVALID_SCREEN_ID);
+
+    bool res = rsInterfaces->RequestRotation(screenId, ScreenRotation::ROTATION_90);
+    ASSERT_EQ(res, true);
+
+    ScreenRotation rotation = rsInterfaces->GetRotation(screenId);
+    ASSERT_EQ(rotation, ScreenRotation::ROTATION_90);
+}
+
+/*
+* Function: GetRotation
+* Type: Function
+* Rank: Important(2)
+* EnvConditions: N/A
+* CaseDescription: 1. call GetRotation with invalid screenId
+*                  2. check ret
+*/
+HWTEST_F(RSInterfacesTest, GetRotation003, Function | SmallTest | Level2)
+{
+    ScreenId screenId = INVALID_SCREEN_ID;
+
+    ScreenRotation rotation = rsInterfaces->GetRotation(screenId);
+    ASSERT_EQ(rotation, ScreenRotation::INVALID_SCREEN_ROTATION);
+}
 } // namespace Rosen
 } // namespace OHOS
