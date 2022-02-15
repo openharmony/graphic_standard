@@ -42,7 +42,7 @@ public:
     }
     void DoRotateTransition(const SkMatrix44& rotateMatrix)
     {
-        rotate_.postConcat(rotateMatrix);
+        rotate_.preConcat(rotateMatrix);
     }
 
     float GetAlpha() const

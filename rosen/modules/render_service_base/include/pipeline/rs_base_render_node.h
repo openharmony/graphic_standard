@@ -71,8 +71,7 @@ public:
 
     virtual bool HasTransition() const
     {
-        auto parent = GetParent().lock();
-        return parent ? parent->HasTransition() : false;
+        return false;
     }
 
     virtual RSRenderNodeType GetType() const

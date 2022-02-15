@@ -130,7 +130,11 @@ RSRenderTransitionEffect* RSTransitionRotate::Unmarshalling(Parcel& parcel)
 void RSTransitionFade::OnTransition(const std::unique_ptr<RSTransitionProperties>& transitionProperties, float fraction)
 {
 #ifdef ROSEN_OHOS
-    transitionProperties->DoAlphaTransition(1.0f - fraction);
+    float startValue(1.0f);
+    float endValue(alpha_);
+    auto value = RSValueEstimator::Estimate(fraction, startValue, endValue);
+
+    transitionProperties->DoAlphaTransition(value);
 #endif
 }
 

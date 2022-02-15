@@ -59,7 +59,11 @@ public:
 
     bool HasTransition() const override
     {
-        return animationManager_.HasTransition() || RSBaseRenderNode::HasTransition();
+        if (animationManager_.HasTransition()) {
+            return true;
+        }
+        auto parent = GetParent().lock();
+        return parent ? parent->HasTransition() : false;
     }
 
 protected:

@@ -150,11 +150,11 @@ void RSHardwareProcessor::CalculateInfo(const std::unique_ptr<RSTransitionProper
         ROSEN_LOGE("RsDebug RSHardwareProcessor::ProcessSurface geoPtr == nullptr");
         return;
     }
-    auto delx = (1 - transitionProperties->GetScale().x_) * geoPtr->GetAbsRect().width_ / 2;
-    auto dely = (1 - transitionProperties->GetScale().y_) * geoPtr->GetAbsRect().height_ / 2;
+    float paddingX = (1 - transitionProperties->GetScale().x_) * geoPtr->GetAbsRect().width_ / 2;
+    float paddingY = (1 - transitionProperties->GetScale().y_) * geoPtr->GetAbsRect().height_ / 2;
     info.dstRect = {
-        .x = geoPtr->GetAbsRect().left_ + transitionProperties->GetTranslate().x_ + delx,
-        .y = geoPtr->GetAbsRect().top_ + transitionProperties->GetTranslate().y_ + dely,
+        .x = geoPtr->GetAbsRect().left_ + transitionProperties->GetTranslate().x_ + paddingX,
+        .y = geoPtr->GetAbsRect().top_ + transitionProperties->GetTranslate().y_ + paddingY,
         .w = geoPtr->GetAbsRect().width_ * transitionProperties->GetScale().x_,
         .h = geoPtr->GetAbsRect().height_ * transitionProperties->GetScale().y_,
     };

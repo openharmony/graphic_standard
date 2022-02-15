@@ -158,7 +158,7 @@ public:
     void SetVisible(bool visible);
     void SetPaintOrder(bool drawContentLast);
 
-    void SetTransitionEffect(const std::shared_ptr<RSTransitionEffect>& effect)
+    void SetTransitionEffect(const std::shared_ptr<const RSTransitionEffect>& effect)
     {
         transitionEffect_ = effect;
     }
