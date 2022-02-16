@@ -367,33 +367,87 @@ int32_t RSScreen::GetScreenBacklight() const
 
 int32_t RSScreen::GetScreenSupportedColorGamuts(std::vector<ScreenColorGamut> &mode) const
 {
-    // Stub, waiting for HDIScreen interfaces
-    mode.clear();
-    mode.push_back(COLOR_GAMUT_SRGB);
-    return StatusCode::SUCCESS;
+    if (isVirtual_) {
+        mode.clear();
+        mode = supportedVirtualColorGamuts_;
+        return StatusCode::SUCCESS;
+    }
+    std::vector<ColorGamut> hdiMode;
+    int32_t result = hdiScreen_->GetScreenSupportedColorGamuts(hdiMode);
+    if (result == DispErrCode::DISPLAY_SUCCESS) {
+        mode.clear();
+        for (auto m : hdiMode) {
+            mode.push_back(static_cast<ScreenColorGamut>(m));
+        }
+        return StatusCode::SUCCESS;
+    }
+    return StatusCode::HDI_ERROR;
 }
 
 int32_t RSScreen::GetScreenColorGamut(ScreenColorGamut &mode) const
 {
-    // Stub, waiting for HDIScreen interfaces
-    mode = COLOR_GAMUT_SRGB;
-    return StatusCode::SUCCESS;
+    if (isVirtual_) {
+        mode = supportedVirtualColorGamuts_[currentVirtualColorGamutIdx_];
+        return StatusCode::SUCCESS;
+    }
+    ColorGamut hdiMode;
+    int32_t result = hdiScreen_->GetScreenColorGamut(hdiMode);
+    if (result == DispErrCode::DISPLAY_SUCCESS) {
+        mode = static_cast<ScreenColorGamut>(hdiMode);
+        return StatusCode::SUCCESS;
+    }
+    return StatusCode::HDI_ERROR;
 }
 
 int32_t RSScreen::SetScreenColorGamut(int32_t modeIdx)
 {
-    return StatusCode::SUCCESS;
+    if (isVirtual_) {
+        if (modeIdx >= supportedVirtualColorGamuts_.size()) {
+            return StatusCode::INVALID_ARGUMENTS;
+        }
+        currentVirtualColorGamutIdx_ = modeIdx;
+        return StatusCode::SUCCESS;
+    }
+    std::vector<ColorGamut> hdiMode;
+    if (hdiScreen_->GetScreenSupportedColorGamuts(hdiMode) != DispErrCode::DISPLAY_SUCCESS) {
+        return StatusCode::HDI_ERROR;
+    }
+    if (modeIdx >= hdiMode.size()) {
+        return StatusCode::INVALID_ARGUMENTS;
+    }
+    int32_t result = hdiScreen_->SetScreenColorGamut(hdiMode[modeIdx]);
+    if (result == DispErrCode::DISPLAY_SUCCESS) {
+        return StatusCode::SUCCESS;
+    }
+    return StatusCode::HDI_ERROR;
 }
 
 int32_t RSScreen::SetScreenGamutMap(ScreenGamutMap mode)
 {
-    return StatusCode::SUCCESS;
+    if (isVirtual_) {
+        currentVirtualGamutMap_ = mode;
+        return StatusCode::SUCCESS;
+    }
+    int32_t result = hdiScreen_->SetScreenGamutMap(static_cast<GamutMap>(mode));
+    if (result == DispErrCode::DISPLAY_SUCCESS) {
+        return StatusCode::SUCCESS;
+    }
+    return StatusCode::HDI_ERROR;
 }
 
 int32_t RSScreen::GetScreenGamutMap(ScreenGamutMap &mode) const
 {
-    mode = GAMUT_MAP_CONSTANT;
-    return StatusCode::SUCCESS;
+    if (isVirtual_) {
+        mode = currentVirtualGamutMap_;
+        return StatusCode::SUCCESS;
+    }
+    GamutMap hdiMode;
+    int32_t result = hdiScreen_->GetScreenGamutMap(hdiMode);
+    if (result == DispErrCode::DISPLAY_SUCCESS) {
+        mode = static_cast<ScreenGamutMap>(hdiMode);
+        return StatusCode::SUCCESS;
+    }
+    return StatusCode::HDI_ERROR;
 }
 
 bool RSScreen::SetRotation(ScreenRotation rotation)
