@@ -57,4 +57,4 @@ private:
 } // namespace Rosen
 } // namespace OHOS
 
- #endif
+#endif

@@ -53,7 +53,6 @@ private:
         const std::unique_ptr<RSTransitionProperties>& transitionProperties);
     static bool IsNeedClient(RSSurfaceRenderNode* node);
 };
-
 } // Rosen
 } // OHOS
 #endif

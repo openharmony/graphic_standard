@@ -124,6 +124,5 @@ void RSRenderNode::ProcessRenderAfterChildren(RSPaintFilterCanvas& canvas)
     canvas.restore();
 #endif
 }
-
 } // namespace Rosen
 } // namespace OHOS

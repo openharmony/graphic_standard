@@ -47,7 +47,6 @@ private:
     float globalZOrder_ = 0.0f;
     std::shared_ptr<RSProcessor> processor_ = nullptr;
 };
-
 } // namespace Rosen
 } // namespace OHOS
 

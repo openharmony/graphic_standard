@@ -13,9 +13,6 @@
  * limitations under the License.
  */
 #include "pipeline/rs_render_service_util.h"
-
-#include <cmath>
-
 #include "common/rs_common_def.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
@@ -89,7 +86,7 @@ void RsRenderServiceUtil::DealAnimation(SkCanvas* canvas, SkPaint& paint, const 
 }
 
 void RsRenderServiceUtil::DrawBuffer(SkCanvas* canvas, sptr<OHOS::SurfaceBuffer> buffer,
-        RSSurfaceRenderNode& node, bool isDrawnOnDisplay)
+    RSSurfaceRenderNode& node, bool isDrawnOnDisplay)
 {
     if (!canvas) {
         ROSEN_LOGE("RsRenderServiceUtil::DrawBuffer canvas is nullptr");
@@ -104,8 +101,8 @@ void RsRenderServiceUtil::DrawBuffer(SkCanvas* canvas, sptr<OHOS::SurfaceBuffer>
         ROSEN_LOGE("RsRenderServiceUtil::DrawBuffer this buffer have no vir add or width or height is negative");
         return;
     }
-    SkColorType colorType;
-    colorType = buffer->GetFormat() == PIXEL_FMT_BGRA_8888 ? kBGRA_8888_SkColorType : kRGBA_8888_SkColorType;
+    SkColorType colorType = (buffer->GetFormat() == PIXEL_FMT_BGRA_8888) ?
+        kBGRA_8888_SkColorType : kRGBA_8888_SkColorType;
     SkImageInfo layerInfo = SkImageInfo::Make(buffer->GetWidth(), buffer->GetHeight(),
         colorType, kPremul_SkAlphaType);
     SkPixmap pixmap(layerInfo, addr, buffer->GetStride());
@@ -136,6 +133,5 @@ void RsRenderServiceUtil::DrawBuffer(SkCanvas* canvas, sptr<OHOS::SurfaceBuffer>
         canvas->restore();
     }
 }
-
 } // namespace Rosen
 } // namespace OHOS

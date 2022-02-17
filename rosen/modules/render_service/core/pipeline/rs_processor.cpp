@@ -90,6 +90,5 @@ bool RSProcessor::ConsumeAndUpdateBuffer(RSSurfaceRenderNode& node, SpecialTask&
     }
     return true;
 }
-
 }
 }

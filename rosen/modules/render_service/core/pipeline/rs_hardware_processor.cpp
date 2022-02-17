@@ -180,7 +180,7 @@ void RSHardwareProcessor::Redraw(sptr<Surface>& surface, const struct PrepareCom
         .width = curScreenInfo_.GetScreenWidth(),
         .height = curScreenInfo_.GetScreenHeight(),
         .strideAlignment = 0x8,
-        .format = PIXEL_FMT_RGBA_8888,      // [TODO] different soc need different format
+        .format = PIXEL_FMT_RGBA_8888,      // [PLANNING] different soc need different format
         .usage = HBM_USE_CPU_READ | HBM_USE_CPU_WRITE | HBM_USE_MEM_DMA | HBM_USE_MEM_FB,
         .timeout = 0,
     };
@@ -222,19 +222,19 @@ void RSHardwareProcessor::OnRotate()
         switch (rotation_) {
             case ScreenRotation::ROTATION_90: {
                 ROSEN_LOGI("RsDebug RSHardwareProcessor::OnRotate 90.");
-                layer->SetLayerSize({ rect.y, height - rect.x - rect.w, rect.h, rect.w });
+                layer->SetLayerSize({rect.y, height - rect.x - rect.w, rect.h, rect.w});
                 layer->SetTransform(TransformType::ROTATE_270);
                 break;
             }
             case ScreenRotation::ROTATION_180: {
                 ROSEN_LOGI("RsDebug RSHardwareProcessor::OnRotate 180.");
-                layer->SetLayerSize({ width - rect.x - rect.w, height - rect.y - rect.h, rect.w, rect.h });
+                layer->SetLayerSize({width - rect.x - rect.w, height - rect.y - rect.h, rect.w, rect.h});
                 layer->SetTransform(TransformType::ROTATE_180);
                 break;
             }
             case ScreenRotation::ROTATION_270: {
                 ROSEN_LOGI("RsDebug RSHardwareProcessor::OnRotate 270.");
-                layer->SetLayerSize({ width - rect.y - rect.h, rect.x, rect.h, rect.w });
+                layer->SetLayerSize({width - rect.y - rect.h, rect.x, rect.h, rect.w});
                 layer->SetTransform(TransformType::ROTATE_90);
                 break;
             }
