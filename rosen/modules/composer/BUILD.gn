@@ -34,6 +34,7 @@ config("composer_public_config") {
     "//foundation/graphic/standard/interfaces/innerkits/common",
     "//foundation/graphic/standard/rosen/modules/composer/hdi_backend/include",
     "//foundation/graphic/standard/rosen/modules/composer/vsync/include",
+    "//foundation/graphic/standard/frameworks/vsync/include",
   ]
 }
 

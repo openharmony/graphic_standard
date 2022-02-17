@@ -20,6 +20,7 @@
 #include <refbase.h>
 #include <mutex>
 #include "vsync_generator.h"
+#include "graphic_common.h"
 
 namespace OHOS {
 namespace Rosen {
@@ -28,6 +29,7 @@ public:
     class Callback {
     public:
         virtual void OnVSyncEvent(int64_t now) = 0;
+        virtual ~Callback() = default;
     };
 
     VSyncController(const sptr<VSyncGenerator> &geng, int64_t offset);
@@ -37,9 +39,9 @@ public:
     VSyncController(const VSyncController &) = delete;
     VSyncController &operator=(const VSyncController &) = delete;
 
-    void SetEnable(bool enable = false);
-    void SetCallback(Callback* cb);
-    void SetPhaseOffset(int64_t offset);
+    VsyncError SetEnable(bool enable = false);
+    VsyncError SetCallback(Callback* cb);
+    VsyncError SetPhaseOffset(int64_t offset);
 
 private:
 

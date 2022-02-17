@@ -45,6 +45,7 @@ public:
     }
     void SetCallback(FrameCallback cb)
     {
+        std::lock_guard<std::mutex> locker(mtx_);
         vsyncCallbacks_ = cb.callback_;
         userData_ = cb.userData_;
     }
@@ -53,6 +54,7 @@ private:
     void OnReadable(int32_t fileDescriptor) override;
     VSyncCallback vsyncCallbacks_;
     void *userData_;
+    std::mutex mtx_;
 };
 
 class VSyncReceiver : public RefBase {
@@ -68,8 +70,8 @@ public:
     VSyncReceiver &operator=(const VSyncReceiver &) = delete;
 
     VsyncError Init();
-    void RequestNextVSync(FrameCallback callback);
-    void SetVSyncRate(FrameCallback callback, int32_t rate);
+    VsyncError RequestNextVSync(FrameCallback callback);
+    VsyncError SetVSyncRate(FrameCallback callback, int32_t rate);
 
 private:
     sptr<IVSyncConnection> connection_;

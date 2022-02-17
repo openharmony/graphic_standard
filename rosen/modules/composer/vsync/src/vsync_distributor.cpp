@@ -17,11 +17,15 @@
 #include <chrono>
 #include <condition_variable>
 #include <algorithm>
+#include "vsync_log.h"
 
 namespace OHOS {
 namespace Rosen {
 namespace {
+constexpr HiviewDFX::HiLogLabel LABEL = { LOG_CORE, 0, "VsyncDistributor" };
 constexpr int32_t SOFT_VSYNC_PERIOD = 16;
+constexpr int32_t ERRNO_EAGAIN = -1;
+constexpr int32_t ERRNO_OTHER = -2;
 }
 VSyncConnection::VSyncConnection(const sptr<VSyncDistributor>& distributor, std::string name)
     : rate_(-1), distributor_(distributor), name_(name)
@@ -36,12 +40,14 @@ VSyncConnection::~VSyncConnection()
 
 VsyncError VSyncConnection::RequestNextVSync()
 {
+    if (distributor_ == nullptr) {
+        return VSYNC_ERROR_NULLPTR;
+    }
     const sptr<VSyncDistributor> distributor = distributor_.promote();
     if (distributor == nullptr) {
         return VSYNC_ERROR_NULLPTR;
     }
-    distributor->RequestNextVSync(this);
-    return VSYNC_ERROR_OK;
+    return distributor->RequestNextVSync(this);
 }
 
 VsyncError VSyncConnection::GetReceiveFd(int32_t &fd)
@@ -57,6 +63,9 @@ int32_t VSyncConnection::PostEvent(int64_t now)
 
 VsyncError VSyncConnection::SetVSyncRate(int32_t rate)
 {
+    if (distributor_ == nullptr) {
+        return VSYNC_ERROR_NULLPTR;
+    }
     const sptr<VSyncDistributor> distributor = distributor_.promote();
     if (distributor == nullptr) {
         return VSYNC_ERROR_NULLPTR;
@@ -77,25 +86,33 @@ VSyncDistributor::~VSyncDistributor()
 {
     vsyncThreadRunning_ = false;
     if (threadLoop_.joinable()) {
+        con_.notify_all();
         threadLoop_.join();
     }
 }
 
-void VSyncDistributor::AddConnection(const sptr<VSyncConnection>& connection)
+VsyncError VSyncDistributor::AddConnection(const sptr<VSyncConnection>& connection)
 {
-    if (connection != nullptr) {
-        std::lock_guard<std::mutex> locker(mutex_);
-        connections_.push_back(connection);
+    if (connection == nullptr) {
+        return VSYNC_ERROR_NULLPTR;
     }
+    std::lock_guard<std::mutex> locker(mutex_);
+    connections_.push_back(connection);
+    return VSYNC_ERROR_OK;
 }
 
-void VSyncDistributor::RemoveConnection(const sptr<VSyncConnection>& connection)
+VsyncError VSyncDistributor::RemoveConnection(const sptr<VSyncConnection>& connection)
 {
+    if (connection == nullptr) {
+        return VSYNC_ERROR_NULLPTR;
+    }
     std::lock_guard<std::mutex> locker(mutex_);
     auto it = find(connections_.begin(), connections_.end(), connection);
-    if (it != connections_.end()) {
-        connections_.erase(it);
+    if (it == connections_.end()) {
+        return VSYNC_ERROR_INVALID_ARGUMENTS;
     }
+    connections_.erase(it);
+    return VSYNC_ERROR_OK;
 }
 
 void VSyncDistributor::ThreadMain()
@@ -112,6 +129,8 @@ void VSyncDistributor::ThreadMain()
             event_.timestamp = 0;
             vsyncCount = event_.vsyncCount;
             for (uint32_t i = 0; i <connections_.size(); i++) {
+                VLOGI("conn name:%{public}s, rate:%{public}d",
+                    connections_[i]->GetName().c_str(), connections_[i]->rate_);
                 if (connections_[i]->rate_ == 0) {
                     waitForVSync = true;
                     if (timestamp > 0) {
@@ -123,6 +142,9 @@ void VSyncDistributor::ThreadMain()
                     waitForVSync = true;
                 }
             }
+
+            VLOGI("Distributor name:%{public}s, WaitforVSync:%{public}d, timestamp:" VPUBI64 "",
+                name_.c_str(), waitForVSync, timestamp);
             // no vsync signal
             if (timestamp == 0) {
                 // there is some connections request next vsync, enable vsync if vsync disable and
@@ -149,8 +171,14 @@ void VSyncDistributor::ThreadMain()
         }
 
         for (uint32_t i = 0; i < conns.size(); i++) {
-            if (conns[i]->PostEvent(timestamp) < 0) {
+            int32_t ret = conns[i]->PostEvent(timestamp);
+            VLOGI("Distributor name:%{public}s, connection name:%{public}s, ret:%{public}d",
+                name_.c_str(), conns[i]->GetName().c_str(), ret);
+            if (ret == 0 || ret == ERRNO_OTHER) {
                 RemoveConnection(conns[i]);
+            } else if (ret == ERRNO_EAGAIN) {
+                std::unique_lock<std::mutex> locker(mutex_);
+                conns[i]->rate_ = 0;
             }
         }
     }
@@ -181,21 +209,36 @@ void VSyncDistributor::OnVSyncEvent(int64_t now)
     con_.notify_all();
 }
 
-void VSyncDistributor::RequestNextVSync(const sptr<VSyncConnection>& connection)
+VsyncError VSyncDistributor::RequestNextVSync(const sptr<VSyncConnection>& connection)
 {
+    if (connection == nullptr) {
+        VLOGE("connection is nullptr");
+        return VSYNC_ERROR_NULLPTR;
+    }
     std::lock_guard<std::mutex> locker(mutex_);
+    auto it = find(connections_.begin(), connections_.end(), connection);
+    if (it == connections_.end()) {
+        VLOGE("connection is invalid arguments");
+        return VSYNC_ERROR_INVALID_ARGUMENTS;
+    }
     if (connection->rate_ < 0) {
         connection->rate_ = 0;
         con_.notify_all();
     }
+    VLOGI("conn name:%{public}s, rate:%{public}d", connection->GetName().c_str(), connection->rate_);
+    return VSYNC_ERROR_OK;
 }
 
 VsyncError VSyncDistributor::SetVSyncRate(int32_t rate, const sptr<VSyncConnection>& connection)
 {
-    if (rate <= 0) {
+    if (rate <= 0 || connection == nullptr) {
         return VSYNC_ERROR_INVALID_ARGUMENTS;
     }
     std::lock_guard<std::mutex> locker(mutex_);
+    auto it = find(connections_.begin(), connections_.end(), connection);
+    if (it == connections_.end()) {
+        return VSYNC_ERROR_INVALID_ARGUMENTS;
+    }
     if (connection->rate_ == rate) {
         return VSYNC_ERROR_INVALID_ARGUMENTS;
     }

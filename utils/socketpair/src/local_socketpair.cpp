@@ -30,6 +30,8 @@ constexpr HiLogLabel LABEL = { LOG_CORE, 0xD001400, "LocalSocketPair" };
 constexpr int32_t DEFAULT_CHANNEL_SIZE = 2 * 1024;
 constexpr int32_t SOCKET_PAIR_SIZE = 2;
 constexpr int32_t INVALID_FD = -1;
+constexpr int32_t ERRNO_EAGAIN = -1;
+constexpr int32_t ERRNO_OTHER = -2;
 }  // namespace
 
 LocalSocketPair::LocalSocketPair()
@@ -102,7 +104,11 @@ int32_t LocalSocketPair::SendData(const void *vaddr, size_t size)
     } while (errno == EINTR);
     if (length < 0) {
         HiLog::Error(LABEL, "%{public}s send fail : %{public}d, length = %{public}d", __func__, errno, (int32_t)length);
-        return -1;
+        if (errno == EAGAIN) {
+            return ERRNO_EAGAIN;
+        } else {
+            return ERRNO_OTHER;
+        }
     }
     return length;
 }

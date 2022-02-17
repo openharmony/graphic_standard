@@ -18,6 +18,7 @@
 #define VSYNC_VSYNC_GENERATOR_H
 
 #include <refbase.h>
+#include "graphic_common.h"
 
 #include <mutex>
 #include <vector>
@@ -34,26 +35,28 @@ public:
     };
     VSyncGenerator() = default;
     virtual ~VSyncGenerator() noexcept = default;
-    virtual void UpdateMode(int64_t period, int64_t phase, int64_t refrenceTime) = 0;
-    virtual void AddListener(int64_t phase, const sptr<Callback>& cb) = 0;
-    virtual void RemoveListener(const sptr<Callback>& cb) = 0;
-    virtual void ChangePhaseOffset(const sptr<Callback>& cb, int64_t offset) = 0;
+    virtual VsyncError UpdateMode(int64_t period, int64_t phase, int64_t refrenceTime) = 0;
+    virtual VsyncError AddListener(int64_t phase, const sptr<Callback>& cb) = 0;
+    virtual VsyncError RemoveListener(const sptr<Callback>& cb) = 0;
+    virtual VsyncError ChangePhaseOffset(const sptr<Callback>& cb, int64_t offset) = 0;
 };
 
 sptr<VSyncGenerator> CreateVSyncGenerator();
+void DestroyVSyncGenerator();
 
 namespace impl {
 class VSyncGenerator : public OHOS::Rosen::VSyncGenerator {
 public:
     static sptr<OHOS::Rosen::VSyncGenerator> GetInstance() noexcept;
+    static void DeleteInstance() noexcept;
 
     // nocopyable
     VSyncGenerator(const VSyncGenerator &) = delete;
     VSyncGenerator &operator=(const VSyncGenerator &) = delete;
-    void UpdateMode(int64_t period, int64_t phase, int64_t refrenceTime) override;
-    void AddListener(int64_t phase, const sptr<OHOS::Rosen::VSyncGenerator::Callback>& cb) override;
-    void RemoveListener(const sptr<OHOS::Rosen::VSyncGenerator::Callback>& cb) override;
-    void ChangePhaseOffset(const sptr<OHOS::Rosen::VSyncGenerator::Callback>& cb, int64_t offset) override;
+    VsyncError UpdateMode(int64_t period, int64_t phase, int64_t refrenceTime) override;
+    VsyncError AddListener(int64_t phase, const sptr<OHOS::Rosen::VSyncGenerator::Callback>& cb) override;
+    VsyncError RemoveListener(const sptr<OHOS::Rosen::VSyncGenerator::Callback>& cb) override;
+    VsyncError ChangePhaseOffset(const sptr<OHOS::Rosen::VSyncGenerator::Callback>& cb, int64_t offset) override;
 
 private:
     friend class OHOS::Rosen::VSyncGenerator;

@@ -39,6 +39,11 @@ sptr<OHOS::Rosen::VSyncGenerator> VSyncGenerator::GetInstance() noexcept
     return instance_;
 }
 
+void VSyncGenerator::DeleteInstance() noexcept
+{
+    instance_ = nullptr;
+}
+
 VSyncGenerator::VSyncGenerator()
     : period_(0), phase_(0), refrenceTime_(0), wakeupDelay_(0), vsyncThreadRunning_(false)
 {
@@ -49,6 +54,7 @@ VSyncGenerator::~VSyncGenerator()
 {
     vsyncThreadRunning_ = false;
     if (thread_.joinable()) {
+        con_.notify_all();
         thread_.join();
     }
 }
@@ -147,18 +153,25 @@ std::vector<VSyncGenerator::Listener> VSyncGenerator::GetListenerTimeouted(int64
     return ret;
 }
 
-void VSyncGenerator::UpdateMode(int64_t period, int64_t phase, int64_t refrenceTime)
+VsyncError VSyncGenerator::UpdateMode(int64_t period, int64_t phase, int64_t refrenceTime)
 {
     std::lock_guard<std::mutex> locker(mutex_);
+    if (period < 0 || refrenceTime < 0) {
+        return VSYNC_ERROR_INVALID_ARGUMENTS;
+    }
     period_ = period;
     phase_ = phase;
     refrenceTime_ = refrenceTime;
     con_.notify_all();
+    return VSYNC_ERROR_OK;
 }
 
-void VSyncGenerator::AddListener(int64_t phase, const sptr<OHOS::Rosen::VSyncGenerator::Callback>& cb)
+VsyncError VSyncGenerator::AddListener(int64_t phase, const sptr<OHOS::Rosen::VSyncGenerator::Callback>& cb)
 {
     std::lock_guard<std::mutex> locker(mutex_);
+    if (cb == nullptr) {
+        return VSYNC_ERROR_INVALID_ARGUMENTS;
+    }
     Listener listener;
     listener.phase_ = phase;
     listener.callback_ = cb;
@@ -166,35 +179,59 @@ void VSyncGenerator::AddListener(int64_t phase, const sptr<OHOS::Rosen::VSyncGen
 
     listeners_.push_back(listener);
     con_.notify_all();
+    return VSYNC_ERROR_OK;
 }
 
-void VSyncGenerator::RemoveListener(const sptr<OHOS::Rosen::VSyncGenerator::Callback>& cb)
+VsyncError VSyncGenerator::RemoveListener(const sptr<OHOS::Rosen::VSyncGenerator::Callback>& cb)
 {
     std::lock_guard<std::mutex> locker(mutex_);
-    for (auto it = listeners_.begin(); it < listeners_.end(); it++) {
+    if (cb == nullptr) {
+        return VSYNC_ERROR_INVALID_ARGUMENTS;
+    }
+    bool removeFlag = false;
+    auto it = listeners_.begin();
+    for (; it < listeners_.end(); it++) {
         if (it->callback_ == cb) {
             listeners_.erase(it);
+            removeFlag = true;
             break;
         }
     }
+    if (!removeFlag) {
+        return VSYNC_ERROR_INVALID_ARGUMENTS;
+    }
     con_.notify_all();
+    return VSYNC_ERROR_OK;
 }
 
-void VSyncGenerator::ChangePhaseOffset(const sptr<OHOS::Rosen::VSyncGenerator::Callback>& cb, int64_t offset)
+VsyncError VSyncGenerator::ChangePhaseOffset(const sptr<OHOS::Rosen::VSyncGenerator::Callback>& cb, int64_t offset)
 {
     std::lock_guard<std::mutex> locker(mutex_);
+    if (cb == nullptr) {
+        return VSYNC_ERROR_INVALID_ARGUMENTS;
+    }
     auto it = listeners_.begin();
     for (; it < listeners_.end(); it++) {
         if (it->callback_ == cb) {
             break;
         }
     }
-    it->phase_ = offset;
+    if (it != listeners_.end()) {
+        it->phase_ = offset;
+    } else {
+        return VSYNC_ERROR_INVALID_OPERATING;
+    }
+    return VSYNC_ERROR_OK;
 }
 } // namespace impl
 sptr<VSyncGenerator> CreateVSyncGenerator()
 {
     return impl::VSyncGenerator::GetInstance();
+}
+
+void DestroyVSyncGenerator()
+{
+    impl::VSyncGenerator::DeleteInstance();
 }
 }
 }

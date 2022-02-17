@@ -27,37 +27,59 @@ VSyncController::~VSyncController()
 {
 }
 
-void VSyncController::SetEnable(bool enbale)
+VsyncError VSyncController::SetEnable(bool enbale)
 {
+    if (generator_ == nullptr) {
+        return VSYNC_ERROR_NULLPTR;
+    }
     const sptr<VSyncGenerator> generator = generator_.promote();
     if (generator == nullptr) {
-        return;
+        return VSYNC_ERROR_NULLPTR;
     }
+    std::lock_guard<std::mutex> locker(offsetMutex_);
+    VsyncError ret = VSYNC_ERROR_OK;
     if (enbale) {
-        generator_->AddListener(phaseOffset_, this);
+        ret = generator->AddListener(phaseOffset_, this);
     } else {
-        generator_->RemoveListener(this);
+        ret = generator->RemoveListener(this);
     }
     enabled_ = enbale;
+    return ret;
 }
 
-void VSyncController::SetCallback(Callback *cb)
+VsyncError VSyncController::SetCallback(Callback *cb)
 {
+    if (cb == nullptr) {
+        return VSYNC_ERROR_NULLPTR;
+    }
     std::lock_guard<std::mutex> locker(callbackMutex_);
     callback_ = cb;
+    return VSYNC_ERROR_OK;
 }
 
-void VSyncController::SetPhaseOffset(int64_t offset)
+VsyncError VSyncController::SetPhaseOffset(int64_t offset)
 {
+    if (generator_ == nullptr) {
+        return VSYNC_ERROR_NULLPTR;
+    }
+    const sptr<VSyncGenerator> generator = generator_.promote();
+    if (generator == nullptr) {
+        return VSYNC_ERROR_NULLPTR;
+    }
     std::lock_guard<std::mutex> locker(offsetMutex_);
     phaseOffset_ = offset;
-    generator_->ChangePhaseOffset(this, phaseOffset_);
+    return generator->ChangePhaseOffset(this, phaseOffset_);
 }
 
 void VSyncController::OnVSyncEvent(int64_t now)
 {
-    if (callback_ != nullptr) {
-        callback_->OnVSyncEvent(now);
+    Callback *cb = nullptr;
+    {
+        std::lock_guard<std::mutex> locker(callbackMutex_);
+        cb = callback_;
+    }
+    if (cb != nullptr) {
+        cb->OnVSyncEvent(now);
     }
 }
 }
