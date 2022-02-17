@@ -16,7 +16,6 @@
 #include "rs_vsync_client_ohos.h"
 #include <string>
 #include "platform/common/rs_log.h"
-#include "transaction/rs_render_service_client.h"
 
 namespace OHOS {
 namespace Rosen {
@@ -28,14 +27,6 @@ std::unique_ptr<RSVsyncClient> RSVsyncClient::Create()
 RSVsyncClientOhos::RSVsyncClientOhos()
     : runner_(AppExecFwk::EventRunner::Create(true)), handler_(std::make_shared<AppExecFwk::EventHandler>(runner_))
 {
-    static int i = 0;
-    std::string name = "RSVsyncClientOhos";
-    name += "_" + std::to_string(::getpid()) + "_" + std::to_string(i);
-    auto rsClient = std::static_pointer_cast<RSRenderServiceClient>(RSIRenderClient::CreateRenderServiceClient());
-    while (receiver_ == nullptr) {
-        receiver_ = rsClient->CreateVSyncReceiver(name, handler_);
-    }
-    receiver_->Init();
     if (runner_) {
         runner_->Run();
     }
@@ -43,13 +34,19 @@ RSVsyncClientOhos::RSVsyncClientOhos()
 
 void RSVsyncClientOhos::RequestNextVsync()
 {
-    if (!requestFlag_) {
+    if (!requestFlag_.load()) {
         requestFlag_.store(true);
-        VSyncReceiver::FrameCallback fcb = {
-            .userData_ = this,
-            .callback_ = OnVsync,
-        };
-        receiver_->RequestNextVSync(fcb);
+        handler_->PostTask([this]() {
+            struct FrameCallback cb = {
+                .timestamp_ = 0,
+                .userdata_ = this,
+                .callback_ = OnVsync,
+            };
+            VsyncError ret = VsyncHelper::Current()->RequestFrameCallback(cb);
+            if (ret != VSYNC_ERROR_OK) {
+                ROSEN_LOGE("RSVsyncClientOhos::RequestNextVsync fail: %s", VsyncErrorStr(ret).c_str());
+            }
+        });
     }
 }
 
