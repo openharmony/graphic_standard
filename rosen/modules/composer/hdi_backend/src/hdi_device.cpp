@@ -131,7 +131,7 @@ int32_t HdiDevice::GetScreenSupportedModes(uint32_t screenId, std::vector<Displa
     }
 
     if (num > 0) {
-        modes.resize(num);
+        modes.resize(static_cast<uint32_t>(num));
         return deviceFuncs_->GetDisplaySupportedModes(screenId, &num, modes.data());
     }
 

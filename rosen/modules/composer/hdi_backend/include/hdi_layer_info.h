@@ -89,7 +89,7 @@ public:
 
     void SetZorder(int32_t zOrder)
     {
-        zOrder_ = zOrder;
+        zOrder_ = static_cast<uint32_t>(zOrder);
     }
 
     void SetAlpha(const LayerAlpha &alpha)

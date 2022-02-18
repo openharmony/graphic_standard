@@ -82,7 +82,7 @@ int32_t RawParser::GetNextData(uint32_t *addr)
     uint32_t count = (lastID + 1) % infos.size();
     auto type = infos[count].type;
     if (type == RAW_HEADER_TYPE_NONE) {
-        lastID = count;
+        lastID = static_cast<int32_t>(count);
         return GetNowData(addr);
     }
 
@@ -138,7 +138,7 @@ int32_t RawParser::ReadFile(const std::string &file, std::unique_ptr<uint8_t[]> 
     clength = ifs.tellg();
     ifs.seekg (0, ifs.beg);
 
-    ptr = std::make_unique<uint8_t[]>(clength);
+    ptr = std::make_unique<uint8_t[]>(static_cast<unsigned int>(clength));
     ifs.read(reinterpret_cast<char *>(ptr.get()), clength);
     return 0;
 }

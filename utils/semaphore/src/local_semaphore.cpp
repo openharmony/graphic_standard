@@ -21,7 +21,7 @@
 namespace OHOS {
 LocalSemaphore::LocalSemaphore(int count)
 {
-    sem_init(&sem, false, count);
+    sem_init(&sem, false, static_cast<unsigned int>(count));
 }
 
 LocalSemaphore::~LocalSemaphore()

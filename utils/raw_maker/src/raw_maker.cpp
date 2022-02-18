@@ -42,7 +42,7 @@ void RawMaker::SetWidth(uint32_t width)
         this->width = width;
     }
     assert(this->width == width);
-    size = width * height * 0x4;
+    size = static_cast<int32_t>(width * height * 0x4);
 }
 
 void RawMaker::SetHeight(uint32_t height)
@@ -51,7 +51,7 @@ void RawMaker::SetHeight(uint32_t height)
         this->height = height;
     }
     assert(this->height == height);
-    size = width * height * 0x4;
+    size = static_cast<int32_t>(width * height * 0x4);
 }
 
 void RawMaker::SetHeaderType(RawHeaderType type)
@@ -126,7 +126,7 @@ int32_t RawMaker::PrepareInCompress(const uint8_t *addr)
         return ret;
     }
 
-    writing.compressedLength = clen;
+    writing.compressedLength = static_cast<int32_t>(clen);
     writing.data = compressed.get();
     return UpdateLastFrame(addr);
 }
@@ -195,9 +195,9 @@ int32_t RawMaker::DoFirstFrame()
         return errno;
     }
 
-    lastFrame = std::make_unique<uint8_t[]>(size);
+    lastFrame = std::make_unique<uint8_t[]>(static_cast<uint32_t>(size));
     ofs.write("RAW.dif2", 0x8);
-    WriteInt32(width);
+    WriteInt32(static_cast<int32_t>(width));
     WriteInt32(height);
     ofs.close();
     return 0;

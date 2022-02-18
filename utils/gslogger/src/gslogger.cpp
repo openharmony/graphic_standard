@@ -101,8 +101,15 @@ void Gslogger::FileLog(Gslogger& logger, enum LOG_PHASE phase)
         return;
     }
 
+    constexpr uint32_t FILE_PATH_MAX = 255;
+    char path[FILE_PATH_MAX] = { 0x00 };
+    if (strlen(data->filename) > FILE_PATH_MAX || realpath(data->filename, path) == NULL) {
+        std::cerr << "File path error!" << std::endl;
+        return;
+    }
+
     // LOG_PHASE::END
-    std::ofstream ofs(data->filename, std::ofstream::out | std::ofstream::app);
+    std::ofstream ofs(path, std::ofstream::out | std::ofstream::app);
     if (!ofs) {
         // open failed, errno
         return;

@@ -199,8 +199,8 @@ void HelloComposer::Draw()
         IRect damageRect;
         damageRect.x = 0;
         damageRect.y = 0;
-        damageRect.w = displayWidthsMap_[screenId];
-        damageRect.h = displayHeightsMap_[screenId];
+        damageRect.w = static_cast<int32_t>(displayWidthsMap_[screenId]);
+        damageRect.h = static_cast<int32_t>(displayHeightsMap_[screenId]);
         curOutput_->SetOutputDamage(1, damageRect);
 
         if (dump_) {
@@ -229,8 +229,8 @@ uint32_t HelloComposer::CreatePhysicalScreen()
                 displayModeInfos_[i].height, displayModeInfos_[i].freshRate);
             if (displayModeInfos_[i].id == static_cast<int32_t>(currentModeIndex_)) {
                 freq_ = 30; // 30 freq
-                displayWidthsMap_[screenId] = displayModeInfos_[i].width;
-                displayHeightsMap_[screenId] = displayModeInfos_[i].height;
+                displayWidthsMap_[screenId] = static_cast<uint32_t>(displayModeInfos_[i].width);
+                displayHeightsMap_[screenId] = static_cast<uint32_t>(displayModeInfos_[i].height);
                 break;
             }
         }
@@ -331,7 +331,8 @@ void HelloComposer::DoPrepareCompleted(sptr<Surface> &surface, const struct Prep
 
     auto addr = static_cast<uint8_t *>(fbBuffer->GetVirAddr());
     if (hasClient) {
-        DrawFrameBufferData(addr, fbBuffer->GetWidth(), fbBuffer->GetHeight());
+        DrawFrameBufferData(addr, static_cast<uint32_t>(fbBuffer->GetWidth()),
+            static_cast<uint32_t>(fbBuffer->GetHeight()));
     } else {
         int32_t ret = memset_s(addr, fbBuffer->GetSize(), 0, fbBuffer->GetSize());
         if (ret != 0) {

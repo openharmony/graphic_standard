@@ -125,7 +125,7 @@ SurfaceError LayerContext::FillHDILayer()
 
     hdiLayer_->SetSurface(cSurface_);
     hdiLayer_->SetBuffer(buffer, acquireFence, prevBuffer_, prevFence_);
-    hdiLayer_->SetZorder(zorder_);
+    hdiLayer_->SetZorder(static_cast<int32_t>(zorder_));
     hdiLayer_->SetAlpha(alpha);
     hdiLayer_->SetCompositionType(CompositionType::COMPOSITION_DEVICE);
     hdiLayer_->SetVisibleRegion(1, src_);
@@ -144,9 +144,9 @@ SurfaceError LayerContext::FillHDILayer()
 void LayerContext::DrawColor(void *image, int width, int height)
 {
     if (layerType_ >= LayerType::LAYER_EXTRA) {
-        DrawExtraColor(image, width, height);
+        DrawExtraColor(image, static_cast<uint32_t>(width), static_cast<uint32_t>(height));
     } else {
-        DrawBaseColor(image, width, height);
+        DrawBaseColor(image, static_cast<uint32_t>(width), static_cast<uint32_t>(height));
     }
 }
 

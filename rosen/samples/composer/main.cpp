@@ -20,7 +20,7 @@
 int32_t main(int32_t argc, const char *argv[])
 {
     std::vector<std::string> runArgs;
-    runArgs.resize(argc);
+    runArgs.resize(static_cast<uint32_t>(argc));
 
     for (int32_t i = 0; i < argc; i++) {
         std::cout << "argv[" << i << "]: " << argv[i] << std::endl;
