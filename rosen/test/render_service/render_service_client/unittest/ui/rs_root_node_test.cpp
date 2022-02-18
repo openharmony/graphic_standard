@@ -37,8 +37,6 @@ void RSRootNodeTest::TearDown() {}
  * @tc.name: CreateAndDestroy001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSRootNodeTest, CreateAndDestroy001, TestSize.Level1)
 {
@@ -49,8 +47,6 @@ HWTEST_F(RSRootNodeTest, CreateAndDestroy001, TestSize.Level1)
  * @tc.name: CreateAndDestroy002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSRootNodeTest, CreateAndDestroy002, TestSize.Level1)
 {
@@ -61,8 +57,6 @@ HWTEST_F(RSRootNodeTest, CreateAndDestroy002, TestSize.Level1)
  * @tc.name: CreateAndDestroy003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSRootNodeTest, CreateAndDestroy003, TestSize.Level1)
 {
@@ -73,8 +67,6 @@ HWTEST_F(RSRootNodeTest, CreateAndDestroy003, TestSize.Level1)
  * @tc.name: GetType001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSRootNodeTest, GetType001, TestSize.Level1)
 {
@@ -85,8 +77,6 @@ HWTEST_F(RSRootNodeTest, GetType001, TestSize.Level1)
  * @tc.name: GetType002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSRootNodeTest, GetType002, TestSize.Level1)
 {
@@ -97,8 +87,6 @@ HWTEST_F(RSRootNodeTest, GetType002, TestSize.Level1)
  * @tc.name: GetType003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSRootNodeTest, GetType003, TestSize.Level1)
 {

@@ -43,8 +43,6 @@ void RSNodeTest::TearDown() {}
  * @tc.name: LifeCycle001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, LifeCycle001, TestSize.Level1)
 {
@@ -73,8 +71,6 @@ HWTEST_F(RSNodeTest, LifeCycle001, TestSize.Level1)
  * @tc.name: LifeCycle002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, LifeCycle002, TestSize.Level1)
 {
@@ -100,8 +96,6 @@ HWTEST_F(RSNodeTest, LifeCycle002, TestSize.Level1)
  * @tc.name: LifeCycle003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, LifeCycle003, TestSize.Level1)
 {
@@ -127,8 +121,6 @@ HWTEST_F(RSNodeTest, LifeCycle003, TestSize.Level1)
  * @tc.name: LifeCycle004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, LifeCycle004, TestSize.Level1)
 {
@@ -154,8 +146,6 @@ HWTEST_F(RSNodeTest, LifeCycle004, TestSize.Level1)
  * @tc.name: LifeCycle005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, LifeCycle005, TestSize.Level1)
 {
@@ -181,8 +171,6 @@ HWTEST_F(RSNodeTest, LifeCycle005, TestSize.Level1)
  * @tc.name: Recording001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, Recording001, TestSize.Level1)
 {
@@ -203,8 +191,6 @@ HWTEST_F(RSNodeTest, Recording001, TestSize.Level1)
  * @tc.name: SetPaintOrder001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetPaintOrder001, TestSize.Level1)
 {
@@ -219,8 +205,6 @@ HWTEST_F(RSNodeTest, SetPaintOrder001, TestSize.Level1)
  * @tc.name: SetandGetBounds001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBounds001, TestSize.Level1)
 {
@@ -236,8 +220,6 @@ HWTEST_F(RSNodeTest, SetandGetBounds001, TestSize.Level1)
  * @tc.name: SetandGetBounds002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBounds002, TestSize.Level1)
 {
@@ -253,8 +235,6 @@ HWTEST_F(RSNodeTest, SetandGetBounds002, TestSize.Level1)
  * @tc.name: SetandGetBounds003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBounds003, TestSize.Level1)
 {
@@ -270,8 +250,6 @@ HWTEST_F(RSNodeTest, SetandGetBounds003, TestSize.Level1)
  * @tc.name: SetandGetBoundsSize001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsSize001, TestSize.Level1)
 {
@@ -285,8 +263,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsSize001, TestSize.Level1)
  * @tc.name: SetandGetBoundsSize002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsSize002, TestSize.Level1)
 {
@@ -300,8 +276,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsSize002, TestSize.Level1)
  * @tc.name: SetandGetBoundsSize003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsSize003, TestSize.Level1)
 {
@@ -315,8 +289,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsSize003, TestSize.Level1)
  * @tc.name: SetandGetBoundsPosition001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsPosition001, TestSize.Level1)
 {
@@ -331,8 +303,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsPosition001, TestSize.Level1)
  * @tc.name: SetandGetBoundsPosition002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsPosition002, TestSize.Level1)
 {
@@ -347,8 +317,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsPosition002, TestSize.Level1)
  * @tc.name: SetandGetBoundsPosition003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsPosition003, TestSize.Level1)
 {
@@ -363,8 +331,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsPosition003, TestSize.Level1)
  * @tc.name: SetandGetBoundsWidth001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsWidth001, TestSize.Level1)
 {
@@ -377,8 +343,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsWidth001, TestSize.Level1)
  * @tc.name: SetandGetBoundsWidth002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsWidth002, TestSize.Level1)
 {
@@ -391,8 +355,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsWidth002, TestSize.Level1)
  * @tc.name: SetandGetBoundsWidth003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsWidth003, TestSize.Level1)
 {
@@ -405,8 +367,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsWidth003, TestSize.Level1)
  * @tc.name: SetandGetBoundsWidth004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsWidth004, TestSize.Level1)
 {
@@ -419,8 +379,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsWidth004, TestSize.Level1)
  * @tc.name: SetandGetBoundsWidth005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsWidth005, TestSize.Level1)
 {
@@ -433,8 +391,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsWidth005, TestSize.Level1)
  * @tc.name: SetandGetBoundsHeight001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsHeight001, TestSize.Level1)
 {
@@ -447,8 +403,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsHeight001, TestSize.Level1)
  * @tc.name: SetandGetBoundsHeight002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsHeight002, TestSize.Level1)
 {
@@ -461,8 +415,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsHeight002, TestSize.Level1)
  * @tc.name: SetandGetBoundsHeight003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsHeight003, TestSize.Level1)
 {
@@ -475,8 +427,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsHeight003, TestSize.Level1)
  * @tc.name: SetandGetBoundsHeight004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsHeight004, TestSize.Level1)
 {
@@ -489,8 +439,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsHeight004, TestSize.Level1)
  * @tc.name: SetandGetBoundsHeight005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsHeight005, TestSize.Level1)
 {
@@ -503,8 +451,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsHeight005, TestSize.Level1)
  * @tc.name: SetandGetBoundsPositionX001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsPositionX001, TestSize.Level1)
 {
@@ -517,8 +463,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsPositionX001, TestSize.Level1)
  * @tc.name: SetandGetBoundsPositionX002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsPositionX002, TestSize.Level1)
 {
@@ -531,8 +475,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsPositionX002, TestSize.Level1)
  * @tc.name: SetandGetBoundsPositionX003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsPositionX003, TestSize.Level1)
 {
@@ -545,8 +487,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsPositionX003, TestSize.Level1)
  * @tc.name: SetandGetBoundsPositionX004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsPositionX004, TestSize.Level1)
 {
@@ -559,8 +499,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsPositionX004, TestSize.Level1)
  * @tc.name: SetandGetBoundsPositionX005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsPositionX005, TestSize.Level1)
 {
@@ -573,8 +511,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsPositionX005, TestSize.Level1)
  * @tc.name: SetandGetBoundsPositionY001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsPositionY001, TestSize.Level1)
 {
@@ -587,8 +523,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsPositionY001, TestSize.Level1)
  * @tc.name: SetandGetBoundsPositionY002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsPositionY002, TestSize.Level1)
 {
@@ -601,8 +535,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsPositionY002, TestSize.Level1)
  * @tc.name: SetandGetBoundsPositionY003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsPositionY003, TestSize.Level1)
 {
@@ -615,8 +547,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsPositionY003, TestSize.Level1)
  * @tc.name: SetandGetBoundsPositionY004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsPositionY004, TestSize.Level1)
 {
@@ -629,8 +559,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsPositionY004, TestSize.Level1)
  * @tc.name: SetandGetBoundsPositionY005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBoundsPositionY005, TestSize.Level1)
 {
@@ -643,8 +571,6 @@ HWTEST_F(RSNodeTest, SetandGetBoundsPositionY005, TestSize.Level1)
  * @tc.name: SetandGetFrame001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrame001, TestSize.Level1)
 {
@@ -660,8 +586,6 @@ HWTEST_F(RSNodeTest, SetandGetFrame001, TestSize.Level1)
  * @tc.name: SetandGetFrame002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrame002, TestSize.Level1)
 {
@@ -677,8 +601,6 @@ HWTEST_F(RSNodeTest, SetandGetFrame002, TestSize.Level1)
  * @tc.name: SetandGetFrame003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrame003, TestSize.Level1)
 {
@@ -694,8 +616,6 @@ HWTEST_F(RSNodeTest, SetandGetFrame003, TestSize.Level1)
  * @tc.name: SetandGetFrameSize001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameSize001, TestSize.Level1)
 {
@@ -709,8 +629,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameSize001, TestSize.Level1)
  * @tc.name: SetandGetFrameSize002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameSize002, TestSize.Level1)
 {
@@ -724,8 +642,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameSize002, TestSize.Level1)
  * @tc.name: SetandGetFrameSize003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameSize003, TestSize.Level1)
 {
@@ -739,8 +655,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameSize003, TestSize.Level1)
  * @tc.name: GetFramePosition001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, GetFramePosition001, TestSize.Level1)
 {
@@ -755,8 +669,6 @@ HWTEST_F(RSNodeTest, GetFramePosition001, TestSize.Level1)
  * @tc.name: GetFramePosition002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, GetFramePosition002, TestSize.Level1)
 {
@@ -771,8 +683,6 @@ HWTEST_F(RSNodeTest, GetFramePosition002, TestSize.Level1)
  * @tc.name: GetFramePosition003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, GetFramePosition003, TestSize.Level1)
 {
@@ -787,8 +697,6 @@ HWTEST_F(RSNodeTest, GetFramePosition003, TestSize.Level1)
  * @tc.name: SetandGetFrameWidth001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameWidth001, TestSize.Level1)
 {
@@ -801,8 +709,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameWidth001, TestSize.Level1)
  * @tc.name: SetandGetFrameWidth002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameWidth002, TestSize.Level1)
 {
@@ -815,8 +721,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameWidth002, TestSize.Level1)
  * @tc.name: SetandGetFrameWidth003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameWidth003, TestSize.Level1)
 {
@@ -829,8 +733,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameWidth003, TestSize.Level1)
  * @tc.name: SetandGetFrameWidth004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameWidth004, TestSize.Level1)
 {
@@ -843,8 +745,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameWidth004, TestSize.Level1)
  * @tc.name: SetandGetFrameWidth005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameWidth005, TestSize.Level1)
 {
@@ -857,8 +757,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameWidth005, TestSize.Level1)
  * @tc.name: SetandGetFrameHeight001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameHeight001, TestSize.Level1)
 {
@@ -871,8 +769,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameHeight001, TestSize.Level1)
  * @tc.name: SetandGetFrameHeight002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameHeight002, TestSize.Level1)
 {
@@ -885,8 +781,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameHeight002, TestSize.Level1)
  * @tc.name: SetandGetFrameHeight003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameHeight003, TestSize.Level1)
 {
@@ -899,8 +793,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameHeight003, TestSize.Level1)
  * @tc.name: SetandGetFrameHeight004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameHeight004, TestSize.Level1)
 {
@@ -913,8 +805,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameHeight004, TestSize.Level1)
  * @tc.name: SetandGetFrameHeight005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameHeight005, TestSize.Level1)
 {
@@ -927,8 +817,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameHeight005, TestSize.Level1)
  * @tc.name: SetandGetFramePositionX001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFramePositionX001, TestSize.Level1)
 {
@@ -941,8 +829,6 @@ HWTEST_F(RSNodeTest, SetandGetFramePositionX001, TestSize.Level1)
  * @tc.name: SetandGetFramePositionX002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFramePositionX002, TestSize.Level1)
 {
@@ -955,8 +841,6 @@ HWTEST_F(RSNodeTest, SetandGetFramePositionX002, TestSize.Level1)
  * @tc.name: SetandGetFramePositionX003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFramePositionX003, TestSize.Level1)
 {
@@ -969,8 +853,6 @@ HWTEST_F(RSNodeTest, SetandGetFramePositionX003, TestSize.Level1)
  * @tc.name: SetandGetFramePositionX004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFramePositionX004, TestSize.Level1)
 {
@@ -983,8 +865,6 @@ HWTEST_F(RSNodeTest, SetandGetFramePositionX004, TestSize.Level1)
  * @tc.name: SetandGetFramePositionX005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFramePositionX005, TestSize.Level1)
 {
@@ -997,8 +877,6 @@ HWTEST_F(RSNodeTest, SetandGetFramePositionX005, TestSize.Level1)
  * @tc.name: SetandGetFramePositionY001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFramePositionY001, TestSize.Level1)
 {
@@ -1011,8 +889,6 @@ HWTEST_F(RSNodeTest, SetandGetFramePositionY001, TestSize.Level1)
  * @tc.name: SetandGetFramePositionY002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFramePositionY002, TestSize.Level1)
 {
@@ -1025,8 +901,6 @@ HWTEST_F(RSNodeTest, SetandGetFramePositionY002, TestSize.Level1)
  * @tc.name: SetandGetFramePositionY003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFramePositionY003, TestSize.Level1)
 {
@@ -1039,8 +913,6 @@ HWTEST_F(RSNodeTest, SetandGetFramePositionY003, TestSize.Level1)
  * @tc.name: SetandGetFramePositionY004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFramePositionY004, TestSize.Level1)
 {
@@ -1053,8 +925,6 @@ HWTEST_F(RSNodeTest, SetandGetFramePositionY004, TestSize.Level1)
  * @tc.name: SetandGetFramePositionY005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFramePositionY005, TestSize.Level1)
 {
@@ -1067,8 +937,6 @@ HWTEST_F(RSNodeTest, SetandGetFramePositionY005, TestSize.Level1)
  * @tc.name: SetandGetPositionZ001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPositionZ001, TestSize.Level1)
 {
@@ -1081,8 +949,6 @@ HWTEST_F(RSNodeTest, SetandGetPositionZ001, TestSize.Level1)
  * @tc.name: SetandGetPositionZ002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPositionZ002, TestSize.Level1)
 {
@@ -1095,8 +961,6 @@ HWTEST_F(RSNodeTest, SetandGetPositionZ002, TestSize.Level1)
  * @tc.name: SetandGetPositionZ003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPositionZ003, TestSize.Level1)
 {
@@ -1109,8 +973,6 @@ HWTEST_F(RSNodeTest, SetandGetPositionZ003, TestSize.Level1)
  * @tc.name: SetandGetPositionZ004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPositionZ004, TestSize.Level1)
 {
@@ -1123,8 +985,6 @@ HWTEST_F(RSNodeTest, SetandGetPositionZ004, TestSize.Level1)
  * @tc.name: SetandGetPositionZ005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPositionZ005, TestSize.Level1)
 {
@@ -1137,8 +997,6 @@ HWTEST_F(RSNodeTest, SetandGetPositionZ005, TestSize.Level1)
  * @tc.name: SetandGetCornerRadius001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetCornerRadius001, TestSize.Level1)
 {
@@ -1151,8 +1009,6 @@ HWTEST_F(RSNodeTest, SetandGetCornerRadius001, TestSize.Level1)
  * @tc.name: SetandGetCornerRadius002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetCornerRadius002, TestSize.Level1)
 {
@@ -1165,8 +1021,6 @@ HWTEST_F(RSNodeTest, SetandGetCornerRadius002, TestSize.Level1)
  * @tc.name: SetandGetCornerRadius003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetCornerRadius003, TestSize.Level1)
 {
@@ -1179,8 +1033,6 @@ HWTEST_F(RSNodeTest, SetandGetCornerRadius003, TestSize.Level1)
  * @tc.name: SetandGetCornerRadius004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetCornerRadius004, TestSize.Level1)
 {
@@ -1193,8 +1045,6 @@ HWTEST_F(RSNodeTest, SetandGetCornerRadius004, TestSize.Level1)
  * @tc.name: SetandGetCornerRadius005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetCornerRadius005, TestSize.Level1)
 {
@@ -1207,8 +1057,6 @@ HWTEST_F(RSNodeTest, SetandGetCornerRadius005, TestSize.Level1)
  * @tc.name: SetandGetRotationThree001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotationThree001, TestSize.Level1)
 {
@@ -1220,8 +1068,6 @@ HWTEST_F(RSNodeTest, SetandGetRotationThree001, TestSize.Level1)
  * @tc.name: SetandGetRotation001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotation001, TestSize.Level1)
 {
@@ -1234,8 +1080,6 @@ HWTEST_F(RSNodeTest, SetandGetRotation001, TestSize.Level1)
  * @tc.name: SetandGetRotation002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotation002, TestSize.Level1)
 {
@@ -1248,8 +1092,6 @@ HWTEST_F(RSNodeTest, SetandGetRotation002, TestSize.Level1)
  * @tc.name: SetandGetRotation003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotation003, TestSize.Level1)
 {
@@ -1262,8 +1104,6 @@ HWTEST_F(RSNodeTest, SetandGetRotation003, TestSize.Level1)
  * @tc.name: SetandGetRotation004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotation004, TestSize.Level1)
 {
@@ -1276,8 +1116,6 @@ HWTEST_F(RSNodeTest, SetandGetRotation004, TestSize.Level1)
  * @tc.name: SetandGetRotation005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotation005, TestSize.Level1)
 {
@@ -1290,8 +1128,6 @@ HWTEST_F(RSNodeTest, SetandGetRotation005, TestSize.Level1)
  * @tc.name: SetandGetRotationX001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotationX001, TestSize.Level1)
 {
@@ -1304,8 +1140,6 @@ HWTEST_F(RSNodeTest, SetandGetRotationX001, TestSize.Level1)
  * @tc.name: SetandGetRotationX002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotationX002, TestSize.Level1)
 {
@@ -1318,8 +1152,6 @@ HWTEST_F(RSNodeTest, SetandGetRotationX002, TestSize.Level1)
  * @tc.name: SetandGetRotationX003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotationX003, TestSize.Level1)
 {
@@ -1332,8 +1164,6 @@ HWTEST_F(RSNodeTest, SetandGetRotationX003, TestSize.Level1)
  * @tc.name: SetandGetRotationX004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotationX004, TestSize.Level1)
 {
@@ -1346,8 +1176,6 @@ HWTEST_F(RSNodeTest, SetandGetRotationX004, TestSize.Level1)
  * @tc.name: SetandGetRotationX005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotationX005, TestSize.Level1)
 {
@@ -1360,8 +1188,6 @@ HWTEST_F(RSNodeTest, SetandGetRotationX005, TestSize.Level1)
  * @tc.name: SetandGetRotationY001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotationY001, TestSize.Level1)
 {
@@ -1374,8 +1200,6 @@ HWTEST_F(RSNodeTest, SetandGetRotationY001, TestSize.Level1)
  * @tc.name: SetandGetRotationY002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotationY002, TestSize.Level1)
 {
@@ -1388,8 +1212,6 @@ HWTEST_F(RSNodeTest, SetandGetRotationY002, TestSize.Level1)
  * @tc.name: SetandGetRotationY003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotationY003, TestSize.Level1)
 {
@@ -1402,8 +1224,6 @@ HWTEST_F(RSNodeTest, SetandGetRotationY003, TestSize.Level1)
  * @tc.name: SetandGetRotationY004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotationY004, TestSize.Level1)
 {
@@ -1416,8 +1236,6 @@ HWTEST_F(RSNodeTest, SetandGetRotationY004, TestSize.Level1)
  * @tc.name: SetandGetRotationY005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotationY005, TestSize.Level1)
 {
@@ -1431,8 +1249,6 @@ HWTEST_F(RSNodeTest, SetandGetRotationY005, TestSize.Level1)
  * @tc.name: SetandGetScaleX001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetScaleX001, TestSize.Level1)
 {
@@ -1445,8 +1261,6 @@ HWTEST_F(RSNodeTest, SetandGetScaleX001, TestSize.Level1)
  * @tc.name: SetandGetScaleX002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetScaleX002, TestSize.Level1)
 {
@@ -1459,8 +1273,6 @@ HWTEST_F(RSNodeTest, SetandGetScaleX002, TestSize.Level1)
  * @tc.name: SetandGetScaleX003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetScaleX003, TestSize.Level1)
 {
@@ -1473,8 +1285,6 @@ HWTEST_F(RSNodeTest, SetandGetScaleX003, TestSize.Level1)
  * @tc.name: SetandGetScaleX004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetScaleX004, TestSize.Level1)
 {
@@ -1487,8 +1297,6 @@ HWTEST_F(RSNodeTest, SetandGetScaleX004, TestSize.Level1)
  * @tc.name: SetandGetScaleX005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetScaleX005, TestSize.Level1)
 {
@@ -1501,8 +1309,6 @@ HWTEST_F(RSNodeTest, SetandGetScaleX005, TestSize.Level1)
  * @tc.name: SetandGetScale001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetScale001, TestSize.Level1)
 {
@@ -1516,8 +1322,6 @@ HWTEST_F(RSNodeTest, SetandGetScale001, TestSize.Level1)
  * @tc.name: SetandGetScale002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetScale002, TestSize.Level1)
 {
@@ -1531,8 +1335,6 @@ HWTEST_F(RSNodeTest, SetandGetScale002, TestSize.Level1)
  * @tc.name: SetandGetScale003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetScale003, TestSize.Level1)
 {
@@ -1546,8 +1348,6 @@ HWTEST_F(RSNodeTest, SetandGetScale003, TestSize.Level1)
  * @tc.name: SetandGetScale004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetScale004, TestSize.Level1)
 {
@@ -1561,8 +1361,6 @@ HWTEST_F(RSNodeTest, SetandGetScale004, TestSize.Level1)
  * @tc.name: SetandGetScale0005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetScale0005, TestSize.Level1)
 {
@@ -1576,8 +1374,6 @@ HWTEST_F(RSNodeTest, SetandGetScale0005, TestSize.Level1)
  * @tc.name: SetandGetScaleY001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetScaleY001, TestSize.Level1)
 {
@@ -1590,8 +1386,6 @@ HWTEST_F(RSNodeTest, SetandGetScaleY001, TestSize.Level1)
  * @tc.name: SetandGetScaleY002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetScaleY002, TestSize.Level1)
 {
@@ -1604,8 +1398,6 @@ HWTEST_F(RSNodeTest, SetandGetScaleY002, TestSize.Level1)
  * @tc.name: SetandGetScaleY003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetScaleY003, TestSize.Level1)
 {
@@ -1618,8 +1410,6 @@ HWTEST_F(RSNodeTest, SetandGetScaleY003, TestSize.Level1)
  * @tc.name: SetandGetScaleY004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetScaleY004, TestSize.Level1)
 {
@@ -1632,8 +1422,6 @@ HWTEST_F(RSNodeTest, SetandGetScaleY004, TestSize.Level1)
  * @tc.name: SetandGetScaleY005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetScaleY005, TestSize.Level1)
 {
@@ -1646,8 +1434,6 @@ HWTEST_F(RSNodeTest, SetandGetScaleY005, TestSize.Level1)
  * @tc.name: SetandGetAlpha001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetAlpha001, TestSize.Level1)
 {
@@ -1660,8 +1446,6 @@ HWTEST_F(RSNodeTest, SetandGetAlpha001, TestSize.Level1)
  * @tc.name: SetandGetAlpha002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetAlpha002, TestSize.Level1)
 {
@@ -1674,8 +1458,6 @@ HWTEST_F(RSNodeTest, SetandGetAlpha002, TestSize.Level1)
  * @tc.name: SetandGetAlpha003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetAlpha003, TestSize.Level1)
 {
@@ -1688,8 +1470,6 @@ HWTEST_F(RSNodeTest, SetandGetAlpha003, TestSize.Level1)
  * @tc.name: SetandGetAlpha004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetAlpha004, TestSize.Level1)
 {
@@ -1702,8 +1482,6 @@ HWTEST_F(RSNodeTest, SetandGetAlpha004, TestSize.Level1)
  * @tc.name: SetandGetAlpha005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetAlpha005, TestSize.Level1)
 {
@@ -1716,8 +1494,6 @@ HWTEST_F(RSNodeTest, SetandGetAlpha005, TestSize.Level1)
  * @tc.name: SetandGetBgImageSize001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImageSize001, TestSize.Level1)
 {
@@ -1731,8 +1507,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImageSize001, TestSize.Level1)
  * @tc.name: SetandGetBgImageSize002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImageSize002, TestSize.Level1)
 {
@@ -1746,8 +1520,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImageSize002, TestSize.Level1)
  * @tc.name: SetandGetBgImageSize003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImageSize003, TestSize.Level1)
 {
@@ -1761,8 +1533,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImageSize003, TestSize.Level1)
  * @tc.name: SetandGetBgImageWidth001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImageWidth001, TestSize.Level1)
 {
@@ -1775,8 +1545,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImageWidth001, TestSize.Level1)
  * @tc.name: SetandGetBgImageWidth002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImageWidth002, TestSize.Level1)
 {
@@ -1789,8 +1557,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImageWidth002, TestSize.Level1)
  * @tc.name: SetandGetBgImageWidth003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImageWidth003, TestSize.Level1)
 {
@@ -1803,8 +1569,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImageWidth003, TestSize.Level1)
  * @tc.name: SetandGetBgImageWidth004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImageWidth004, TestSize.Level1)
 {
@@ -1817,8 +1581,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImageWidth004, TestSize.Level1)
  * @tc.name: SetandGetBgImageWidth005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImageWidth005, TestSize.Level1)
 {
@@ -1831,8 +1593,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImageWidth005, TestSize.Level1)
  * @tc.name: SetandGetBgImageHeight001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImageHeight001, TestSize.Level1)
 {
@@ -1845,8 +1605,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImageHeight001, TestSize.Level1)
  * @tc.name: SetandGetBgImageHeight002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImageHeight002, TestSize.Level1)
 {
@@ -1859,8 +1617,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImageHeight002, TestSize.Level1)
  * @tc.name: SetandGetBgImageHeight003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImageHeight003, TestSize.Level1)
 {
@@ -1873,8 +1629,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImageHeight003, TestSize.Level1)
  * @tc.name: SetandGetBgImageHeight004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImageHeight004, TestSize.Level1)
 {
@@ -1887,8 +1641,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImageHeight004, TestSize.Level1)
  * @tc.name: SetandGetBgImageHeight005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImageHeight005, TestSize.Level1)
 {
@@ -1901,8 +1653,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImageHeight005, TestSize.Level1)
  * @tc.name: SetandSetBgImagePosition001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandSetBgImagePosition001, TestSize.Level1)
 {
@@ -1916,8 +1666,6 @@ HWTEST_F(RSNodeTest, SetandSetBgImagePosition001, TestSize.Level1)
  * @tc.name: SetandSetBgImagePosition002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandSetBgImagePosition002, TestSize.Level1)
 {
@@ -1931,8 +1679,6 @@ HWTEST_F(RSNodeTest, SetandSetBgImagePosition002, TestSize.Level1)
  * @tc.name: SetandSetBgImagePosition003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandSetBgImagePosition003, TestSize.Level1)
 {
@@ -1946,8 +1692,6 @@ HWTEST_F(RSNodeTest, SetandSetBgImagePosition003, TestSize.Level1)
  * @tc.name: SetandGetBgImagePositionX001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImagePositionX001, TestSize.Level1)
 {
@@ -1960,8 +1704,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImagePositionX001, TestSize.Level1)
  * @tc.name: SetandGetBgImagePositionX002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImagePositionX002, TestSize.Level1)
 {
@@ -1974,8 +1716,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImagePositionX002, TestSize.Level1)
  * @tc.name: SetandGetBgImagePositionX003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImagePositionX003, TestSize.Level1)
 {
@@ -1988,8 +1728,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImagePositionX003, TestSize.Level1)
  * @tc.name: SetandGetBgImagePositionX004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImagePositionX004, TestSize.Level1)
 {
@@ -2002,8 +1740,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImagePositionX004, TestSize.Level1)
  * @tc.name: SetandGetBgImagePositionX005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImagePositionX005, TestSize.Level1)
 {
@@ -2016,8 +1752,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImagePositionX005, TestSize.Level1)
  * @tc.name: SetandGetBgImagePositionY001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImagePositionY001, TestSize.Level1)
 {
@@ -2030,8 +1764,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImagePositionY001, TestSize.Level1)
  * @tc.name: SetandGetBgImagePositionY002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImagePositionY002, TestSize.Level1)
 {
@@ -2044,8 +1776,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImagePositionY002, TestSize.Level1)
  * @tc.name: SetandGetBgImagePositionY003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImagePositionY003, TestSize.Level1)
 {
@@ -2058,8 +1788,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImagePositionY003, TestSize.Level1)
  * @tc.name: SetandGetBgImagePositionY004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImagePositionY004, TestSize.Level1)
 {
@@ -2072,8 +1800,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImagePositionY004, TestSize.Level1)
  * @tc.name: SetandGetBgImagePositionY005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBgImagePositionY005, TestSize.Level1)
 {
@@ -2086,8 +1812,6 @@ HWTEST_F(RSNodeTest, SetandGetBgImagePositionY005, TestSize.Level1)
  * @tc.name: SetandGetBorderWidth001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBorderWidth001, TestSize.Level1)
 {
@@ -2100,8 +1824,6 @@ HWTEST_F(RSNodeTest, SetandGetBorderWidth001, TestSize.Level1)
  * @tc.name: SetandGetBorderWidth002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBorderWidth002, TestSize.Level1)
 {
@@ -2114,8 +1836,6 @@ HWTEST_F(RSNodeTest, SetandGetBorderWidth002, TestSize.Level1)
  * @tc.name: SetandGetBorderWidth003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBorderWidth003, TestSize.Level1)
 {
@@ -2128,8 +1848,6 @@ HWTEST_F(RSNodeTest, SetandGetBorderWidth003, TestSize.Level1)
  * @tc.name: SetandGetBorderWidth004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBorderWidth004, TestSize.Level1)
 {
@@ -2142,8 +1860,6 @@ HWTEST_F(RSNodeTest, SetandGetBorderWidth004, TestSize.Level1)
  * @tc.name: SetandGetBorderWidth005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBorderWidth005, TestSize.Level1)
 {
@@ -2156,8 +1872,6 @@ HWTEST_F(RSNodeTest, SetandGetBorderWidth005, TestSize.Level1)
  * @tc.name: SetandGetPivot001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPivot001, TestSize.Level1)
 {
@@ -2171,8 +1885,6 @@ HWTEST_F(RSNodeTest, SetandGetPivot001, TestSize.Level1)
  * @tc.name: SetandGetPivot002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPivot002, TestSize.Level1)
 {
@@ -2186,8 +1898,6 @@ HWTEST_F(RSNodeTest, SetandGetPivot002, TestSize.Level1)
  * @tc.name: SetandGetPivot003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPivot003, TestSize.Level1)
 {
@@ -2201,8 +1911,6 @@ HWTEST_F(RSNodeTest, SetandGetPivot003, TestSize.Level1)
  * @tc.name: SetandGetPivotX001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPivotX001, TestSize.Level1)
 {
@@ -2215,8 +1923,6 @@ HWTEST_F(RSNodeTest, SetandGetPivotX001, TestSize.Level1)
  * @tc.name: SetandGetPivotX002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPivotX002, TestSize.Level1)
 {
@@ -2229,8 +1935,6 @@ HWTEST_F(RSNodeTest, SetandGetPivotX002, TestSize.Level1)
  * @tc.name: SetandGetPivotX003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPivotX003, TestSize.Level1)
 {
@@ -2243,8 +1947,6 @@ HWTEST_F(RSNodeTest, SetandGetPivotX003, TestSize.Level1)
  * @tc.name: SetandGetPivotX004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPivotX004, TestSize.Level1)
 {
@@ -2257,8 +1959,6 @@ HWTEST_F(RSNodeTest, SetandGetPivotX004, TestSize.Level1)
  * @tc.name: SetandGetPivotX005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPivotX005, TestSize.Level1)
 {
@@ -2271,8 +1971,6 @@ HWTEST_F(RSNodeTest, SetandGetPivotX005, TestSize.Level1)
  * @tc.name: SetandGetPivotY001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPivotY001, TestSize.Level1)
 {
@@ -2285,8 +1983,6 @@ HWTEST_F(RSNodeTest, SetandGetPivotY001, TestSize.Level1)
  * @tc.name: SetandGetPivotY002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPivotY002, TestSize.Level1)
 {
@@ -2299,8 +1995,6 @@ HWTEST_F(RSNodeTest, SetandGetPivotY002, TestSize.Level1)
  * @tc.name: SetandGetPivotY003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPivotY003, TestSize.Level1)
 {
@@ -2313,8 +2007,6 @@ HWTEST_F(RSNodeTest, SetandGetPivotY003, TestSize.Level1)
  * @tc.name: SetandGetPivotY004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPivotY004, TestSize.Level1)
 {
@@ -2327,8 +2019,6 @@ HWTEST_F(RSNodeTest, SetandGetPivotY004, TestSize.Level1)
  * @tc.name: SetandGetPivotY005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetPivotY005, TestSize.Level1)
 {
@@ -2341,8 +2031,6 @@ HWTEST_F(RSNodeTest, SetandGetPivotY005, TestSize.Level1)
  * @tc.name: SetandGetShadowOffset001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowOffset001, TestSize.Level1)
 {
@@ -2356,8 +2044,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowOffset001, TestSize.Level1)
  * @tc.name: SetandGetShadowOffset002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowOffset002, TestSize.Level1)
 {
@@ -2371,8 +2057,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowOffset002, TestSize.Level1)
  * @tc.name: SetandGetShadowOffset003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowOffset003, TestSize.Level1)
 {
@@ -2385,8 +2069,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowOffset003, TestSize.Level1)
  * @tc.name: SetandGetShadowOffsetX001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowOffsetX001, TestSize.Level1)
 {
@@ -2399,8 +2081,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowOffsetX001, TestSize.Level1)
  * @tc.name: SetandGetShadowOffsetX002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowOffsetX002, TestSize.Level1)
 {
@@ -2413,8 +2093,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowOffsetX002, TestSize.Level1)
  * @tc.name: SetandGetShadowOffsetX003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowOffsetX003, TestSize.Level1)
 {
@@ -2427,8 +2105,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowOffsetX003, TestSize.Level1)
  * @tc.name: SetandGetShadowOffsetX004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowOffsetX004, TestSize.Level1)
 {
@@ -2441,8 +2117,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowOffsetX004, TestSize.Level1)
  * @tc.name: SetandGetShadowOffsetX005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowOffsetX005, TestSize.Level1)
 {
@@ -2455,8 +2129,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowOffsetX005, TestSize.Level1)
  * @tc.name: SetandGetShadowOffsetY001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowOffsetY001, TestSize.Level1)
 {
@@ -2469,8 +2141,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowOffsetY001, TestSize.Level1)
  * @tc.name: SetandGetShadowOffsetY002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowOffsetY002, TestSize.Level1)
 {
@@ -2483,8 +2153,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowOffsetY002, TestSize.Level1)
  * @tc.name: SetandGetShadowOffsetY003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowOffsetY003, TestSize.Level1)
 {
@@ -2497,8 +2165,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowOffsetY003, TestSize.Level1)
  * @tc.name: SetandGetShadowOffsetY004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowOffsetY004, TestSize.Level1)
 {
@@ -2511,8 +2177,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowOffsetY004, TestSize.Level1)
  * @tc.name: SetandGetShadowOffsetY005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowOffsetY005, TestSize.Level1)
 {
@@ -2525,8 +2189,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowOffsetY005, TestSize.Level1)
  * @tc.name: SetandGetShadowAlpha001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowAlpha001, TestSize.Level1)
 {
@@ -2540,8 +2202,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowAlpha001, TestSize.Level1)
  * @tc.name: SetandGetShadowAlpha002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowAlpha002, TestSize.Level1)
 {
@@ -2555,8 +2215,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowAlpha002, TestSize.Level1)
  * @tc.name: SetandGetShadowAlpha003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowAlpha003, TestSize.Level1)
 {
@@ -2570,8 +2228,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowAlpha003, TestSize.Level1)
  * @tc.name: SetandGetShadowAlpha004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowAlpha004, TestSize.Level1)
 {
@@ -2585,8 +2241,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowAlpha004, TestSize.Level1)
  * @tc.name: SetandGetShadowAlpha005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowAlpha005, TestSize.Level1)
 {
@@ -2600,8 +2254,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowAlpha005, TestSize.Level1)
  * @tc.name: SetandGetShadowElevation001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowElevation001, TestSize.Level1)
 {
@@ -2614,8 +2266,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowElevation001, TestSize.Level1)
  * @tc.name: SetandGetShadowElevation002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowElevation002, TestSize.Level1)
 {
@@ -2628,8 +2278,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowElevation002, TestSize.Level1)
  * @tc.name: SetandGetShadowElevation003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowElevation003, TestSize.Level1)
 {
@@ -2642,8 +2290,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowElevation003, TestSize.Level1)
  * @tc.name: SetandGetShadowElevation004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowElevation004, TestSize.Level1)
 {
@@ -2656,8 +2302,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowElevation004, TestSize.Level1)
  * @tc.name: SetandGetShadowElevation005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowElevation005, TestSize.Level1)
 {
@@ -2670,8 +2314,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowElevation005, TestSize.Level1)
  * @tc.name: SetandGetShadowRadius001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowRadius001, TestSize.Level1)
 {
@@ -2684,8 +2326,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowRadius001, TestSize.Level1)
  * @tc.name: SetandGetShadowRadius002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowRadius002, TestSize.Level1)
 {
@@ -2698,8 +2338,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowRadius002, TestSize.Level1)
  * @tc.name: SetandGetShadowRadius003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowRadius003, TestSize.Level1)
 {
@@ -2712,8 +2350,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowRadius003, TestSize.Level1)
  * @tc.name: SetandGetShadowRadius004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowRadius004, TestSize.Level1)
 {
@@ -2726,8 +2362,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowRadius004, TestSize.Level1)
  * @tc.name: SetandGetShadowRadius005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowRadius005, TestSize.Level1)
 {
@@ -2740,8 +2374,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowRadius005, TestSize.Level1)
  * @tc.name: SetandGetShadowColor001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowColor001, TestSize.Level1)
 {
@@ -2755,8 +2387,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowColor001, TestSize.Level1)
  * @tc.name: SetandGetShadowColor002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowColor002, TestSize.Level1)
 {
@@ -2770,8 +2400,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowColor002, TestSize.Level1)
  * @tc.name: SetandGetShadowColor003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowColor003, TestSize.Level1)
 {
@@ -2785,8 +2413,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowColor003, TestSize.Level1)
  * @tc.name: SetandGetShadowColor004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowColor004, TestSize.Level1)
 {
@@ -2800,8 +2426,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowColor004, TestSize.Level1)
  * @tc.name: SetandGetShadowColor005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetShadowColor005, TestSize.Level1)
 {
@@ -2815,8 +2439,6 @@ HWTEST_F(RSNodeTest, SetandGetShadowColor005, TestSize.Level1)
  * @tc.name: SetandGetTranslateThree001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateThree001, TestSize.Level1)
 {
@@ -2831,8 +2453,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateThree001, TestSize.Level1)
  * @tc.name: SetandGetTranslateThree002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateThree002, TestSize.Level1)
 {
@@ -2847,8 +2467,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateThree002, TestSize.Level1)
  * @tc.name: SetandGetTranslateThree003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateThree003, TestSize.Level1)
 {
@@ -2863,8 +2481,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateThree003, TestSize.Level1)
  * @tc.name: SetandGetTranslateX001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateX001, TestSize.Level1)
 {
@@ -2877,8 +2493,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateX001, TestSize.Level1)
  * @tc.name: SetandGetTranslateX002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateX002, TestSize.Level1)
 {
@@ -2891,8 +2505,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateX002, TestSize.Level1)
  * @tc.name: SetandGetTranslateX003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateX003, TestSize.Level1)
 {
@@ -2905,8 +2517,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateX003, TestSize.Level1)
  * @tc.name: SetandGetTranslateX004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateX004, TestSize.Level1)
 {
@@ -2919,8 +2529,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateX004, TestSize.Level1)
  * @tc.name: SetandGetTranslateX005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateX005, TestSize.Level1)
 {
@@ -2933,8 +2541,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateX005, TestSize.Level1)
  * @tc.name: SetandGetTranslateY001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateY001, TestSize.Level1)
 {
@@ -2947,8 +2553,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateY001, TestSize.Level1)
  * @tc.name: SetandGetTranslateY002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateY002, TestSize.Level1)
 {
@@ -2961,8 +2565,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateY002, TestSize.Level1)
  * @tc.name: SetandGetTranslateY003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateY003, TestSize.Level1)
 {
@@ -2975,8 +2577,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateY003, TestSize.Level1)
  * @tc.name: SetandGetTranslateY004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateY004, TestSize.Level1)
 {
@@ -2989,8 +2589,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateY004, TestSize.Level1)
  * @tc.name: SetandGetTranslateY005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateY005, TestSize.Level1)
 {
@@ -3003,8 +2601,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateY005, TestSize.Level1)
  * @tc.name: SetandGetTranslateZ001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateZ001, TestSize.Level1)
 {
@@ -3017,8 +2613,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateZ001, TestSize.Level1)
  * @tc.name: SetandGetTranslateZ002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateZ002, TestSize.Level1)
 {
@@ -3031,8 +2625,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateZ002, TestSize.Level1)
  * @tc.name: SetandGetTranslateZ003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateZ003, TestSize.Level1)
 {
@@ -3045,8 +2637,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateZ003, TestSize.Level1)
  * @tc.name: SetandGetTranslateZ004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateZ004, TestSize.Level1)
 {
@@ -3059,8 +2649,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateZ004, TestSize.Level1)
  * @tc.name: SetandGetTranslateZ005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateZ005, TestSize.Level1)
 {
@@ -3073,8 +2661,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateZ005, TestSize.Level1)
  * @tc.name: SetandGetClipToBounds001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetClipToBounds001, TestSize.Level1)
 {
@@ -3087,8 +2673,6 @@ HWTEST_F(RSNodeTest, SetandGetClipToBounds001, TestSize.Level1)
  * @tc.name: SetandGetClipToBounds002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetClipToBounds002, TestSize.Level1)
 {
@@ -3101,8 +2685,6 @@ HWTEST_F(RSNodeTest, SetandGetClipToBounds002, TestSize.Level1)
  * @tc.name: SetandGetClipToFrame001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetClipToFrame001, TestSize.Level1)
 {
@@ -3115,8 +2697,6 @@ HWTEST_F(RSNodeTest, SetandGetClipToFrame001, TestSize.Level1)
  * @tc.name: SetandGetClipToFrame002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetClipToFrame002, TestSize.Level1)
 {
@@ -3129,8 +2709,6 @@ HWTEST_F(RSNodeTest, SetandGetClipToFrame002, TestSize.Level1)
  * @tc.name: SetandGetVisible001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetVisible001, TestSize.Level1)
 {
@@ -3143,8 +2721,6 @@ HWTEST_F(RSNodeTest, SetandGetVisible001, TestSize.Level1)
  * @tc.name: SetandGetVisible002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetVisible002, TestSize.Level1)
 {
@@ -3157,8 +2733,6 @@ HWTEST_F(RSNodeTest, SetandGetVisible002, TestSize.Level1)
  * @tc.name: SetandGetBorderStyle001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBorderStyle001, TestSize.Level1)
 {
@@ -3172,8 +2746,6 @@ HWTEST_F(RSNodeTest, SetandGetBorderStyle001, TestSize.Level1)
  * @tc.name: SetandGetBorderStyle002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBorderStyle002, TestSize.Level1)
 {
@@ -3187,8 +2759,6 @@ HWTEST_F(RSNodeTest, SetandGetBorderStyle002, TestSize.Level1)
  * @tc.name: SetandGetBorderStyle003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBorderStyle003, TestSize.Level1)
 {
@@ -3202,8 +2772,6 @@ HWTEST_F(RSNodeTest, SetandGetBorderStyle003, TestSize.Level1)
  * @tc.name: SetandGetBorderStyle004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBorderStyle004, TestSize.Level1)
 {
@@ -3217,8 +2785,6 @@ HWTEST_F(RSNodeTest, SetandGetBorderStyle004, TestSize.Level1)
  * @tc.name: SetandGetFrameGravity001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameGravity001, TestSize.Level1)
 {
@@ -3232,8 +2798,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameGravity001, TestSize.Level1)
  * @tc.name: SetandGetFrameGravity002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameGravity002, TestSize.Level1)
 {
@@ -3247,8 +2811,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameGravity002, TestSize.Level1)
  * @tc.name: SetandGetFrameGravity003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameGravity003, TestSize.Level1)
 {
@@ -3262,8 +2824,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameGravity003, TestSize.Level1)
  * @tc.name: SetandGetFrameGravity004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameGravity004, TestSize.Level1)
 {
@@ -3277,8 +2837,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameGravity004, TestSize.Level1)
  * @tc.name: SetandGetFrameGravity005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameGravity005, TestSize.Level1)
 {
@@ -3292,8 +2850,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameGravity005, TestSize.Level1)
  * @tc.name: SetandGetFrameGravity006
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameGravity006, TestSize.Level1)
 {
@@ -3307,8 +2863,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameGravity006, TestSize.Level1)
  * @tc.name: SetandGetFrameGravity007
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameGravity007, TestSize.Level1)
 {
@@ -3322,8 +2876,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameGravity007, TestSize.Level1)
  * @tc.name: SetandGetFrameGravity008
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameGravity008, TestSize.Level1)
 {
@@ -3337,8 +2889,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameGravity008, TestSize.Level1)
  * @tc.name: SetandGetFrameGravity009
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameGravity009, TestSize.Level1)
 {
@@ -3352,8 +2902,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameGravity009, TestSize.Level1)
  * @tc.name: SetandGetFrameGravity010
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameGravity010, TestSize.Level1)
 {
@@ -3367,8 +2915,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameGravity010, TestSize.Level1)
  * @tc.name: SetandGetFrameGravity011
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameGravity011, TestSize.Level1)
 {
@@ -3382,8 +2928,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameGravity011, TestSize.Level1)
  * @tc.name: SetandGetFrameGravity012
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetFrameGravity012, TestSize.Level1)
 {
@@ -3397,8 +2941,6 @@ HWTEST_F(RSNodeTest, SetandGetFrameGravity012, TestSize.Level1)
  * @tc.name: NotifyTransition001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, NotifyTransition001, TestSize.Level1)
 {
@@ -3410,8 +2952,6 @@ HWTEST_F(RSNodeTest, NotifyTransition001, TestSize.Level1)
  * @tc.name: NotifyTransition002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, NotifyTransition002, TestSize.Level1)
 {
@@ -3423,8 +2963,6 @@ HWTEST_F(RSNodeTest, NotifyTransition002, TestSize.Level1)
  * @tc.name: SetandGetForegroundColor001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetForegroundColor001, TestSize.Level1)
 {
@@ -3438,8 +2976,6 @@ HWTEST_F(RSNodeTest, SetandGetForegroundColor001, TestSize.Level1)
  * @tc.name: SetandGetForegroundColor002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetForegroundColor002, TestSize.Level1)
 {
@@ -3453,8 +2989,6 @@ HWTEST_F(RSNodeTest, SetandGetForegroundColor002, TestSize.Level1)
  * @tc.name: SetandGetForegroundColor003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetForegroundColor003, TestSize.Level1)
 {
@@ -3468,8 +3002,6 @@ HWTEST_F(RSNodeTest, SetandGetForegroundColor003, TestSize.Level1)
  * @tc.name: SetandGetBackgroundColor001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBackgroundColor001, TestSize.Level1)
 {
@@ -3483,8 +3015,6 @@ HWTEST_F(RSNodeTest, SetandGetBackgroundColor001, TestSize.Level1)
  * @tc.name: SetandGetBackgroundColor002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBackgroundColor002, TestSize.Level1)
 {
@@ -3498,8 +3028,6 @@ HWTEST_F(RSNodeTest, SetandGetBackgroundColor002, TestSize.Level1)
  * @tc.name: SetandGetBackgroundColor003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBackgroundColor003, TestSize.Level1)
 {
@@ -3513,8 +3041,6 @@ HWTEST_F(RSNodeTest, SetandGetBackgroundColor003, TestSize.Level1)
  * @tc.name: SetandGetBorderColor001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBorderColor001, TestSize.Level1)
 {
@@ -3528,8 +3054,6 @@ HWTEST_F(RSNodeTest, SetandGetBorderColor001, TestSize.Level1)
  * @tc.name: SetandGetBorderColor002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBorderColor002, TestSize.Level1)
 {
@@ -3543,8 +3067,6 @@ HWTEST_F(RSNodeTest, SetandGetBorderColor002, TestSize.Level1)
  * @tc.name: SetandGetBorderColor003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetBorderColor003, TestSize.Level1)
 {
@@ -3558,8 +3080,6 @@ HWTEST_F(RSNodeTest, SetandGetBorderColor003, TestSize.Level1)
  * @tc.name: SetandGetRotationVector001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetRotationVector001, TestSize.Level1)
 {
@@ -3572,8 +3092,6 @@ HWTEST_F(RSNodeTest, SetandGetRotationVector001, TestSize.Level1)
  * @tc.name: SetandGetTranslateVector001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetTranslateVector001, TestSize.Level1)
 {
@@ -3586,8 +3104,6 @@ HWTEST_F(RSNodeTest, SetandGetTranslateVector001, TestSize.Level1)
  * @tc.name: SetandGetSublayerTransform001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetSublayerTransform001, TestSize.Level1)
 {
@@ -3601,8 +3117,6 @@ HWTEST_F(RSNodeTest, SetandGetSublayerTransform001, TestSize.Level1)
  * @tc.name: SetandGetSublayerTransform002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetSublayerTransform002, TestSize.Level1)
 {
@@ -3616,8 +3130,6 @@ HWTEST_F(RSNodeTest, SetandGetSublayerTransform002, TestSize.Level1)
  * @tc.name: CreateBlurFilter001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, CreateBlurFilter001, TestSize.Level1)
 {
@@ -3631,8 +3143,6 @@ HWTEST_F(RSNodeTest, CreateBlurFilter001, TestSize.Level1)
  * @tc.name: CreateBlurFilter002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, CreateBlurFilter002, TestSize.Level2)
 {
@@ -3646,8 +3156,6 @@ HWTEST_F(RSNodeTest, CreateBlurFilter002, TestSize.Level2)
  * @tc.name: CreateBlurFilter003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, CreateBlurFilter003, TestSize.Level3)
 {
@@ -3661,8 +3169,6 @@ HWTEST_F(RSNodeTest, CreateBlurFilter003, TestSize.Level3)
  * @tc.name: CreateBlurFilter004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, CreateBlurFilter004, TestSize.Level1)
 {
@@ -3676,8 +3182,6 @@ HWTEST_F(RSNodeTest, CreateBlurFilter004, TestSize.Level1)
  * @tc.name: CreateBlurFilter005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, CreateBlurFilter005, TestSize.Level1)
 {
@@ -3691,8 +3195,6 @@ HWTEST_F(RSNodeTest, CreateBlurFilter005, TestSize.Level1)
  * @tc.name: CreateNormalFilter001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, CreateNormalFilter001, TestSize.Level1)
 {
@@ -3706,8 +3208,6 @@ HWTEST_F(RSNodeTest, CreateNormalFilter001, TestSize.Level1)
  * @tc.name: CreateNormalFilter002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, CreateNormalFilter002, TestSize.Level2)
 {
@@ -3721,8 +3221,6 @@ HWTEST_F(RSNodeTest, CreateNormalFilter002, TestSize.Level2)
  * @tc.name: CreateNormalFilter003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, CreateNormalFilter003, TestSize.Level3)
 {
@@ -3736,8 +3234,6 @@ HWTEST_F(RSNodeTest, CreateNormalFilter003, TestSize.Level3)
  * @tc.name: CreateNormalFilter004
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, CreateNormalFilter004, TestSize.Level1)
 {
@@ -3751,8 +3247,6 @@ HWTEST_F(RSNodeTest, CreateNormalFilter004, TestSize.Level1)
  * @tc.name: CreateNormalFilter005
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, CreateNormalFilter005, TestSize.Level1)
 {
@@ -3766,8 +3260,6 @@ HWTEST_F(RSNodeTest, CreateNormalFilter005, TestSize.Level1)
  * @tc.name: SetandGetClipBounds001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetandGetClipBounds001, TestSize.Level1)
 {
@@ -3781,8 +3273,6 @@ HWTEST_F(RSNodeTest, SetandGetClipBounds001, TestSize.Level1)
  * @tc.name: GetId001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, GetId001, TestSize.Level1)
 {
@@ -3794,8 +3284,6 @@ HWTEST_F(RSNodeTest, GetId001, TestSize.Level1)
  * @tc.name: GetChildren001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, GetChildren001, TestSize.Level1)
 {
@@ -3807,8 +3295,6 @@ HWTEST_F(RSNodeTest, GetChildren001, TestSize.Level1)
  * @tc.name: GetChildren002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, GetChildren002, TestSize.Level1)
 {
@@ -3820,8 +3306,6 @@ HWTEST_F(RSNodeTest, GetChildren002, TestSize.Level1)
  * @tc.name: GetStagingProperties001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, GetStagingProperties001, TestSize.Level1)
 {
@@ -3833,8 +3317,6 @@ HWTEST_F(RSNodeTest, GetStagingProperties001, TestSize.Level1)
  * @tc.name: GetMotionPathOption001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, GetMotionPathOption002, TestSize.Level1)
 {
@@ -3846,8 +3328,6 @@ HWTEST_F(RSNodeTest, GetMotionPathOption002, TestSize.Level1)
  * @tc.name: GetShowingProperties001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, GetShowingProperties001, TestSize.Level1)
 {
@@ -3859,8 +3339,6 @@ HWTEST_F(RSNodeTest, GetShowingProperties001, TestSize.Level1)
  * @tc.name: SetBgImage001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetBgImage001, TestSize.Level1)
 {
@@ -3873,8 +3351,6 @@ HWTEST_F(RSNodeTest, SetBgImage001, TestSize.Level1)
  * @tc.name: SetBackgroundShader001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetBackgroundShader001, TestSize.Level1)
 {
@@ -3887,8 +3363,6 @@ HWTEST_F(RSNodeTest, SetBackgroundShader001, TestSize.Level1)
  * @tc.name: SetCompositingFilter001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetCompositingFilter001, TestSize.Level1)
 {
@@ -3901,8 +3375,6 @@ HWTEST_F(RSNodeTest, SetCompositingFilter001, TestSize.Level1)
  * @tc.name: SetShadowPath001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSNodeTest, SetShadowPath001, TestSize.Level1)
 {

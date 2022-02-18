@@ -52,8 +52,6 @@ void RSUIDirectorTest::TearDown() {}
  * @tc.name: SetTimeStamp001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSUIDirectorTest, SetTimeStamp001, TestSize.Level1)
 {
@@ -65,8 +63,6 @@ HWTEST_F(RSUIDirectorTest, SetTimeStamp001, TestSize.Level1)
  * @tc.name: SetTimeStamp002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSUIDirectorTest, SetTimeStamp002, TestSize.Level1)
 {
@@ -78,8 +74,6 @@ HWTEST_F(RSUIDirectorTest, SetTimeStamp002, TestSize.Level1)
  * @tc.name: SetTimeStamp003
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSUIDirectorTest, SetTimeStamp003, TestSize.Level1)
 {
@@ -91,8 +85,6 @@ HWTEST_F(RSUIDirectorTest, SetTimeStamp003, TestSize.Level1)
  * @tc.name: SetRSSurfaceNode001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSUIDirectorTest, SetRSSurfaceNode001, TestSize.Level1)
 {
@@ -106,8 +98,6 @@ HWTEST_F(RSUIDirectorTest, SetRSSurfaceNode001, TestSize.Level1)
  * @tc.name: SetRSSurfaceNode002
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSUIDirectorTest, SetRSSurfaceNode002 , TestSize.Level1)
 {
@@ -119,8 +109,6 @@ HWTEST_F(RSUIDirectorTest, SetRSSurfaceNode002 , TestSize.Level1)
  * @tc.name: PlatformInit001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSUIDirectorTest, PlatformInit001, TestSize.Level1)
 {
@@ -132,8 +120,6 @@ HWTEST_F(RSUIDirectorTest, PlatformInit001, TestSize.Level1)
  * @tc.name: SetUITaskRunner001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSUIDirectorTest, SetUITaskRunner001, TestSize.Level1)
 {
@@ -145,8 +131,6 @@ HWTEST_F(RSUIDirectorTest, SetUITaskRunner001, TestSize.Level1)
  * @tc.name: DirectorSendMessages001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSUIDirectorTest, DirectorSendMessages001, TestSize.Level1)
 {
@@ -158,8 +142,6 @@ HWTEST_F(RSUIDirectorTest, DirectorSendMessages001, TestSize.Level1)
  * @tc.name: UIDirectorSetRoot001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSUIDirectorTest, UIDirectorSetRoot001, TestSize.Level1)
 {
@@ -175,8 +157,6 @@ HWTEST_F(RSUIDirectorTest, UIDirectorSetRoot001, TestSize.Level1)
  * @tc.name: UIDirectorTotal001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSUIDirectorTest, UIDirectorTotal001, TestSize.Level1)
 {

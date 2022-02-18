@@ -62,8 +62,6 @@ private:
  * @tc.name: Create001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSDisplayNodeTest, Create001, TestSize.Level1)
 {
@@ -79,8 +77,6 @@ HWTEST_F(RSDisplayNodeTest, Create001, TestSize.Level1)
  * @tc.name: GetType001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSDisplayNodeTest, GetType001, TestSize.Level1)
 {
@@ -94,8 +90,6 @@ HWTEST_F(RSDisplayNodeTest, GetType001, TestSize.Level1)
  * @tc.name: TakeSurfaceCapture001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSDisplayNodeTest, TakeSurfaceCapture001, TestSize.Level1)
 {

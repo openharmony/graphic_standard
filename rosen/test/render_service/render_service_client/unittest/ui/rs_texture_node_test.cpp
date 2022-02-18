@@ -37,8 +37,6 @@ void RSTextureNodeTest::TearDown() {}
  * @tc.name: Create001
  * @tc.desc:
  * @tc.type:FUNC
- * @tc.require:AR000GGR40
- * @tc.author:
  */
 HWTEST_F(RSTextureNodeTest, Create001, TestSize.Level1)
 {
