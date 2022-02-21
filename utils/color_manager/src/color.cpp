@@ -50,13 +50,13 @@ Color::Color(float r, float g, float b, float a)
 Color::Color(float r, float g, float b, float a, const ColorSpaceName name)
     : r(r), g(g), b(b), a(a), colorSpaceName(name) {}
 
-explicit Color::Color(int color)
+Color::Color(int color)
     : r(Red((int64_t)color<<32)),
       g(Green((int64_t)color<<32)),
       b(Blue((int64_t)color<<32)),
       a(Alpha((int64_t)color<<32)) {}
 
-explicit Color::Color(int64_t color)
+Color::Color(int64_t color)
     : r(Red(color)),
       g(Green(color)),
       b(Blue(color)),
