@@ -20,47 +20,49 @@
 #include "rosen_text/ui/typography.h"
 #include "rosen_text/ui/typography_create.h"
 
-rosen::FontCollection* ConvertToOriginalText(OH_Drawing_FontCollection* fontCollection)
+namespace rosen{
+FontCollection* ConvertToOriginalText(OH_Drawing_FontCollection* fontCollection)
 {
-    return reinterpret_cast<rosen::FontCollection*>(fontCollection);
+    return reinterpret_cast<FontCollection*>(fontCollection);
 }
 
-OH_Drawing_FontCollection* ConvertToNDKText(rosen::FontCollection* fontCollection)
+OH_Drawing_FontCollection* ConvertToNDKText(FontCollection* fontCollection)
 {
     return reinterpret_cast<OH_Drawing_FontCollection*>(fontCollection);
 }
 
-rosen::TypographyStyle* ConvertToOriginalText(OH_Drawing_TypographyStyle* style)
+TypographyStyle* ConvertToOriginalText(OH_Drawing_TypographyStyle* style)
 {
-    return reinterpret_cast<rosen::TypographyStyle*>(style);
+    return reinterpret_cast<TypographyStyle*>(style);
 }
 
-OH_Drawing_TypographyStyle* ConvertToNDKText(rosen::TypographyStyle* style)
+OH_Drawing_TypographyStyle* ConvertToNDKText(TypographyStyle* style)
 {
     return reinterpret_cast<OH_Drawing_TypographyStyle*>(style);
 }
 
-rosen::TypographyCreate* ConvertToOriginalText(OH_Drawing_TypographyCreate* handler)
+TypographyCreate* ConvertToOriginalText(OH_Drawing_TypographyCreate* handler)
 {
-    return reinterpret_cast<rosen::TypographyCreate*>(handler);
+    return reinterpret_cast<TypographyCreate*>(handler);
 }
 
-OH_Drawing_TypographyCreate* ConvertToNDKText(rosen::TypographyCreate* handler)
+OH_Drawing_TypographyCreate* ConvertToNDKText(TypographyCreate* handler)
 {
     return reinterpret_cast<OH_Drawing_TypographyCreate*>(handler);
 }
 
-rosen::TextStyle* ConvertToOriginalText(OH_Drawing_TextStyle* style)
+TextStyle* ConvertToOriginalText(OH_Drawing_TextStyle* style)
 {
-    return reinterpret_cast<rosen::TextStyle*>(style);
+    return reinterpret_cast<TextStyle*>(style);
 }
 
-rosen::Typography* ConvertToOriginalText(OH_Drawing_Typography* typography)
+Typography* ConvertToOriginalText(OH_Drawing_Typography* typography)
 {
-    return reinterpret_cast<rosen::Typography*>(typography);
+    return reinterpret_cast<Typography*>(typography);
 }
 
-OH_Drawing_Typography* ConvertToNDKText(rosen::Typography* typography)
+OH_Drawing_Typography* ConvertToNDKText(Typography* typography)
 {
     return reinterpret_cast<OH_Drawing_Typography*>(typography);
+}
 }

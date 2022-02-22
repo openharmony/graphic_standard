@@ -24,6 +24,7 @@
 #include <vector>
 #include <string>
 
+using namespace rosen;
 OH_Drawing_TypographyStyle* OH_Drawing_CreateTypographyStyle(void)
 {
     return (OH_Drawing_TypographyStyle*)new rosen::TypographyStyle;

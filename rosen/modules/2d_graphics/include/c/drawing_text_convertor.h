@@ -21,86 +21,88 @@
 #include "rosen_text/ui/typography.h"
 #include "rosen_text/ui/typography_create.h"
 
+namespace rosen{
 /**
- * @brief convert OH_Drawing_FontCollection to rosen::FontCollection.
+ * @brief convert OH_Drawing_FontCollection to FontCollection.
  *
  * @syscap SystemCapability.Graphic.Graphic2D.NativeDrawing
  * @param OH_Drawing_FontCollection a pointer to OH_Drawing_FontCollection object
- * @return rosen::FontCollection a pointer to rosen::FontCollection
+ * @return FontCollection a pointer to FontCollection
  */
-rosen::FontCollection* ConvertToOriginalText(OH_Drawing_FontCollection* fontCollection);
+FontCollection* ConvertToOriginalText(OH_Drawing_FontCollection* fontCollection);
 
 /**
- * @brief convert rosen::FontCollection to OH_Drawing_FontCollection.
+ * @brief convert FontCollection to OH_Drawing_FontCollection.
  *
  * @syscap SystemCapability.Graphic.Graphic2D.NativeDrawing
- * @param rosen::FontCollection a pointer to rosen::FontCollection object
+ * @param FontCollection a pointer to FontCollection object
  * @return OH_Drawing_FontCollection a pointer to OH_Drawing_FontCollection
  */
-OH_Drawing_FontCollection* ConvertToNDKText(rosen::FontCollection* fontCollection);
+OH_Drawing_FontCollection* ConvertToNDKText(FontCollection* fontCollection);
 
 /**
- * @brief convert OH_Drawing_TypographyStyle to rosen::TypographyStyle.
+ * @brief convert OH_Drawing_TypographyStyle to TypographyStyle.
  *
  * @syscap SystemCapability.Graphic.Graphic2D.NativeDrawing
  * @param OH_Drawing_TypographyStyle a pointer to OH_Drawing_TypographyStyle object
- * @return rosen::TypographyStyle a pointer to rosen::TypographyStyle
+ * @return TypographyStyle a pointer to TypographyStyle
  */
-rosen::TypographyStyle* ConvertToOriginalText(OH_Drawing_TypographyStyle* style);
+TypographyStyle* ConvertToOriginalText(OH_Drawing_TypographyStyle* style);
 
 /**
- * @brief convert rosen::TypographyStyle to OH_Drawing_TypographyStyle.
+ * @brief convert TypographyStyle to OH_Drawing_TypographyStyle.
  *
  * @syscap SystemCapability.Graphic.Graphic2D.NativeDrawing
- * @param rosen::TypographyStyle a pointer to rosen::TypographyStyle object
+ * @param TypographyStyle a pointer to TypographyStyle object
  * @return OH_Drawing_TypographyStyle a pointer to OH_Drawing_TypographyStyle
  */
-OH_Drawing_TypographyStyle* ConvertToNDKText(rosen::TypographyStyle* style);
+OH_Drawing_TypographyStyle* ConvertToNDKText(TypographyStyle* style);
 
 /**
- * @brief convert OH_Drawing_TypographyCreate to rosen::TypographyCreate.
+ * @brief convert OH_Drawing_TypographyCreate to TypographyCreate.
  *
  * @syscap SystemCapability.Graphic.Graphic2D.NativeDrawing
  * @param OH_Drawing_TypographyCreate a pointer to OH_Drawing_TypographyCreate object
- * @return rosen::TypographyCreate a pointer to rosen::TypographyCreate
+ * @return TypographyCreate a pointer to TypographyCreate
  */
-rosen::TypographyCreate* ConvertToOriginalText(OH_Drawing_TypographyCreate* handler);
+TypographyCreate* ConvertToOriginalText(OH_Drawing_TypographyCreate* handler);
 
 /**
- * @brief convert rosen::TypographyCreate to OH_Drawing_TypographyCreate.
+ * @brief convert TypographyCreate to OH_Drawing_TypographyCreate.
  *
  * @syscap SystemCapability.Graphic.Graphic2D.NativeDrawing
- * @param rosen::TypographyCreate a pointer to rosen::TypographyCreate object
+ * @param TypographyCreate a pointer to TypographyCreate object
  * @return OH_Drawing_TypographyCreate a pointer to rOH_Drawing_TypographyCreate
  */
-OH_Drawing_TypographyCreate* ConvertToNDKText(rosen::TypographyCreate* handler);
+OH_Drawing_TypographyCreate* ConvertToNDKText(TypographyCreate* handler);
 
 /**
- * @brief convert OH_Drawing_TextStyle to rosen::TextStyle.
+ * @brief convert OH_Drawing_TextStyle to TextStyle.
  *
  * @syscap SystemCapability.Graphic.Graphic2D.NativeDrawing
  * @param OH_Drawing_TextStyle a pointer to OH_Drawing_TextStyle object
- * @return rosen::TextStyle a pointer to rosen::TextStyle
+ * @return TextStyle a pointer to TextStyle
  */
-rosen::TextStyle* ConvertToOriginalText(OH_Drawing_TextStyle* style);
+TextStyle* ConvertToOriginalText(OH_Drawing_TextStyle* style);
 
 /**
  * @brief convert OH_Drawing_Typography to osen::Typography.
  *
  * @syscap SystemCapability.Graphic.Graphic2D.NativeDrawing
  * @param OH_Drawing_Typography a pointer to OH_Drawing_Typography object
- * @return rosen::Typography a pointer to rosen::Typography
+ * @return Typography a pointer to Typography
  */
-rosen::Typography* ConvertToOriginalText(OH_Drawing_Typography* typography);
+Typography* ConvertToOriginalText(OH_Drawing_Typography* typography);
 
 /**
- * @brief convert rosen::Typography to OH_Drawing_Typography.
+ * @brief convert Typography to OH_Drawing_Typography.
  *
  * @syscap SystemCapability.Graphic.Graphic2D.NativeDrawing
- * @param rosen::Typography a pointer to rosen::Typography object
+ * @param Typography a pointer to Typography object
  * @return OH_Drawing_Typography a pointer to OH_Drawing_Typography
  */
-OH_Drawing_Typography* ConvertToNDKText(rosen::Typography* typography);
+OH_Drawing_Typography* ConvertToNDKText(Typography* typography);
+}
 
 #endif
 
