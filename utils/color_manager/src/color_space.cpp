@@ -14,8 +14,6 @@
  */
 
 #include "color_space.h"
-#include <map>
-#include <utility>
 
 namespace OHOS {
 namespace ColorManager {
@@ -232,38 +230,6 @@ Matrix3x3 Invert(const Matrix3x3& src)
         }
     }
     return dst;
-}
-
-SkColorSpace* ColorSpace::ToSkColorSpace() const
-{
-    skcms_Matrix3x3 toXYZ = ToSkiaXYZ();
-    skcms_TransferFunction skTransferFun = {
-        transferFunc.g,
-        transferFunc.a,
-        transferFunc.b,
-        transferFunc.c,
-        transferFunc.d,
-        transferFunc.e,
-        transferFunc.f,
-    };
-    return SkColorSpace::MakeRGB(skTransferFun, toXYZ).get();
-}
-
-skcms_Matrix3x3 ColorSpace::ToSkiaXYZ() const
-{
-    skcms_Matrix3x3 skToXYZMatrix;
-    SkColorSpacePrimaries skPrimaries = {
-        transferFunc.g,
-        transferFunc.a,
-        transferFunc.b,
-        transferFunc.c,
-        transferFunc.d,
-        transferFunc.e,
-        transferFunc.f,
-    };
-    skPrimaries.toXYZD50(&skToXYZMatrix);
-
-    return skToXYZMatrix;
 }
 
 Vector3 ColorSpace::ToLinear(Vector3 v) const

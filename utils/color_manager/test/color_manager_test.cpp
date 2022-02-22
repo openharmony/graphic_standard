@@ -16,6 +16,7 @@
 #include <array>
 #include <gtest/gtest.h>
 #include <hilog/log.h>
+#include <cmath>
 
 #include "color.h"
 #include "color_space.h"
@@ -36,6 +37,11 @@ public:
     {}
 };
 
+static bool FloatEqual(const float input, const float actual_value)
+{
+    return std::abs(input - actual_value) < 1e-3f;
+}
+
 /*
 * Function: ColorManagerTest
 * Type: Function
@@ -47,10 +53,9 @@ HWTEST_F(ColorManagerTest, sRGBTosRGB, Function | SmallTest | Level2)
 {
     auto color = Color(0.1, 0.2, 0.3, 0.4);
     Color result = color.Convert(ColorSpace(SRGB));
-    ASSERT_EQ(result.r, 0.1);
-    ASSERT_EQ(result.g, 0.2);
-    ASSERT_EQ(result.b, 0.3);
-    ASSERT_EQ(result.a, 0.4);
+    ASSERT_EQ(FloatEqual(result.r, 0.1f), true);
+    ASSERT_EQ(FloatEqual(result.g, 0.2f), true);
+    ASSERT_EQ(FloatEqual(result.b, 0.3f), true);
 }
 
 /*
@@ -64,10 +69,9 @@ HWTEST_F(ColorManagerTest, sRGBToDisplay_P3, Function | SmallTest | Level2)
 {
     auto color = Color(0.1, 0.2, 0.3, 0.4);
     Color result = color.Convert(ColorSpace(DISPLAY_P3));
-    ASSERT_EQ(result.r, 0.1237);
-    ASSERT_EQ(result.g, 0.1975);
-    ASSERT_EQ(result.b, 0.2918);
-    ASSERT_EQ(result.a, 0.4);
+    ASSERT_EQ(FloatEqual(result.r, 0.1237f), true);
+    ASSERT_EQ(FloatEqual(result.g, 0.1975f), true);
+    ASSERT_EQ(FloatEqual(result.b, 0.2918f), true);
 }
 
 /*
@@ -81,10 +85,9 @@ HWTEST_F(ColorManagerTest, sRGBToAdobe, Function | SmallTest | Level2)
 {
     auto color = Color(0.1, 0.2, 0.3, 0.4);
     Color result = color.Convert(ColorSpace(ADOBE_RGB));
-    ASSERT_EQ(result.r, 0.1234);
-    ASSERT_EQ(result.g, 0.2124);
-    ASSERT_EQ(result.b, 0.3047);
-    ASSERT_EQ(result.a, 0.4);
+    ASSERT_EQ(FloatEqual(result.r, 0.1234f), true);
+    ASSERT_EQ(FloatEqual(result.g, 0.2124f), true);
+    ASSERT_EQ(FloatEqual(result.b, 0.3047f), true);
 }
 
 /*
@@ -99,9 +102,9 @@ HWTEST_F(ColorManagerTest, Display_P3TosRGB, Function | SmallTest | Level2)
     auto convertor = ColorSpaceConvertor(ColorSpace(DISPLAY_P3), ColorSpace(SRGB), GAMUT_MAP_CONSTANT);
     std::array<float, 3> rgb = {0.1, 0.2, 0.3};
     auto result = convertor.Convert(rgb);
-    ASSERT_EQ(result[0], 0.0594);
-    ASSERT_EQ(result[1], 0.2031);
-    ASSERT_EQ(result[2], 0.3087);
+    ASSERT_EQ(FloatEqual(result[0], 0.0594f), true);
+    ASSERT_EQ(FloatEqual(result[1], 0.2031f), true);
+    ASSERT_EQ(FloatEqual(result[2], 0.3087f), true);
 }
 
 /*
@@ -116,9 +119,9 @@ HWTEST_F(ColorManagerTest, sRGBTosRGBConvertor, Function | SmallTest | Level2)
     auto convertor = ColorSpaceConvertor(ColorSpace(SRGB), ColorSpace(SRGB), GAMUT_MAP_CONSTANT);
     std::array<float, 3> rgb = {0.1, 0.2, 0.3};
     auto result = convertor.Convert(rgb);
-    ASSERT_EQ(result[0], 0.1);
-    ASSERT_EQ(result[1], 0.2);
-    ASSERT_EQ(result[2], 0.3);
+    ASSERT_EQ(FloatEqual(result[0], 0.1f), true);
+    ASSERT_EQ(FloatEqual(result[1], 0.2f), true);
+    ASSERT_EQ(FloatEqual(result[2], 0.3f), true);
 }
 
 /*
@@ -133,9 +136,9 @@ HWTEST_F(ColorManagerTest, AdobeToDisplay_P3, Function | SmallTest | Level2)
     auto convertor = ColorSpaceConvertor(ColorSpace(ADOBE_RGB), ColorSpace(DISPLAY_P3), GAMUT_MAP_CONSTANT);
     std::array<float, 3> rgb = {0.1, 0.2, 0.3};
     auto result = convertor.Convert(rgb);
-    ASSERT_EQ(result[0], 0.1020);
-    ASSERT_EQ(result[1], 0.1837);
-    ASSERT_EQ(result[2], 0.2863);
+    ASSERT_EQ(FloatEqual(result[0], 0.1020f), true);
+    ASSERT_EQ(FloatEqual(result[1], 0.1837f), true);
+    ASSERT_EQ(FloatEqual(result[2], 0.2863f), true);
 }
 
 /*
@@ -150,9 +153,9 @@ HWTEST_F(ColorManagerTest, Display_P3ToAdobe, Function | SmallTest | Level2)
     auto convertor = ColorSpaceConvertor(ColorSpace(DISPLAY_P3), ColorSpace(ADOBE_RGB), GAMUT_MAP_CONSTANT);
     std::array<float, 3> rgb = {0.1, 0.2, 0.3};
     auto result = convertor.Convert(rgb);
-    ASSERT_EQ(result[0], 0.0886);
-    ASSERT_EQ(result[1], 0.2152);
-    ASSERT_EQ(result[2], 0.3130);
+    ASSERT_EQ(FloatEqual(result[0], 0.0886f), true);
+    ASSERT_EQ(FloatEqual(result[1], 0.2152f), true);
+    ASSERT_EQ(FloatEqual(result[2], 0.3130f), true);
 }
 
 /*
@@ -167,9 +170,9 @@ HWTEST_F(ColorManagerTest, AdobeToSRGB, Function | SmallTest | Level2)
     auto convertor = ColorSpaceConvertor(ColorSpace(ADOBE_RGB), ColorSpace(SRGB), GAMUT_MAP_CONSTANT);
     std::array<float, 3> rgb = {0.1, 0.2, 0.3};
     auto result = convertor.Convert(rgb);
-    ASSERT_EQ(result[0], 0.0728);
-    ASSERT_EQ(result[1], 0.1862);
-    ASSERT_EQ(result[2], 0.2949);
+    ASSERT_EQ(FloatEqual(result[0], 0.0728f), true);
+    ASSERT_EQ(FloatEqual(result[1], 0.1862f), true);
+    ASSERT_EQ(FloatEqual(result[2], 0.2949f), true);
 }
 }
 }

@@ -22,14 +22,12 @@ config("color_manager_config") {
     "-Wno-unused-private-field",
     "-Wno-implicit-fallthrough",
     "-Wno-reorder-ctor",
+    "-Wno-sign-compare",
   ]
 }
 
 config("color_manager_public_config") {
-  include_dirs = [
-    "export",
-    "//third_party/flutter/skia",
-  ]
+  include_dirs = [ "export" ]
 }
 
 ohos_static_library("color_manager") {
@@ -43,6 +41,8 @@ ohos_static_library("color_manager") {
 
   public_configs = [ ":color_manager_public_config" ]
 
-  deps = [ "//foundation/ace/ace_engine/build/external_config/flutter/skia:ace_skia_ohos" ]
+  deps = []
 }
+
 ## Build color_manager_config.a }}}
+

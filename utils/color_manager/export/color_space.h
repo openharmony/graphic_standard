@@ -17,8 +17,10 @@
 #define COLORSPACE
 
 #include <array>
-#include "include/core/SkColorSpace.h"
-#include "include/third_party/skcms/skcms.h"
+#include <map>
+#include <utility>
+#include <cmath>
+#include <cfloat>
 
 namespace OHOS {
 namespace ColorManager {
@@ -128,9 +130,6 @@ public:
         return transferFunc.g;
     }
 
-    // convert OHOS ColorSpce to SKColorSpace
-    SkColorSpace* ToSkColorSpace() const;
-
     Vector3 ToLinear(Vector3 color) const;
     Vector3 ToNonLinear(Vector3 color) const;
 
@@ -138,7 +137,6 @@ public:
     float clampMax = 1.0f;
 
 private:
-    skcms_Matrix3x3 ToSkiaXYZ() const;
     ColorSpaceName colorSpaceName;
     Matrix3x3 toXYZ;
     std::array<float, DIMES_2> whitePoint;
