@@ -450,8 +450,14 @@ bool RsRenderServiceUtil::IsNeedClient(RSSurfaceRenderNode* node)
     SkMatrix matrix = transitionProperties->GetRotate();
     float value[9];
     matrix.get9(value);
-    float rAngle = -round(atan2(value[SkMatrix::kMSkewX], value[SkMatrix::kMScaleX]) * (180 / PI));
-    return rAngle > 0;
+    if (SkMatrix::kMSkewX < 0 || SkMatrix::kMSkewX >= 9 || // 9 is the upper bound
+        SkMatrix::kMScaleX < 0 || SkMatrix::kMScaleX >= 9) { // 9 is the upper bound
+        ROSEN_LOGE("RsRenderServiceUtil:: The value of kMSkewX or kMScaleX is illegal");
+        return false;
+    } else {
+        float rAngle = -round(atan2(value[SkMatrix::kMSkewX], value[SkMatrix::kMScaleX]) * (180 / PI));
+        return rAngle > 0;
+    }
 }
 
 // inner interface

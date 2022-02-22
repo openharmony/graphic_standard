@@ -86,7 +86,7 @@ std::unique_ptr<Media::PixelMap> RSSurfaceCaptureTask::CreatePixelMapByDisplayNo
         ROSEN_LOGE("RSSurfaceCaptureTask::CreatePixelMapByDisplayNode: node is nullptr");
         return nullptr;
     }
-    int screenId = node->GetScreenId();
+    uint64_t screenId = node->GetScreenId();
     RSScreenModeInfo screenModeInfo;
     sptr<RSScreenManager> screenManager = CreateOrGetScreenManager();
     if (!screenManager) {

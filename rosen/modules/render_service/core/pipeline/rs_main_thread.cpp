@@ -132,7 +132,7 @@ void RSMainThread::Animate(uint64_t timestamp)
     RS_TRACE_FUNC();
     bool hasAnimate = false;
     for (const auto& [id, node] : context_.GetNodeMap().renderNodeMap_) {
-        hasAnimate = node->Animate(timestamp) | hasAnimate;
+        hasAnimate = node->Animate(timestamp) || hasAnimate;
     }
     if (hasAnimate) {
         RequestNextVSync();

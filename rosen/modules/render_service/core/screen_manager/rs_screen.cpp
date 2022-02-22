@@ -408,7 +408,7 @@ int32_t RSScreen::GetScreenColorGamut(ScreenColorGamut &mode) const
 int32_t RSScreen::SetScreenColorGamut(int32_t modeIdx)
 {
     if (isVirtual_) {
-        if (modeIdx >= supportedVirtualColorGamuts_.size()) {
+        if (modeIdx >= static_cast<int32_t>(supportedVirtualColorGamuts_.size())) {
             return StatusCode::INVALID_ARGUMENTS;
         }
         currentVirtualColorGamutIdx_ = modeIdx;
@@ -418,7 +418,7 @@ int32_t RSScreen::SetScreenColorGamut(int32_t modeIdx)
     if (hdiScreen_->GetScreenSupportedColorGamuts(hdiMode) != DispErrCode::DISPLAY_SUCCESS) {
         return StatusCode::HDI_ERROR;
     }
-    if (modeIdx >= hdiMode.size()) {
+    if (modeIdx >= static_cast<int32_t>(hdiMode.size())) {
         return StatusCode::INVALID_ARGUMENTS;
     }
     int32_t result = hdiScreen_->SetScreenColorGamut(hdiMode[modeIdx]);

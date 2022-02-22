@@ -137,7 +137,10 @@ void RSUIDirector::SendMessages()
 
 void RSUIDirector::RecvMessages()
 {
-    static const uint32_t pid = getpid();
+    if (getpid() == -1) {
+        return;
+    }
+    static const uint32_t pid = static_cast<uint32_t>(getpid());
     if (!RSMessageProcessor::Instance().HasTransaction(pid)) {
         return;
     }
