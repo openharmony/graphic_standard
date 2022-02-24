@@ -254,7 +254,7 @@ void RSHardwareProcessor::Redraw(sptr<Surface>& surface, const struct PrepareCom
                 *(static_cast<RSSurfaceRenderNode *>(layerInfo->GetLayerAdditionalInfo())));
         } else {
             ROSEN_LOGW("RSHardwareProcessor::Redraw: need to convert color gamut.");
-            RsRenderServiceUtil::DrawBuffer(canvas.get(), buffer,
+            RsRenderServiceUtil::DrawBuffer(*canvas, buffer,
                 *(static_cast<RSSurfaceRenderNode *>(layerInfo->GetLayerAdditionalInfo())),
                 static_cast<ColorGamut>(currScreenInfo_.colorGamut));
         }
