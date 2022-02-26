@@ -98,7 +98,7 @@ public:
         freeWindow->Resize(width, height);
         ListenWindowTouchEvent(freeWindow->GetID());
     }
-
+#if 0
     bool OnTouch(const TouchEvent &event) override
     {
         int32_t x = event.GetPointerPosition(event.GetIndex()).GetX();
@@ -119,6 +119,7 @@ public:
 
         return true;
     }
+#endif
 
     void OnMoveReturn(const GSError &err)
     {

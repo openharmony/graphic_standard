@@ -134,7 +134,7 @@ public:
 
         NativeTestDraw::RainbowDraw(vaddr, width, height, count);
     }
-
+#if 0
     bool OnKey(const KeyEvent &event) override
     {
         GSLOG7SO(DEBUG) << "[" << event.GetKeyCode() << "]";
@@ -157,7 +157,7 @@ public:
             << ")";
         return false;
     }
-
+#endif
     void OnSplitStatusChange(SplitStatus status)
     {
         ScopedBytrace trace(__func__);
@@ -255,7 +255,7 @@ public:
             draw.DrawRect(icon.rect);
         }
     }
-
+#if 0
     bool OnKey(const KeyEvent &event) override
     {
         GSLOG7SO(DEBUG) << "[" << event.GetKeyCode() << "]";
@@ -289,6 +289,7 @@ public:
 
         return true;
     }
+#endif
 
     bool OnTouchDown(int32_t x, int32_t y)
     {

@@ -16,6 +16,7 @@
 #ifndef FRAMEWORKS_WM_SRC_TEST_INATIVE_TEST_TOUCH_EVENT_HANDLER_H
 #define FRAMEWORKS_WM_SRC_TEST_INATIVE_TEST_TOUCH_EVENT_HANDLER_H
 
+#if 0
 #include <scoped_bytrace.h>
 
 #include "inative_test.h"
@@ -37,5 +38,6 @@ private:
     INativeTest *test_ = nullptr;
 };
 } // namespace OHOS
+#endif
 
 #endif // FRAMEWORKS_WM_SRC_TEST_INATIVE_TEST_TOUCH_EVENT_HANDLER_H

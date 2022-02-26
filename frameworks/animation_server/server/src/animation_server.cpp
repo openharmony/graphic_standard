@@ -39,7 +39,9 @@ GSError AnimationServer::Init()
 
     WindowManagerServiceClient::GetInstance()->Init();
     animationModule.Init();
+#if 0
     cursorModule.Init();
+#endif
 
     auto splitOption = WindowOption::Get();
     splitOption->SetWindowType(WINDOW_TYPE_SPLIT_LINE);
@@ -74,11 +76,13 @@ GSError AnimationServer::SplitModeCreateBackground()
     GSLOG2HI(DEBUG);
     splitWindow->Show();
     splitWindow->SwitchTop();
+#if 0
     if (thandler == nullptr) {
         thandler = new TouchEventHandler(this);
         MMIEventHdl.RegisterStandardizedEventHandle(token, splitWindow->GetID(), thandler);
     }
     handler->PostTask(std::bind(&AnimationServer::SplitWindowUpdate, this));
+#endif
     return GSERROR_OK;
 }
 
@@ -195,6 +199,7 @@ void AnimationServer::OnSplitStatusChange(SplitStatus status)
     }
 }
 
+#if 0
 bool AnimationServer::OnTouch(const TouchEvent &event)
 {
     ScopedBytrace trace(__func__);
@@ -224,6 +229,7 @@ bool AnimationServer::OnTouch(const TouchEvent &event)
 
     return false;
 }
+#endif
 
 void AnimationServer::LaunchPageWindowUpdate()
 {

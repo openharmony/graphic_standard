@@ -16,13 +16,13 @@
 #ifndef FRAMEWORKS_ANIMATION_SERVER_SERVER_INCLUDE_CURSOR_MODULE_H
 #define FRAMEWORKS_ANIMATION_SERVER_SERVER_INCLUDE_CURSOR_MODULE_H
 
+#if 0
 #include <vector>
 
 #include <event_handler.h>
 #include <graphic_common.h>
 #include <ipc_object_stub.h>
 #include <raw_parser.h>
-#include <touch_event_handler.h>
 #include <window_manager.h>
 
 namespace OHOS {
@@ -42,5 +42,6 @@ private:
     sptr<IRemoteObject> token_ = new IPCObjectStub(u"cursor_module");
 };
 } // namespace OHOS
+#endif
 
 #endif // FRAMEWORKS_ANIMATION_SERVER_SERVER_INCLUDE_CURSOR_MODULE_H

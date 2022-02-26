@@ -206,7 +206,7 @@ public:
         glFinish();
         return -1;
     }
-
+#if 0
     bool OnKey(const KeyEvent &event) override
     {
         GSLOG7SO(DEBUG) << "[" << event.GetKeyCode() << "]";
@@ -226,6 +226,7 @@ public:
         }
         return false;
     }
+#endif
 
 private:
     sptr<Window> window = nullptr;

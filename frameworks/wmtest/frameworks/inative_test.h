@@ -101,8 +101,10 @@ private:
 
     static inline std::vector<INativeTest *> tests;
     std::shared_ptr<AppExecFwk::EventHandler> handler = nullptr;
+#if 0
     std::map<int32_t, sptr<MMI::KeyEventHandler>> keyHandlerMap;
     std::map<int32_t, sptr<MMI::TouchEventHandler>> touchHandlerMap;
+#endif
     sptr<IRemoteObject> token = nullptr;
     sptr<INativeTestIpc> remoteIpc = nullptr;
     std::map<pid_t, int32_t> pidToSeq;

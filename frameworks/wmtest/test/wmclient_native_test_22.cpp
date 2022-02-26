@@ -53,7 +53,7 @@ public:
     {
         return AutoLoadService::WindowManager;
     }
-
+#if 0
     bool OnTouch(const TouchEvent &event) override
     {
         int32_t x = event.GetPointerPosition(event.GetIndex()).GetX();
@@ -80,6 +80,7 @@ public:
 
         return false;
     }
+#endif
 
     void OnWin1TouchMotion(double x, double y)
     {

@@ -14,7 +14,7 @@
  */
 
 #include "cursor_module.h"
-
+#if 0
 #include <display_type.h>
 #include <gslogger.h>
 #include <multimodal_event_handler.h>
@@ -120,3 +120,5 @@ bool CursorModule::OnTouch(const TouchEvent &event)
     return false;
 }
 } // namespace OHOS
+
+#endif

@@ -100,15 +100,21 @@ void INativeTest::GetToken()
 int32_t INativeTest::ListenWindowKeyEvent(int32_t windowID)
 {
     GetToken();
+#if 0
     keyHandlerMap[windowID] = new INativeTestKeyEventHandler(this);
     return MMIEventHdl.RegisterStandardizedEventHandle(token, windowID, keyHandlerMap[windowID]);
+#endif
+    return -1;
 }
 
 int32_t INativeTest::ListenWindowTouchEvent(int32_t windowID)
 {
     GetToken();
+#if 0
     touchHandlerMap[windowID] = new INativeTestTouchEventHandler(this);
     return MMIEventHdl.RegisterStandardizedEventHandle(token, windowID, touchHandlerMap[windowID]);
+#endif
+    return -1;
 }
 
 void INativeTest::ListenWindowInputEvent(int32_t windowID)
