@@ -74,7 +74,6 @@ RSRenderThread& RSRenderThread::Instance()
 RSRenderThread::RSRenderThread()
 {
 #ifdef ACE_ENABLE_GL
-    // renderContext_ = *(RenderContextFactory::GetInstance().CreateEngine());
     renderContext_ = new RenderContext();
     ROSEN_LOGD("Create RenderContext, its pointer is %p", renderContext_);
 #endif
@@ -156,7 +155,6 @@ void RSRenderThread::WakeUp()
 
 void RSRenderThread::RecvTransactionData(std::unique_ptr<RSTransactionData>& transactionData)
 {
-    // StopTimer();
     {
         std::unique_lock<std::mutex> cmdLock(cmdMutex_);
         cmds_.emplace_back(std::move(transactionData));
@@ -219,7 +217,7 @@ void RSRenderThread::RenderLoop()
 void RSRenderThread::OnVsync(uint64_t timestamp)
 {
     ROSEN_TRACE_BEGIN(BYTRACE_TAG_GRAPHIC_AGP, "RSRenderThread::OnVsync");
-    mValue = (mValue + 1) % 2;
+    mValue = (mValue + 1) % 2; // 1 and 2 is Calculated parameters
     RS_TRACE_INT("Vsync-client", mValue);
     timestamp_ = timestamp;
     if (activeWindowCnt_.load() > 0) {
@@ -350,6 +348,5 @@ void RSRenderThread::PostTask(RSTaskMessage::RSTask task)
         threadHandler_->PostTask(taskHandle, 0);
     }
 }
-
 } // namespace Rosen
 } // namespace OHOS

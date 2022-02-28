@@ -124,7 +124,7 @@ void RSHardwareProcessor::ProcessSurface(RSSurfaceRenderNode &node)
         return;
     }
     OHOS::sptr<SurfaceBuffer> cbuffer;
-    RSProcessor::SpecialTask task = [] () -> void{};
+    RSProcessor::SpecialTask task = [] () -> void {};
     bool ret = ConsumeAndUpdateBuffer(node, task, cbuffer);
     if (!ret) {
         ROSEN_LOGI("RsDebug RSHardwareProcessor::ProcessSurface consume buffer fail");
