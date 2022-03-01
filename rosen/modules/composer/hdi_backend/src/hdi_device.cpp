@@ -124,7 +124,7 @@ int32_t HdiDevice::GetScreenSupportedModes(uint32_t screenId, std::vector<Displa
 {
     CHECK_FUNC(deviceFuncs_, deviceFuncs_->GetDisplaySupportedModes);
 
-    int32_t num = 0;
+    uint32_t num = 0;
     int32_t ret = deviceFuncs_->GetDisplaySupportedModes(screenId, &num, nullptr);
     if (ret != DISPLAY_SUCCESS) {
         return ret;
