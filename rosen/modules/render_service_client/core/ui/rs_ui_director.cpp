@@ -175,6 +175,5 @@ void RSUIDirector::AnimationCallbackProcessor(NodeId nodeId, AnimationId animId)
         nodePtr->AnimationFinish(animId);
     }
 }
-
 } // namespace Rosen
 } // namespace OHOS
