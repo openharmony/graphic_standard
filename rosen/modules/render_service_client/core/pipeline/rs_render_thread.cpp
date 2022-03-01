@@ -104,13 +104,6 @@ RSRenderThread::RSRenderThread()
             ROSEN_LOGD("RSRenderThread DrawFrame took %fs.", drawTime);
         }
     };
-
-#ifdef ROSEN_OHOS
-    RSRenderServiceConnectHub::SetOnConnectCallback([this](sptr<RSIRenderServiceConnection>& conn) {
-        sptr<IApplicationRenderThread> renderThreadSptr = sptr<RSRenderThread>(this);
-        conn->RegisterApplicationRenderThread(getpid(), renderThreadSptr);
-    });
-#endif
 }
 
 RSRenderThread::~RSRenderThread()
@@ -131,6 +124,17 @@ void RSRenderThread::Start()
     if (thread_ == nullptr) {
         thread_ = std::make_unique<std::thread>(&RSRenderThread::RenderLoop, this);
     }
+
+#ifdef ROSEN_OHOS
+    RSRenderServiceConnectHub::SetOnConnectCallback(
+        [weakThis = wptr<RSRenderThread>(this)](sptr<RSIRenderServiceConnection>& conn) {
+            sptr<IApplicationRenderThread> renderThreadSptr = weakThis.promote();
+            if (renderThreadSptr == nullptr) {
+                return;
+            }
+            conn->RegisterApplicationRenderThread(getpid(), renderThreadSptr);
+        });
+#endif
 }
 
 void RSRenderThread::Stop()
