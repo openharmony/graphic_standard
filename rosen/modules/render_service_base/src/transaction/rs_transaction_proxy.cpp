@@ -15,6 +15,7 @@
 
 #include "transaction/rs_transaction_proxy.h"
 #include <stdlib.h>
+#include "platform/common/rs_log.h"
 
 namespace OHOS {
 namespace Rosen {
@@ -112,10 +113,12 @@ void RSTransactionProxy::FlushImplicitTransaction()
 {
     std::unique_lock<std::mutex> cmdLock(mutex_);
     if (renderThreadClient_ != nullptr && !implicitCommonTransactionData_->IsEmpty()) {
+        ROSEN_LOGI("unirender:Flush RT");
         renderThreadClient_->CommitTransaction(implicitCommonTransactionData_);
         implicitCommonTransactionData_ = std::make_unique<RSTransactionData>();
     }
     if (renderServiceClient_ != nullptr && !implicitRemoteTransactionData_->IsEmpty()) {
+        ROSEN_LOGI("unirender:Flush renderService");
         renderServiceClient_->CommitTransaction(implicitRemoteTransactionData_);
         implicitRemoteTransactionData_ = std::make_unique<RSTransactionData>();
     }

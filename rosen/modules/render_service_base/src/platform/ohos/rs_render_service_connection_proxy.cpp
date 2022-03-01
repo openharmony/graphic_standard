@@ -41,6 +41,7 @@ void RSRenderServiceConnectionProxy::CommitTransaction(std::unique_ptr<RSTransac
     }
 
     option.SetFlags(MessageOption::TF_ASYNC);
+    ROSEN_LOGE("unirender: RSRenderServiceConnectionProxy::CommitTransaction, Remote()->SendRequest");
     int32_t err = Remote()->SendRequest(RSIRenderServiceConnection::COMMIT_TRANSACTION, data, reply, option);
     if (err != NO_ERROR) {
         return;

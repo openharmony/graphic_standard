@@ -17,6 +17,7 @@
 #include "ivsync_connection.h"
 
 #include "command/rs_command_factory.h"
+#include "platform/common/rs_log.h"
 
 namespace OHOS {
 namespace Rosen {
@@ -26,12 +27,15 @@ int RSRenderServiceConnectionStub::OnRemoteRequest(
     int ret = ERR_NONE;
     switch (code) {
         case COMMIT_TRANSACTION: {
+            ROSEN_LOGE("unirender: RSRenderServiceConnectionStub::OnRemoteRequest, case COMMIT_TRANSACTION");
             auto token = data.ReadInterfaceToken();
             ROSEN_LOGE("unirender: before data.ReadParcelable");
             auto transactionData = data.ReadParcelable<RSTransactionData>();
             ROSEN_LOGE("unirender: after data.ReadParcelable");
             std::unique_ptr<RSTransactionData> transData(transactionData);
+            ROSEN_LOGE("unirender: case COMMIT_TRANSACTION: CommitTransaction(transData) begin");
             CommitTransaction(transData);
+            ROSEN_LOGE("unirender: case COMMIT_TRANSACTION: CommitTransaction(transData) end");
             break;
         }
         case CREATE_NODE_AND_SURFACE: {
@@ -242,6 +246,7 @@ int RSRenderServiceConnectionStub::OnRemoteRequest(
                 ret = ERR_INVALID_STATE;
                 break;
             }
+            ROSEN_LOGE("unirender: RSRenderServiceConnectionStub::OnRemoteRequest, case EXECUTE_SYNCHRONOUS_TASK: type=%d subtype=%d", type, subType);
             auto func = RSCommandFactory::Instance().GetUnmarshallingFunc(type, subType);
             if (func == nullptr) {
                 ret = ERR_INVALID_STATE;

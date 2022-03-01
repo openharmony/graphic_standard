@@ -37,7 +37,10 @@ void RSRenderServiceClient::CommitTransaction(std::unique_ptr<RSTransactionData>
 {
     auto renderService = RSRenderServiceConnectHub::GetRenderService();
     if (renderService != nullptr) {
+        ROSEN_LOGI("unirender: RSRenderServiceClient::CommitTransaction renderService is not null");
         renderService->CommitTransaction(transactionData);
+    } else {
+        ROSEN_LOGI("unirender: RSRenderServiceClient::CommitTransaction renderService is null");
     }
 }
 

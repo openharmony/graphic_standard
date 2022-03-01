@@ -84,6 +84,7 @@ bool RSTransactionData::UnmarshallingCommand(Parcel& parcel)
             isNotFinished = false;
             break;
         }
+        ROSEN_LOGE("unirender: RSTransactionData::UnmarshallingCommand, type=%d subtype=%d", commandType, commandSubType);
         auto func = RSCommandFactory::Instance().GetUnmarshallingFunc(commandType, commandSubType);
         if (func == nullptr) {
             break;
