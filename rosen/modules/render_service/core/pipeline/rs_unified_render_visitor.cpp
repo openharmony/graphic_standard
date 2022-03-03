@@ -169,13 +169,13 @@ void RSUnifiedRenderVisitor::ProcessDisplayRenderNode(RSDisplayRenderNode& node)
     canvas_ = new RSPaintFilterCanvas(surfaceFrame->GetCanvas());
     canvas_->clear(SK_ColorTRANSPARENT);
 
+    node.SetGlobalZOrder(globalZOrder_++);
     ProcessBaseRenderNode(node);
 
     rsSurface->FlushFrame(surfaceFrame);
     delete canvas_;
     canvas_ = nullptr;
 
-    node.SetGlobalZOrder(globalZOrder_++);
     processor_->ProcessSurface(node);
     processor_->PostProcess();
     ROSEN_LOGI("cqx RSUnifiedRenderVisitor::ProcessDisplayRenderNode end");
@@ -184,47 +184,55 @@ void RSUnifiedRenderVisitor::ProcessDisplayRenderNode(RSDisplayRenderNode& node)
 void RSUnifiedRenderVisitor::ProcessSurfaceRenderNode(RSSurfaceRenderNode& node)
 {
     ROSEN_LOGI("cqx RSUnifiedRenderVisitor::ProcessSurfaceRenderNode");
+    // for uniRender
     // for window surface node - whose parent is display node
-    if (IsChildOfDisplayNode(node)) {
-        if (node.GetRenderProperties().GetBoundsPositionX() >= screenInfo_.width ||
-            node.GetRenderProperties().GetBoundsPositionY() >= screenInfo_.height) {
-            ROSEN_LOGI("RsDebug RSUnifiedRenderVisitor::ProcessSurfaceRenderNode this node:%llu no need to composite",
-                node.GetId());
-            return;
-        }
-        if (!canvas_) {
-            ROSEN_LOGE("RSUnifiedRenderVisitor::ProcessSurfaceRenderNode, canvas is nullptr");
-            return;
-        }
-        auto geoPtr = std::static_pointer_cast<RSObjAbsGeometry>(node.GetRenderProperties().GetBoundsGeometry());
-        if (!geoPtr) {
-            ROSEN_LOGI("RsDebug RSUnifiedRenderVisitor::ProcessSurfaceRenderNode node:%llu, get geoPtr failed",
-                node.GetId());
-            return;
-        }
-        canvas_->save();
-        canvas_->setMatrix(geoPtr->GetAbsMatrix());
-        ProcessBaseRenderNode(node);
-        canvas_->restore();
-    } else {
-        canvas_->save();
-        canvas_->clipRect(SkRect::MakeXYWH(
-            node.GetRenderProperties().GetBoundsPositionX(), node.GetRenderProperties().GetBoundsPositionY(),
-            node.GetRenderProperties().GetBoundsWidth(), node.GetRenderProperties().GetBoundsHeight()));
-        if (node.GetConsumer() != nullptr && node.GetBuffer() == nullptr) {
-            ROSEN_LOGI("RSRenderThreadVisitor::ProcessSurfaceRenderNode buffer is not available, set black");
-            canvas_->clear(SK_ColorBLACK);
-        } else {
-            OHOS::sptr<SurfaceBuffer> buffer;
-            RSProcessor::SpecialTask task;
-            if (!processor_->ConsumeAndUpdateBuffer(node, task, buffer)) {
-                ROSEN_LOGI("RSRenderThreadVisitor::ProcessSurfaceRenderNode consume buffer fail");
+    if (isUniRender_) {
+        if (IsChildOfDisplayNode(node)) {
+            if (node.GetRenderProperties().GetBoundsPositionX() >= screenInfo_.width ||
+                node.GetRenderProperties().GetBoundsPositionY() >= screenInfo_.height) {
+                ROSEN_LOGI(
+                    "RsDebug RSUnifiedRenderVisitor::ProcessSurfaceRenderNode this node:%llu no need to composite",
+                    node.GetId());
                 return;
             }
-            ROSEN_LOGI("RSRenderThreadVisitor::ProcessSurfaceRenderNode draw buffer on canvas");
-            DrawBufferOnCanvas(node);
+            if (!canvas_) {
+                ROSEN_LOGE("RSUnifiedRenderVisitor::ProcessSurfaceRenderNode, canvas is nullptr");
+                return;
+            }
+            auto geoPtr = std::static_pointer_cast<RSObjAbsGeometry>(node.GetRenderProperties().GetBoundsGeometry());
+            if (!geoPtr) {
+                ROSEN_LOGI("RsDebug RSUnifiedRenderVisitor::ProcessSurfaceRenderNode node:%llu, get geoPtr failed",
+                    node.GetId());
+                return;
+            }
+            canvas_->save();
+            canvas_->setMatrix(geoPtr->GetAbsMatrix());
+            ProcessBaseRenderNode(node);
+            canvas_->restore();
+        } else {
+            canvas_->save();
+            canvas_->clipRect(SkRect::MakeXYWH(
+                node.GetRenderProperties().GetBoundsPositionX(), node.GetRenderProperties().GetBoundsPositionY(),
+                node.GetRenderProperties().GetBoundsWidth(), node.GetRenderProperties().GetBoundsHeight()));
+            if (node.GetConsumer() != nullptr && node.GetBuffer() == nullptr) {
+                ROSEN_LOGI("RSRenderThreadVisitor::ProcessSurfaceRenderNode buffer is not available, set black");
+                canvas_->clear(SK_ColorBLACK);
+            } else {
+                OHOS::sptr<SurfaceBuffer> buffer;
+                RSProcessor::SpecialTask task = [] () {};
+                if (!processor_->ConsumeAndUpdateBuffer(node, task, buffer)) {
+                    ROSEN_LOGI("RSRenderThreadVisitor::ProcessSurfaceRenderNode consume buffer fail");
+                    return;
+                }
+                ROSEN_LOGI("RSRenderThreadVisitor::ProcessSurfaceRenderNode draw buffer on canvas");
+                DrawBufferOnCanvas(node);
+            }
+            canvas_->restore();
         }
-        canvas_->restore();
+    } else {
+        ProcessBaseRenderNode(node);
+        node.SetGlobalZOrder(globalZOrder_++);
+        processor_->ProcessSurface(node);
     }
 }
 

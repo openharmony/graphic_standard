@@ -53,6 +53,7 @@ private:
 
     float globalZOrder_ = 0.0f;
     std::shared_ptr<RSProcessor> processor_ = nullptr;
+    bool isUniRender_ { false };
 };
 } // namespace Rosen
 } // namespace OHOS
