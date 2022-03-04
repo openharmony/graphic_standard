@@ -190,7 +190,7 @@ protected:
 
     virtual bool NeedForcedSendToRemote() const
     {
-        return false;
+        return !IsRenderServiceNode();
     }
 
 private:

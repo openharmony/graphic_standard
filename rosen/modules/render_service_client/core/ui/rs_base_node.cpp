@@ -57,7 +57,7 @@ RSBaseNode::~RSBaseNode()
         transactionProxy->AddCommand(command, IsRenderServiceNode());
     }
 
-    if (isUni_) {
+    if (isUni_ && !IsRenderServiceNode()) {
         std::unique_ptr<RSCommand> command = std::make_unique<RSBaseNodeDestroy>(id_);
         auto transactionProxy = RSTransactionProxy::GetInstance();
         if (transactionProxy != nullptr) {
@@ -90,7 +90,7 @@ void RSBaseNode::AddChild(SharedPtr child, int index)
         transactionProxy->AddCommand(command, IsRenderServiceNode());
     }
 
-    if (isUni_) {
+    if (isUni_ && !IsRenderServiceNode()) {
         std::unique_ptr<RSCommand> command = std::make_unique<RSBaseNodeAddChild>(id_, childId, index);
         auto transactionProxy = RSTransactionProxy::GetInstance();
         if (transactionProxy != nullptr) {
@@ -116,7 +116,7 @@ void RSBaseNode::RemoveChild(SharedPtr child)
         transactionProxy->AddCommand(command, IsRenderServiceNode());
     }
 
-    if (isUni_) {
+    if (isUni_ && !IsRenderServiceNode()) {
         std::unique_ptr<RSCommand> command = std::make_unique<RSBaseNodeRemoveChild>(id_, childId);
         auto transactionProxy = RSTransactionProxy::GetInstance();
         if (transactionProxy != nullptr) {
@@ -148,7 +148,7 @@ void RSBaseNode::RemoveFromTree()
         transactionProxy->AddCommand(command, IsRenderServiceNode());
     }
 
-    if (isUni_) {
+    if (isUni_ && !IsRenderServiceNode()) {
         std::unique_ptr<RSCommand> command = std::make_unique<RSBaseNodeRemoveFromTree>(id_);
         auto transactionProxy = RSTransactionProxy::GetInstance();
         if (transactionProxy != nullptr) {
@@ -173,7 +173,7 @@ void RSBaseNode::ClearChildren()
         transactionProxy->AddCommand(command, IsRenderServiceNode());
     }
 
-    if (isUni_) {
+    if (isUni_ && !IsRenderServiceNode()) {
         std::unique_ptr<RSCommand> command = std::make_unique<RSBaseNodeClearChild>(id_);
         auto transactionProxy = RSTransactionProxy::GetInstance();
         if (transactionProxy != nullptr) {
