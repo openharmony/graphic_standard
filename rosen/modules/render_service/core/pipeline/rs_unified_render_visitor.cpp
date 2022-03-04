@@ -15,6 +15,9 @@
 
 #include "pipeline/rs_unified_render_visitor.h"
 
+#include <set>
+#include <string>
+
 #include <surface.h>
 #include <window.h>
 #include <window_manager.h>
@@ -38,6 +41,9 @@
 
 namespace OHOS {
 namespace Rosen {
+namespace {
+    const std::set<std::string> APP_FOR_UNI_RENDER = { "clock0" };
+}
 
 RSUnifiedRenderVisitor::RSUnifiedRenderVisitor() {}
 
@@ -66,6 +72,10 @@ void RSUnifiedRenderVisitor::PrepareDisplayRenderNode(RSDisplayRenderNode& node)
 void RSUnifiedRenderVisitor::PrepareSurfaceRenderNode(RSSurfaceRenderNode& node)
 {
     ROSEN_LOGI("cqx RSUnifiedRenderVisitor::PrepareSurfaceRenderNode child size:%d", node.GetChildren().size());
+    if (APP_FOR_UNI_RENDER.find(node.GetName()) != APP_FOR_UNI_RENDER.end()) {
+        ROSEN_LOGI("cqx RSUnifiedRenderVisitor::ProcessSurfaceRenderNode uniRender for:%s", node.GetName().c_str());
+        isUniRender_ = true;
+    }
     if (IsChildOfDisplayNode(node)) {
         auto currentGeoPtr = std::static_pointer_cast<RSObjAbsGeometry>(node.GetRenderProperties().GetBoundsGeometry());
         if (currentGeoPtr != nullptr) {
@@ -80,11 +90,16 @@ void RSUnifiedRenderVisitor::PrepareSurfaceRenderNode(RSSurfaceRenderNode& node)
         PrepareBaseRenderNode(node);
         dirtyFlag_ = dirtyFlag;
     }
+    isUniRender_ = false;
 }
 
 void RSUnifiedRenderVisitor::PrepareRootRenderNode(RSRootRenderNode& node)
 {
-    ROSEN_LOGI("cqx RSUnifiedRenderVisitor::PrepareRootRenderNode child size:%d", node.GetChildren().size());
+    if (!isUniRender_) {
+        return;
+    }
+    ROSEN_LOGI("cqx RSUnifiedRenderVisitor::PrepareRootRenderNode nodeId:%llu, child size:%d", node.GetId(),
+        node.GetChildren().size());
     parent_ = nullptr;
     dirtyFlag_ = false;
     PrepareCanvasRenderNode(node);
@@ -92,7 +107,8 @@ void RSUnifiedRenderVisitor::PrepareRootRenderNode(RSRootRenderNode& node)
 
 void RSUnifiedRenderVisitor::PrepareCanvasRenderNode(RSCanvasRenderNode &node)
 {
-    ROSEN_LOGI("cqx RSUnifiedRenderVisitor::PrepareCanvasRenderNode");
+    ROSEN_LOGI("cqx RSUnifiedRenderVisitor::PrepareCanvasRenderNode nodeId:%llu, child size:%d", node.GetId(),
+        node.GetChildren().size());
     bool dirtyFlag = dirtyFlag_;
     dirtyFlag_ = node.Update(dirtyManager_, parent_ ? &(parent_->GetRenderProperties()) : nullptr, dirtyFlag_);
     PrepareBaseRenderNode(node);
@@ -183,7 +199,11 @@ void RSUnifiedRenderVisitor::ProcessDisplayRenderNode(RSDisplayRenderNode& node)
 
 void RSUnifiedRenderVisitor::ProcessSurfaceRenderNode(RSSurfaceRenderNode& node)
 {
-    ROSEN_LOGI("cqx RSUnifiedRenderVisitor::ProcessSurfaceRenderNode");
+    ROSEN_LOGI("cqx RSUnifiedRenderVisitor::ProcessSurfaceRenderNode child size:%d", node.GetChildren().size());
+    if (APP_FOR_UNI_RENDER.find(node.GetName()) != APP_FOR_UNI_RENDER.end()) {
+        ROSEN_LOGI("cqx RSUnifiedRenderVisitor::ProcessSurfaceRenderNode uniRender for:%s", node.GetName().c_str());
+        isUniRender_ = true;
+    }
     // for uniRender
     // for window surface node - whose parent is display node
     if (isUniRender_) {
@@ -234,11 +254,15 @@ void RSUnifiedRenderVisitor::ProcessSurfaceRenderNode(RSSurfaceRenderNode& node)
         node.SetGlobalZOrder(globalZOrder_++);
         processor_->ProcessSurface(node);
     }
+    isUniRender_ = false;
 }
 
 void RSUnifiedRenderVisitor::ProcessRootRenderNode(RSRootRenderNode& node)
 {
-    ROSEN_LOGI("cqx RSUnifiedRenderVisitor::ProcessRootRenderNode");
+    if (!isUniRender_) {
+        return;
+    }
+    ROSEN_LOGI("cqx RSUnifiedRenderVisitor::ProcessRootRenderNode child size:%d", node.GetChildren().size());
     if (!node.GetRenderProperties().GetVisible()) {
         return;
     }
@@ -263,7 +287,7 @@ void RSUnifiedRenderVisitor::ProcessRootRenderNode(RSRootRenderNode& node)
 
 void RSUnifiedRenderVisitor::ProcessCanvasRenderNode(RSCanvasRenderNode& node)
 {
-    ROSEN_LOGI("cqx RSUnifiedRenderVisitor::ProcessCanvasRenderNode");
+    ROSEN_LOGI("cqx RSUnifiedRenderVisitor::ProcessCanvasRenderNode child size:%d", node.GetChildren().size());
     if (!node.GetRenderProperties().GetVisible()) {
         return;
     }
