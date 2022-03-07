@@ -20,7 +20,7 @@ if ("${product_name}" == "watchos" || "${product_name}" == "Hi3516DV300" ||
 } else if ("${product_name}" == "rk3566" || "${product_name}" == "rk3568") {
   gpu_defines = [ "ACE_ENABLE_GL" ]
   ace_enable_gpu = true
-  libgl = [ "//device/hihope/hardware/gpu:mali-bifrost-g52-g2p0-ohos" ]
+  libgl = [ "//device/soc/rockchip/hardware/gpu:mali-bifrost-g52-g2p0-ohos" ]
 } else {
   gpu_defines = [ "ACE_ENABLE_GL" ]
   ace_enable_gpu = true
