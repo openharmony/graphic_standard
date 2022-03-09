@@ -23,7 +23,6 @@
 #include <vector>
 
 #include <ipc_object_stub.h>
-#include <multimodal_event_handler.h>
 #include <vsync_helper.h>
 #include <window_manager.h>
 #include <window_manager_service_client.h>

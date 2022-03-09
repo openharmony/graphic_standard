@@ -15,7 +15,6 @@
 
 #include "animation_server.h"
 
-#include <multimodal_event_handler.h>
 #include <securec.h>
 
 #include <cpudraw.h>
