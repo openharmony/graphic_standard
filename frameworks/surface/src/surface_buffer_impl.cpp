@@ -256,12 +256,7 @@ GSError SurfaceBufferImpl::SetData(uint32_t key, ExtraData data)
         return GSERROR_OUT_OF_RANGE;
     }
 
-    ExtraData mapData;
-    GetData(key, mapData);
-
-    mapData = data;
-
-    extraDatas_[key] = mapData;
+    extraDatas_[key] = data;
     return GSERROR_OK;
 }
 
