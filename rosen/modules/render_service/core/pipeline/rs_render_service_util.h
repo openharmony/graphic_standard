@@ -41,6 +41,7 @@ struct BufferDrawParam {
 };
 
 struct AnimationInfo {
+    Vector2f pivot = { 0.0f, 0.0f };
     Vector3f scale = { 1.0f, 1.0f, 1.0f };
     Vector3f translate = { 0.0f, 0.0f, 0.0f };
     float alpha = 1.0f;

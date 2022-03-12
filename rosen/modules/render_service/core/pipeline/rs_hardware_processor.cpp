@@ -240,8 +240,8 @@ void RSHardwareProcessor::CalculateInfoWithAnimation(
         ROSEN_LOGE("RsDebug RSHardwareProcessor::ProcessSurface geoPtr == nullptr");
         return;
     }
-    float paddingX = (1 - animationInfo.scale.x_) * geoPtr->GetAbsRect().width_ / 2;
-    float paddingY = (1 - animationInfo.scale.y_) * geoPtr->GetAbsRect().height_ / 2;
+    float paddingX = (1 - animationInfo.scale.x_) * animationInfo.pivot.x_;
+    float paddingY = (1 - animationInfo.scale.y_) * animationInfo.pivot.y_;
     info.dstRect = {
         .x = info.dstRect.x + animationInfo.translate.x_ + paddingX,
         .y = info.dstRect.y + animationInfo.translate.y_ + paddingY,

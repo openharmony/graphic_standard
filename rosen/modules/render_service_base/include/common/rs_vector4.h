@@ -302,7 +302,7 @@ Vector4<T> Vector4<T>::operator+(const Vector4<T>& other) const
 template<typename T>
 Vector4<T> Vector4<T>::operator/(T scale) const
 {
-    if (AGP_EQ(scale, 0)) {
+    if (ROSEN_EQ(scale, 0)) {
         return *this;
     }
     Vector4<T> clone(data_);
