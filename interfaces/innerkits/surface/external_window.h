@@ -51,7 +51,7 @@ extern "C" {
  * @since 8
  * @version 1.0
  */
-struct NativeWindow* OH_NativeWindow_CreateNativeWindowFromSurface(void* pSurface);
+struct NativeWindow* OH_NativeWindow_CreateNativeWindow(void* pSurface);
 
 /**
  * @brief 将NativeWindow对象的引用计数减1，当引用计数为0的时候，该NativeWindow对象会被析构掉
@@ -123,7 +123,7 @@ int32_t OH_NativeWindow_NativeWindowFlushBuffer(struct NativeWindow *window, str
  * @since 8
  * @version 1.0
  */
-int32_t OH_NativeWindow_NativeWindowCancelBuffer(struct NativeWindow *window, struct NativeWindowBuffer *buffer);
+int32_t OH_NativeWindow_NativeWindowAbortBuffer(struct NativeWindow *window, struct NativeWindowBuffer *buffer);
 
 /**
  * @brief 设置/获取NativeWindow的属性，包括设置/获取宽高、内容格式等
