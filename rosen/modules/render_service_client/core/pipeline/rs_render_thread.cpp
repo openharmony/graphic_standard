@@ -111,7 +111,7 @@ RSRenderThread::~RSRenderThread()
     Stop();
 
     if (renderContext_ != nullptr) {
-        ROSEN_LOGD("Destory renderContext!!");
+        ROSEN_LOGD("Destroy renderContext!!");
         delete renderContext_;
         renderContext_ = nullptr;
     }

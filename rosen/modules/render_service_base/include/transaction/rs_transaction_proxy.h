@@ -45,7 +45,7 @@ private:
     RSTransactionProxy();
     virtual ~RSTransactionProxy();
     static void Init();
-    static void Destory();
+    static void Destroy();
 
     RSTransactionProxy(const RSTransactionProxy&) = delete;
     RSTransactionProxy(const RSTransactionProxy&&) = delete;

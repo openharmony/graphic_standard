@@ -38,10 +38,10 @@ RSTransactionProxy::~RSTransactionProxy()
 void RSTransactionProxy::Init()
 {
     instance_ = new RSTransactionProxy();
-    ::atexit(&RSTransactionProxy::Destory);
+    ::atexit(&RSTransactionProxy::Destroy);
 }
 
-void RSTransactionProxy::Destory()
+void RSTransactionProxy::Destroy()
 {
     instance_ = nullptr;
 }

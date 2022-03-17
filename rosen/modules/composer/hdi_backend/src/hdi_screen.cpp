@@ -33,7 +33,7 @@ HdiScreen::HdiScreen(uint32_t screenId) : screenId_(screenId)
 
 HdiScreen::~HdiScreen()
 {
-    Destory();
+    Destroy();
 }
 
 void HdiScreen::OnVsync(uint32_t sequence, uint64_t ns, void *data)
@@ -76,14 +76,14 @@ bool HdiScreen::Init()
 
     int32_t ret = device_->RegScreenVBlankCallback(screenId_, HdiScreen::OnVsync, this);
     if (ret != DISPLAY_SUCCESS) {
-        Destory();
+        Destroy();
         HLOGE("RegScreenVBlankCallback failed, ret is %{public}d", ret);
         return false;
     }
 
     ret = device_->SetScreenVsyncEnabled(screenId_, true);
     if (ret != DISPLAY_SUCCESS) {
-        Destory();
+        Destroy();
         HLOGE("SetScreenVsyncEnabled failed, ret is %{public}d", ret);
         return false;
     }
@@ -260,7 +260,7 @@ int32_t HdiScreen::GetSupportedMetaDataKey(std::vector<HDRMetadataKey> &keys) co
     return device_->GetSupportedMetaDataKey(screenId_, keys);
 }
 
-void HdiScreen::Destory()
+void HdiScreen::Destroy()
 {
     // stop vsync
     OHOS::VsyncError ret = VsyncModule::GetInstance()->Stop();

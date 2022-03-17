@@ -51,7 +51,7 @@ HdiDevice::HdiDevice()
 
 HdiDevice::~HdiDevice()
 {
-    Destory();
+    Destroy();
 }
 
 RosenError HdiDevice::Init()
@@ -67,7 +67,7 @@ RosenError HdiDevice::Init()
     if (layerFuncs_ == nullptr) {
         int32_t ret = LayerInitialize(&layerFuncs_);
         if (ret != DISPLAY_SUCCESS || layerFuncs_ == nullptr) {
-            Destory();
+            Destroy();
             HLOGE("LayerInitialize failed, ret is %{public}d", ret);
             return ROSEN_ERROR_NOT_INIT;
         }
@@ -76,7 +76,7 @@ RosenError HdiDevice::Init()
     return ROSEN_ERROR_OK;
 }
 
-void HdiDevice::Destory()
+void HdiDevice::Destroy()
 {
     if (deviceFuncs_ != nullptr) {
         int32_t ret = DeviceUninitialize(deviceFuncs_);

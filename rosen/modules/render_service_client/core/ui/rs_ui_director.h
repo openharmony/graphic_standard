@@ -44,7 +44,7 @@ public:
     void SetTimeStamp(uint64_t timeStamp);
 
 private:
-    void Destory();
+    void Destroy();
     void AttachSurface();
     static void RecvMessages();
     static void RecvMessages(std::shared_ptr<RSTransactionData> cmds);

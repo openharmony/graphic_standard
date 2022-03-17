@@ -168,7 +168,7 @@ private:
     LayerFuncs *layerFuncs_ = nullptr;
 
     RosenError Init();
-    void Destory();
+    void Destroy();
 };
 
 } // namespace Rosen
