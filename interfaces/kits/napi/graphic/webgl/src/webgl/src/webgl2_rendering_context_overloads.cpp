@@ -1520,7 +1520,7 @@ napi_value WebGL2RenderingContextOverloads::UniformMatrix2fv(napi_env env, napi_
     }
     uint32_t length;
     if (funcArg[NARG_POS::FIFTH] != nullptr) {
-        tie(succ, length) = NVal(env, funcArg[NARG_POS::FOURTH]).ToInt64();
+        tie(succ, length) = NVal(env, funcArg[NARG_POS::FIFTH]).ToInt64();
         if (!succ) {
             return nullptr;
         }
@@ -1704,7 +1704,7 @@ napi_value WebGL2RenderingContextOverloads::UniformMatrix4fv(napi_env env, napi_
     }
     uint32_t length;
     if (funcArg[NARG_POS::FIFTH] != nullptr) {
-        tie(succ, length) = NVal(env, funcArg[NARG_POS::FOURTH]).ToInt64();
+        tie(succ, length) = NVal(env, funcArg[NARG_POS::FIFTH]).ToInt64();
         if (!succ) {
             return nullptr;
         }

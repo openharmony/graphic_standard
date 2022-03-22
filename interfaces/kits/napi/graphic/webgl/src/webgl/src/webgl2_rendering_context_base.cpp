@@ -2967,7 +2967,7 @@ napi_value WebGL2RenderingContextBase::Uniform1uiv(napi_env env, napi_callback_i
         return nullptr;
     }
     int64_t srcOffset = 0;
-    if (funcArg[NARG_POS::FOURTH] != nullptr) {
+    if (funcArg[NARG_POS::THIRD] != nullptr) {
         tie(succ, srcOffset) = NVal(env, funcArg[NARG_POS::THIRD]).ToInt64();
         if (!succ) {
             return nullptr;
