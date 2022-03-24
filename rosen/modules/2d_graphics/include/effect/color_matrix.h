@@ -39,7 +39,7 @@ public:
 
     void SetIdentity()
     {
-        for (size_t i = 0; i < sizeof(array_); i = i + 6) {
+        for (size_t i = 0; i < MATRIX_SIZE; i = i + 6) {
             array_[i] = 1; // identity matrix, the value of the elements on the main diagonal is 1
         }
     }
