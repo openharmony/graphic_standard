@@ -470,9 +470,17 @@ bool ConvertYUV420SPToRGBA(std::vector<uint8_t>& rgbaBuf, const sptr<OHOS::Surfa
     uint8_t* ybase = src;
     int32_t len = bufferStride * bufferHeight;
 #ifdef PADDING_HEIGHT_32
-    int32_t paddingBase = 32;
-    int32_t paddingHeight = ((bufferHeight - 1) / paddingBase + 1) * paddingBase;
-    len = bufferStride * paddingHeight;
+    // temporally only update buffer len for video stream
+    if (srcBuf->GetFormat() == PIXEL_FMT_YCBCR_420_SP) {
+        int32_t paddingBase = 32;
+        float yuvSizeFactor = 1.5f; // y:uv = 2:1
+        int32_t paddingHeight = ((bufferHeight - 1) / paddingBase + 1) * paddingBase;
+        int32_t totalSize = static_cast<int32_t>(srcBuf->GetSize());
+        int32_t paddingSize = static_cast<int32_t>(bufferStride * paddingHeight * yuvSizeFactor);
+        if (totalSize >= paddingSize) {
+            len = bufferStride * paddingHeight;
+        }
+    }
 #endif
     uint8_t* ubase = &src[len];
 
