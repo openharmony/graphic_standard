@@ -114,7 +114,6 @@ ohos_executable("animation_server") {
     "//foundation/graphic/standard:libwmclient",
     "//foundation/graphic/standard:libwmservice",
     "//foundation/graphic/standard/utils:libgraphic_utils",
-    "//foundation/multimodalinput/input/frameworks/proxy:libmmi-client",
   ]
 
   part_name = "graphic_standard"

@@ -106,7 +106,6 @@ ohos_systemtest("wmtest") {
     "//foundation/graphic/standard:libwmservice",
     "//foundation/graphic/standard/frameworks/animation_server:libanimation_service",
     "//foundation/graphic/standard/utils:libgraphic_utils",
-    "//foundation/multimodalinput/input/frameworks/proxy:libmmi-client",
     "//third_party/zlib:libz",
   ]
 

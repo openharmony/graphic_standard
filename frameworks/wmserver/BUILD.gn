@@ -65,7 +65,6 @@ ohos_shared_library("wmserver") {
     "//drivers/peripheral/display/hal:hdi_display_device",
     "//foundation/graphic/standard/frameworks/animation_server:libanimation_service",
     "//foundation/graphic/standard/utils:libgraphic_utils",
-    "//foundation/multimodalinput/input/patch/diff_libinput_mmi:libinput-third-mmi",
     "//third_party/wayland_standard:wayland_core_protocol",
     "//third_party/weston:libexec_weston",
     "//third_party/weston:trace",
@@ -98,7 +97,6 @@ ohos_executable("screen-info-test") {
 
   deps = [
     ":wms_protocol",
-    "//foundation/multimodalinput/input/patch/diff_libinput_mmi:libinput-third-mmi",
     "//third_party/wayland_standard:libwayland_client",
   ]
 
