@@ -45,6 +45,22 @@ public:
         return screenId_;
     }
 
+    void SetDisplayOffset(int32_t offsetX, int32_t offsetY)
+    {
+        offsetX_ = offsetX;
+        offsetY_ = offsetY;
+    }
+
+    int32_t GetDisplayOffsetX() const
+    {
+        return offsetX_;
+    }
+
+    int32_t GetDisplayOffsetY() const
+    {
+        return offsetY_;
+    }
+
     void Prepare(const std::shared_ptr<RSNodeVisitor>& visitor) override;
     void Process(const std::shared_ptr<RSNodeVisitor>& visitor) override;
 
@@ -74,6 +90,8 @@ public:
 private:
     CompositeType compositeType_ { HARDWARE_COMPOSITE };
     uint64_t screenId_;
+    int32_t offsetX_;
+    int32_t offsetY_;
     bool forceSoftComposite_ { false };
     bool isMirroredDisplay_ = false;
     WeakPtr mirrorSource_;

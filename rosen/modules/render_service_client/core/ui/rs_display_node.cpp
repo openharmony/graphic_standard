@@ -46,6 +46,16 @@ void RSDisplayNode::SetScreenId(uint64_t screenId)
     ROSEN_LOGD("RSDisplayNode::SetScreenId, ScreenId:%llu", screenId);
 }
 
+void RSDisplayNode::SetDisplayOffset(int32_t offsetX, int32_t offsetY)
+{
+    std::unique_ptr<RSCommand> command = std::make_unique<RSDisplayNodeSetDisplayOffset>(GetId(), offsetX, offsetY);
+    auto transactionProxy = RSTransactionProxy::GetInstance();
+    if (transactionProxy != nullptr) {
+        transactionProxy->AddCommand(command, true);
+    }
+    ROSEN_LOGD("RSDisplayNode::SetDisplayOffset, offsetX:%d, offsetY:%d", offsetX, offsetY);
+}
+
 RSDisplayNode::RSDisplayNode(const RSDisplayNodeConfig& config)
     : RSBaseNode(true), screenId_(config.screenId)
 {
