@@ -49,6 +49,8 @@ protected:
 
 private:
     uint64_t screenId_;
+    int32_t offsetX_;
+    int32_t offsetY_;
 };
 } // namespace Rosen
 } // namespace OHOS

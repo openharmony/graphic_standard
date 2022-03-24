@@ -31,8 +31,10 @@ RSCompatibleProcessor::RSCompatibleProcessor() {}
 
 RSCompatibleProcessor::~RSCompatibleProcessor() {}
 
-void RSCompatibleProcessor::Init(ScreenId id)
+void RSCompatibleProcessor::Init(ScreenId id, int32_t offsetX, int32_t offsetY)
 {
+    offsetX_ = offsetX;
+    offsetY_ = offsetY;
     backend_ = HdiBackend::GetInstance();
     screenManager_ = CreateOrGetScreenManager();
     if (!screenManager_) {

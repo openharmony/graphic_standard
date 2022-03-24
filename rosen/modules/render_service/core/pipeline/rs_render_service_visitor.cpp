@@ -100,8 +100,7 @@ void RSRenderServiceVisitor::ProcessDisplayRenderNode(RSDisplayRenderNode& node)
         RS_LOGE("RSRenderServiceVisitor::ProcessDisplayRenderNode: RSProcessor is null!");
         return;
     }
-
-    processor_->Init(node.GetScreenId());
+    processor_->Init(node.GetScreenId(), node.GetDisplayOffsetX(), node.GetDisplayOffsetY());
 
     if (node.IsMirrorDisplay()) {
         auto mirrorSource = node.GetMirrorSource();

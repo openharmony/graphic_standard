@@ -57,9 +57,11 @@ void RSDisplayNode::SetDisplayOffset(int32_t offsetX, int32_t offsetY)
 }
 
 RSDisplayNode::RSDisplayNode(const RSDisplayNodeConfig& config)
-    : RSBaseNode(true), screenId_(config.screenId)
+    : RSBaseNode(true), screenId_(config.screenId), offsetX_(0), offsetY_(0)
 {
     (void)screenId_;
+    (void)offsetX_;
+    (void)offsetY_;
 }
 
 RSDisplayNode::~RSDisplayNode() {}

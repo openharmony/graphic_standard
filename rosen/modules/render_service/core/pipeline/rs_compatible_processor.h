@@ -32,7 +32,7 @@ public:
     RSCompatibleProcessor();
     ~RSCompatibleProcessor() override;
     void ProcessSurface(RSSurfaceRenderNode& node) override;
-    void Init(ScreenId id) override;
+    void Init(ScreenId id, int32_t offsetX, int32_t offsetY) override;
     void PostProcess() override;
     void DoComposeSurfaces();
 
@@ -52,6 +52,8 @@ private:
     sptr<Surface> producerSurface_;
     std::unique_ptr<SkCanvas> canvas_;
     LayerAlpha alpha_ = { .enPixelAlpha = true };
+    int32_t offsetX_ = 0;
+    int32_t offsetY_ = 0;
 };
 
 } // namespace Rosen

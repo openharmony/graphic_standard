@@ -31,8 +31,10 @@ RSSoftwareProcessor::RSSoftwareProcessor() {}
 
 RSSoftwareProcessor::~RSSoftwareProcessor() {}
 
-void RSSoftwareProcessor::Init(ScreenId id)
+void RSSoftwareProcessor::Init(ScreenId id, int32_t offsetX, int32_t offsetY)
 {
+    offsetX_ = offsetX;
+    offsetY_ = offsetY;
     sptr<RSScreenManager> screenManager = CreateOrGetScreenManager();
     if (screenManager == nullptr) {
         RS_LOGE("RSSoftwareProcessor::Init: failed to get screen manager!");
