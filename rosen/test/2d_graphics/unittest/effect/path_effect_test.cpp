@@ -14,6 +14,7 @@
  */
 
 #include "gtest/gtest.h"
+
 #include "effect/path_effect.h"
 
 using namespace testing;
@@ -44,7 +45,7 @@ void PathEffectTest::TearDown() {}
  */
 HWTEST_F(PathEffectTest, CreateDashPathEffect001, TestSize.Level1)
 {
-    scalar intervals[] = {1.0f, 2.0f, 1.5f, 3.0f};
+    scalar intervals[] = { 1.0f, 2.0f, 1.5f, 3.0f };
     auto pathEffect = PathEffect::CreateDashPathEffect(intervals, 4, 2.2f);
     EXPECT_TRUE(pathEffect != nullptr);
 }
@@ -58,7 +59,7 @@ HWTEST_F(PathEffectTest, CreateDashPathEffect001, TestSize.Level1)
  */
 HWTEST_F(PathEffectTest, CreateDashPathEffect002, TestSize.Level1)
 {
-    scalar intervals[] = {1.0f, 2.0f, 1.5f, 3.0f};
+    scalar intervals[] = { 1.0f, 2.0f, 1.5f, 3.0f };
     auto pathEffect = PathEffect::CreateDashPathEffect(intervals, 4, 1.5f);
     EXPECT_TRUE(pathEffect != nullptr);
 }
@@ -187,7 +188,7 @@ HWTEST_F(PathEffectTest, CreateComposePathEffect002, TestSize.Level1)
 HWTEST_F(PathEffectTest, ArgsConstructor001, TestSize.Level1)
 {
     PathEffect::PathEffectType pathEffectType = PathEffect::PathEffectType::COMPOSE;
-    scalar intervals[] = {1.0f, 2.0f, 1.5f, 3.0f};
+    scalar intervals[] = { 1.0f, 2.0f, 1.5f, 3.0f };
     auto pathEffect = std::make_unique<PathEffect>(pathEffectType, intervals, 4, 1.0f);
     ASSERT_TRUE(pathEffect != nullptr);
     auto type = pathEffect->GetType();
@@ -204,7 +205,7 @@ HWTEST_F(PathEffectTest, ArgsConstructor001, TestSize.Level1)
 HWTEST_F(PathEffectTest, ArgsConstructor002, TestSize.Level1)
 {
     PathEffect::PathEffectType pathEffectType = PathEffect::PathEffectType::COMPOSE;
-    scalar intervals[] = {15.0f, 25.0f, 15.5f, 35.0f};
+    scalar intervals[] = { 15.0f, 25.0f, 15.5f, 35.0f };
     auto pathEffect = std::make_unique<PathEffect>(pathEffectType, intervals, 45, 15.0f);
     ASSERT_TRUE(pathEffect != nullptr);
     auto type = pathEffect->GetType();

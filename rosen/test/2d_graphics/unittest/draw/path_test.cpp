@@ -14,6 +14,7 @@
  */
 
 #include "gtest/gtest.h"
+
 #include "draw/path.h"
 
 using namespace testing;

@@ -14,7 +14,9 @@
  */
 
 #include <cstddef>
+
 #include "gtest/gtest.h"
+
 #include "effect/color_filter.h"
 
 using namespace testing;
@@ -200,8 +202,8 @@ HWTEST_F(ColorFilterTest, Compose002, TestSize.Level1)
  */
 HWTEST_F(ColorFilterTest, CreateInstance001, TestSize.Level1)
 {
-    auto colorFilter = std::make_unique<ColorFilter>(ColorFilter::FilterType::BLEND_MODE,
-        10, OHOS::Rosen::Drawing::BlendMode::DST);
+    auto colorFilter =
+        std::make_unique<ColorFilter>(ColorFilter::FilterType::BLEND_MODE, 10, OHOS::Rosen::Drawing::BlendMode::DST);
     EXPECT_FALSE(colorFilter == nullptr);
 }
 
@@ -214,8 +216,8 @@ HWTEST_F(ColorFilterTest, CreateInstance001, TestSize.Level1)
  */
 HWTEST_F(ColorFilterTest, CreateInstance002, TestSize.Level1)
 {
-    auto colorFilter = std::make_unique<ColorFilter>(ColorFilter::FilterType::SRGB_GAMMA_TO_LINEAR,
-        2, OHOS::Rosen::Drawing::BlendMode::SRC);
+    auto colorFilter = std::make_unique<ColorFilter>(
+        ColorFilter::FilterType::SRGB_GAMMA_TO_LINEAR, 2, OHOS::Rosen::Drawing::BlendMode::SRC);
     EXPECT_FALSE(colorFilter == nullptr);
 }
 
@@ -273,8 +275,8 @@ HWTEST_F(ColorFilterTest, CreateInstance006, TestSize.Level1)
 {
     ColorFilter colorFilter1(ColorFilter::FilterType::BLEND_MODE);
     ColorFilter colorFilter2(ColorFilter::FilterType::LINEAR_TO_SRGB_GAMMA);
-    auto colorFilter = std::make_unique<ColorFilter>(ColorFilter::FilterType::SRGB_GAMMA_TO_LINEAR,
-        colorFilter1, colorFilter2);
+    auto colorFilter =
+        std::make_unique<ColorFilter>(ColorFilter::FilterType::SRGB_GAMMA_TO_LINEAR, colorFilter1, colorFilter2);
     EXPECT_FALSE(colorFilter == nullptr);
 }
 

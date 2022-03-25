@@ -36,7 +36,7 @@ public:
         return AdapterType::BASE_INTERFACE;
     }
 
-    virtual void InitWithBlur(BlurType t, scalar radius) = 0;
+    virtual void InitWithBlur(BlurType t, scalar sigma) = 0;
 };
 } // namespace Drawing
 } // namespace Rosen

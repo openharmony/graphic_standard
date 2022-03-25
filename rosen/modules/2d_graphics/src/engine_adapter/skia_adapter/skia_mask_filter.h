@@ -33,7 +33,7 @@ public:
         return AdapterType::SKIA_ADAPTER;
     }
 
-    void InitWithBlur(BlurType t, scalar radius) override;
+    void InitWithBlur(BlurType t, scalar sigma) override;
     sk_sp<SkMaskFilter> GetMaskFilter() const;
 
 private:

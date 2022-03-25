@@ -14,6 +14,7 @@
  */
 
 #include "gtest/gtest.h"
+
 #include "draw/color.h"
 
 using namespace testing;
@@ -423,8 +424,7 @@ HWTEST_F(ColorTest, GetterAndSetterOfBlueF001, TestSize.Level1)
     auto color = std::make_unique<Color>();
     ASSERT_TRUE(color != nullptr);
     color->SetBlueF(11.5f);
-    ASSERT_TRUE((color->GetBlueF() - 11.5f) > - 0.01
-        && (color->GetBlueF() - 11.5f) < 0.01);
+    ASSERT_TRUE((color->GetBlueF() - 11.5f) > -0.01 && (color->GetBlueF() - 11.5f) < 0.01);
 }
 
 /*

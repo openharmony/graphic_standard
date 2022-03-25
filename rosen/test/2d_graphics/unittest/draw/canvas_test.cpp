@@ -14,6 +14,7 @@
  */
 
 #include "gtest/gtest.h"
+
 #include "draw/canvas.h"
 
 using namespace testing;

@@ -14,10 +14,11 @@
  */
 
 #include "gtest/gtest.h"
+
 #include "utils/rect.h"
-#include "utils/scalar.h"
 #include "utils/round_rect.h"
- 
+#include "utils/scalar.h"
+
 using namespace testing;
 using namespace testing::ext;
 
@@ -92,7 +93,7 @@ HWTEST_F(RoundRectTest, RoundRectRectCreateAndDestory004, TestSize.Level1)
 {
     // The best way to create RoundRect.
     Rect rect;
-    std::vector<Point> radiusXY = {{1, 3}};
+    std::vector<Point> radiusXY = { { 1, 3 } };
     std::unique_ptr<RoundRect> roundRect = std::make_unique<RoundRect>(rect, radiusXY);
     ASSERT_TRUE(roundRect != nullptr);
 }

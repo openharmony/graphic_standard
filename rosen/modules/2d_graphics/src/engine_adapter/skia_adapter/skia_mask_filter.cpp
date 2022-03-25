@@ -15,8 +15,6 @@
 
 #include "skia_mask_filter.h"
 
-#include "src/core/SkBlurMask.h"
-
 #include "effect/mask_filter.h"
 
 namespace OHOS {
@@ -24,10 +22,9 @@ namespace Rosen {
 namespace Drawing {
 SkiaMaskFilter::SkiaMaskFilter() noexcept : filter_(nullptr) {}
 
-void SkiaMaskFilter::InitWithBlur(BlurType t, scalar radius)
+void SkiaMaskFilter::InitWithBlur(BlurType t, scalar sigma)
 {
-    SkScalar sima = SkBlurMask::ConvertRadiusToSigma(radius);
-    filter_ = SkMaskFilter::MakeBlur(static_cast<SkBlurStyle>(t), sima);
+    filter_ = SkMaskFilter::MakeBlur(static_cast<SkBlurStyle>(t), sigma);
 }
 
 sk_sp<SkMaskFilter> SkiaMaskFilter::GetMaskFilter() const

@@ -14,9 +14,10 @@
  */
 
 #include "gtest/gtest.h"
+
 #include "utils/point3.h"
 #include "utils/scalar.h"
- 
+
 using namespace testing;
 using namespace testing::ext;
 
