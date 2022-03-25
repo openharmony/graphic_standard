@@ -33,6 +33,8 @@ public:
 
     void SetScreenId(uint64_t screenId);
 
+    void SetDisplayOffset(int32_t offsetX, int32_t offsetY);
+
     RSUINodeType GetType() const override
     {
         return RSUINodeType::DISPLAY_NODE;
