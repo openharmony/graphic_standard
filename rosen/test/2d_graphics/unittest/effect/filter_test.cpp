@@ -14,6 +14,7 @@
  */
 
 #include "gtest/gtest.h"
+
 #include "effect/filter.h"
 
 using namespace testing;

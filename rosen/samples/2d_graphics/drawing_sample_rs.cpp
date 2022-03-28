@@ -211,7 +211,7 @@ void TestDrawFilter(Canvas &canvas, uint32_t width, uint32_t height)
     pen.SetWidth(10); // The thickness of the pen is 10
     Filter filter;
     filter.SetColorFilter(ColorFilter::CreateBlendModeColorFilter(Drawing::Color::COLOR_RED, BlendMode::SRC_ATOP));
-    // Radius of the Gaussian blur to apply is 10.
+    // Sigma value of the Gaussian blur to apply is 10.
     filter.SetMaskFilter(MaskFilter::CreateBlurMaskFilter(BlurType::NORMAL, 10));
     pen.SetFilter(filter);
     canvas.AttachPen(pen);

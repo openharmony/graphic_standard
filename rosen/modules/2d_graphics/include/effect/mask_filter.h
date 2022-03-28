@@ -38,7 +38,7 @@ public:
         BLUR,
     };
 
-    static std::shared_ptr<MaskFilter> CreateBlurMaskFilter(BlurType blurType, scalar radius);
+    static std::shared_ptr<MaskFilter> CreateBlurMaskFilter(BlurType blurType, scalar sigma);
 
     ~MaskFilter() {}
     FilterType GetType() const;
@@ -48,7 +48,7 @@ public:
         return impl_->DowncastingTo<T>();
     }
 
-    MaskFilter(FilterType t, BlurType blurType, scalar radius) noexcept;
+    MaskFilter(FilterType t, BlurType blurType, scalar sigma) noexcept;
 
 protected:
     MaskFilter() noexcept;

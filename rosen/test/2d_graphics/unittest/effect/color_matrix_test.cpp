@@ -14,6 +14,7 @@
  */
 
 #include "gtest/gtest.h"
+
 #include "effect/color_matrix.h"
 
 using namespace testing;

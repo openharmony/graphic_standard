@@ -14,10 +14,11 @@
  */
 
 #include "gtest/gtest.h"
+
 #include "utils/matrix.h"
-#include "utils/scalar.h"
 #include "utils/point.h"
- 
+#include "utils/scalar.h"
+
 using namespace testing;
 using namespace testing::ext;
 
@@ -266,8 +267,8 @@ HWTEST_F(MatrixTest, MatrixMapPointsTest001, TestSize.Level1)
 {
     std::unique_ptr<Matrix> matrix = std::make_unique<Matrix>();
     ASSERT_TRUE(matrix != nullptr);
-    std::vector<Point> dst = {{1, 2}};
-    std::vector<Point> src = {{2, 3}};
+    std::vector<Point> dst = { { 1, 2 } };
+    std::vector<Point> src = { { 2, 3 } };
     matrix->MapPoints(dst, src, 100);
 }
 
@@ -282,8 +283,8 @@ HWTEST_F(MatrixTest, MatrixMapPointsTest002, TestSize.Level1)
 {
     std::unique_ptr<Matrix> matrix = std::make_unique<Matrix>();
     ASSERT_TRUE(matrix != nullptr);
-    std::vector<Point> dst = {{3, 2}};
-    std::vector<Point> src = {{1, 3}};
+    std::vector<Point> dst = { { 3, 2 } };
+    std::vector<Point> src = { { 1, 3 } };
     matrix->MapPoints(dst, src, 191);
 }
 

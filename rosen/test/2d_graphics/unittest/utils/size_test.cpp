@@ -14,10 +14,11 @@
  */
 
 #include "gtest/gtest.h"
-#include "utils/size.h"
-#include "utils/scalar.h"
+
 #include "utils/rect.h"
- 
+#include "utils/scalar.h"
+#include "utils/size.h"
+
 using namespace testing;
 using namespace testing::ext;
 
@@ -96,7 +97,7 @@ HWTEST_F(SizeTest, SizeFIsZeroTest002, TestSize.Level1)
 {
     std::unique_ptr<SizeF> size = std::make_unique<SizeF>();
     ASSERT_TRUE(size != nullptr);
-    ASSERT_FALSE(! size->IsZero());
+    ASSERT_FALSE(!size->IsZero());
 }
 
 /**
@@ -124,7 +125,7 @@ HWTEST_F(SizeTest, SizeFIsEmptyTest002, TestSize.Level1)
 {
     std::unique_ptr<SizeF> size = std::make_unique<SizeF>();
     ASSERT_TRUE(size != nullptr);
-    ASSERT_FALSE(! size->IsEmpty());
+    ASSERT_FALSE(!size->IsEmpty());
 }
 
 /**

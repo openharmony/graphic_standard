@@ -23,10 +23,21 @@ namespace OHOS {
 namespace Rosen {
 namespace Drawing {
 typedef float scalar;
+static const scalar BLUR_SIGMA_SCALE = 0.57735f;
 
 inline bool IsScalarAlmostEqual(scalar a, scalar b)
 {
     return fabs(a - b) < std::numeric_limits<scalar>::min();
+}
+
+inline scalar ConvertRadiusToSigma(scalar radius)
+{
+    return radius > 0 ? BLUR_SIGMA_SCALE * radius + 0.5f : 0.0f;
+}
+
+inline scalar ConvertSigmaToRadius(scalar sigma)
+{
+    return sigma > 0.5f ? (sigma - 0.5f) / BLUR_SIGMA_SCALE : 0.0f;
 }
 } // namespace Drawing
 } // namespace Rosen

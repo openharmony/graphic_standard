@@ -14,15 +14,16 @@
  */
 
 #include "gtest/gtest.h"
-#include "image/image.h"
-#include "image/bitmap.h"
-#include "image/picture.h"
-#include "utils/matrix.h"
-#include "utils/size.h"
+
 #include "draw/brush.h"
 #include "effect/color_space.h"
 #include "engine_adapter/impl_factory.h"
- 
+#include "image/bitmap.h"
+#include "image/image.h"
+#include "image/picture.h"
+#include "utils/matrix.h"
+#include "utils/size.h"
+
 using namespace testing;
 using namespace testing::ext;
 
@@ -81,7 +82,7 @@ HWTEST_F(ImageTest, BuildFromBitmap001, TestSize.Level1)
 HWTEST_F(ImageTest, ImageGetWidthTest001, TestSize.Level1)
 {
     Bitmap bitmap;
-    BitmapFormat bitmapFormat {COLORTYPE_RGBA_8888, ALPHATYPE_OPAQUYE};
+    BitmapFormat bitmapFormat { COLORTYPE_RGBA_8888, ALPHATYPE_OPAQUYE };
     bitmap.Build(10, 10, bitmapFormat);
     Image image;
     image.BuildFromBitmap(bitmap);
@@ -98,7 +99,7 @@ HWTEST_F(ImageTest, ImageGetWidthTest001, TestSize.Level1)
 HWTEST_F(ImageTest, ImageGetWidthTest002, TestSize.Level1)
 {
     Bitmap bitmap;
-    BitmapFormat bitmapFormat {COLORTYPE_RGBA_8888, ALPHATYPE_OPAQUYE};
+    BitmapFormat bitmapFormat { COLORTYPE_RGBA_8888, ALPHATYPE_OPAQUYE };
     bitmap.Build(15, 15, bitmapFormat);
     Image image;
     image.BuildFromBitmap(bitmap);
@@ -115,7 +116,7 @@ HWTEST_F(ImageTest, ImageGetWidthTest002, TestSize.Level1)
 HWTEST_F(ImageTest, ImageGetHeightTest001, TestSize.Level1)
 {
     Bitmap bitmap;
-    BitmapFormat bitmapFormat {COLORTYPE_RGBA_8888, ALPHATYPE_OPAQUYE};
+    BitmapFormat bitmapFormat { COLORTYPE_RGBA_8888, ALPHATYPE_OPAQUYE };
     bitmap.Build(10, 10, bitmapFormat);
     Image image;
     image.BuildFromBitmap(bitmap);
@@ -132,7 +133,7 @@ HWTEST_F(ImageTest, ImageGetHeightTest001, TestSize.Level1)
 HWTEST_F(ImageTest, ImageGetHeightTest002, TestSize.Level1)
 {
     Bitmap bitmap;
-    BitmapFormat bitmapFormat {COLORTYPE_RGBA_8888, ALPHATYPE_OPAQUYE};
+    BitmapFormat bitmapFormat { COLORTYPE_RGBA_8888, ALPHATYPE_OPAQUYE };
     bitmap.Build(15, 15, bitmapFormat);
     Image image;
     image.BuildFromBitmap(bitmap);

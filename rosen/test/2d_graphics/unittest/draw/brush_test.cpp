@@ -14,6 +14,7 @@
  */
 
 #include "gtest/gtest.h"
+
 #include "draw/brush.h"
 
 using namespace testing;
@@ -218,14 +219,14 @@ HWTEST_F(BrushTest, GetColor4f001, TestSize.Level1)
     auto brush = std::make_unique<Brush>();
     ASSERT_TRUE(brush != nullptr);
     auto colorSpace = std::make_shared<ColorSpace>(ColorSpace::ColorSpaceType::NO_TYPE);
-    Color4f color4f = {1.5f, 2.5f, 3.5f, 4.5f};
+    Color4f color4f = { 1.5f, 2.5f, 3.5f, 4.5f };
     brush->SetColor(color4f, colorSpace);
-    EXPECT_TRUE((color4f.redF_ - brush->GetColor4f().redF_) < 0.01 &&
-        (color4f.redF_ - brush->GetColor4f().redF_) > -0.01);
+    EXPECT_TRUE(
+        (color4f.redF_ - brush->GetColor4f().redF_) < 0.01 && (color4f.redF_ - brush->GetColor4f().redF_) > -0.01);
     EXPECT_TRUE((color4f.greenF_ - brush->GetColor4f().greenF_) < 0.01 &&
         (color4f.greenF_ - brush->GetColor4f().greenF_) > -0.01);
-    EXPECT_TRUE((color4f.blueF_ - brush->GetColor4f().blueF_) < 0.01 &&
-        (color4f.blueF_ - brush->GetColor4f().blueF_) > -0.01);
+    EXPECT_TRUE(
+        (color4f.blueF_ - brush->GetColor4f().blueF_) < 0.01 && (color4f.blueF_ - brush->GetColor4f().blueF_) > -0.01);
     EXPECT_TRUE((color4f.alphaF_ - brush->GetColor4f().alphaF_) < 0.01 &&
         (color4f.alphaF_ - brush->GetColor4f().alphaF_) > -0.01);
 }
@@ -242,14 +243,14 @@ HWTEST_F(BrushTest, GetColor4f002, TestSize.Level1)
     auto brush = std::make_unique<Brush>();
     ASSERT_TRUE(brush != nullptr);
     auto colorSpace = std::make_shared<ColorSpace>(ColorSpace::ColorSpaceType::SRGB);
-    Color4f color4f = {10.5f, 20.5f, 30.5f, 40.5f};
+    Color4f color4f = { 10.5f, 20.5f, 30.5f, 40.5f };
     brush->SetColor(color4f, colorSpace);
-    EXPECT_TRUE((color4f.redF_ - brush->GetColor4f().redF_) < 0.01 &&
-        (color4f.redF_ - brush->GetColor4f().redF_) > -0.01);
+    EXPECT_TRUE(
+        (color4f.redF_ - brush->GetColor4f().redF_) < 0.01 && (color4f.redF_ - brush->GetColor4f().redF_) > -0.01);
     EXPECT_TRUE((color4f.greenF_ - brush->GetColor4f().greenF_) < 0.01 &&
         (color4f.greenF_ - brush->GetColor4f().greenF_) > -0.01);
-    EXPECT_TRUE((color4f.blueF_ - brush->GetColor4f().blueF_) < 0.01 &&
-        (color4f.blueF_ - brush->GetColor4f().blueF_) > -0.01);
+    EXPECT_TRUE(
+        (color4f.blueF_ - brush->GetColor4f().blueF_) < 0.01 && (color4f.blueF_ - brush->GetColor4f().blueF_) > -0.01);
     EXPECT_TRUE((color4f.alphaF_ - brush->GetColor4f().alphaF_) < 0.01 &&
         (color4f.alphaF_ - brush->GetColor4f().alphaF_) > -0.01);
 }

@@ -14,9 +14,10 @@
  */
 
 #include "gtest/gtest.h"
+
 #include "utils/point.h"
 #include "utils/scalar.h"
- 
+
 using namespace testing;
 using namespace testing::ext;
 
@@ -972,7 +973,8 @@ HWTEST_F(PointTest, PointPointIDevide002, TestSize.Level1)
  * @tc.author:
  */
 HWTEST_F(PointTest, PointPointIPositive001, TestSize.Level1)
-{    PointI pointi1(1.0f, 2.0f);
+{
+    PointI pointi1(1.0f, 2.0f);
     PointI pointi2 = +pointi1;
     EXPECT_EQ(1.0f, pointi2.GetX());
     EXPECT_EQ(2.0f, pointi2.GetY());
@@ -1081,4 +1083,3 @@ HWTEST_F(PointTest, PointPointINotEqual002, TestSize.Level1)
 } // namespace Drawing
 } // namespace Rosen
 } // namespace OHOS
-

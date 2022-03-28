@@ -14,10 +14,11 @@
  */
 
 #include "gtest/gtest.h"
+
 #include "utils/camera3d.h"
-#include "utils/scalar.h"
 #include "utils/matrix.h"
- 
+#include "utils/scalar.h"
+
 using namespace testing;
 using namespace testing::ext;
 
