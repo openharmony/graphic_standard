@@ -165,20 +165,20 @@ static void AdjustSurfaceTransform(BufferDrawParam &param, TransformType surface
 {
     switch (surfaceTransform) {
         case TransformType::ROTATE_90: {
-            param.matrix.postRotate(-90);
-            param.matrix.postTranslate(0, param.dstRect.height());
+            param.matrix.preTranslate(0, param.clipRect.height());
+            param.matrix.preRotate(-90); // rotate 90 degrees anti-clockwise at last.
             param.dstRect.setWH(param.dstRect.height(), param.dstRect.width());
             break;
         }
         case TransformType::ROTATE_180: {
-            param.matrix.postRotate(-180);
-            param.matrix.postTranslate(param.dstRect.width(), param.dstRect.height());
+            param.matrix.preTranslate(param.clipRect.width(), param.clipRect.height());
+            param.matrix.preRotate(-180); // rotate 180 degrees anti-clockwise at last.
             param.dstRect.setWH(param.dstRect.height(), param.dstRect.width());
             break;
         }
         case TransformType::ROTATE_270: {
-            param.matrix.postRotate(-270);
-            param.matrix.postTranslate(param.dstRect.width(), 0);
+            param.matrix.preTranslate(param.clipRect.width(), 0);
+            param.matrix.preRotate(-270); // rotate 270 degrees anti-clockwise at last.
             param.dstRect.setWH(param.dstRect.height(), param.dstRect.width());
             break;
         }
@@ -225,7 +225,7 @@ void RSSurfaceCaptureTask::RSSurfaceCaptureVisitor::ProcessSurfaceRenderNode(RSS
             param.dstRect = SkRect::MakeXYWH(
                 node.GetRenderProperties().GetBoundsPositionX(), node.GetRenderProperties().GetBoundsPositionY(),
                 node.GetRenderProperties().GetBoundsWidth(), node.GetRenderProperties().GetBoundsHeight());
-            param.matrix.postTranslate(-param.matrix.getTranslateX() * scaleX_, -param.matrix.getTranslateY() * scaleY_);
+            param.matrix.preTranslate(-param.matrix.getTranslateX() * scaleX_, -param.matrix.getTranslateY() * scaleY_);
             AdjustSurfaceTransform(param, surfaceTransform);
             RsRenderServiceUtil::DrawBuffer(*canvas_, param,
                 [this](SkCanvas& canvas, BufferDrawParam& params) -> void {

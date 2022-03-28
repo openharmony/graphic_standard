@@ -697,21 +697,21 @@ SkMatrix RsRenderServiceUtil::GetCanvasTransform(const RSSurfaceRenderNode& node
     const auto &geoAbsRect = node.GetDstRect();
     switch (rotation) {
         case ScreenRotation::ROTATION_90: {
-            transform.postTranslate(geoAbsRect.top_, -geoAbsRect.left_);
+            transform.preTranslate(geoAbsRect.top_, -geoAbsRect.left_);
             switch (surface->GetTransform()) {
                 case TransformType::ROTATE_90: {
-                    transform.postRotate(-90);
-                    transform.postTranslate(geoAbsRect.height_, 0);
+                    transform.preTranslate(geoAbsRect.height_, 0);
+                    transform.preRotate(-90); // rotate 90 degrees anti-clockwise at last.
                     break;
                 }
                 case TransformType::ROTATE_180: {
-                    transform.postRotate(180);
-                    transform.postTranslate(geoAbsRect.height_, -geoAbsRect.width_);
+                    transform.preTranslate(geoAbsRect.height_, -geoAbsRect.width_);
+                    transform.preRotate(180); // rotate 180 degrees anti-clockwise at last.
                     break;
                 }
                 case TransformType::ROTATE_270: {
-                    transform.postRotate(-270);
-                    transform.postTranslate(0, -geoAbsRect.width_);
+                    transform.preTranslate(0, -geoAbsRect.width_);
+                    transform.preRotate(-270); // rotate 270 degrees anti-clockwise at last.
                     break;
                 }
                 default:
@@ -720,21 +720,21 @@ SkMatrix RsRenderServiceUtil::GetCanvasTransform(const RSSurfaceRenderNode& node
             break;
         }
         case ScreenRotation::ROTATION_180: {
-            transform.postTranslate(-geoAbsRect.left_, -geoAbsRect.top_);
+            transform.preTranslate(-geoAbsRect.left_, -geoAbsRect.top_);
             switch (surface->GetTransform()) {
                 case TransformType::ROTATE_90: {
-                    transform.postRotate(-90);
-                    transform.postTranslate(0, -geoAbsRect.height_);
+                    transform.preTranslate(0, -geoAbsRect.height_);
+                    transform.preRotate(-90); // rotate 90 degrees anti-clockwise at last.
                     break;
                 }
                 case TransformType::ROTATE_180: {
-                    transform.postRotate(180);
-                    transform.postTranslate(-geoAbsRect.width_, -geoAbsRect.height_);
+                    transform.preTranslate(-geoAbsRect.width_, -geoAbsRect.height_);
+                    transform.preRotate(180); // rotate 180 degrees anti-clockwise at last.
                     break;
                 }
                 case TransformType::ROTATE_270: {
-                    transform.postRotate(-270);
-                    transform.postTranslate(-geoAbsRect.width_, 0);
+                    transform.preTranslate(-geoAbsRect.width_, 0);
+                    transform.preRotate(-270); // rotate 270 degrees anti-clockwise at last.
                     break;
                 }
                 default:
@@ -743,21 +743,21 @@ SkMatrix RsRenderServiceUtil::GetCanvasTransform(const RSSurfaceRenderNode& node
             break;
         }
         case ScreenRotation::ROTATION_270: {
-            transform.postTranslate(-geoAbsRect.top_, geoAbsRect.left_);
+            transform.preTranslate(-geoAbsRect.top_, geoAbsRect.left_);
             switch (surface->GetTransform()) {
                 case TransformType::ROTATE_90: {
-                    transform.postRotate(-90);
-                    transform.postTranslate(-geoAbsRect.height_, 0);
+                    transform.preTranslate(-geoAbsRect.height_, 0);
+                    transform.preRotate(-90); // rotate 90 degrees anti-clockwise at last.
                     break;
                 }
                 case TransformType::ROTATE_180: {
-                    transform.postRotate(180);
-                    transform.postTranslate(-geoAbsRect.height_, geoAbsRect.width_);
+                    transform.preTranslate(-geoAbsRect.height_, geoAbsRect.width_);
+                    transform.preRotate(180); // rotate 180 degrees anti-clockwise at last.
                     break;
                 }
                 case TransformType::ROTATE_270: {
-                    transform.postRotate(-270);
-                    transform.postTranslate(0, geoAbsRect.width_);
+                    transform.preTranslate(0, geoAbsRect.width_);
+                    transform.preRotate(-270); // rotate 270 degrees anti-clockwise at last.
                     break;
                 }
                 default:
@@ -769,18 +769,18 @@ SkMatrix RsRenderServiceUtil::GetCanvasTransform(const RSSurfaceRenderNode& node
             transform = geoPtr->GetAbsMatrix();
             switch (surface->GetTransform()) {
                 case TransformType::ROTATE_90: {
-                    transform.postRotate(-90);
-                    transform.postTranslate(0, geoAbsRect.height_);
+                    transform.preTranslate(0, geoAbsRect.height_);
+                    transform.preRotate(-90); // rotate 90 degrees anti-clockwise at last.
                     break;
                 }
                 case TransformType::ROTATE_180: {
-                    transform.postRotate(180);
-                    transform.postTranslate(geoAbsRect.width_, geoAbsRect.height_);
+                    transform.preTranslate(geoAbsRect.width_, geoAbsRect.height_);
+                    transform.preRotate(180); // rotate 180 degrees anti-clockwise at last.
                     break;
                 }
                 case TransformType::ROTATE_270: {
-                    transform.postRotate(-270);
-                    transform.postTranslate(geoAbsRect.width_, 0);
+                    transform.preTranslate(geoAbsRect.width_, 0);
+                    transform.preRotate(-270); // rotate 270 degrees anti-clockwise at last.
                     break;
                 }
                 default:
