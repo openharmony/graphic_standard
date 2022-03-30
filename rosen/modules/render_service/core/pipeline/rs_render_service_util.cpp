@@ -579,7 +579,7 @@ bool RsRenderServiceUtil::IsNeedClient(RSSurfaceRenderNode* node)
 }
 
 void RsRenderServiceUtil::ExtractAnimationInfo(const std::unique_ptr<RSTransitionProperties>& transitionProperties,
-        RSSurfaceRenderNode& node, AnimationInfo& info)
+    RSSurfaceRenderNode& node, AnimationInfo& info)
 {
     auto existedParent = node.GetParent().lock();
     if (!existedParent) {

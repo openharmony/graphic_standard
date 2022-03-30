@@ -25,6 +25,7 @@
 #include "platform/common/rs_log.h"
 #include "rs_trace.h"
 #include "ui/rs_ui_director.h"
+#include "transaction/rs_render_service_client.h"
 #ifdef ROSEN_OHOS
 #include <sys/prctl.h>
 #include <unistd.h>
@@ -140,7 +141,10 @@ void RSRenderThread::Start()
 void RSRenderThread::Stop()
 {
     running_.store(false);
-    WakeUp();
+
+    if (runner_ != nullptr) {
+        runner_->Stop();
+    }
 
     if (thread_ != nullptr && thread_->joinable()) {
         thread_->join();
@@ -148,13 +152,6 @@ void RSRenderThread::Stop()
 
     thread_ = nullptr;
     ROSEN_LOGD("RSRenderThread stopped.");
-}
-
-void RSRenderThread::WakeUp()
-{
-    if (rendererLooper_ != nullptr) {
-        rendererLooper_->WakeUp();
-    }
 }
 
 void RSRenderThread::RecvTransactionData(std::unique_ptr<RSTransactionData>& transactionData)
@@ -170,8 +167,12 @@ void RSRenderThread::RecvTransactionData(std::unique_ptr<RSTransactionData>& tra
 void RSRenderThread::RequestNextVSync()
 {
     RS_TRACE_FUNC();
-    if (vsyncClient_ != nullptr) {
-        vsyncClient_->RequestNextVsync();
+    VSyncReceiver::FrameCallback fcb = {
+        .userData_ = this,
+        .callback_ = std::bind(&RSRenderThread::OnVsync, this, std::placeholders::_1),
+    };
+    if (receiver_ != nullptr) {
+        receiver_->RequestNextVSync(fcb);
     }
 }
 
@@ -183,39 +184,26 @@ int32_t RSRenderThread::GetTid()
 void RSRenderThread::RenderLoop()
 {
     SystemCallSetThreadName("RSRenderThread");
-    rendererLooper_ = RSThreadLooper::Create();
-    threadHandler_ = RSThreadHandler::Create();
 
 #ifdef ROSEN_OHOS
     tid_ = gettid();
-    vsyncClient_ = RSVsyncClient::Create();
-    if (vsyncClient_) {
-        vsyncClient_->SetVsyncCallback(std::bind(&RSRenderThread::OnVsync, this, std::placeholders::_1));
-    }
 #endif
 #ifdef ACE_ENABLE_GL
     renderContext_->InitializeEglContext(); // init egl context on RT
 #endif
-
-    while (running_.load()) {
-        if (rendererLooper_ == nullptr) {
-            break;
-        }
-        {
-            if (preTask_ != nullptr) {
-                threadHandler_->PostTask(preTask_);
-                preTask_ = nullptr;
-            }
-        }
-        if (running_.load()) {
-            rendererLooper_->ProcessAllMessages(-1);
-        }
+    std::string name = "RSRenderThread_" + std::to_string(::getpid());
+    runner_ = AppExecFwk::EventRunner::Create(false);
+    handler_ = std::make_shared<AppExecFwk::EventHandler>(runner_);
+    auto rsClient = std::static_pointer_cast<RSRenderServiceClient>(RSIRenderClient::CreateRenderServiceClient());
+    receiver_ = rsClient->CreateVSyncReceiver(name, handler_);
+    if (receiver_ == nullptr) {
+        ROSEN_LOGE("RSRenderThread CreateVSyncReceiver Error");
+        return;
     }
-
-    StopTimer();
-    vsyncClient_ = nullptr;
-    rendererLooper_ = nullptr;
-    threadHandler_ = nullptr;
+    receiver_->Init();
+    if (runner_) {
+        runner_->Run();
+    }
 }
 
 void RSRenderThread::OnVsync(uint64_t timestamp)
@@ -225,7 +213,7 @@ void RSRenderThread::OnVsync(uint64_t timestamp)
     RS_TRACE_INT("Vsync-client", mValue);
     timestamp_ = timestamp;
     if (activeWindowCnt_.load() > 0) {
-        StartTimer(0); // start render-loop now
+        mainFunc_(); // start render-loop now
     }
     ROSEN_TRACE_END(BYTRACE_TAG_GRAPHIC_AGP);
 }
@@ -238,26 +226,6 @@ void RSRenderThread::UpdateWindowStatus(bool active)
         activeWindowCnt_--;
     }
     ROSEN_LOGD("RSRenderThread UpdateWindowStatus %d, cur activeWindowCnt_ %d", active, activeWindowCnt_.load());
-}
-
-void RSRenderThread::StartTimer(uint64_t interval)
-{
-    if (threadHandler_ != nullptr) {
-        if (timeHandle_ == nullptr) {
-            timeHandle_ = RSThreadHandler::StaticCreateTask(mainFunc_);
-        }
-        threadHandler_->PostTaskDelay(timeHandle_, interval);
-    }
-}
-
-void RSRenderThread::StopTimer()
-{
-    ROSEN_LOGD("RSRenderThread StopTimer.");
-    if (threadHandler_ != nullptr) {
-        if (timeHandle_ != nullptr) {
-            threadHandler_->CancelTask(timeHandle_);
-        }
-    }
 }
 
 void RSRenderThread::ProcessCommands()
@@ -359,9 +327,15 @@ void RSRenderThread::Detach(NodeId id)
 
 void RSRenderThread::PostTask(RSTaskMessage::RSTask task)
 {
-    if (threadHandler_) {
-        auto taskHandle = threadHandler_->CreateTask(task);
-        threadHandler_->PostTask(taskHandle, 0);
+    if (handler_) {
+        handler_->PostTask(task);
+    }
+}
+
+void RSRenderThread::PostPreTask()
+{
+    if (handler_ && preTask_) {
+        handler_->PostTask(preTask_);
     }
 }
 } // namespace Rosen

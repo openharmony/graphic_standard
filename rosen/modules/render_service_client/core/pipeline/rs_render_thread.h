@@ -22,6 +22,7 @@
 #include <thread>
 #include <unordered_map>
 #include <vector>
+#include <vsync_helper.h>
 
 #include "common/rs_thread_handler.h"
 #include "common/rs_thread_looper.h"
@@ -31,6 +32,7 @@
 #include "platform/drawing/rs_vsync_client.h"
 #include "render_context/render_context.h"
 #include "transaction/rs_transaction_proxy.h"
+#include "vsync_receiver.h"
 
 namespace OHOS {
 namespace Rosen {
@@ -40,12 +42,12 @@ public:
 
     void Start();
     void Stop();
-    void WakeUp();
 
     void Detach(NodeId id);
     void RecvTransactionData(std::unique_ptr<RSTransactionData>& transactionData);
     void RequestNextVSync();
     void PostTask(RSTaskMessage::RSTask task);
+    void PostPreTask();
     void UpdateWindowStatus(bool active);
 
     int32_t GetTid();
@@ -80,8 +82,6 @@ private:
     void RenderLoop();
 
     void OnVsync(uint64_t timestamp);
-    void StartTimer(uint64_t interval);
-    void StopTimer();
     void ProcessCommands();
     void Animate(uint64_t timestamp);
     void Render();
@@ -90,10 +90,10 @@ private:
     std::atomic_bool running_ = false;
     std::atomic_int activeWindowCnt_ = 0;
     std::unique_ptr<std::thread> thread_ = nullptr;
-    std::unique_ptr<RSThreadLooper> rendererLooper_ = nullptr;
-    std::unique_ptr<RSThreadHandler> threadHandler_ = nullptr;
-    RSTaskHandle preTask_ = nullptr;
-    RSTaskHandle timeHandle_ = nullptr;
+    std::shared_ptr<AppExecFwk::EventRunner> runner_ = nullptr;
+    std::shared_ptr<AppExecFwk::EventHandler> handler_ = nullptr;
+    std::shared_ptr<VSyncReceiver> receiver_ = nullptr;
+    RSTaskMessage::RSTask preTask_ = nullptr;
     RSTaskMessage::RSTask mainFunc_;
 
     std::mutex mutex_;
@@ -102,7 +102,6 @@ private:
     bool hasRunningAnimation_ = false;
     std::shared_ptr<RSNodeVisitor> visitor_;
 
-    std::unique_ptr<RSVsyncClient> vsyncClient_ = nullptr;
     uint64_t timestamp_ = 0;
     uint64_t prevTimestamp_ = 0;
     uint64_t refreshPeriod_ = 16666667;

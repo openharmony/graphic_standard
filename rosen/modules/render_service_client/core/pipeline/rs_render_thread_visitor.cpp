@@ -149,8 +149,6 @@ void RSRenderThreadVisitor::ProcessRootRenderNode(RSRootRenderNode& node)
         canvas_ = new RSPaintFilterCanvas(surfaceFrame->GetCanvas());
     }
     canvas_->clear(SK_ColorTRANSPARENT);
-
-
     isIdle_ = false;
     ProcessCanvasRenderNode(node);
 
@@ -204,7 +202,7 @@ void RSRenderThreadVisitor::ProcessSurfaceRenderNode(RSSurfaceRenderNode& node)
     node.SetAlpha(canvas_->GetAlpha());
     node.SetParentId(node.GetParent().lock()->GetId());
     auto clipRect = canvas_->getDeviceClipBounds();
-    node.SetClipRegion({clipRect.left(), clipRect.top(), clipRect.width(), clipRect.height()});
+    node.SetClipRegion({ clipRect.left(), clipRect.top(), clipRect.width(), clipRect.height() });
 
     auto x = node.GetRenderProperties().GetBoundsPositionX();
     auto y = node.GetRenderProperties().GetBoundsPositionY();
@@ -236,6 +234,5 @@ void RSRenderThreadVisitor::ProcessSurfaceRenderNode(RSSurfaceRenderNode& node)
 #endif
     ProcessBaseRenderNode(node);
 }
-
 } // namespace Rosen
 } // namespace OHOS
