@@ -34,6 +34,7 @@ config("rosen_text_config") {
     "$flutter_root/engine/flutter/third_party/txt/src",
     "//foundation/graphic/standard/rosen/modules/2d_graphics/include",
     "//foundation/graphic/standard/rosen/modules/2d_graphics/src",
+    "//third_party/bounds_checking_function/include",
   ]
 }
 ohos_source_set("rosen_text_ui") {
@@ -60,6 +61,6 @@ ohos_source_set("rosen_text_ui") {
   deps = [
     "//foundation/ace/ace_engine/build/external_config/flutter/libtxt:thirdparty_lib_txt_$current_os",
     "//foundation/graphic/standard/rosen/modules/2d_graphics:2d_graphics",
-    "//utils/native/base:utilsecurec",
+    "//third_party/bounds_checking_function:libsec_static",
   ]
 }

@@ -88,6 +88,7 @@ ohos_shared_library("2d_graphics") {
     "$flutter_root/engine/flutter/third_party/txt/src",
     "//foundation/ace/ace_engine/frameworks",
     "$flutter_root/engine",
+    "//third_party/bounds_checking_function/include",
   ]
 
   defines = [ "USE_ACE_SKIA" ]
@@ -97,7 +98,7 @@ ohos_shared_library("2d_graphics") {
     "//foundation/graphic/standard:libsurface",
     "//foundation/graphic/standard/rosen/build/flutter/icu:rosen_libicu_$current_os",
     "//foundation/graphic/standard/rosen/build/flutter/libtxt:thirdparty_lib_txt_rosen_$current_os",
-    "//utils/native/base:utilsecurec",
+    "//third_party/bounds_checking_function:libsec_static",
   ]
 
   external_deps = [

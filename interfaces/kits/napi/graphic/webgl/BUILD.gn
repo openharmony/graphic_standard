@@ -26,6 +26,7 @@ ohos_source_set("webgl_src") {
     "src",
     "//third_party/node/src",
     "//utils/native/base/include",
+    "//third_party/bounds_checking_function/include",
   ]
 
   sources = [
@@ -38,9 +39,9 @@ ohos_source_set("webgl_src") {
     "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
     "//foundation/ace/napi:ace_napi",
     "//foundation/graphic/standard:libsurface",
+    "//third_party/bounds_checking_function:libsec_static",
     "//third_party/libuv:uv_static",
     "//utils/native/base:utils",
-    "//utils/native/base:utilsecurec",
   ]
 
   if (ace_enable_gpu) {
