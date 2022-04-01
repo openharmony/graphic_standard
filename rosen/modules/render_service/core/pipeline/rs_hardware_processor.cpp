@@ -34,8 +34,10 @@ RSHardwareProcessor::RSHardwareProcessor() {}
 
 RSHardwareProcessor::~RSHardwareProcessor() {}
 
-void RSHardwareProcessor::Init(ScreenId id)
+void RSHardwareProcessor::Init(ScreenId id, int32_t offsetX, int32_t offsetY)
 {
+    offsetX_ = offsetX;
+    offsetY_ = offsetY;
     backend_ = HdiBackend::GetInstance();
     backend_->RegPrepareComplete(std::bind(&RSHardwareProcessor::Redraw, this, std::placeholders::_1,
         std::placeholders::_2, std::placeholders::_3), nullptr);
@@ -173,8 +175,8 @@ void RSHardwareProcessor::ProcessSurface(RSSurfaceRenderNode &node)
             .h = node.GetBuffer()->GetSurfaceBufferHeight(),
         },
         .dstRect = {
-            .x = geoPtr->GetAbsRect().left_,
-            .y = geoPtr->GetAbsRect().top_,
+            .x = geoPtr->GetAbsRect().left_ - offsetX_,
+            .y = geoPtr->GetAbsRect().top_ - offsetY_,
             .w = geoPtr->GetAbsRect().width_,
             .h = geoPtr->GetAbsRect().height_,
         },

@@ -39,7 +39,7 @@ public:
     RSHardwareProcessor();
     ~RSHardwareProcessor() override;
     void ProcessSurface(RSSurfaceRenderNode& node) override;
-    void Init(ScreenId id) override;
+    void Init(ScreenId id, int32_t offsetX, int32_t offsetY) override;
     void PostProcess() override;
     void CropLayers();
 
@@ -56,6 +56,8 @@ private:
     std::shared_ptr<HdiOutput> output_;
     std::vector<LayerInfoPtr> layers_;
     ScreenRotation rotation_ {ScreenRotation::ROTATION_0};
+    int32_t offsetX_ = 0;
+    int32_t offsetY_ = 0;
 };
 } // namespace Rosen
 } // namespace OHOS

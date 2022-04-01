@@ -21,7 +21,8 @@
 namespace OHOS {
 namespace Rosen {
 RSDisplayRenderNode::RSDisplayRenderNode(NodeId id, const RSDisplayNodeConfig& config, std::weak_ptr<RSContext> context)
-    : RSBaseRenderNode(id, context), screenId_(config.screenId), isMirroredDisplay_(config.isMirrored)
+    : RSBaseRenderNode(id, context), screenId_(config.screenId), offsetX_(0), offsetY_(0),
+    isMirroredDisplay_(config.isMirrored)
 {}
 
 RSDisplayRenderNode::~RSDisplayRenderNode() {}

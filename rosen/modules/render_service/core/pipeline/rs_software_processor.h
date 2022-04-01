@@ -27,13 +27,15 @@ public:
     RSSoftwareProcessor();
     ~RSSoftwareProcessor() override;
     void ProcessSurface(RSSurfaceRenderNode& node) override;
-    void Init(ScreenId id) override;
+    void Init(ScreenId id, int32_t offsetX, int32_t offsetY) override;
     void PostProcess() override;
 
 private:
     sptr<Surface> producerSurface_;
     std::unique_ptr<SkCanvas> canvas_;
     ScreenInfo currScreenInfo_;
+    int32_t offsetX_ = 0;
+    int32_t offsetY_ = 0;
 };
 } // namespace Rosen
 } // namespace OHOS
