@@ -26,7 +26,7 @@ namespace Rosen {
 using namespace AbilityRuntime;
 constexpr size_t ARGC_ONE = 1;
 constexpr size_t ARGC_TWO = 2;
-constexpr size_t ARGC_THREE = 1;
+constexpr size_t ARGC_THREE = 3;
 
 RSWindowAnimationController::RSWindowAnimationController(NativeEngine& engine,
     const std::shared_ptr<AppExecFwk::EventHandler>& handler)
