@@ -31,19 +31,17 @@
 #include "transaction/rs_interfaces.h"
 #include "ui/rs_display_node.h"
 #include "ui/rs_surface_node.h"
-#include "render_context/render_context.h"
+#include "drawing_engine/drawing_proxy.h"
 // temporary debug
-#include "foundation/graphic/standard/rosen/modules/render_service_base/src/platform/ohos/rs_surface_frame_ohos.h"
-#include "foundation/graphic/standard/rosen/modules/render_service_base/src/platform/ohos/rs_surface_ohos.h"
+#include "drawing_engine/drawing_surface/rs_surface_frame_ohos.h"
+#include "drawing_engine/drawing_surface/rs_surface_ohos.h"
 
 using namespace OHOS;
 using namespace OHOS::Rosen;
 using namespace std;
 
 namespace OHOS::Rosen {
-#ifdef ACE_ENABLE_GPU
-    RenderContext* rc_ = nullptr;
-#endif
+    DrawingProxy* dp_ = nullptr;
 
 namespace pipelineTestUtils {
     constexpr bool wrongExit = false;
@@ -123,14 +121,13 @@ namespace pipelineTestUtils {
             if (rsSurface == nullptr) {
                 return wrongExit;
             }
-#ifdef ACE_ENABLE_GPU
-            // SetRenderContext must before rsSurface->RequestFrame, or it will failed.
-            if (rc_) {
-                rsSurface->SetRenderContext(rc_);
+            // SetDrawingProxy must before rsSurface->RequestFrame, or it will failed.
+            if (dp_) {
+                rsSurface->SetDrawingProxy(dp_);
             } else {
-                printf("DrawSurface: RenderContext is nullptr\n");
+                printf("DrawSurface: DrawingProxy is nullptr\n");
             }
-#endif
+
             auto framePtr = rsSurface->RequestFrame(bufferSize_.width(), bufferSize_.height());
             if (!framePtr) {
                 // SetRenderContext must before rsSurface->RequestFrame,
@@ -138,7 +135,7 @@ namespace pipelineTestUtils {
                 printf("DrawSurface: frameptr is nullptr\n");
                 return wrongExit;
             }
-            auto canvas = framePtr->GetCanvas();
+            auto canvas = rsSurface->GetCanvas(framePtr);
             if (!canvas) {
                 printf("DrawSurface: canvas is nullptr\n");
                 return wrongExit;
@@ -417,18 +414,16 @@ private:
     RSDemoTestCase() = default;
     void RenderContextInit()
     {
-#ifdef ACE_ENABLE_GPU
         std::cout << "ACE_ENABLE_GPU is true. \n";
-        std::cout << "Init RenderContext start. \n";
-            rc_ = RenderContextFactory::GetInstance().CreateEngine();
-            if (rc_) {
-                std::cout << "Init RenderContext success.\n";
-                rc_->InitializeEglContext();
+        std::cout << "Init DrawContext start. \n";
+            dp_ = new DrawingProxy();
+            if (dp_) {
+                std::cout << "Init DrawContext success.\n";
+                dp_->InitDrawContext();
             } else {
-                std::cout << "Init RenderContext failed, RenderContext is nullptr.\n";
+                std::cout << "Init DrawContext failed, DrawContext is nullptr.\n";
             }
-        std::cout << "Init RenderContext start.\n";
-#endif
+        std::cout << "Init DrawContext start.\n";
     }
 
     bool isInit_ = false;

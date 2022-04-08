@@ -18,6 +18,7 @@
 #include <include/core/SkColor.h>
 #include <include/core/SkFont.h>
 #include <include/core/SkPaint.h>
+#include <include/core/SkSurface.h>
 
 #include "pipeline/rs_canvas_render_node.h"
 #include "pipeline/rs_dirty_region_manager.h"
@@ -26,7 +27,7 @@
 #include "pipeline/rs_root_render_node.h"
 #include "pipeline/rs_surface_render_node.h"
 #include "platform/common/rs_log.h"
-#include "platform/drawing/rs_surface.h"
+#include "drawing_engine/drawing_surface/rs_surface.h"
 #include "rs_trace.h"
 #include "transaction/rs_transaction_proxy.h"
 #include "ui/rs_surface_extractor.h"
@@ -117,23 +118,20 @@ void RSRenderThreadVisitor::ProcessRootRenderNode(RSRootRenderNode& node)
         return;
     }
 
-    auto rsSurfaceColorSpace = rsSurface->GetColorSpace();
+    rsSurface->SetDrawingProxy(RSRenderThread::Instance().GetDrawingProxy());
 
-    if (surfaceNodeColorSpace != rsSurfaceColorSpace) {
-        ROSEN_LOGD("Set new colorspace %d to rsSurface", surfaceNodeColorSpace);
-        rsSurface->SetColorSpace(surfaceNodeColorSpace);
-    }
-
-#ifdef ACE_ENABLE_GL
-    RenderContext* rc = RSRenderThread::Instance().GetRenderContext();
-    rsSurface->SetRenderContext(rc);
-#endif
     RS_TRACE_BEGIN("rsSurface->RequestFrame");
     auto surfaceFrame = rsSurface->RequestFrame(node.GetSurfaceWidth(), node.GetSurfaceHeight());
     RS_TRACE_END();
     if (surfaceFrame == nullptr) {
         ROSEN_LOGE("Request Frame Failed");
         return;
+    }
+
+    auto rsSurfaceColorSpace = surfaceFrame->GetColorSpace();
+    if (surfaceNodeColorSpace != rsSurfaceColorSpace) {
+        ROSEN_LOGD("Set new colorspace %d to rsSurface", surfaceNodeColorSpace);
+        surfaceFrame->SetColorSpace(surfaceNodeColorSpace);
     }
 
     sk_sp<SkSurface> skSurface = nullptr;
@@ -146,7 +144,7 @@ void RSRenderThreadVisitor::ProcessRootRenderNode(RSRootRenderNode& node)
         skSurface = SkSurface::MakeRaster(imageInfo);
         canvas_ = new RSPaintFilterCanvas(skSurface->getCanvas());
     } else {
-        canvas_ = new RSPaintFilterCanvas(surfaceFrame->GetCanvas());
+        canvas_ = new RSPaintFilterCanvas(rsSurface->GetCanvas(surfaceFrame));
     }
     canvas_->clear(SK_ColorTRANSPARENT);
     isIdle_ = false;
@@ -154,8 +152,8 @@ void RSRenderThreadVisitor::ProcessRootRenderNode(RSRootRenderNode& node)
 
     if (skSurface) {
         canvas_->flush();
-        surfaceFrame->GetCanvas()->clear(SK_ColorTRANSPARENT);
-        skSurface->draw(surfaceFrame->GetCanvas(), 0.f, 0.f, nullptr);
+        rsSurface->GetCanvas(surfaceFrame)->clear(SK_ColorTRANSPARENT);
+        skSurface->draw(rsSurface->GetCanvas(surfaceFrame), 0.f, 0.f, nullptr);
     }
     if (RSRootRenderNode::NeedForceRaster()) {
         RSRootRenderNode::MarkForceRaster(false);

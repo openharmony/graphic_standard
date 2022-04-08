@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,38 +14,31 @@
  */
 
 #include "rs_surface_frame_ohos_gl.h"
-#include "platform/common/rs_log.h"
-#include "render_context/render_context.h"
-
-#include <hilog/log.h>
-#include "pipeline/rs_render_thread.h"
 
 namespace OHOS {
 namespace Rosen {
-
 RSSurfaceFrameOhosGl::RSSurfaceFrameOhosGl(int32_t width, int32_t height)
-    : width_(width), height_(height)
+    : RSSurfaceFrameOhos(width, height), eglSurface_(EGL_NO_SURFACE), colorSpace_(ColorGamut::COLOR_GAMUT_SRGB)
 {
 }
 
-void RSSurfaceFrameOhosGl::SetDamageRegion(int32_t left, int32_t top, int32_t width, int32_t height)
+RSSurfaceFrameOhosGl::~RSSurfaceFrameOhosGl()
 {
-    renderContext_->DamageFrame(left, top, width, height);
 }
 
-SkCanvas* RSSurfaceFrameOhosGl::GetCanvas()
+void RSSurfaceFrameOhosGl::SetColorSpace(ColorGamut colorSpace)
 {
-    return renderContext_->AcquireCanvas(width_, height_);
+    colorSpace_ = colorSpace;
 }
 
-int32_t RSSurfaceFrameOhosGl::GetReleaseFence() const
+ColorGamut RSSurfaceFrameOhosGl::GetColorSpace() const
 {
-    return releaseFence_;
+    return colorSpace_;
 }
 
-void RSSurfaceFrameOhosGl::SetReleaseFence(const int32_t& fence)
+void RSSurfaceFrameOhosGl::SetSurface(EGLSurface surface)
 {
-    releaseFence_ = fence;
+    eglSurface_ = surface;
 }
 } // namespace Rosen
 } // namespace OHOS

@@ -19,7 +19,6 @@
 #include <memory>
 
 #include "common/rs_common_def.h"
-#include "platform/drawing/rs_surface.h"
 #include "transaction/rs_transaction_data.h"
 
 namespace OHOS {

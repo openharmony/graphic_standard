@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,15 +13,26 @@
  * limitations under the License.
  */
 
-#include "rs_surface_frame_ohos.h"
-
-#include "platform/common/rs_log.h"
+#ifndef DRAWING_PROXY_H
+#define DRAWING_PROXY_H
+#include "canvas_context.h"
 
 namespace OHOS {
 namespace Rosen {
-void RSSurfaceFrameOhos::SetRenderContext(RenderContext* context)
-{
-    renderContext_ = context;
+class DrawingProxy {
+public:
+    DrawingProxy();
+    virtual ~DrawingProxy();
+    SkCanvas* AcquireCanvas(std::unique_ptr<RSSurfaceFrame>& frame);
+    void* CreateSurface(void* window);
+    void MakeCurrent();
+    void InitDrawContext();
+    void SwapBuffers();
+    void Destroy();
+    void RenderFrame();
+private:
+    CanvasContext* canvasContext_;
+};
 }
-} // namespace Rosen
-} // namespace OHOS
+}
+#endif

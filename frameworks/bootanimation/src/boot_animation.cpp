@@ -84,7 +84,7 @@ void BootAnimation::Draw()
         return;
     }
     framePtr_ = std::move(frame);
-    auto canvas = framePtr_->GetCanvas();
+    auto canvas = rsSurface_->GetCanvas(framePtr_);
     ROSEN_TRACE_END(BYTRACE_TAG_GRAPHIC_AGP);
     OnDraw(canvas);
     RequestNextVsync();
@@ -149,19 +149,14 @@ void BootAnimation::InitRsSurface()
         LOG("rsSurface is nullptr");
         return;
     }
-#ifdef ACE_ENABLE_GL
-    rc_ = OHOS::Rosen::RenderContextFactory::GetInstance().CreateEngine();
-    if (rc_ == nullptr) {
-        LOG("InitilizeEglContext failed");
-        return;
+
+    dp_ = new OHOS::Rosen::DrawingProxy();
+    if (dp_ != nullptr) {
+        LOG("init draw context");
+        dp_->InitDrawContext();
+        rsSurface_->SetDrawingProxy(dp_);
     } else {
-        LOG("init egl context");
-        rc_->InitializeEglContext();
-        rsSurface_->SetRenderContext(rc_);
-    }
-#endif
-    if (rc_ == nullptr) {
-        LOG("rc is nullptr, use cpu");
+        LOG("dp_ is nullptr");
     }
 }
 

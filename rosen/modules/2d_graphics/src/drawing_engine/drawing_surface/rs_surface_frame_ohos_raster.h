@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,31 +18,26 @@
 
 #include <display_type.h>
 #include <surface.h>
-
-#include "platform/drawing/rs_surface_frame.h"
-#include "platform/ohos/rs_surface_frame_ohos.h"
+#include "surface_type.h"
+#include "rs_surface_frame.h"
+#include "rs_surface_frame_ohos.h"
 
 namespace OHOS {
 namespace Rosen {
-
 class RSSurfaceFrameOhosRaster : public RSSurfaceFrameOhos {
 public:
     RSSurfaceFrameOhosRaster(int32_t width, int32_t height);
-    ~RSSurfaceFrameOhosRaster() = default;
-
-    SkCanvas* GetCanvas() override;
-
+    ~RSSurfaceFrameOhosRaster() override;
+    void SetDamageRegion(int32_t left, int32_t top, int32_t width, int32_t height) override;
+    void SetColorSpace(ColorGamut colorSpace) override;
+    ColorGamut GetColorSpace() const override;
+    friend class RSSurfaceOhosRaster;
     sptr<SurfaceBuffer> GetBuffer() const
     {
         return buffer_;
     }
-    void SetDamageRegion(int32_t left, int32_t top, int32_t width, int32_t height) override;
-    int32_t GetReleaseFence() const;
-    void SetReleaseFence(const int32_t& fence);
-    friend class RSSurfaceOhosRaster;
 private:
     sptr<SurfaceBuffer> buffer_;
-    int32_t releaseFence_ = -1;
     BufferRequestConfig requestConfig_ = {
         .width = 0x100,
         .height = 0x100,
@@ -51,6 +46,7 @@ private:
         .usage = HBM_USE_CPU_READ | HBM_USE_CPU_WRITE | HBM_USE_MEM_DMA,
         .timeout = 0,
     };
+
     BufferFlushConfig flushConfig_ = {
         .damage = {
             .x = 0,
@@ -59,11 +55,9 @@ private:
             .h = 0x100,
         },
     };
-
-    void CreateCanvas();
+    ColorGamut colorSpace_ = ColorGamut::COLOR_GAMUT_SRGB;
 };
-
 } // namespace Rosen
 } // namespace OHOS
 
-#endif // RENDER_SERVICE_BASE_PLATFORM_RS_SURFACE_FRAME_OHOS_H
+#endif
