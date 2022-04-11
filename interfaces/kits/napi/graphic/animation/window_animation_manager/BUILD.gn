@@ -18,6 +18,7 @@ ohos_shared_library("windowanimationmanager_napi") {
     "//foundation/windowmanager/wm/include",
     "//foundation/windowmanager/wmserver/include",
     "//foundation/windowmanager/interfaces/innerkits/wm",
+    "//foundation/windowmanager/interfaces/innerkits/dm",
   ]
 
   sources = [
