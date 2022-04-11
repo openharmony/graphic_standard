@@ -25,14 +25,12 @@ namespace {
 constexpr ::OHOS::HiviewDFX::HiLogLabel LABEL = { LOG_CORE, 0xD001400, "RSWindowAnimation" };
 }
 
-#define __WALOG(func, fmt, ...) \
-    func(LABEL, "%{public}s: " fmt , __func__, ##__VA_ARGS__)
+#define ___WALOG(func, fmt, ...) func(LABEL, "%{public}s: " fmt, __func__, ##__VA_ARGS__)
 
-#define WALOGD(fmt, ...) __WALOG(::OHOS::HiviewDFX::HiLog::Debug, fmt, ##__VA_ARGS__)
-#define WALOGI(fmt, ...) __WALOG(::OHOS::HiviewDFX::HiLog::Info, fmt, ##__VA_ARGS__)
-#define WALOGW(fmt, ...) __WALOG(::OHOS::HiviewDFX::HiLog::Warn, fmt, ##__VA_ARGS__)
-#define WALOGE(fmt, ...) __WALOG(::OHOS::HiviewDFX::HiLog::Error, fmt, ##__VA_ARGS__)
-
+#define WALOGD(fmt, ...) ___WALOG(::OHOS::HiviewDFX::HiLog::Debug, fmt, ##__VA_ARGS__)
+#define WALOGI(fmt, ...) ___WALOG(::OHOS::HiviewDFX::HiLog::Info, fmt, ##__VA_ARGS__)
+#define WALOGW(fmt, ...) ___WALOG(::OHOS::HiviewDFX::HiLog::Warn, fmt, ##__VA_ARGS__)
+#define WALOGE(fmt, ...) ___WALOG(::OHOS::HiviewDFX::HiLog::Error, fmt, ##__VA_ARGS__)
 } // namespace Rosen
 } // namespace OHOS
 

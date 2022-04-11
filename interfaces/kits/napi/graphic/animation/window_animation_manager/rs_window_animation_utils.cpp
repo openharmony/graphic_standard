@@ -20,7 +20,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 using namespace AbilityRuntime;
 
 NativeValue* RSWindowAnimationUtils::CreateJsWindowAnimationTarget(NativeEngine& engine,
@@ -113,6 +112,5 @@ NativeValue* RSWindowAnimationUtils::CreateJsRRect(NativeEngine& engine, const R
     object->SetProperty("radius", CreateJsValue(engine, rrect.radius_[0].x_));
     return objValue;
 }
-
 } // namespace Rosen
 } // namespace OHOS

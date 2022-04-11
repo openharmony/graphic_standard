@@ -19,7 +19,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 int RSWindowAnimationFinishedCallbackStub::OnRemoteRequest(uint32_t code,MessageParcel &data,
     MessageParcel &reply, MessageOption &option)
 {
@@ -43,6 +42,5 @@ int RSWindowAnimationFinishedCallbackStub::OnRemoteRequest(uint32_t code,Message
 
     return ret;
 }
-
 } // namespace Rosen
 } // namespace OHOS

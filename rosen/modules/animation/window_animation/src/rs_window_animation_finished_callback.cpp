@@ -17,7 +17,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 RSWindowAnimationFinishedCallback::RSWindowAnimationFinishedCallback(const std::function<void(void)>& callback)
     : callback_(callback)
 {
@@ -29,6 +28,5 @@ void RSWindowAnimationFinishedCallback::OnAnimationFinished()
         callback_();
     }
 }
-
 } // namespace Rosen
 } // namespace OHOS

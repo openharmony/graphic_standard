@@ -19,7 +19,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 RSWindowAnimationFinishedCallbackProxy::RSWindowAnimationFinishedCallbackProxy(const sptr<IRemoteObject>& impl)
     : IRemoteProxy<RSIWindowAnimationFinishedCallback>(impl)
 {
@@ -57,6 +56,5 @@ void RSWindowAnimationFinishedCallbackProxy::OnAnimationFinished()
         WALOGE("Failed to send animation finished callback request, error code:%d", ret);
     }
 }
-
 } // namespace Rosen
 } // namespace OHOS

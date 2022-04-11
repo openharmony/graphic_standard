@@ -21,7 +21,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 const std::map<uint32_t, WindowAnimationStubFunc> RSWindowAnimationStub::stubFuncMap_{
     std::make_pair(RSIWindowAnimationController::ON_TRANSITION, &RSWindowAnimationStub::Transition),
     std::make_pair(RSIWindowAnimationController::ON_MINIMIZE_WINDOW, &RSWindowAnimationStub::MinimizeWindow),
@@ -108,6 +107,5 @@ int RSWindowAnimationStub::CloseWindow(MessageParcel& data, MessageParcel& reply
     OnCloseWindow(closingWindow, finishedCallback);
     return ERR_NONE;
 }
-
 } // namespace Rosen
 } // namespace OHOS

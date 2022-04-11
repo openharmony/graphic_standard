@@ -20,7 +20,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 struct RSWindowAnimationTarget;
 
 class RSIWindowAnimationFinishedCallback : public IRemoteBroker {
@@ -33,7 +32,6 @@ public:
 
     virtual void OnAnimationFinished() = 0;
 };
-
 } // namespace Rosen
 } // namespace OHOS
 

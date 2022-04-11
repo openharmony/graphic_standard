@@ -20,7 +20,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 struct RSWindowAnimationTarget;
 class RSIWindowAnimationFinishedCallback;
 
@@ -34,7 +33,7 @@ public:
         ON_CLOSE_WINDOW,
     };
 
-    virtual void OnTransition(const sptr<RSWindowAnimationTarget>& from, 
+    virtual void OnTransition(const sptr<RSWindowAnimationTarget>& from,
                               const sptr<RSWindowAnimationTarget>& to,
                               const sptr<RSIWindowAnimationFinishedCallback>& finishedCallback) = 0;
 
@@ -44,7 +43,6 @@ public:
     virtual void OnCloseWindow(const sptr<RSWindowAnimationTarget>& closingWindow,
                                const sptr<RSIWindowAnimationFinishedCallback>& finishedCallback) = 0;
 };
-
 } // namespace Rosen
 } // namespace OHOS
 

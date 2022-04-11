@@ -21,7 +21,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 RSWindowAnimationProxy::RSWindowAnimationProxy(const sptr<IRemoteObject>& impl)
     : IRemoteProxy<RSIWindowAnimationController>(impl)
 {
@@ -144,6 +143,5 @@ void RSWindowAnimationProxy::OnCloseWindow(const sptr<RSWindowAnimationTarget>& 
         WALOGE("Failed to send close window request, error code:%d", ret);
     }
 }
-
 } // namespace Rosen
 } // namespace OHOS

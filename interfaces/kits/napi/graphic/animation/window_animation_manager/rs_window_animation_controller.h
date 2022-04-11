@@ -27,7 +27,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 class RSWindowAnimationController : public RSWindowAnimationStub {
 public:
     RSWindowAnimationController(NativeEngine& engine, const std::shared_ptr<AppExecFwk::EventHandler>& handler);
@@ -62,7 +61,6 @@ private:
     std::shared_ptr<AppExecFwk::EventHandler> handler_;
     std::unique_ptr<NativeReference> jsController_;
 };
-
 } // namespace Rosen
 } // namespace OHOS
 

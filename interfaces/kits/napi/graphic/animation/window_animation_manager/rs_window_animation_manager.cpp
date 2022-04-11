@@ -26,7 +26,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 using namespace AbilityRuntime;
 constexpr size_t ARGC_ONE = 1;
 
@@ -44,7 +43,7 @@ NativeValue* RSWindowAnimationManager::Init(NativeEngine* engine, NativeValue* e
         return nullptr;
     }
 
-    std::unique_ptr<RSWindowAnimationManager> windowAnimationManager(new RSWindowAnimationManager());
+    auto windowAnimationManager = std::make_unique<RSWindowAnimationManager>();
     object->SetNativePointer(windowAnimationManager.release(), RSWindowAnimationManager::Finalizer, nullptr);
 
     BindNativeFunction(*engine, *object, "setController", RSWindowAnimationManager::SetController);
@@ -82,6 +81,5 @@ NativeValue* RSWindowAnimationManager::OnSetController(NativeEngine& engine, Nat
     SingletonContainer::Get<WindowAdapter>().SetWindowAnimationController(controller);
     return engine.CreateUndefined();
 }
-
 } // namespace Rosen
 } // namespace OHOS

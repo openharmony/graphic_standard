@@ -25,7 +25,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 class RSWindowAnimationUtils {
 public:
     static NativeValue* CreateJsWindowAnimationTarget(NativeEngine& engine, const RSWindowAnimationTarget& target);
@@ -35,7 +34,6 @@ public:
 
     static NativeValue* CreateJsRRect(NativeEngine& engine, const RRect& rrect);
 };
-
 } // namespace Rosen
 } // namespace OHOS
 

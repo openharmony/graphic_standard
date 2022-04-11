@@ -22,7 +22,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 using namespace AbilityRuntime;
 constexpr size_t ARGC_ONE = 1;
 constexpr size_t ARGC_TWO = 2;
@@ -171,6 +170,5 @@ void RSWindowAnimationController::CallJsFunction(const std::string& methodName, 
 
     engine_.CallFunction(jsControllerValue, method, argv, argc);
 }
-
 } // namespace Rosen
 } // namespace OHOS

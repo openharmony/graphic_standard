@@ -19,7 +19,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 RSWindowAnimationTarget* RSWindowAnimationTarget::Unmarshalling(Parcel& parcel)
 {
     auto windowAnimationTarget = new (std::nothrow) RSWindowAnimationTarget();
@@ -61,6 +60,5 @@ bool RSWindowAnimationTarget::ReadFromParcel(Parcel& parcel)
     surfaceNode_ = parcel.ReadParcelable<RSSurfaceNode>();
     return true;
 }
-
 } // namespace Rosen
 } // namespace OHOS

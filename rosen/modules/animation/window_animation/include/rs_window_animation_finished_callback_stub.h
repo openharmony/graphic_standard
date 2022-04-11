@@ -23,7 +23,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 class RSWindowAnimationFinishedCallbackStub : public IRemoteStub<RSIWindowAnimationFinishedCallback> {
 public:
     RSWindowAnimationFinishedCallbackStub() = default;
@@ -34,7 +33,6 @@ public:
 private:
     DISALLOW_COPY_AND_MOVE(RSWindowAnimationFinishedCallbackStub);
 };
-
 } // namespace Rosen
 } // namespace OHOS
 

@@ -26,6 +26,7 @@ namespace OHOS {
 namespace Rosen {
 class RSWindowAnimationManager final {
 public:
+    RSWindowAnimationManager() = default;
     ~RSWindowAnimationManager() = default;
 
     static NativeValue* Init(NativeEngine* engine, NativeValue* exportObj);
@@ -35,8 +36,6 @@ public:
     static NativeValue* SetController(NativeEngine* engine, NativeCallbackInfo* info);
 
 private:
-    RSWindowAnimationManager() = default;
-
     NativeValue* OnSetController(NativeEngine& engine, NativeCallbackInfo& info);
 
     std::shared_ptr<AppExecFwk::EventHandler> handler_;

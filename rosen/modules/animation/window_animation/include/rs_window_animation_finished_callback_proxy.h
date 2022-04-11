@@ -24,7 +24,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 class RSWindowAnimationFinishedCallbackProxy : public IRemoteProxy<RSIWindowAnimationFinishedCallback> {
 public:
     explicit RSWindowAnimationFinishedCallbackProxy(const sptr<IRemoteObject>& impl);
@@ -36,7 +35,6 @@ private:
     bool WriteInterfaceToken(MessageParcel& data);
     static inline BrokerDelegator<RSWindowAnimationFinishedCallbackProxy> delegator_;
 };
-
 } // namespace Rosen
 } // namespace OHOS
 

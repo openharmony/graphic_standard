@@ -24,7 +24,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 class RSWindowAnimationProxy : public IRemoteProxy<RSIWindowAnimationController> {
 public:
     explicit RSWindowAnimationProxy(const sptr<IRemoteObject>& impl);
@@ -44,7 +43,6 @@ private:
     bool WriteInterfaceToken(MessageParcel& data);
     static inline BrokerDelegator<RSWindowAnimationProxy> delegator_;
 };
-
 } // namespace Rosen
 } // namespace OHOS
 

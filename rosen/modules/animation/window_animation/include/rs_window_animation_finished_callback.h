@@ -22,7 +22,6 @@
 
 namespace OHOS {
 namespace Rosen {
-
 class RSWindowAnimationFinishedCallback : public RSWindowAnimationFinishedCallbackStub {
 public:
     explicit RSWindowAnimationFinishedCallback(const std::function<void(void)>& callback);
@@ -33,7 +32,6 @@ private:
 
     std::function<void(void)> callback_;
 };
-
 } // namespace Rosen
 } // namespace OHOS
 
