@@ -35,6 +35,10 @@ public:
 
     void SetDisplayOffset(int32_t offsetX, int32_t offsetY);
 
+    void SetSecurityDisplay(bool isSecurityDisplay);
+
+    bool GetSecurityDisplay() const;
+
     RSUINodeType GetType() const override
     {
         return RSUINodeType::DISPLAY_NODE;
@@ -51,6 +55,7 @@ private:
     uint64_t screenId_;
     int32_t offsetX_;
     int32_t offsetY_;
+    bool isSecurityDisplay_ = false;
 };
 } // namespace Rosen
 } // namespace OHOS

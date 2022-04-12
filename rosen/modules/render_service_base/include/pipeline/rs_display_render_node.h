@@ -76,6 +76,8 @@ public:
     void SetForceSoftComposite(bool flag);
     bool IsForceSoftComposite() const;
     void SetMirrorSource(SharedPtr node);
+    void SetSecurityDisplay(bool isSecurityDisplay);
+    bool GetSecurityDisplay() const;
 
     WeakPtr GetMirrorSource() const
     {
@@ -94,6 +96,7 @@ private:
     int32_t offsetY_;
     bool forceSoftComposite_ { false };
     bool isMirroredDisplay_ = false;
+    bool isSecurityDisplay_ = false;
     WeakPtr mirrorSource_;
 };
 } // namespace Rosen
