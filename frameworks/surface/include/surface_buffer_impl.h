@@ -16,9 +16,6 @@
 #ifndef FRAMEWORKS_SURFACE_INCLUDE_SURFACE_BUFFER_IMPL_H
 #define FRAMEWORKS_SURFACE_INCLUDE_SURFACE_BUFFER_IMPL_H
 
-#include <any>
-#include <map>
-
 #include <buffer_extra_data.h>
 #include <buffer_handle_parcel.h>
 #include <buffer_handle_utils.h>
@@ -26,18 +23,6 @@
 #include "egl_data.h"
 
 namespace OHOS {
-enum ExtraDataType {
-    EXTRA_DATA_TYPE_MIN,
-    EXTRA_DATA_TYPE_INT32,
-    EXTRA_DATA_TYPE_INT64,
-    EXTRA_DATA_TYPE_MAX,
-};
-
-typedef struct {
-    std::any value;
-    ExtraDataType type;
-} ExtraData;
-
 class SurfaceBufferImpl : public SurfaceBuffer {
 public:
     SurfaceBufferImpl();
@@ -50,6 +35,13 @@ public:
     int32_t GetWidth() const override;
     int32_t GetHeight() const override;
     int32_t GetStride() const override;
+    int32_t GetFormat() const override;
+    int64_t GetUsage() const override;
+    uint64_t GetPhyAddr() const override;
+    int32_t GetKey() const override;
+    void *GetVirAddr() const override;
+    int32_t GetFileDescriptor() const override;
+    uint32_t GetSize() const override;
     int32_t GetSurfaceBufferWidth() const override;
     int32_t GetSurfaceBufferHeight() const override;
     ColorGamut GetSurfaceBufferColorGamut() const override;
@@ -58,41 +50,18 @@ public:
     GSError SetSurfaceBufferHeight(int32_t height) override;
     GSError SetSurfaceBufferColorGamut(ColorGamut colorGamut) override;
     GSError SetSurfaceBufferTransform(TransformType transform) override;
-    int32_t GetFormat() const override;
-    int64_t GetUsage() const override;
-    uint64_t GetPhyAddr() const override;
-    int32_t GetKey() const override;
-    void *GetVirAddr() const override;
-    int32_t GetFileDescriptor() const override;
-    uint32_t GetSize() const override;
+    int32_t GetSeqNum() const override;
+    
     sptr<EglData> GetEglData() const override;
     void SetEglData(const sptr<EglData>& data) override;
 
-    int32_t GetSeqNum() const override;
-    GSError SetInt32(uint32_t key, int32_t val) override;
-    GSError GetInt32(uint32_t key, int32_t &val) override;
-    GSError SetInt64(uint32_t key, int64_t val) override;
-    GSError GetInt64(uint32_t key, int64_t &val) override;
-
     void SetExtraData(const sptr<BufferExtraData> &bedata) override;
-    void GetExtraData(sptr<BufferExtraData> &bedata) const override;
-    virtual GSError ExtraGet(std::string key, int32_t &value) const override;
-    virtual GSError ExtraGet(std::string key, int64_t &value) const override;
-    virtual GSError ExtraGet(std::string key, double &value) const override;
-    virtual GSError ExtraGet(std::string key, std::string &value) const override;
-    virtual GSError ExtraSet(std::string key, int32_t value) override;
-    virtual GSError ExtraSet(std::string key, int64_t value) override;
-    virtual GSError ExtraSet(std::string key, double value) override;
-    virtual GSError ExtraSet(std::string key, std::string value) override;
+    const sptr<BufferExtraData>& GetExtraData() const override;
 
     void SetBufferHandle(BufferHandle *handle) override;
     void WriteToMessageParcel(MessageParcel &parcel) override;
 
 private:
-    GSError SetData(uint32_t key, ExtraData data);
-    GSError GetData(uint32_t key, ExtraData &data);
-    std::map<uint32_t, ExtraData> extraDatas_;
-
     BufferHandle *handle_ = nullptr;
     int32_t sequenceNumber_ = -1;
     sptr<BufferExtraData> bedata_ = nullptr;

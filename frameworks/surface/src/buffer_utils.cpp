@@ -97,17 +97,6 @@ void ReadSurfaceBufferImpl(MessageParcel &parcel,
         sptr<SurfaceBuffer> bufferImpl = new SurfaceBufferImpl(sequence);
         auto handle = ReadBufferHandle(parcel);
         bufferImpl->SetBufferHandle(handle);
-        int32_t size = parcel.ReadInt32();
-        for (int32_t i = 0; i < size; i++) {
-            uint32_t key = parcel.ReadUint32();
-            int32_t type = parcel.ReadInt32();
-            if (type == EXTRA_DATA_TYPE_INT32) {
-                bufferImpl->SetInt32(key, parcel.ReadInt32());
-            }
-            if (type == EXTRA_DATA_TYPE_INT64) {
-                bufferImpl->SetInt64(key, parcel.ReadInt64());
-            }
-        }
         buffer = bufferImpl;
     }
 }

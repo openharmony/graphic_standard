@@ -32,7 +32,7 @@ public:
     virtual GSError ExtraSet(const std::string &key, int32_t value) override;
     virtual GSError ExtraSet(const std::string &key, int64_t value) override;
     virtual GSError ExtraSet(const std::string &key, double value) override;
-    virtual GSError ExtraSet(const std::string &key, const  std::string value) override;
+    virtual GSError ExtraSet(const std::string &key, const std::string& value) override;
 
 private:
     enum class ExtraDataType : int32_t {
@@ -43,7 +43,7 @@ private:
     };
     template<class T>
     GSError ExtraGet(const std::string &key, ExtraDataType type, T &value) const;
-    GSError ExtraSet(const std::string &key, ExtraDataType type, std::any val);
+    GSError ExtraSet(const std::string &key, ExtraDataType type, const std::any& val);
 
     struct ExtraData {
         std::any val;

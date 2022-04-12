@@ -207,137 +207,14 @@ uint32_t SurfaceBufferImpl::GetSize() const
     return handle_->size;
 }
 
-GSError SurfaceBufferImpl::SetInt32(uint32_t key, int32_t val)
-{
-    ExtraData data = {
-        .value = val,
-        .type = EXTRA_DATA_TYPE_INT32,
-    };
-    return SetData(key, data);
-}
-
-GSError SurfaceBufferImpl::GetInt32(uint32_t key, int32_t &val)
-{
-    ExtraData data;
-    GSError ret = GetData(key, data);
-    if (ret == GSERROR_OK) {
-        if (data.type == EXTRA_DATA_TYPE_INT32) {
-            auto pVal = std::any_cast<int32_t>(&data.value);
-            if (pVal != nullptr) {
-                val = *pVal;
-            } else {
-                BLOGE("unexpected: INT32, any_cast failed");
-            }
-        } else {
-            return GSERROR_TYPE_ERROR;
-        }
-    }
-    return ret;
-}
-
-GSError SurfaceBufferImpl::SetInt64(uint32_t key, int64_t val)
-{
-    ExtraData data = {
-        .value = val,
-        .type = EXTRA_DATA_TYPE_INT64,
-    };
-    return SetData(key, data);
-}
-
-GSError SurfaceBufferImpl::GetInt64(uint32_t key, int64_t &val)
-{
-    ExtraData data;
-    GSError ret = GetData(key, data);
-    if (ret == GSERROR_OK) {
-        if (data.type == EXTRA_DATA_TYPE_INT64) {
-            auto pVal = std::any_cast<int64_t>(&data.value);
-            if (pVal != nullptr) {
-                val = *pVal;
-            } else {
-                BLOGE("unexpected: INT64, any_cast failed");
-            }
-        } else {
-            return GSERROR_TYPE_ERROR;
-        }
-    }
-    return ret;
-}
-
-GSError SurfaceBufferImpl::SetData(uint32_t key, ExtraData data)
-{
-    if (data.type <= EXTRA_DATA_TYPE_MIN || data.type >= EXTRA_DATA_TYPE_MAX) {
-        BLOGW("Invalid, data.type is out of range");
-        return GSERROR_INVALID_ARGUMENTS;
-    }
-
-    if (extraDatas_.size() > SURFACE_MAX_USER_DATA_COUNT) {
-        BLOGW("SurfaceBuffer has too many extra data, cannot save one more!!!");
-        return GSERROR_OUT_OF_RANGE;
-    }
-
-    extraDatas_[key] = data;
-    return GSERROR_OK;
-}
-
-GSError SurfaceBufferImpl::GetData(uint32_t key, ExtraData &data)
-{
-    auto it = extraDatas_.find(key);
-    if (it == extraDatas_.end()) {
-        return GSERROR_NO_ENTRY;
-    }
-
-    data = it->second;
-    return GSERROR_OK;
-}
-
 void SurfaceBufferImpl::SetExtraData(const sptr<BufferExtraData> &bedata)
 {
     bedata_ = bedata;
 }
 
-void SurfaceBufferImpl::GetExtraData(sptr<BufferExtraData> &bedata) const
+const sptr<BufferExtraData>& SurfaceBufferImpl::GetExtraData() const
 {
-    bedata = bedata_;
-}
-
-GSError SurfaceBufferImpl::ExtraGet(std::string key, int32_t &value) const
-{
-    return bedata_->ExtraGet(key, value);
-}
-
-GSError SurfaceBufferImpl::ExtraGet(std::string key, int64_t &value) const
-{
-    return bedata_->ExtraGet(key, value);
-}
-
-GSError SurfaceBufferImpl::ExtraGet(std::string key, double &value) const
-{
-    return bedata_->ExtraGet(key, value);
-}
-
-GSError SurfaceBufferImpl::ExtraGet(std::string key, std::string &value) const
-{
-    return bedata_->ExtraGet(key, value);
-}
-
-GSError SurfaceBufferImpl::ExtraSet(std::string key, int32_t value)
-{
-    return bedata_->ExtraSet(key, value);
-}
-
-GSError SurfaceBufferImpl::ExtraSet(std::string key, int64_t value)
-{
-    return bedata_->ExtraSet(key, value);
-}
-
-GSError SurfaceBufferImpl::ExtraSet(std::string key, double value)
-{
-    return bedata_->ExtraSet(key, value);
-}
-
-GSError SurfaceBufferImpl::ExtraSet(std::string key, std::string value)
-{
-    return bedata_->ExtraSet(key, value);
+    return bedata_;
 }
 
 void SurfaceBufferImpl::SetBufferHandle(BufferHandle *handle)
@@ -355,28 +232,6 @@ void SurfaceBufferImpl::WriteToMessageParcel(MessageParcel &parcel)
     bool ret = WriteBufferHandle(parcel, *handle_);
     if (ret == false) {
         BLOGE("Failure, Reason: WriteBufferHandle return false");
-    }
-
-    parcel.WriteInt32(extraDatas_.size());
-    for (const auto &[k, v] : extraDatas_) {
-        parcel.WriteUint32(k);
-        parcel.WriteInt32(v.type);
-        if (v.type == EXTRA_DATA_TYPE_INT32) {
-            auto pVal = std::any_cast<int32_t>(&v.value);
-            if (pVal != nullptr) {
-                parcel.WriteInt32(*pVal);
-            } else {
-                BLOGE("unexpected: INT32, any_cast failed");
-            }
-        }
-        if (v.type == EXTRA_DATA_TYPE_INT64) {
-            auto pVal = std::any_cast<int64_t>(&v.value);
-            if (pVal != nullptr) {
-                parcel.WriteInt64(*pVal);
-            } else {
-                BLOGE("unexpected: INT64, any_cast failed");
-            }
-        }
     }
 }
 

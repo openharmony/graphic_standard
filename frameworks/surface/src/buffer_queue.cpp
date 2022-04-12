@@ -218,7 +218,7 @@ GSError BufferQueue::RequestBuffer(const BufferRequestConfig &config, sptr<Buffe
     ret = AllocBuffer(buffer, config);
     if (ret == GSERROR_OK) {
         retval.sequence = buffer->GetSeqNum();
-        buffer->GetExtraData(bedata);
+        bedata = buffer->GetExtraData();
         retval.fence = -1;
         BLOGD("Success alloc Buffer id: %{public}d Queue id: %{public}" PRIu64 "", retval.sequence, uniqueId_);
     } else {
@@ -258,7 +258,7 @@ GSError BufferQueue::ReuseBuffer(const BufferRequestConfig &config, sptr<BufferE
 
     // Prevent releasefence from being repeatedly closed after cancel.
     bufferQueueCache_[retval.sequence].fence = -1;
-    retval.buffer->GetExtraData(bedata);
+    bedata = retval.buffer->GetExtraData();
 
     auto &dbs = retval.deletingBuffers;
     dbs.insert(dbs.end(), deletingList_.begin(), deletingList_.end());
