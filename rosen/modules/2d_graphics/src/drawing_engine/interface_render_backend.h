@@ -16,16 +16,10 @@
 #ifndef IRENDER_BACKEND_H
 #define IRENDER_BACKEND_H
 
-#include "include/core/SkCanvas.h"
-#include "include/core/SkColorSpace.h"
-#include "include/core/SkImageInfo.h"
-#include "include/core/SkSurface.h"
-#include "include/gpu/GrBackendSurface.h"
-#include "include/gpu/GrContext.h"
-#include "include/gpu/gl/GrGLInterface.h"
-
 #include <surface.h>
 #include "drawing_surface/rs_surface.h"
+
+class SkCanvas;
 
 namespace OHOS {
 namespace Rosen {

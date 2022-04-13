@@ -18,6 +18,14 @@
 #include "interface_render_backend.h"
 #include "egl_manager.h"
 
+#include "include/core/SkCanvas.h"
+#include "include/core/SkColorSpace.h"
+#include "include/core/SkImageInfo.h"
+#include "include/core/SkSurface.h"
+#include "include/gpu/GrBackendSurface.h"
+#include "include/gpu/GrContext.h"
+#include "include/gpu/gl/GrGLInterface.h"
+
 namespace OHOS {
 namespace Rosen {
 const int STENCIL_BUFFER_SIZE = 8;

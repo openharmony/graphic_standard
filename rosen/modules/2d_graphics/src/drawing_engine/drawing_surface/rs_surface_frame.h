@@ -17,7 +17,6 @@
 #define RS_SURFACE_FRAME_H
 
 #include <memory>
-#include "include/core/SkCanvas.h"
 
 #include "surface_type.h"
 

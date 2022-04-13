@@ -17,6 +17,9 @@
 #define SOFTWARE_RENDER_BACKEND_H
 #include "interface_render_backend.h"
 
+#include "include/core/SkCanvas.h"
+#include "include/core/SkImageInfo.h"
+
 namespace OHOS {
 namespace Rosen {
 class SoftwareRenderBackend : public IRenderBackend {

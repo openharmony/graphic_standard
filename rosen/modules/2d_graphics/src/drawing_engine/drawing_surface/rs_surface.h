@@ -17,10 +17,12 @@
 #define RS_SURFACE_H
 
 #include <memory>
-#include "include/core/SkCanvas.h"
 
 #include "rs_surface_frame.h"
 #include "surface_type.h"
+
+class SkCanvas;
+
 namespace OHOS {
 namespace Rosen {
 class DrawingProxy;

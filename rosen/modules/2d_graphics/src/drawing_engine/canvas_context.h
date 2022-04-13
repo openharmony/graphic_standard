@@ -15,16 +15,9 @@
 
 #ifndef CANVAS_CONTEXT_H
 #define CANVAS_CONTEXT_H
-#include "include/core/SkCanvas.h"
-#include "include/core/SkColorSpace.h"
-#include "include/core/SkImageInfo.h"
-#include "include/core/SkSurface.h"
-#include "include/gpu/GrBackendSurface.h"
-#include "include/gpu/GrContext.h"
-#include "include/gpu/gl/GrGLInterface.h"
 
 #include "surface.h"
-#include "gles_render_backend.h"
+#include "interface_render_backend.h"
 
 namespace OHOS {
 namespace Rosen {
