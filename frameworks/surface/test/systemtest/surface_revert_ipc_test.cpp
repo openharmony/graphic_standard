@@ -85,9 +85,9 @@ pid_t SurfaceRevertIPCTest::ChildProcessMain()
         exit(0);
     }
 
-    buffer->ExtraSet("123", 0x123);
-    buffer->ExtraSet("345", (int64_t)0x345);
-    buffer->ExtraSet("567", "567");
+    buffer->GetExtraData()->ExtraSet("123", 0x123);
+    buffer->GetExtraData()->ExtraSet("345", (int64_t)0x345);
+    buffer->GetExtraData()->ExtraSet("567", "567");
 
     sret = psurf->FlushBuffer(buffer, -1, flushConfig);
     if (sret != OHOS::GSERROR_OK) {
@@ -146,9 +146,9 @@ HWTEST_F(SurfaceRevertIPCTest, Fork001, Function | MediumTest | Level2)
         int32_t int32;
         int64_t int64;
         std::string str;
-        buffer->ExtraGet("123", int32);
-        buffer->ExtraGet("345", int64);
-        buffer->ExtraGet("567", str);
+        buffer->GetExtraData()->ExtraGet("123", int32);
+        buffer->GetExtraData()->ExtraGet("345", int64);
+        buffer->GetExtraData()->ExtraGet("567", str);
 
         EXPECT_EQ(int32, 0x123);
         EXPECT_EQ(int64, 0x345);

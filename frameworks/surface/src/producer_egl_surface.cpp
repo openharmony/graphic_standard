@@ -51,8 +51,7 @@ ProducerEglSurface::~ProducerEglSurface()
     }
 
     if (currentBuffer_ != nullptr) {
-        sptr<BufferExtraData> bedataimpl = new BufferExtraDataImpl;
-        currentBuffer_->GetExtraData(bedataimpl);
+        const sptr<BufferExtraData>& bedataimpl = currentBuffer_->GetExtraData();
         producer_->CancelBuffer(currentBuffer_->GetSeqNum(), bedataimpl);
         currentBuffer_ = nullptr;
     }
@@ -117,8 +116,7 @@ GSError ProducerEglSurface::FlushBuffer(sptr<SurfaceBuffer> &buffer,
         return GSERROR_INVALID_ARGUMENTS;
     }
 
-    sptr<BufferExtraData> bedataimpl = new BufferExtraDataImpl;
-    buffer->GetExtraData(bedataimpl);
+    const sptr<BufferExtraData>& bedataimpl = buffer->GetExtraData();
     return producer_->FlushBuffer(buffer->GetSeqNum(), bedataimpl, fence, config);
 }
 

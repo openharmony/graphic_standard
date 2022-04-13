@@ -91,9 +91,9 @@ pid_t NativeWindowBufferTest::ChildProcessMain()
         exit(0);
         return -1;
     }
-    nativeWindowBuffer->sfbuffer->ExtraSet("123", 0x123);
-    nativeWindowBuffer->sfbuffer->ExtraSet("345", (int64_t)0x345);
-    nativeWindowBuffer->sfbuffer->ExtraSet("567", "567");
+    nativeWindowBuffer->sfbuffer->GetExtraData()->ExtraSet("123", 0x123);
+    nativeWindowBuffer->sfbuffer->GetExtraData()->ExtraSet("345", (int64_t)0x345);
+    nativeWindowBuffer->sfbuffer->GetExtraData()->ExtraSet("567", "567");
 
     struct Region *region = new Region();
     struct Region::Rect *rect = new Region::Rect();
@@ -153,9 +153,9 @@ HWTEST_F(NativeWindowBufferTest, Surface001, Function | MediumTest | Level2)
         int32_t int32;
         int64_t int64;
         std::string str;
-        buffer->ExtraGet("123", int32);
-        buffer->ExtraGet("345", int64);
-        buffer->ExtraGet("567", str);
+        buffer->GetExtraData()->ExtraGet("123", int32);
+        buffer->GetExtraData()->ExtraGet("345", int64);
+        buffer->GetExtraData()->ExtraGet("567", str);
 
         EXPECT_EQ(int32, 0x123);
         EXPECT_EQ(int64, 0x345);

@@ -112,8 +112,7 @@ GSError ProducerSurface::CancelBuffer(sptr<SurfaceBuffer>& buffer)
         return GSERROR_INVALID_ARGUMENTS;
     }
 
-    sptr<BufferExtraData> bedata = nullptr;
-    buffer->GetExtraData(bedata);
+    const sptr<BufferExtraData>& bedata = buffer->GetExtraData();
     return GetProducer()->CancelBuffer(buffer->GetSeqNum(), bedata);
 }
 
@@ -124,8 +123,7 @@ GSError ProducerSurface::FlushBuffer(sptr<SurfaceBuffer>& buffer,
         return GSERROR_INVALID_ARGUMENTS;
     }
 
-    sptr<BufferExtraData> bedata = nullptr;
-    buffer->GetExtraData(bedata);
+    const sptr<BufferExtraData>& bedata = buffer->GetExtraData();
     return GetProducer()->FlushBuffer(buffer->GetSeqNum(), bedata, fence, config);
 }
 

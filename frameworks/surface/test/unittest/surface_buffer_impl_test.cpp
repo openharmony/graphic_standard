@@ -86,126 +86,6 @@ HWTEST_F(SurfaceBufferImplTest, State001, Function | MediumTest | Level2)
 }
 
 /*
-* Function: Set and Get data
-* Type: Function
-* Rank: Important(2)
-* EnvConditions: N/A
-* CaseDescription: 1. call SetInt32
-*                  2. call GetInt32
-*                  3. check ret and value
- */
-HWTEST_F(SurfaceBufferImplTest, GetterSetter001, Function | MediumTest | Level2)
-{
-    GSError ret;
-
-    ret = buffer->SetInt32(0, 0x7fffffff);
-    ASSERT_EQ(ret, OHOS::GSERROR_OK);
-
-    ret = buffer->GetInt32(0, val32);
-    ASSERT_EQ(ret, OHOS::GSERROR_OK);
-    ASSERT_EQ(val32, 0x7fffffff);
-}
-
-/*
-* Function: Set and Get data
-* Type: Function
-* Rank: Important(2)
-* EnvConditions: N/A
-* CaseDescription: 1. call SetInt32 by abnormal value
-*                  2. call GetInt32
-*                  3. check ret and value
- */
-HWTEST_F(SurfaceBufferImplTest, GetterSetter002, Function | MediumTest | Level2)
-{
-    GSError ret;
-
-    ret = buffer->SetInt32(0, -1);
-    ASSERT_EQ(ret, OHOS::GSERROR_OK);
-
-    ret = buffer->GetInt32(0, val32);
-    ASSERT_EQ(ret, OHOS::GSERROR_OK);
-    ASSERT_EQ(val32, -1);
-}
-
-/*
-* Function: Set and Get data
-* Type: Function
-* Rank: Important(2)
-* EnvConditions: N/A
-* CaseDescription: 1. call SetInt64
-*                  2. call GetInt64
-*                  3. check ret and value
- */
-HWTEST_F(SurfaceBufferImplTest, GetterSetter003, Function | MediumTest | Level2)
-{
-    GSError ret;
-
-    ret = buffer->SetInt64(1, 0x7fffffffffLL);
-    ASSERT_EQ(ret, OHOS::GSERROR_OK);
-
-    ret = buffer->GetInt64(1, val64);
-    ASSERT_EQ(ret, OHOS::GSERROR_OK);
-    ASSERT_EQ(val64, 0x7fffffffffLL);
-}
-
-/*
-* Function: Set and Get data
-* Type: Function
-* Rank: Important(2)
-* EnvConditions: N/A
-* CaseDescription: 1. call SetInt64 by abnormal value
-*                  2. call GetInt64
-*                  3. check ret and value
- */
-HWTEST_F(SurfaceBufferImplTest, GetterSetter004, Function | MediumTest | Level2)
-{
-    GSError ret;
-
-    ret = buffer->SetInt64(1, -1);
-    ASSERT_EQ(ret, OHOS::GSERROR_OK);
-
-    ret = buffer->GetInt64(1, val64);
-    ASSERT_EQ(ret, OHOS::GSERROR_OK);
-    ASSERT_EQ(val64, -1);
-}
-
-/*
-* Function: Set and Get data
-* Type: Function
-* Rank: Important(2)
-* EnvConditions: N/A
-* CaseDescription: 1. call GetInt64
-*                  2. check ret and value
- */
-HWTEST_F(SurfaceBufferImplTest, GetterSetter005, Function | MediumTest | Level2)
-{
-    GSError ret;
-
-    val64 = 0x123;
-    ret = buffer->GetInt64(0, val64);
-    ASSERT_NE(ret, OHOS::GSERROR_OK);
-    ASSERT_EQ(val64, 0x123);
-}
-
-/*
-* Function: Set and Get data
-* Type: Function
-* Rank: Important(2)
-* EnvConditions: N/A
-* CaseDescription: 1. call GetInt32
-*                  2. check ret and value
- */
-HWTEST_F(SurfaceBufferImplTest, GetterSetter006, Function | MediumTest | Level2)
-{
-    GSError ret;
-
-    val32 = 0x456;
-    ret = buffer->GetInt32(1, val32);
-    ASSERT_NE(ret, OHOS::GSERROR_OK);
-    ASSERT_EQ(val32, 0x456);
-}
-
-/*
 * Function: check buffer state
 * Type: Function
 * Rank: Important(2)
@@ -248,9 +128,6 @@ HWTEST_F(SurfaceBufferImplTest, Parcel001, Function | MediumTest | Level2)
     auto sret = bm->Alloc(requestConfig, sbi);
     ASSERT_EQ(sret, OHOS::GSERROR_OK);
 
-    sbi->SetInt32(32, 32);
-    sbi->SetInt64(64, 64);
-
     MessageParcel parcel;
     WriteSurfaceBufferImpl(parcel, sbi->GetSeqNum(), sbi);
 
@@ -258,10 +135,5 @@ HWTEST_F(SurfaceBufferImplTest, Parcel001, Function | MediumTest | Level2)
     int32_t seq;
     ReadSurfaceBufferImpl(parcel, seq, buffer);
     ASSERT_NE(buffer, nullptr);
-
-    int32_t val32 = 0;
-    int64_t val64 = 0;
-    ASSERT_EQ(buffer->GetInt32(32, val32), OHOS::GSERROR_OK);
-    ASSERT_EQ(buffer->GetInt64(64, val64), OHOS::GSERROR_OK);
 }
 }

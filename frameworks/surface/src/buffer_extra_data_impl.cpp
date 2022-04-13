@@ -146,7 +146,7 @@ GSError BufferExtraDataImpl::ExtraSet(const std::string &key, double value)
     return ExtraSet(key, ExtraDataType::f64, value);
 }
 
-GSError BufferExtraDataImpl::ExtraSet(const std::string &key, const std::string value)
+GSError BufferExtraDataImpl::ExtraSet(const std::string &key, const std::string& value)
 {
     return ExtraSet(key, ExtraDataType::string, value);
 }
@@ -169,7 +169,7 @@ GSError BufferExtraDataImpl::ExtraGet(const std::string &key, ExtraDataType type
     return GSERROR_OK;
 }
 
-GSError BufferExtraDataImpl::ExtraSet(const std::string &key, ExtraDataType type, std::any val)
+GSError BufferExtraDataImpl::ExtraSet(const std::string &key, ExtraDataType type, const std::any& val)
 {
     auto it = datas.find(key);
     if (it == datas.end() && datas.size() > SURFACE_MAX_USER_DATA_COUNT) {

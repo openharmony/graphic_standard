@@ -34,7 +34,7 @@ public:
     virtual GSError ExtraSet(const std::string &key, int32_t value) = 0;
     virtual GSError ExtraSet(const std::string &key, int64_t value) = 0;
     virtual GSError ExtraSet(const std::string &key, double value) = 0;
-    virtual GSError ExtraSet(const std::string &key, const std::string value) = 0;
+    virtual GSError ExtraSet(const std::string &key, const std::string& value) = 0;
 };
 } // namespace OHOS
 
