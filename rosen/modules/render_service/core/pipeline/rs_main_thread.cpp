@@ -96,9 +96,9 @@ void RSMainThread::Render()
         return;
     }
     bool isUniRender = RSSystemProperties::GetUniRenderEnabledType() != UniRenderEnabledType::UNI_RENDER_DISABLED;
-    ROSEN_LOGI("RSMainThread::Render isUni:%d", isUniRender);
     std::shared_ptr<RSNodeVisitor> visitor;
     if (isUniRender) {
+        RS_LOGI("RSMainThread::Render isUni");
         visitor = std::make_shared<RSUniRenderVisitor>();
     } else {
         visitor = std::make_shared<RSRenderServiceVisitor>();

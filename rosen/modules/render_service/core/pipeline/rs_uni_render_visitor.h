@@ -48,6 +48,8 @@ private:
     void DrawBufferOnCanvas(RSSurfaceRenderNode& node);
     static void SortZOrder(RSBaseRenderNode& node);
     static bool IsChildOfDisplayNode(RSBaseRenderNode& node);
+    static bool IsChildOfSurfaceNode(RSBaseRenderNode& node);
+
     ScreenInfo screenInfo_;
     RSDirtyRegionManager dirtyManager_;
     RSRenderNode* parent_ = nullptr;

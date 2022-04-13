@@ -29,18 +29,18 @@ void RSUniRenderListener::OnBufferAvailable()
 {
     auto node = displayRenderNode_.lock();
     if (node == nullptr) {
-        ROSEN_LOGE("RSUniRenderListener::OnBufferAvailable node is nullptr");
+        RS_LOGE("RSUniRenderListener::OnBufferAvailable node is nullptr");
         return;
     }
-    ROSEN_LOGI("RsDebug RSUniRenderListener::OnBufferAvailable node id:%llu", node->GetId());
+    RS_LOGI("RSUniRenderListener::OnBufferAvailable node id:%llu", node->GetId());
 
     if (!node->IsOnTheTree()) {
         RSMainThread::Instance()->PostTask([node]() {
-            ROSEN_LOGI("RsDebug RSUniRenderListener::OnBufferAvailable node id:%llu: is not on the tree",
+            RS_LOGI("RSUniRenderListener::OnBufferAvailable node id:%llu: is not on the tree",
                 node->GetId());
             auto& surfaceConsumer = node->GetConsumer();
             if (surfaceConsumer == nullptr) {
-                ROSEN_LOGE("RsDebug RSUniRenderListener::OnBufferAvailable: consumer is null!");
+                RS_LOGE("RSUniRenderListener::OnBufferAvailable: consumer is null!");
                 return;
             }
             sptr<SurfaceBuffer> buffer;
@@ -49,7 +49,7 @@ void RSUniRenderListener::OnBufferAvailable()
             Rect damage;
             auto ret = surfaceConsumer->AcquireBuffer(buffer, fence, timestamp, damage);
             if (buffer == nullptr || ret != SURFACE_ERROR_OK) {
-                ROSEN_LOGE("RsDebug RSUniRenderListener::OnBufferAvailable: AcquireBuffer failed!");
+                RS_LOGE("RSUniRenderListener::OnBufferAvailable: AcquireBuffer failed!");
                 return;
             }
 

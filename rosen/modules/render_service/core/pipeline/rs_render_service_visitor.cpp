@@ -160,7 +160,6 @@ void RSRenderServiceVisitor::PrepareSurfaceRenderNode(RSSurfaceRenderNode& node)
 
 void RSRenderServiceVisitor::ProcessSurfaceRenderNode(RSSurfaceRenderNode& node)
 {
-    ROSEN_LOGI("unirender: RSRenderServiceVisitor::ProcessSurfaceRenderNode child size: %d", node.GetChildren().size());
     if (!processor_) {
         RS_LOGE("RSRenderServiceVisitor::ProcessSurfaceRenderNode processor is nullptr");
         return;

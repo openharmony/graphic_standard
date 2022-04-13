@@ -18,7 +18,6 @@
 
 #include <ibuffer_consumer_listener.h>
 #include "pipeline/rs_display_render_node.h"
-#include "pipeline/rs_processor.h"
 
 namespace OHOS {
 namespace Rosen {
@@ -30,7 +29,6 @@ public:
 
 private :
     std::weak_ptr<RSDisplayRenderNode> displayRenderNode_;
-    std::shared_ptr<RSProcessor> processor_;
 };
 } // namespace Rosen
 } // namespace OHOS
