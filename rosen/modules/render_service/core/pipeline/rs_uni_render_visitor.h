@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef RENDER_SERVICE_CORE_PIPELINE_RS_UNIFIED_RENDER_VISITOR_H
-#define RENDER_SERVICE_CORE_PIPELINE_RS_UNIFIED_RENDER_VISITOR_H
+#ifndef RENDER_SERVICE_CORE_PIPELINE_RS_UNI_RENDER_VISITOR_H
+#define RENDER_SERVICE_CORE_PIPELINE_RS_UNI_RENDER_VISITOR_H
 
 #include <set>
 #include <string>
@@ -27,10 +27,10 @@
 namespace OHOS {
 namespace Rosen {
 
-class RSUnifiedRenderVisitor : public RSNodeVisitor {
+class RSUniRenderVisitor : public RSNodeVisitor {
 public:
-    RSUnifiedRenderVisitor();
-    ~RSUnifiedRenderVisitor() override;
+    RSUniRenderVisitor();
+    ~RSUniRenderVisitor() override;
 
     void PrepareBaseRenderNode(RSBaseRenderNode& node) override;
     void PrepareDisplayRenderNode(RSDisplayRenderNode& node) override;
@@ -65,4 +65,4 @@ private:
 } // namespace Rosen
 } // namespace OHOS
 
-#endif // RENDER_SERVICE_CORE_PIPELINE_RS_UNIFIED_RENDER_VISITOR_H
+#endif // RENDER_SERVICE_CORE_PIPELINE_RS_UNI_RENDER_VISITOR_H

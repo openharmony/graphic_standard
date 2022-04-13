@@ -13,35 +13,34 @@
  * limitations under the License.
  */
 
-#include "pipeline/rs_render_service_listener_impl.h"
+#include "pipeline/rs_uni_render_listener.h"
 
-#include "platform/common/rs_log.h"
 #include "pipeline/rs_main_thread.h"
+#include "platform/common/rs_log.h"
 
 namespace OHOS {
 namespace Rosen {
-RSRenderServiceListenerImpl::~RSRenderServiceListenerImpl() {}
+RSUniRenderListener::~RSUniRenderListener() {}
 
-RSRenderServiceListenerImpl::RSRenderServiceListenerImpl(std::weak_ptr<RSDisplayRenderNode> displayRenderNode,
-    std::shared_ptr<RSProcessor> processor)
-    : displayRenderNode_(displayRenderNode), processor_(processor) {}
+RSUniRenderListener::RSUniRenderListener(std::weak_ptr<RSDisplayRenderNode> displayRenderNode)
+    : displayRenderNode_(displayRenderNode) {}
 
-void RSRenderServiceListenerImpl::OnBufferAvailable()
+void RSUniRenderListener::OnBufferAvailable()
 {
     auto node = displayRenderNode_.lock();
     if (node == nullptr) {
-        ROSEN_LOGE("RSRenderServiceListenerImpl::OnBufferAvailable node is nullptr");
+        ROSEN_LOGE("RSUniRenderListener::OnBufferAvailable node is nullptr");
         return;
     }
-    ROSEN_LOGI("RsDebug RSRenderServiceListenerImpl::OnBufferAvailable node id:%llu", node->GetId());
+    ROSEN_LOGI("RsDebug RSUniRenderListener::OnBufferAvailable node id:%llu", node->GetId());
 
     if (!node->IsOnTheTree()) {
         RSMainThread::Instance()->PostTask([node]() {
-            ROSEN_LOGI("RsDebug RSRenderServiceListenerImpl::OnBufferAvailable node id:%llu: is not on the tree",
+            ROSEN_LOGI("RsDebug RSUniRenderListener::OnBufferAvailable node id:%llu: is not on the tree",
                 node->GetId());
             auto& surfaceConsumer = node->GetConsumer();
             if (surfaceConsumer == nullptr) {
-                ROSEN_LOGE("RsDebug RSRenderServiceListenerImpl::OnBufferAvailable: consumer is null!");
+                ROSEN_LOGE("RsDebug RSUniRenderListener::OnBufferAvailable: consumer is null!");
                 return;
             }
             sptr<SurfaceBuffer> buffer;
@@ -50,7 +49,7 @@ void RSRenderServiceListenerImpl::OnBufferAvailable()
             Rect damage;
             auto ret = surfaceConsumer->AcquireBuffer(buffer, fence, timestamp, damage);
             if (buffer == nullptr || ret != SURFACE_ERROR_OK) {
-                ROSEN_LOGE("RsDebug RSRenderServiceListenerImpl::OnBufferAvailable: AcquireBuffer failed!");
+                ROSEN_LOGE("RsDebug RSUniRenderListener::OnBufferAvailable: AcquireBuffer failed!");
                 return;
             }
 
@@ -62,11 +61,8 @@ void RSRenderServiceListenerImpl::OnBufferAvailable()
         });
     } else {
         node->IncreaseAvailableBuffer();
-        if (processor_ != nullptr) {
-            processor_->ProcessSurface(*node);
-            processor_->PostProcess();
-        }
     }
+    RSMainThread::Instance()->RequestNextVSync();
 }
 }
 }

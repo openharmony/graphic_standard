@@ -18,7 +18,7 @@
 #include "pipeline/rs_base_render_node.h"
 #include "pipeline/rs_render_service_util.h"
 #include "pipeline/rs_render_service_visitor.h"
-#include "pipeline/rs_unified_render_visitor.h"
+#include "pipeline/rs_uni_render_visitor.h"
 #include "platform/common/rs_log.h"
 #include "platform/common/rs_system_properties.h"
 #include "platform/drawing/rs_vsync_client.h"
@@ -99,7 +99,7 @@ void RSMainThread::Render()
     ROSEN_LOGI("RSMainThread::Render isUni:%d", isUniRender);
     std::shared_ptr<RSNodeVisitor> visitor;
     if (isUniRender) {
-        visitor = std::make_shared<RSUnifiedRenderVisitor>();
+        visitor = std::make_shared<RSUniRenderVisitor>();
     } else {
         visitor = std::make_shared<RSRenderServiceVisitor>();
     }

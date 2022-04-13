@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef RENDER_SERVICE_PIPELINE_RS_RENDER_SERVICE_LISTENER_IMPL_H
-#define RENDER_SERVICE_PIPELINE_RS_RENDER_SERVICE_LISTENER_IMPL_H
+#ifndef RENDER_SERVICE_PIPELINE_RS_UNI_RENDER_LISTENER_H
+#define RENDER_SERVICE_PIPELINE_RS_UNI_RENDER_LISTENER_H
 
 #include <ibuffer_consumer_listener.h>
 #include "pipeline/rs_display_render_node.h"
@@ -22,11 +22,10 @@
 
 namespace OHOS {
 namespace Rosen {
-class RSRenderServiceListenerImpl : public IBufferConsumerListener {
+class RSUniRenderListener : public IBufferConsumerListener {
 public:
-    RSRenderServiceListenerImpl(std::weak_ptr<RSDisplayRenderNode> displayRenderNode,
-        std::shared_ptr<RSProcessor> processor);
-    ~RSRenderServiceListenerImpl() override;
+    RSUniRenderListener(std::weak_ptr<RSDisplayRenderNode> displayRenderNode);
+    ~RSUniRenderListener() override;
     void OnBufferAvailable() override;
 
 private :
@@ -35,4 +34,4 @@ private :
 };
 } // namespace Rosen
 } // namespace OHOS
-#endif // RENDER_SERVICE_PIPELINE_RS_RENDER_SERVICE_LISTENER_IMPL_H
+#endif // RENDER_SERVICE_PIPELINE_RS_UNI_RENDER_LISTENER_H
