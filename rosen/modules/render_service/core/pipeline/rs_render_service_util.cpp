@@ -281,11 +281,9 @@ SimpleColorSpace& GetColorSpaceOfCertainGamut(ColorGamut colorGamut)
         case ColorGamut::COLOR_GAMUT_ADOBE_RGB: {
             return GetAdobeRGBColorSpace();
         }
-        case ColorGamut::COLOR_GAMUT_DISPLAY_P3: {
-            return GetDisplayP3ColorSpace();
-        }
+        case ColorGamut::COLOR_GAMUT_DISPLAY_P3:
         case ColorGamut::COLOR_GAMUT_DCI_P3: {
-            return GetDCIP3ColorSpace();
+            return GetDisplayP3ColorSpace(); // Currently p3 colorspace is displayP3
         }
         default: {
             return GetSRGBColorSpace();

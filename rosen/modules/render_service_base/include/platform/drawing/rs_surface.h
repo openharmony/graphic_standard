@@ -37,7 +37,7 @@ public:
     virtual bool FlushFrame(std::unique_ptr<RSSurfaceFrame>& frame) = 0;
     virtual RenderContext* GetRenderContext() = 0;
     virtual void SetRenderContext(RenderContext* context) = 0;
-    virtual ColorGamut GetColorSpace() = 0;
+    virtual ColorGamut GetColorSpace() const = 0;
     virtual void SetColorSpace(ColorGamut colorSpace) = 0;
 protected:
 private:
