@@ -38,7 +38,7 @@ public:
     virtual RenderContext* GetRenderContext() override;
     virtual void SetRenderContext(RenderContext* context) override;
     virtual void SetColorSpace(ColorGamut colorSpace) override;
-    virtual ColorGamut GetColorSpace() override;
+    virtual ColorGamut GetColorSpace() const override;
 protected:
     sptr<Surface> producer_;
     RenderContext* context_ = nullptr;

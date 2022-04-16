@@ -32,7 +32,7 @@ void RSSurfaceOhos::SetColorSpace(ColorGamut colorSpace)
     colorSpace_ = colorSpace;
 }
 
-ColorGamut RSSurfaceOhos::GetColorSpace()
+ColorGamut RSSurfaceOhos::GetColorSpace() const
 {
     return colorSpace_;
 }
