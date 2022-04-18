@@ -84,10 +84,15 @@ protected:
         return isRenderServiceNode_;
     }
 
+    void SetRenderServiceNodeType(bool isRenderServiceNode)
+    {
+        isRenderServiceNode_ = isRenderServiceNode;
+    }
+
 private:
     static NodeId GenerateId();
     NodeId id_;
-    const bool isRenderServiceNode_;
+    bool isRenderServiceNode_;
 
     NodeId parent_ = 0;
     std::vector<NodeId> children_;
