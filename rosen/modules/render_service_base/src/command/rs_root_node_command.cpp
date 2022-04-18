@@ -24,14 +24,12 @@ namespace Rosen {
 
 void RootNodeCommandHelper::Create(RSContext& context, NodeId id)
 {
-    ROSEN_LOGE("unirender: RootNodeCommandHelper::Create");
     auto node = std::make_shared<RSRootRenderNode>(id, context.weak_from_this());
     context.GetMutableNodeMap().RegisterRenderNode(node);
 }
 
 void RootNodeCommandHelper::AttachRSSurfaceNode(RSContext& context, NodeId id, NodeId surfaceNodeId)
 {
-    ROSEN_LOGE("unirender: RootNodeCommandHelper::AttachRSSurfaceNode");
     if (auto node = context.GetNodeMap().GetRenderNode<RSRootRenderNode>(id)) {
         node->AttachRSSurfaceNode(surfaceNodeId);
         context.GetGlobalRootRenderNode()->AddChild(node);
@@ -40,15 +38,14 @@ void RootNodeCommandHelper::AttachRSSurfaceNode(RSContext& context, NodeId id, N
 
 void RootNodeCommandHelper::AddToSurfaceNode(RSContext& context, NodeId id, NodeId surfaceNodeId)
 {
-    ROSEN_LOGE("unirender: RootNodeCommandHelper::AddToSurfaceNode");
     auto& nodeMap = context.GetNodeMap();
     auto parent = nodeMap.GetRenderNode<RSSurfaceRenderNode>(surfaceNodeId);
     auto node = nodeMap.GetRenderNode<RSRootRenderNode>(id);
     if (!parent) {
-        ROSEN_LOGE("unirender: no parent surfaceNode");
+        ROSEN_LOGE("unirender: RootNodeCommandHelper::AddToSurfaceNode no parent surfaceNode");
     }
     if (!node) {
-        ROSEN_LOGE("unirender: no RootRenderNode");
+        ROSEN_LOGE("unirender: RootNodeCommandHelper::AddToSurfaceNode no RootRenderNode");
     }
     if (node && parent) {
         parent->AddChild(node);

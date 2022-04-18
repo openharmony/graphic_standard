@@ -23,6 +23,7 @@
 #include "pipeline/rs_render_node_map.h"
 #include "pipeline/rs_root_render_node.h"
 #include "platform/common/rs_log.h"
+#include "platform/common/rs_system_properties.h"
 #include "rs_trace.h"
 #include "ui/rs_ui_director.h"
 #include "transaction/rs_render_service_client.h"
@@ -71,10 +72,9 @@ RSRenderThread& RSRenderThread::Instance()
 
 RSRenderThread::RSRenderThread()
 {
-#ifdef ACE_ENABLE_GL
-    renderContext_ = new RenderContext();
-    ROSEN_LOGD("Create RenderContext, its pointer is %p", renderContext_);
-#endif
+    isUni_ = RSSystemProperties::GetUniRenderEnabledType() != UniRenderEnabledType::UNI_RENDER_DISABLED;
+
+    DrawingProxy_ = new DrawingProxy();
     mainFunc_ = [&]() {
         clock_t startTime = clock();
         std::string str = "RSRenderThread DrawFrame: " + std::to_string(timestamp_);
@@ -88,7 +88,6 @@ RSRenderThread::RSRenderThread()
         Animate(prevTimestamp_);
         Render();
         RS_ASYNC_TRACE_BEGIN("waiting GPU running", 1111); // 1111 means async trace code for gpu
-        ROSEN_LOGI("unirender: RSRenderThread mainFunc_");
         SendCommands();
         auto transactionProxy = RSTransactionProxy::GetInstance();
         if (transactionProxy != nullptr) {
@@ -119,7 +118,7 @@ RSRenderThread::~RSRenderThread()
 
 void RSRenderThread::Start()
 {
-    ROSEN_LOGI("unirender: RSRenderThread start.");
+    ROSEN_LOGD("RSRenderThread start.");
     running_.store(true);
     if (thread_ == nullptr) {
         thread_ = std::make_unique<std::thread>(&RSRenderThread::RenderLoop, this);
@@ -211,7 +210,7 @@ void RSRenderThread::OnVsync(uint64_t timestamp)
     mValue = (mValue + 1) % 2; // 1 and 2 is Calculated parameters
     RS_TRACE_INT("Vsync-client", mValue);
     timestamp_ = timestamp;
-    if (activeWindowCnt_.load() > 0) {
+    if (activeWindowCnt_.load() > 0 && !isUni_) {
         mainFunc_(); // start render-loop now
     }
     ROSEN_TRACE_END(BYTRACE_TAG_GRAPHIC_AGP);

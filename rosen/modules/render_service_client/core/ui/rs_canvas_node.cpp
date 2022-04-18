@@ -85,14 +85,12 @@ void RSCanvasNode::FinishRecording()
     if (transactionProxy != nullptr) {
         transactionProxy->AddCommand(command, IsRenderServiceNode());
     }
-    ROSEN_LOGE("unirender: RSCanvasNode::FinishRecording isUni_ = %d", isUni_);
+
     if (isUni_ && !IsRenderServiceNode()) {
         std::unique_ptr<RSCommand> command =
             std::make_unique<RSCanvasNodeUpdateRecording>(GetId(), recording, drawContentLast_);
-        ROSEN_LOGE("unirender: RSCanvasNode::FinishRecording unique_ptr<RSCommand>");
         auto transactionProxy = RSTransactionProxy::GetInstance();
         if (transactionProxy != nullptr) {
-            ROSEN_LOGE("unirender: RSCanvasNode::FinishRecording transactionProxy->AddCommand");
             transactionProxy->AddCommand(command, isUni_);
         }
     }

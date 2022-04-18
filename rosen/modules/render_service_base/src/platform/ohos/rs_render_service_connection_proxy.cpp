@@ -28,7 +28,6 @@ RSRenderServiceConnectionProxy::RSRenderServiceConnectionProxy(const sptr<IRemot
 
 void RSRenderServiceConnectionProxy::CommitTransaction(std::unique_ptr<RSTransactionData>& transactionData)
 {
-    ROSEN_LOGE("unirender: RSRenderServiceConnectionProxy::CommitTransaction start");
     MessageParcel data;
     MessageParcel reply;
     MessageOption option;
@@ -37,14 +36,13 @@ void RSRenderServiceConnectionProxy::CommitTransaction(std::unique_ptr<RSTransac
         return;
     }
 
-    ROSEN_LOGE("unirender: RSRenderServiceConnectionProxy::CommitTransaction, begin data.WriteParcelable");
     if (!data.WriteParcelable(transactionData.get())) {
-        ROSEN_LOGE("unirender: RSRenderServiceConnectionProxy::CommitTransaction, !data.WriteParcelable");
+        ROSEN_LOGE("unirender: failed RSRenderServiceConnectionProxy::CommitTransaction data.WriteParcelable");
         return;
     }
 
     option.SetFlags(MessageOption::TF_ASYNC);
-    ROSEN_LOGE("unirender: RSRenderServiceConnectionProxy::CommitTransaction, Remote()->SendRequest");
+    ROSEN_LOGD("unirender: RSRenderServiceConnectionProxy::CommitTransaction, Remote()->SendRequest");
     int32_t err = Remote()->SendRequest(RSIRenderServiceConnection::COMMIT_TRANSACTION, data, reply, option);
     if (err != NO_ERROR) {
         return;

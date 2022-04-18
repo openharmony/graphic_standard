@@ -27,8 +27,6 @@
 #include "ui/rs_root_node.h"
 #include "ui/rs_surface_extractor.h"
 #include "ui/rs_surface_node.h"
-#include <set>
-#include <string>
 
 namespace OHOS {
 namespace Rosen {
@@ -118,13 +116,6 @@ void RSUIDirector::AttachSurface()
     if (node != nullptr && surfaceNode_ != nullptr) {
         node->AttachRSSurfaceNode(surfaceNode_);
         ROSEN_LOGD("RSUIDirector::AttachSurface [%llu]", surfaceNode_->GetId());
-
-        if (APP_FOR_UNI_RENDER.find(surfaceNode_->GetName()) != APP_FOR_UNI_RENDER.end()) {
-            RSRenderThread::Instance().isUni_ = true;
-            // RSRenderThread::Instance().Stop();
-        }
-        ROSEN_LOGE("unirender: RSUIDirector::AttachSurface for:%s, isUni_ = %d", surfaceNode_->GetName().c_str(), RSRenderThread::Instance().isUni_);
-
     } else {
         ROSEN_LOGD("RSUIDirector::AttachSurface not ready");
     }
