@@ -59,7 +59,7 @@ void RSSurfaceFrameOhosRaster::CreateCanvas()
     }
     SkImageInfo info =
         SkImageInfo::Make(buffer_->GetWidth(), buffer_->GetHeight(), kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-    auto uniqueCanvasPtr = SkCanvas::MakeRasterDirect(info, addr, buffer_->GetSize() / buffer_->GetHeight());
+    auto uniqueCanvasPtr = SkCanvas::MakeRasterDirect(info, addr, buffer_->GetStride());
     canvas_ = std::move(uniqueCanvasPtr);
 }
 
