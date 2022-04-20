@@ -15,11 +15,6 @@
 
 #include "pipeline/rs_uni_render_visitor.h"
 
-#include <surface.h>
-#include <window.h>
-#include <window_manager.h>
-#include <window_option.h>
-
 #include "common/rs_obj_abs_geometry.h"
 #include "display_type.h"
 #include "pipeline/rs_display_render_node.h"
@@ -44,12 +39,7 @@ RSUniRenderVisitor::~RSUniRenderVisitor() {}
 
 void RSUniRenderVisitor::PrepareBaseRenderNode(RSBaseRenderNode& node)
 {
-    for (auto& child : node.GetChildren()) {
-        if (auto c = child.lock()) {
-            c->Prepare(shared_from_this());
-        }
-    }
-    for (auto& child : node.GetDisappearingChildren()) {
+    for (auto& child : node.GetSortedChildren()) {
         child->Prepare(shared_from_this());
     }
 }
@@ -108,14 +98,11 @@ void RSUniRenderVisitor::PrepareCanvasRenderNode(RSCanvasRenderNode &node)
 
 void RSUniRenderVisitor::ProcessBaseRenderNode(RSBaseRenderNode& node)
 {
-    for (auto& child : node.GetChildren()) {
-        if (auto c = child.lock()) {
-            c->Process(shared_from_this());
-        }
-    }
-    for (auto& child : node.GetDisappearingChildren()) {
+    for (auto& child : node.GetSortedChildren()) {
         child->Process(shared_from_this());
     }
+    // clear SortedChildren, it will be generated again in next frame
+    node.ResetSortedChildren();
 }
 
 void RSUniRenderVisitor::ProcessDisplayRenderNode(RSDisplayRenderNode& node)
@@ -146,7 +133,7 @@ void RSUniRenderVisitor::ProcessDisplayRenderNode(RSDisplayRenderNode& node)
         RS_LOGE("RSUniRenderVisitor::ProcessDisplayRenderNode: RSProcessor is null!");
         return;
     }
-    processor_->Init(node.GetScreenId());
+    processor_->Init(node.GetScreenId(), node.GetDisplayOffsetX(), node.GetDisplayOffsetY());
 
     if (hasUniRender_) {
         std::shared_ptr<RSBaseRenderNode> nodePtr = node.shared_from_this();
@@ -176,7 +163,7 @@ void RSUniRenderVisitor::ProcessDisplayRenderNode(RSDisplayRenderNode& node)
             RS_LOGE("RSUniRenderVisitor Request Frame Failed");
             return;
         }
-        canvas_ = new RSPaintFilterCanvas(rsSurface->GetCanvas(surfaceFrame));
+        canvas_ = new RSPaintFilterCanvas(surfaceFrame->GetCanvas());
         canvas_->clear(SK_ColorTRANSPARENT);
 
         ProcessBaseRenderNode(node);
@@ -290,20 +277,6 @@ void RSUniRenderVisitor::ProcessCanvasRenderNode(RSCanvasRenderNode& node)
     node.ProcessRenderBeforeChildren(*canvas_);
     ProcessBaseRenderNode(node);
     node.ProcessRenderAfterChildren(*canvas_);
-}
-
-void RSUnifiedRenderVisitor::SortZOrder(RSBaseRenderNode& node)
-{
-    auto& children = node.GetChildren();
-    static auto compare = [](std::weak_ptr<RSBaseRenderNode> first, std::weak_ptr<RSBaseRenderNode> second) -> bool {
-        auto node1 = RSBaseRenderNode::ReinterpretCast<RSRenderNode>(first.lock());
-        auto node2 = RSBaseRenderNode::ReinterpretCast<RSRenderNode>(second.lock());
-        if (node1 == nullptr || node2 == nullptr) {
-            return false;
-        }
-        return node1->GetRenderProperties().GetPositionZ() < node2->GetRenderProperties().GetPositionZ();
-    };
-    std::stable_sort(children.begin(), children.end(), compare);
 }
 
 bool RSUniRenderVisitor::IsChildOfDisplayNode(RSBaseRenderNode& node)

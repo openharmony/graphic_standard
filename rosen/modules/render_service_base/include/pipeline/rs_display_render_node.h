@@ -19,11 +19,9 @@
 #include <surface.h>
 #include <ibuffer_consumer_listener.h>
 
-#include "pipeline/rs_base_render_node.h"
 #include "platform/drawing/rs_surface.h"
-#include "drawing_engine/drawing_surface/rs_surface_ohos.h"
-#include "drawing_engine/drawing_proxy.h"
 #include "pipeline/rs_base_render_node.h"
+#include "render_context/render_context.h"
 #include "sync_fence.h"
 
 namespace OHOS {
@@ -92,7 +90,7 @@ public:
     float GetGlobalZOrder() const;
     void SetConsumer(const sptr<Surface>& consumer);
     void SetBuffer(const sptr<SurfaceBuffer>& buffer);
-    void SetFence(const int32_t fence);
+    void SetFence(sptr<SyncFence> fence);
     void IncreaseAvailableBuffer();
     int32_t ReduceAvailableBuffer();
 
@@ -116,7 +114,7 @@ public:
         return buffer_;
     }
 
-    int32_t GetFence() const
+    sptr<SyncFence> GetFence() const
     {
         return fence_;
     }
@@ -126,7 +124,7 @@ public:
         return preBuffer_;
     }
 
-    int32_t GetPreFence() const
+    sptr<SyncFence> GetPreFence() const
     {
         return preFence_;
     }
@@ -177,7 +175,7 @@ private:
     sptr<SyncFence> preFence_;
     bool surfaceCreated_ { false };
     sptr<IBufferConsumerListener> consumerListener_;
-    DrawingProxy* drawingProxy_ = nullptr;
+    RenderContext* renderContext_ = nullptr;
 };
 } // namespace Rosen
 } // namespace OHOS

@@ -72,9 +72,11 @@ RSRenderThread& RSRenderThread::Instance()
 
 RSRenderThread::RSRenderThread()
 {
+#ifdef ACE_ENABLE_GL
+    renderContext_ = new RenderContext();
+    ROSEN_LOGD("Create RenderContext, its pointer is %p", renderContext_);
+#endif
     isUni_ = RSSystemProperties::GetUniRenderEnabledType() != UniRenderEnabledType::UNI_RENDER_DISABLED;
-
-    DrawingProxy_ = new DrawingProxy();
     mainFunc_ = [&]() {
         clock_t startTime = clock();
         std::string str = "RSRenderThread DrawFrame: " + std::to_string(timestamp_);

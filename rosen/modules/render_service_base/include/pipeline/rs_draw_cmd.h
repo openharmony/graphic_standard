@@ -31,7 +31,6 @@
 #include "pipeline/rs_draw_cmd_list.h"
 #include "render/rs_image.h"
 #include "property/rs_properties_def.h"
-#include <parcel.h>
 #include "transaction/rs_marshalling_helper.h"
 
 namespace OHOS {

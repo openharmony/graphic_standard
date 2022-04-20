@@ -57,7 +57,8 @@ void RSUniRenderListener::OnBufferAvailable()
                 (void)surfaceConsumer->ReleaseBuffer(node->GetBuffer(), -1);
             }
             node->SetBuffer(buffer);
-            node->SetFence(fence);
+            sptr<SyncFence> acquireFence = new SyncFence(fence);
+            node->SetFence(acquireFence);
         });
     } else {
         node->IncreaseAvailableBuffer();

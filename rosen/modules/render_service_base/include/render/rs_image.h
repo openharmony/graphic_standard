@@ -54,7 +54,6 @@ public:
     void SetImageRepeat(int repeatNum);
     void SetRadius(float radius);
     void SetScale(double scale);
-
 #ifdef ROSEN_OHOS
     bool Marshalling(Parcel& parcel) const;
     static RSImage* Unmarshalling(Parcel& parcel);

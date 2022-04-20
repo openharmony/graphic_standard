@@ -16,6 +16,8 @@
 #include "pipeline/rs_display_render_node.h"
 
 #include "platform/common/rs_log.h"
+#include "platform/ohos/backend/rs_surface_ohos_gl.h"
+#include "platform/ohos/backend/rs_surface_ohos_raster.h"
 #include "visitor/rs_node_visitor.h"
 
 namespace OHOS {
@@ -27,10 +29,10 @@ RSDisplayRenderNode::RSDisplayRenderNode(NodeId id, const RSDisplayNodeConfig& c
 
 RSDisplayRenderNode::~RSDisplayRenderNode()
 {
-    if (drawingProxy_ != nullptr) {
-        RS_LOGD("Destroy drawingProxy_!!");
-        delete drawingProxy_ ;
-        drawingProxy_  = nullptr;
+    if (renderContext_ != nullptr) {
+        RS_LOGD("Destroy renderContext_!!");
+        delete renderContext_ ;
+        renderContext_  = nullptr;
     }
 }
 
@@ -123,7 +125,7 @@ void RSDisplayRenderNode::SetBuffer(const sptr<SurfaceBuffer>& buffer)
     }
 }
 
-void RSDisplayRenderNode::SetFence(int32_t fence)
+void RSDisplayRenderNode::SetFence(sptr<SyncFence> fence)
 {
     preFence_ = fence_;
     fence_ = fence;
@@ -158,10 +160,18 @@ bool RSDisplayRenderNode::CreateSurface(sptr<IBufferConsumerListener> listener)
 
     auto producer = consumer_->GetProducer();
     sptr<Surface> surface = Surface::CreateSurfaceAsProducer(producer);
-    drawingProxy_ = new DrawingProxy();
-    drawingProxy_->InitDrawContext();
-    surface_ = OHOS::Rosen::RSSurfaceOhos::CreateSurface(surface);
-    surface_->SetDrawingProxy(drawingProxy_);
+
+#ifdef ACE_ENABLE_GL
+    // GPU render
+    surface_ = std::make_shared<RSSurfaceOhosGl>(surface);
+    RS_LOGD("RSDisplayRenderNode::CreateSurface InitializeEglContext");
+    renderContext_ = new RenderContext();
+    renderContext_->InitializeEglContext();
+    surface_->SetRenderContext(renderContext_);
+#else
+    // CPU render
+    surface_ = std::make_shared<RSSurfaceOhosRaster>(surface);
+#endif
 
     RS_LOGI("RSDisplayRenderNode::CreateSurface end");
     surfaceCreated_ = true;
