@@ -809,11 +809,9 @@ BufferDrawParam RsRenderServiceUtil::CreateBufferDrawParam(RSSurfaceRenderNode& 
     params.srcRect = SkRect::MakeXYWH(0, 0, buffer->GetSurfaceBufferWidth(), buffer->GetSurfaceBufferHeight());
     const auto surfaceTransform = surface->GetTransform();
     if (surfaceTransform == TransformType::ROTATE_90 || surfaceTransform == TransformType::ROTATE_270) {
-        params.dstRect = SkRect::MakeXYWH(node.GetDstRect().left_, node.GetDstRect().top_,
-            node.GetDstRect().height_, node.GetDstRect().width_);
+        params.dstRect = SkRect::MakeXYWH(0, 0, property.GetBoundsHeight(), property.GetBoundsWidth());
     } else {
-        params.dstRect = SkRect::MakeXYWH(node.GetDstRect().left_, node.GetDstRect().top_,
-            node.GetDstRect().width_, node.GetDstRect().height_);
+        params.dstRect = SkRect::MakeXYWH(0, 0, property.GetBoundsWidth(), property.GetBoundsHeight());
     }
     params.clipRect = SkRect::MakeXYWH(node.GetDstRect().left_, node.GetDstRect().top_, node.GetDstRect().width_,
         node.GetDstRect().height_);
