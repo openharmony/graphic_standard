@@ -50,7 +50,7 @@ ohos_executable("bootanimation") {
   ]
 
   deps = [
-    "//base/global/resmgr_standard/frameworks/resmgr:global_resmgr",
+    "//base/global/resource_management/frameworks/resmgr:global_resmgr",
     "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
     "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
     "//foundation/arkui/ace_engine/build/external_config/flutter/skia:ace_skia_ohos",
