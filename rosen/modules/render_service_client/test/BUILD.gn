@@ -163,10 +163,7 @@ ohos_executable("render_service_client_surface_node_demo") {
 
   public_deps = [ "//foundation/arkui/ace_engine/build/external_config/flutter/skia:ace_skia_ohos" ]
 
-  external_deps = [
-    "hiviewdfx_hilog_native:libhilog",
-    #"multimedia_media_standard:media_client",
-  ]
+  external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
 
   part_name = "graphic_standard"
   subsystem_name = "graphic"
