@@ -13,28 +13,27 @@
  * limitations under the License.
  */
 
-#include "drawing_color_set_argb_fuzzer.h"
+#include "camera3d_set_camera_pos_fuzzer.h"
 
 #include <cstddef>
 #include <cstdint>
 
-#include "c/drawing_color.h"
+#include "utils/camera3d.h"
+#include "utils/matrix.h"
+#include "utils/scalar.h"
 
-const uint32_t CONSTANTS_GREEN = 10;
-const int CONSTANTS_NUMBER_FIVE = 5;
+const int CONSTANTS_NUMBER = 5;
 
 namespace OHOS {
 namespace Rosen {
 namespace Drawing {
-    bool DrawingColorSetArgbFuzzTest(const uint8_t* data, size_t size)
+    bool Camera3dSetCameraPosFuzzTest(const uint8_t* data, size_t size)
     {
-        bool result = false;
-        uint32_t blue = static_cast<uint32_t>(size % CONSTANTS_NUMBER_FIVE);
-        uint32_t argb = OH_Drawing_ColorSetArgb(reinterpret_cast<const uint32_t>(data), 0, CONSTANTS_GREEN, blue);
-        if (!argb) {
-            result = true;
-        }
-        return result;
+        Camera3D camera3d;
+        Matrix matrix;
+        camera3d.ApplyToMatrix(matrix);
+        camera3d.SetCameraPos(reinterpret_cast<uint32_t>(data), reinterpret_cast<uint32_t>(size), CONSTANTS_NUMBER);
+        return true;
     }
 } // namespace Drawing
 } // namespace Rosen
@@ -44,7 +43,6 @@ namespace Drawing {
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size)
 {
     /* Run your code on data */
-    OHOS::Rosen::Drawing::DrawingColorSetArgbFuzzTest(data, size);
+    OHOS::Rosen::Drawing::Camera3dSetCameraPosFuzzTest(data, size);
     return 0;
 }
-
