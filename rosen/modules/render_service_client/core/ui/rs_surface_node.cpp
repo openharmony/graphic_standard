@@ -114,6 +114,8 @@ void RSSurfaceNode::SetSecurityLayer(bool isSecurityLayer)
     if (transactionProxy != nullptr) {
         transactionProxy->AddCommand(command, true);
     }
+    ROSEN_LOGD("RSSurfaceNode::SetSecurityLayer, surfaceNodeId:[%llu] isSecurityLayer:%s", GetId(),
+        isSecurityLayer ? "true" : "false");
 }
 
 bool RSSurfaceNode::GetSecurityLayer() const

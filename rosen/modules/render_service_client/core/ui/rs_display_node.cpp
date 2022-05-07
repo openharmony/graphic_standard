@@ -54,7 +54,8 @@ void RSDisplayNode::SetSecurityDisplay(bool isSecurityDisplay)
     if (transactionProxy != nullptr) {
         transactionProxy->AddCommand(command, true);
     }
-    ROSEN_LOGD("RSDisplayNode::SetSecurityDisplay, isSecurityDisplay:%s", isSecurityDisplay ? "true" : "false");
+    ROSEN_LOGD("RSDisplayNode::SetSecurityDisplay, displayNodeId:[%llu] isSecurityDisplay:[%s]", GetId(),
+        isSecurityDisplay ? "true" : "false");
 }
 
 bool RSDisplayNode::GetSecurityDisplay() const

@@ -110,6 +110,19 @@ ohos_executable("surface_capture_demo") {
   subsystem_name = "graphic"
 }
 
+ohos_executable("security_layer_demo") {
+  sources = [ "security_layer_demo.cpp" ]
+
+  deps = [
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
+    "//foundation/graphic/standard/rosen/modules/render_service_base:librender_service_base",
+    "//foundation/graphic/standard/rosen/modules/render_service_client:librender_service_client",
+  ]
+
+  part_name = "graphic_standard"
+  subsystem_name = "graphic"
+}
+
 ohos_executable("mirror_display_demo") {
   sources = [ "mirror_display_test.cpp" ]
 
