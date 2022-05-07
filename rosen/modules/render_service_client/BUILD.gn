@@ -91,8 +91,19 @@ ohos_source_set("render_service_client_src") {
 
   deps = []
 
+  if (rss_enabled) {
+    deps += [
+      "//foundation/resourceschedule/resource_schedule_service/ressched/interfaces/innerkits/ressched_client:ressched_client",
+      "//third_party/jsoncpp:jsoncpp",
+    ]
+  }
+
   if (enable_export_macro) {
     defines += [ "ENABLE_EXPORT_MACRO" ]
+  }
+
+  if (rss_enabled) {
+    defines += [ "OHOS_RSS_CLIENT" ]
   }
 
   external_deps = [

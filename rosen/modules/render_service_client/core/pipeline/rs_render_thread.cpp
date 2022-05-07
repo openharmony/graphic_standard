@@ -16,6 +16,9 @@
 #include "pipeline/rs_render_thread.h"
 
 #include <ctime>
+#ifdef OHOS_RSS_CLIENT
+#include <unordered_map>
+#endif
 
 #include "base/hiviewdfx/hisysevent/interfaces/native/innerkits/hisysevent/include/hisysevent.h"
 
@@ -23,6 +26,10 @@
 #include "pipeline/rs_render_node_map.h"
 #include "pipeline/rs_root_render_node.h"
 #include "platform/common/rs_log.h"
+#ifdef OHOS_RSS_CLIENT
+#include "res_sched_client.h"
+#include "res_type.h"
+#endif
 #include "rs_trace.h"
 #include "ui/rs_ui_director.h"
 #include "transaction/rs_render_service_client.h"
@@ -190,6 +197,13 @@ void RSRenderThread::RenderLoop()
 {
     SystemCallSetThreadName("RSRenderThread");
 
+#ifdef OHOS_RSS_CLIENT
+    std::unordered_map<std::string, std::string> payload;
+    payload["uid"] = std::to_string(getuid());
+    payload["pid"] = std::to_string(getpid());
+    ResourceSchedule::ResSchedClient::GetInstance().ReportData(
+        ResourceSchedule::ResType::RES_TYPE_REPORT_RENDER_THREAD, gettid(), payload);
+#endif
 #ifdef ROSEN_OHOS
     tid_ = gettid();
 #endif
