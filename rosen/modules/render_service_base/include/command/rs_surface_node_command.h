@@ -30,6 +30,7 @@ enum RSSurfaceNodeCommandType : uint16_t {
     SURFACE_NODE_SET_ALPHA,
     SURFACE_NODE_SET_CLIP_REGION,
     SURFACE_NODE_SET_PARENT_SURFACE,
+    SURFACE_NODE_SET_SECURITY_LAYER,
     SURFACE_NODE_REMOVE_SELF,
     SURFACE_NODE_UPDATE_SURFACE_SIZE,
     SURFACE_NODE_CONNECT_TO_NODE_IN_RENDER_SERVICE,
@@ -42,6 +43,7 @@ public:
     static void SetAlpha(RSContext& context, NodeId nodeId, float alpha);
     static void SetParentSurface(RSContext& context, NodeId nodeId, NodeId parentId);
     static void SetClipRegion(RSContext& context, NodeId nodeId, Vector4f clipRect);
+    static void SetSecurityLayer(RSContext& context, NodeId nodeId, bool isSecurityLayer);
     static void RemoveSelf(RSContext& context, NodeId nodeId);
     static void UpdateSurfaceDefaultSize(RSContext& context, NodeId nodeId, float width, float height);
     static void ConnectToNodeInRenderService(RSContext& context, NodeId id);
@@ -56,6 +58,8 @@ ADD_COMMAND(RSSurfaceNodeSetClipRegion,
     ARG(SURFACE_NODE, SURFACE_NODE_SET_CLIP_REGION, SurfaceNodeCommandHelper::SetClipRegion, NodeId, Vector4f))
 ADD_COMMAND(RSSurfaceNodeSetParentSurface,
     ARG(SURFACE_NODE, SURFACE_NODE_SET_PARENT_SURFACE, SurfaceNodeCommandHelper::SetParentSurface, NodeId, NodeId))
+ADD_COMMAND(RSSurfaceNodeSetSecurityLayer,
+    ARG(SURFACE_NODE, SURFACE_NODE_SET_SECURITY_LAYER, SurfaceNodeCommandHelper::SetSecurityLayer, NodeId, bool))
 ADD_COMMAND(RSSurfaceNodeRemoveSelf,
     ARG(SURFACE_NODE, SURFACE_NODE_REMOVE_SELF, SurfaceNodeCommandHelper::RemoveSelf, NodeId))
 ADD_COMMAND(RSSurfaceNodeUpdateSurfaceDefaultSize, ARG(SURFACE_NODE, SURFACE_NODE_UPDATE_SURFACE_SIZE,

@@ -105,6 +105,22 @@ void RSSurfaceNode::UpdateSurfaceDefaultSize(float width, float height)
     }
 }
 
+void RSSurfaceNode::SetSecurityLayer(bool isSecurityLayer)
+{
+    isSecurityLayer_ = isSecurityLayer;
+    std::unique_ptr<RSCommand> command =
+        std::make_unique<RSSurfaceNodeSetSecurityLayer>(GetId(), isSecurityLayer);
+    auto transactionProxy = RSTransactionProxy::GetInstance();
+    if (transactionProxy != nullptr) {
+        transactionProxy->AddCommand(command, true);
+    }
+}
+
+bool RSSurfaceNode::GetSecurityLayer() const
+{
+    return isSecurityLayer_;
+}
+
 void RSSurfaceNode::SetColorSpace(SurfaceColorGamut colorSpace)
 {
     colorSpace_ = colorSpace;

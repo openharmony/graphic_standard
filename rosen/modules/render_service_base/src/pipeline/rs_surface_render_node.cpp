@@ -136,6 +136,16 @@ void RSSurfaceRenderNode::SetClipRegion(Vector4f clipRegion, bool sendMsg)
     SendPropertyCommand(command);
 }
 
+void RSSurfaceRenderNode::SetSecurityLayer(bool isSecurityLayer)
+{
+    isSecurityLayer_ = isSecurityLayer;
+}
+
+bool RSSurfaceRenderNode::GetSecurityLayer() const
+{
+    return isSecurityLayer_;
+}
+
 void RSSurfaceRenderNode::SetGlobalZOrder(float globalZOrder)
 {
     globalZOrder_ = globalZOrder;
