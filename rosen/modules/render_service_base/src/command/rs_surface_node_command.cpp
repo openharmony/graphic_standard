@@ -48,6 +48,13 @@ void SurfaceNodeCommandHelper::SetClipRegion(RSContext& context, NodeId id, Vect
     }
 }
 
+void SurfaceNodeCommandHelper::SetSecurityLayer(RSContext& context, NodeId id, bool isSecurityLayer)
+{
+    if (auto node = context.GetNodeMap().GetRenderNode<RSSurfaceRenderNode>(id)) {
+        node->SetSecurityLayer(isSecurityLayer);
+    }
+}
+
 void SurfaceNodeCommandHelper::SetParentSurface(RSContext& context, NodeId id, NodeId parentId)
 {
     auto& nodeMap = context.GetNodeMap();

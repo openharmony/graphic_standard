@@ -52,6 +52,8 @@ public:
     void SetBoundsWidth(float width) override;
     void SetBoundsHeight(float height) override;
     void SetColorSpace(SurfaceColorGamut colorSpace);
+    void SetSecurityLayer(bool isSecurityLayer);
+    bool GetSecurityLayer() const;
 
     bool Marshalling(Parcel& parcel) const override;
     static RSSurfaceNode* Unmarshalling(Parcel& parcel);
@@ -78,6 +80,7 @@ private:
     std::shared_ptr<RSSurface> surface_;
     std::string name_;
     SurfaceColorGamut colorSpace_ = SurfaceColorGamut::COLOR_GAMUT_SRGB;
+    bool isSecurityLayer_ = false;
 
     friend class RSUIDirector;
     friend class RSAnimation;

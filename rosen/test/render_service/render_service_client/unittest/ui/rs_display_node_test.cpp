@@ -102,4 +102,61 @@ HWTEST_F(RSDisplayNodeTest, TakeSurfaceCapture001, TestSize.Level1)
     auto surfaceCaptureMock = std::make_shared<TestSurfaceCapture>();
     RSInterfaces::GetInstance().TakeSurfaceCapture(displayNode, surfaceCaptureMock);
 }
+
+/**
+ * @tc.name: SetSecurityDisplay001
+ * @tc.desc:
+ * @tc.type:FUNC
+ */
+HWTEST_F(RSDisplayNodeTest, SetSecurityDisplay001, TestSize.Level1)
+{
+    /**
+    * @tc.steps: step1. create RSDisplayNode
+    */
+    RSDisplayNodeConfig c;
+    RSDisplayNode::SharedPtr displayNode = RSDisplayNode::Create(c);
+    ASSERT_TRUE(displayNode != nullptr);
+    /**
+    * @tc.steps: step2. set SecurityDisplay
+    */
+    displayNode->SetSecurityDisplay(true);
+    EXPECT_TRUE(displayNode->GetSecurityDisplay());
+}
+
+/**
+ * @tc.name: SetSecurityDisplay002
+ * @tc.desc:
+ * @tc.type:FUNC
+ */
+HWTEST_F(RSDisplayNodeTest, SetSecurityDisplay002, TestSize.Level1)
+{
+    /**
+    * @tc.steps: step1. create RSDisplayNode
+    */
+    RSDisplayNodeConfig c;
+    RSDisplayNode::SharedPtr displayNode = RSDisplayNode::Create(c);
+    /**
+    * @tc.steps: step2. set SecurityDisplay
+    */
+    ASSERT_TRUE(displayNode != nullptr);
+    displayNode->SetSecurityDisplay(false);
+    EXPECT_FALSE(displayNode->GetSecurityDisplay());
+}
+
+
+/**
+ * @tc.name: GetSecurityDisplay001
+ * @tc.desc:
+ * @tc.type:FUNC
+ */
+HWTEST_F(RSDisplayNodeTest, GetSecurityDisplay001, TestSize.Level1)
+{
+    /**
+    * @tc.steps: step1. create RSDisplayNode
+    */
+    RSDisplayNodeConfig c;
+    RSDisplayNode::SharedPtr displayNode = RSDisplayNode::Create(c);
+    ASSERT_TRUE(displayNode != nullptr);
+    EXPECT_FALSE(displayNode->GetSecurityDisplay());
+}
 } // namespace OHOS::Rosen

@@ -476,6 +476,44 @@ HWTEST_F(RSSurfaceNodeTest, SetandGetBoundsHeight005, TestSize.Level1)
 }
 
 /**
+ * @tc.name: SetSecurityLayer001
+ * @tc.desc:
+ * @tc.type:FUNC
+ */
+HWTEST_F(RSSurfaceNodeTest, SetSecurityLayer001, TestSize.Level1)
+{
+    RSSurfaceNodeConfig c;
+    RSSurfaceNode::SharedPtr surfaceNode = RSSurfaceNode::Create(c);
+    surfaceNode->SetSecurityLayer(true);
+    EXPECT_TRUE(surfaceNode->GetSecurityLayer());
+}
+
+/**
+ * @tc.name: SetSecurityLayer002
+ * @tc.desc:
+ * @tc.type:FUNC
+ */
+HWTEST_F(RSSurfaceNodeTest, SetSecurityLayer002, TestSize.Level1)
+{
+    RSSurfaceNodeConfig c;
+    RSSurfaceNode::SharedPtr surfaceNode = RSSurfaceNode::Create(c);
+    surfaceNode->SetSecurityLayer(false);
+    EXPECT_FALSE(surfaceNode->GetSecurityLayer());
+}
+
+/**
+ * @tc.name: GetSecurityLayer001
+ * @tc.desc:
+ * @tc.type:FUNC
+ */
+HWTEST_F(RSSurfaceNodeTest, GetSecurityLayer001, TestSize.Level1)
+{
+    RSSurfaceNodeConfig c;
+    RSSurfaceNode::SharedPtr surfaceNode = RSSurfaceNode::Create(c);
+    EXPECT_FALSE(surfaceNode->GetSecurityLayer());
+}
+
+/**
  * @tc.name: Marshalling001
  * @tc.desc:
  * @tc.type:FUNC

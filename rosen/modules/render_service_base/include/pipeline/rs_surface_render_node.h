@@ -102,6 +102,9 @@ public:
 
     void SetClipRegion(Vector4f clipRegion, bool sendMsg = true);
 
+    void SetSecurityLayer(bool isSecurityLayer);
+    bool GetSecurityLayer() const;
+
     const Vector4f& GetClipRegion() const
     {
         return clipRect_;
@@ -158,6 +161,7 @@ private:
     SkMatrix matrix_;
     float alpha_ = 1.0f;
     float globalZOrder_ = 0.0f;
+    bool isSecurityLayer_ = false;
     NodeId parentId_ = 0;
     sptr<SurfaceBuffer> buffer_;
     sptr<SurfaceBuffer> preBuffer_;
