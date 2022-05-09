@@ -38,11 +38,9 @@ SkCanvas* RSProcessor::CreateCanvas(
     }
 
 #ifdef RS_ENABLE_GL
-    if (renderContext_ == nullptr) {
-        RS_LOGE("RSProcessor::CreateCanvas: render context is null!");
-        return nullptr;
+    if (renderContext_ != nullptr) {
+        surface->SetRenderContext(renderContext_.get());
     }
-    surface->SetRenderContext(renderContext_.get());
 #endif
 
     currFrame_ = surface->RequestFrame(requestConfig.width, requestConfig.height);
