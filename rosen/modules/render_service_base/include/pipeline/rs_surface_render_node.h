@@ -116,6 +116,15 @@ public:
         offsetY_ = offsetY;
     }
 
+    void SetProxy()
+    {
+        isProxy_ = true;
+    }
+    bool IsProxy() const
+    {
+        return isProxy_;
+    }
+
     void Prepare(const std::shared_ptr<RSNodeVisitor>& visitor) override;
     void Process(const std::shared_ptr<RSNodeVisitor>& visitor) override;
 
@@ -220,6 +229,7 @@ private:
     float globalAlpha_ = 1.0f;
     Vector4f clipRect_;
     std::string name_;
+    bool isProxy_ = false;
     BlendType blendType_ = BlendType::BLEND_SRCOVER;
     std::atomic<bool> isBufferAvailable_ = false;
     sptr<RSIBufferAvailableCallback> callbackFromRT_;
