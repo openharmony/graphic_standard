@@ -60,7 +60,7 @@ RSSurfaceNode::SharedPtr RSSurfaceNode::Create(const RSSurfaceNodeConfig& surfac
     return node;
 }
 
-void RSSurfaceNode::CreateNodeInRenderThread()
+void RSSurfaceNode::CreateNodeInRenderThread(bool isProxy)
 {
     if (!IsRenderServiceNode()) {
         ROSEN_LOGI("RsDebug RSSurfaceNode::CreateNodeInRenderThread id:%llu already has RT Node", GetId());
@@ -71,7 +71,11 @@ void RSSurfaceNode::CreateNodeInRenderThread()
     if (transactionProxy != nullptr) {
         transactionProxy->AddCommand(command, false);
     }
-    command = std::make_unique<RSSurfaceNodeConnectToNodeInRenderService>(GetId());
+    if (isProxy) {
+        command = std::make_unique<RSSurfaceNodeSetProxy>(GetId());
+    } else {
+        command = std::make_unique<RSSurfaceNodeConnectToNodeInRenderService>(GetId());
+    }
     if (transactionProxy != nullptr) {
         transactionProxy->AddCommand(command, false);
     }

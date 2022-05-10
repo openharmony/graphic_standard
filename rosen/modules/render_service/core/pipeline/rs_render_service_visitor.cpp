@@ -140,7 +140,7 @@ void RSRenderServiceVisitor::PrepareSurfaceRenderNode(RSSurfaceRenderNode& node)
         return;
     }
     if (!node.GetRenderProperties().GetVisible()) {
-        RS_LOGI("RSRenderServiceVisitor::PrepareSurfaceRenderNode node : %llu is unvisible", node.GetId());
+        RS_LOGI("RSRenderServiceVisitor::PrepareSurfaceRenderNode node : %llu is invisible", node.GetId());
         return;
     }
     auto currentGeoPtr = std::static_pointer_cast<RSObjAbsGeometry>(node.GetRenderProperties().GetBoundsGeometry());
@@ -184,7 +184,7 @@ void RSRenderServiceVisitor::ProcessSurfaceRenderNode(RSSurfaceRenderNode& node)
         return;
     }
     if (!node.GetRenderProperties().GetVisible()) {
-        RS_LOGI("RSRenderServiceVisitor::ProcessSurfaceRenderNode node : %llu is unvisible", node.GetId());
+        RS_LOGI("RSRenderServiceVisitor::ProcessSurfaceRenderNode node : %llu is invisible", node.GetId());
         return;
     }
     canvas_->save();
