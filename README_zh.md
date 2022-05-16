@@ -2,10 +2,6 @@
 
 -   [简介](#简介)
 -   [目录](#目录)
--   [约束](#约束)
--   [编译构建](#编译构建)
--   [接口说明](#接口说明)
--   [使用说明](#使用说明)
 -   [相关仓](#相关仓)
 
 ## 简介
@@ -18,7 +14,7 @@
 
 OpenHarmony 图形栈的分层说明如下：
 
-• 接口层：提供图形的 NDK（native development kit，原生开发包）能力，包括：WebGL、Native Drawing的绘制能力、OpenGL 指令级的绘制能力支撑等。
+• 接口层：提供图形的 Native API能力，包括：WebGL、Native Drawing的绘制能力、OpenGL 指令级的绘制能力支撑等。
 
 • 框架层：分为 Render Service、Drawing、Animation、Effect、显示与内存管理五个模块。
 | 模块                     | 能力描述                                                                                       |
@@ -57,17 +53,6 @@ foundation/graphic/graphic/
 │   └── kits                # js/napi外部接口存放目录
 └── utils                   # 小部件存放目录
 ```
-
-## 约束
-
-
-## 编译构建
-
-
-## 接口说明
-
-
-## 使用说明
 
 
 ## 相关仓
