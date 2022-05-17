@@ -101,7 +101,7 @@ void RSMainThread::Render()
         RS_LOGE("RSMainThread::Draw GetGlobalRootRenderNode fail");
         return;
     }
-    bool isUniRender = RSSystemProperties::GetUniRenderEnabledType() != UniRenderEnabledType::UNI_RENDER_DISABLED;
+    static bool isUniRender = RSSystemProperties::GetUniRenderEnabledType() != UniRenderEnabledType::UNI_RENDER_DISABLED;
     std::shared_ptr<RSNodeVisitor> visitor;
     if (isUniRender) {
         RS_LOGI("RSMainThread::Render isUni");

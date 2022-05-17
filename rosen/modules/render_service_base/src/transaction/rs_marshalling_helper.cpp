@@ -14,13 +14,27 @@
  */
 
 #include "transaction/rs_marshalling_helper.h"
+
+#include <memory>
+#include <message_parcel.h>
 #include <sys/mman.h>
 #include <unistd.h>
-#include "ashmem.h"
-#include "securec.h"
 
-#include <message_parcel.h>
+#include "ashmem.h"
+#include "include/core/SkDrawable.h"
+#include "include/core/SkImage.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkPicture.h"
+#include "include/core/SkSerialProcs.h"
+#include "include/core/SkTextBlob.h"
+#include "include/core/SkVertices.h"
+#include "securec.h"
+#include "src/core/SkAutoMalloc.h"
+#include "src/core/SkPaintPriv.h"
+#include "src/core/SkReadBuffer.h"
+#include "src/core/SkWriteBuffer.h"
 #include "src/image/SkImage_Base.h"
+
 #include "animation/rs_render_curve_animation.h"
 #include "animation/rs_render_keyframe_animation.h"
 #include "animation/rs_render_path_animation.h"
@@ -28,26 +42,12 @@
 #include "common/rs_color.h"
 #include "common/rs_matrix3.h"
 #include "common/rs_vector4.h"
-#include "include/core/SkPaint.h"
+#include "pipeline/rs_draw_cmd_list.h"
+#include "platform/common/rs_log.h"
 #include "render/rs_blur_filter.h"
 #include "render/rs_filter.h"
 #include "render/rs_path.h"
 #include "render/rs_shader.h"
-#include "pipeline/rs_draw_cmd_list.h"
-#include "platform/common/rs_log.h"
-
-#include "src/core/SkAutoMalloc.h"
-#include "src/core/SkPaintPriv.h"
-#include "src/core/SkReadBuffer.h"
-#include "src/core/SkWriteBuffer.h"
-#include "include/core/SkTextBlob.h"
-#include "include/core/SkImage.h"
-#include "include/core/SkSerialProcs.h"
-#include "include/core/SkPicture.h"
-#include "include/core/SkDrawable.h"
-#include "include/core/SkVertices.h"
-
-#include <memory>
 
 #ifdef ROSEN_OHOS
 namespace OHOS {
@@ -567,17 +567,17 @@ MARSHALLING_AND_UNMARSHALLING(RSRenderKeyframeAnimation)
     template bool RSMarshallingHelper::Marshalling(Parcel& parcel, const std::shared_ptr<TEMPLATE<TYPE>>& val); \
     template bool RSMarshallingHelper::Unmarshalling(Parcel& parcel, std::shared_ptr<TEMPLATE<TYPE>>& val);
 
-#define BATCH_EXPLICIT_INSTANTIATION(TEMPLATE) \
-    EXPLICIT_INSTANTIATION(TEMPLATE, int)      \
-    EXPLICIT_INSTANTIATION(TEMPLATE, float)    \
-    EXPLICIT_INSTANTIATION(TEMPLATE, Color)    \
-    EXPLICIT_INSTANTIATION(TEMPLATE, Matrix3f) \
-    EXPLICIT_INSTANTIATION(TEMPLATE, Vector2f) \
-    EXPLICIT_INSTANTIATION(TEMPLATE, Vector4f) \
-    EXPLICIT_INSTANTIATION(TEMPLATE, Quaternion) \
+#define BATCH_EXPLICIT_INSTANTIATION(TEMPLATE)                  \
+    EXPLICIT_INSTANTIATION(TEMPLATE, int)                       \
+    EXPLICIT_INSTANTIATION(TEMPLATE, float)                     \
+    EXPLICIT_INSTANTIATION(TEMPLATE, Color)                     \
+    EXPLICIT_INSTANTIATION(TEMPLATE, Matrix3f)                  \
+    EXPLICIT_INSTANTIATION(TEMPLATE, Vector2f)                  \
+    EXPLICIT_INSTANTIATION(TEMPLATE, Vector4f)                  \
+    EXPLICIT_INSTANTIATION(TEMPLATE, Quaternion)                \
     EXPLICIT_INSTANTIATION(TEMPLATE, std::shared_ptr<RSFilter>) \
     EXPLICIT_INSTANTIATION(TEMPLATE, Vector4<Color>)
-    // [PLANNING]:complete the marshing and unmarshalling
+// [PLANNING]:complete the marshing and unmarshalling
 // EXPLICIT_INSTANTIATION(TEMPLATE, std::shared_ptr<RSFilter>)
 
 BATCH_EXPLICIT_INSTANTIATION(RSRenderCurveAnimation)
@@ -632,7 +632,7 @@ void RSMarshallingHelper::ReleaseMemory(void* data, int* fd, size_t size)
     }
 }
 
-bool RSMarshallingHelper::WriteToParcel(Parcel &parcel, const void* data, size_t size)
+bool RSMarshallingHelper::WriteToParcel(Parcel& parcel, const void* data, size_t size)
 {
     if (data == nullptr) {
         ROSEN_LOGE("RSMarshallingHelper::WriteToParcel data is nullptr");
@@ -663,7 +663,7 @@ bool RSMarshallingHelper::WriteToParcel(Parcel &parcel, const void* data, size_t
         ROSEN_LOGE("RSMarshallingHelper::WriteToParcel result:%d", result);
         return false;
     }
-    void *ptr = ::mmap(nullptr, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+    void* ptr = ::mmap(nullptr, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
     if (ptr == MAP_FAILED) {
         ROSEN_LOGE("RSMarshallingHelper::WriteToParcel MAP_FAILED");
         return false;
@@ -707,13 +707,13 @@ const void* RSMarshallingHelper::ReadFromParcel(Parcel& parcel, size_t size)
         return nullptr;
     }
 
-    void *ptr = ::mmap(nullptr, size, PROT_READ, MAP_SHARED, fd, 0);
+    void* ptr = ::mmap(nullptr, size, PROT_READ, MAP_SHARED, fd, 0);
     if (ptr == MAP_FAILED) {
         // do not close fd here. fd will be closed in FileDescriptor, ::close(fd)
         ROSEN_LOGE("RSMarshallingHelper::ReadFromParcel MAP_FAILED");
         return nullptr;
     }
-    uint8_t *base = static_cast<uint8_t *>(malloc(size));
+    uint8_t* base = static_cast<uint8_t*>(malloc(size));
     if (base == nullptr) {
         ROSEN_LOGE("RSMarshallingHelper::ReadFromParcel malloc(size) failed");
         return nullptr;

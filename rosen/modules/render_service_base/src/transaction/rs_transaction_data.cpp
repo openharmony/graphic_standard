@@ -44,6 +44,7 @@ bool RSTransactionData::Marshalling(Parcel& parcel) const
         success &= command->Marshalling(parcel);
         if (!success) {
             ROSEN_LOGE("failed RSTransactionData::Marshalling type:%s", command->PrintType().c_str());
+            break;
         }
     }
 

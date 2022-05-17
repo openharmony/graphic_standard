@@ -26,24 +26,25 @@
 template<typename T>
 class sk_sp;
 class SkData;
-class SkFlattenable;
-class SkPath;
-class SkTextBlob;
-class SkImage;
-class SkPaint;
-class SkRegion;
-class SkPicture;
 class SkDrawable;
+class SkFlattenable;
+class SkImage;
 class SkImageFilter;
+class SkPaint;
+class SkPath;
+class SkPicture;
+class SkRegion;
+class SkTextBlob;
 class SkVertices;
 
 namespace OHOS {
 namespace Rosen {
+class DrawCmdList;
 class RSFilter;
+class RSImage;
 class RSMask;
 class RSPath;
 class RSShader;
-class RSImage;
 template<typename T>
 class RSRenderCurveAnimation;
 template<typename T>
@@ -51,7 +52,6 @@ class RSRenderKeyframeAnimation;
 class RSRenderPathAnimation;
 class RSRenderTransition;
 class RSRenderTransitionEffect;
-class DrawCmdList;
 
 class RSMarshallingHelper {
 public:

@@ -39,41 +39,41 @@ class RSPaintFilterCanvas;
 
 enum RSOpType : uint16_t {
     OPITEM,
-    OPITEMWITHPAINT,
-    RECTOPITEM,
-    ROUNDRECTOPITEM,
-    IMAGEWITHPARMOPITEM,
-    DRRECTOPITEM,
-    OVALOPITEM,
-    REGIONOPITEM,
-    ARCOPITEM,
-    SAVEOPITEM,
-    RESTOREOPITEM,
-    FLUSHOPITEM,
-    MATRIXOPITEM,
-    CLIPRECTOPITEM,
-    CLIPRRECTOPITEM,
-    CLIPREGIONOPITEM,
-    TRANSLATEOPITEM,
-    TEXTBLOBOPITEM,
-    BITMAPOPITEM,
-    BITMAPRECTOPITEM,
-    BITMAPLATTICEOPITEM, // marshalling func planning to be implemented
-    BITMAPNINEOPITEM,
-    ADAPTIVERRECTOPITEM,
-    CLIPADAPTIVERRECTOPITEM,
-    PATHOPITEM,
-    CLIPPATHOPITEM,
-    PAINTOPITEM,
-    CONCATOPITEM,
-    SAVELAYEROPITEM,
-    DRAWABLEOPITEM,
-    PICTUREOPITEM,
-    POINTSOPITEM,
-    VERTICESOPITEM,
-    MULTIPLYALPHAOPITEM,
-    SAVEALPHAOPITEM,
-    RESTOREALPHAOPITEM,
+    OPITEM_WITH_PAINT,
+    RECT_OPITEM,
+    ROUND_RECT_OPITEM,
+    IMAGE_WITH_PARM_OPITEM,
+    DRRECT_OPITEM,
+    OVAL_OPITEM,
+    REGION_OPITEM,
+    ARC_OPITEM,
+    SAVE_OPITEM,
+    RESTORE_OPITEM,
+    FLUSH_OPITEM,
+    MATRIX_OPITEM,
+    CLIP_RECT_OPITEM,
+    CLIP_RRECT_OPITEM,
+    CLIP_REGION_OPITEM,
+    TRANSLATE_OPITEM,
+    TEXTBLOB_OPITEM,
+    BITMAP_OPITEM,
+    BITMAP_RECT_OPITEM,
+    BITMAP_LATTICE_OPITEM, // marshalling func planning to be implemented
+    BITMAP_NINE_OPITEM,
+    ADAPTIVE_RRECT_OPITEM,
+    CLIP_ADAPTIVE_RRECT_OPITEM,
+    PATH_OPITEM,
+    CLIP_PATH_OPITEM,
+    PAINT_OPITEM,
+    CONCAT_OPITEM,
+    SAVE_LAYER_OPITEM,
+    DRAWABLE_OPITEM,
+    PICTURE_OPITEM,
+    POINTS_OPITEM,
+    VERTICES_OPITEM,
+    MULTIPLY_ALPHA_OPITEM,
+    SAVE_ALPHA_OPITEM,
+    RESTORE_ALPHA_OPITEM,
 };
 
 #ifdef ROSEN_OHOS
@@ -107,7 +107,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::OPITEMWITHPAINT;
+        return RSOpType::OPITEM_WITH_PAINT;
     }
 
 protected:
@@ -122,7 +122,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::RECTOPITEM;
+        return RSOpType::RECT_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -142,7 +142,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::ROUNDRECTOPITEM;
+        return RSOpType::ROUND_RECT_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -164,7 +164,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::IMAGEWITHPARMOPITEM;
+        return RSOpType::IMAGE_WITH_PARM_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -184,7 +184,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::DRRECTOPITEM;
+        return RSOpType::DRRECT_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -205,7 +205,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::OVALOPITEM;
+        return RSOpType::OVAL_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -225,7 +225,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::REGIONOPITEM;
+        return RSOpType::REGION_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -245,7 +245,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::ARCOPITEM;
+        return RSOpType::ARC_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -268,7 +268,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::SAVEOPITEM;
+        return RSOpType::SAVE_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -284,7 +284,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::RESTOREOPITEM;
+        return RSOpType::RESTORE_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -300,7 +300,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::FLUSHOPITEM;
+        return RSOpType::FLUSH_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -316,7 +316,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::MATRIXOPITEM;
+        return RSOpType::MATRIX_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -336,7 +336,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::CLIPRECTOPITEM;
+        return RSOpType::CLIP_RECT_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -358,7 +358,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::CLIPRRECTOPITEM;
+        return RSOpType::CLIP_RRECT_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -380,7 +380,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::CLIPREGIONOPITEM;
+        return RSOpType::CLIP_REGION_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -401,7 +401,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::TRANSLATEOPITEM;
+        return RSOpType::TRANSLATE_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -422,7 +422,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::TEXTBLOBOPITEM;
+        return RSOpType::TEXTBLOB_OPITEM;
     }
 #ifdef ROSEN_OHOS
     bool Marshalling(Parcel& parcel) const override;
@@ -443,7 +443,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::BITMAPOPITEM;
+        return RSOpType::BITMAP_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -466,7 +466,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::BITMAPRECTOPITEM;
+        return RSOpType::BITMAP_RECT_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -489,7 +489,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::BITMAPLATTICEOPITEM;
+        return RSOpType::BITMAP_LATTICE_OPITEM;
     }
 
 private:
@@ -507,7 +507,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::BITMAPNINEOPITEM;
+        return RSOpType::BITMAP_NINE_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -529,7 +529,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::ADAPTIVERRECTOPITEM;
+        return RSOpType::ADAPTIVE_RRECT_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -550,7 +550,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::CLIPADAPTIVERRECTOPITEM;
+        return RSOpType::CLIP_ADAPTIVE_RRECT_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -570,7 +570,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::PATHOPITEM;
+        return RSOpType::PATH_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -590,7 +590,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::CLIPPATHOPITEM;
+        return RSOpType::CLIP_PATH_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -612,7 +612,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::PAINTOPITEM;
+        return RSOpType::PAINT_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -629,7 +629,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::CONCATOPITEM;
+        return RSOpType::CONCAT_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -649,7 +649,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::SAVELAYEROPITEM;
+        return RSOpType::SAVE_LAYER_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -674,7 +674,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::DRAWABLEOPITEM;
+        return RSOpType::DRAWABLE_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -695,7 +695,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::PICTUREOPITEM;
+        return RSOpType::PICTURE_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -719,7 +719,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::POINTSOPITEM;
+        return RSOpType::POINTS_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -742,7 +742,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::VERTICESOPITEM;
+        return RSOpType::VERTICES_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -765,7 +765,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::MULTIPLYALPHAOPITEM;
+        return RSOpType::MULTIPLY_ALPHA_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -785,7 +785,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::SAVEALPHAOPITEM;
+        return RSOpType::SAVE_ALPHA_OPITEM;
     }
 
 #ifdef ROSEN_OHOS
@@ -801,7 +801,7 @@ public:
 
     RSOpType GetType() const override
     {
-        return RSOpType::RESTOREALPHAOPITEM;
+        return RSOpType::RESTORE_ALPHA_OPITEM;
     }
 
 #ifdef ROSEN_OHOS

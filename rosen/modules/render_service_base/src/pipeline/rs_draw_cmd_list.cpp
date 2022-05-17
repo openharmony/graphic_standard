@@ -24,42 +24,43 @@
 
 namespace OHOS {
 namespace Rosen {
+#ifdef ROSEN_OHOS
 using OpUnmarshallingFunc = OpItem* (*)(Parcel& parcel);
 
 static std::unordered_map<RSOpType, OpUnmarshallingFunc> opUnmarshallingFuncLUT = {
-    { RECTOPITEM,               RectOpItem::Unmarshalling },
-    { ROUNDRECTOPITEM,          RoundRectOpItem::Unmarshalling },
-    { IMAGEWITHPARMOPITEM,      ImageWithParmOpItem::Unmarshalling },
-    { DRRECTOPITEM,             DRRectOpItem::Unmarshalling },
-    { OVALOPITEM,               OvalOpItem::Unmarshalling },
-    { REGIONOPITEM,             RegionOpItem::Unmarshalling },
-    { ARCOPITEM,                ArcOpItem::Unmarshalling },
-    { SAVEOPITEM,               SaveOpItem::Unmarshalling },
-    { RESTOREOPITEM,            RestoreOpItem::Unmarshalling },
-    { FLUSHOPITEM,              FlushOpItem::Unmarshalling },
-    { MATRIXOPITEM,             MatrixOpItem::Unmarshalling },
-    { CLIPRECTOPITEM,           ClipRectOpItem::Unmarshalling },
-    { CLIPRRECTOPITEM,          ClipRRectOpItem::Unmarshalling },
-    { CLIPREGIONOPITEM,         ClipRegionOpItem::Unmarshalling },
-    { TRANSLATEOPITEM,          TranslateOpItem::Unmarshalling },
-    { TEXTBLOBOPITEM,           TextBlobOpItem::Unmarshalling },
-    { BITMAPOPITEM,             BitmapOpItem::Unmarshalling },
-    { BITMAPRECTOPITEM,         BitmapRectOpItem::Unmarshalling },
-    { BITMAPNINEOPITEM,         BitmapNineOpItem::Unmarshalling },
-    { ADAPTIVERRECTOPITEM,      AdaptiveRRectOpItem::Unmarshalling },
-    { CLIPADAPTIVERRECTOPITEM,  ClipAdaptiveRRectOpItem::Unmarshalling },
-    { PATHOPITEM,               PathOpItem::Unmarshalling },
-    { CLIPPATHOPITEM,           ClipPathOpItem::Unmarshalling },
-    { PAINTOPITEM,              PaintOpItem::Unmarshalling },
-    { CONCATOPITEM,             ConcatOpItem::Unmarshalling },
-    { SAVELAYEROPITEM,          SaveLayerOpItem::Unmarshalling },
-    { DRAWABLEOPITEM,           DrawableOpItem::Unmarshalling },
-    { PICTUREOPITEM,            PictureOpItem::Unmarshalling },
-    { POINTSOPITEM,             PointsOpItem::Unmarshalling },
-    { VERTICESOPITEM,           VerticesOpItem::Unmarshalling },
-    { MULTIPLYALPHAOPITEM,      MultiplyAlphaOpItem::Unmarshalling },
-    { SAVEALPHAOPITEM,          SaveAlphaOpItem::Unmarshalling },
-    { RESTOREALPHAOPITEM,       RestoreAlphaOpItem::Unmarshalling },
+    { RECT_OPITEM,                 RectOpItem::Unmarshalling },
+    { ROUND_RECT_OPITEM,           RoundRectOpItem::Unmarshalling },
+    { IMAGE_WITH_PARM_OPITEM,      ImageWithParmOpItem::Unmarshalling },
+    { DRRECT_OPITEM,               DRRectOpItem::Unmarshalling },
+    { OVAL_OPITEM,                 OvalOpItem::Unmarshalling },
+    { REGION_OPITEM,               RegionOpItem::Unmarshalling },
+    { ARC_OPITEM,                  ArcOpItem::Unmarshalling },
+    { SAVE_OPITEM,                 SaveOpItem::Unmarshalling },
+    { RESTORE_OPITEM,              RestoreOpItem::Unmarshalling },
+    { FLUSH_OPITEM,                FlushOpItem::Unmarshalling },
+    { MATRIX_OPITEM,               MatrixOpItem::Unmarshalling },
+    { CLIP_RECT_OPITEM,            ClipRectOpItem::Unmarshalling },
+    { CLIP_RRECT_OPITEM,           ClipRRectOpItem::Unmarshalling },
+    { CLIP_REGION_OPITEM,          ClipRegionOpItem::Unmarshalling },
+    { TRANSLATE_OPITEM,            TranslateOpItem::Unmarshalling },
+    { TEXTBLOB_OPITEM,             TextBlobOpItem::Unmarshalling },
+    { BITMAP_OPITEM,               BitmapOpItem::Unmarshalling },
+    { BITMAP_RECT_OPITEM,          BitmapRectOpItem::Unmarshalling },
+    { BITMAP_NINE_OPITEM,          BitmapNineOpItem::Unmarshalling },
+    { ADAPTIVE_RRECT_OPITEM,       AdaptiveRRectOpItem::Unmarshalling },
+    { CLIP_ADAPTIVE_RRECT_OPITEM,  ClipAdaptiveRRectOpItem::Unmarshalling },
+    { PATH_OPITEM,                 PathOpItem::Unmarshalling },
+    { CLIP_PATH_OPITEM,            ClipPathOpItem::Unmarshalling },
+    { PAINT_OPITEM,                PaintOpItem::Unmarshalling },
+    { CONCAT_OPITEM,               ConcatOpItem::Unmarshalling },
+    { SAVE_LAYER_OPITEM,           SaveLayerOpItem::Unmarshalling },
+    { DRAWABLE_OPITEM,             DrawableOpItem::Unmarshalling },
+    { PICTURE_OPITEM,              PictureOpItem::Unmarshalling },
+    { POINTS_OPITEM,               PointsOpItem::Unmarshalling },
+    { VERTICES_OPITEM,             VerticesOpItem::Unmarshalling },
+    { MULTIPLY_ALPHA_OPITEM,       MultiplyAlphaOpItem::Unmarshalling },
+    { SAVE_ALPHA_OPITEM,           SaveAlphaOpItem::Unmarshalling },
+    { RESTORE_ALPHA_OPITEM,        RestoreAlphaOpItem::Unmarshalling },
 };
 
 static OpUnmarshallingFunc GetOpUnmarshallingFunc(RSOpType type)
@@ -70,6 +71,7 @@ static OpUnmarshallingFunc GetOpUnmarshallingFunc(RSOpType type)
     }
     return it->second;
 }
+#endif
 
 DrawCmdList::DrawCmdList(int w, int h) : width_(w), height_(h) {}
 

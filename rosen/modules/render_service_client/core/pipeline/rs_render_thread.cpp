@@ -83,8 +83,8 @@ RSRenderThread::RSRenderThread()
     renderContext_ = new RenderContext();
     ROSEN_LOGD("Create RenderContext, its pointer is %p", renderContext_);
 #endif
-    isUni_ = RSSystemProperties::GetUniRenderEnabledType() != UniRenderEnabledType::UNI_RENDER_DISABLED;
-    if (isUni_) {
+    isUniRenderEnabled_ = RSSystemProperties::GetUniRenderEnabledType() != UniRenderEnabledType::UNI_RENDER_DISABLED;
+    if (isUniRenderEnabled_) {
         ROSEN_LOGD("RSRenderThread is invalid under UniRender");
         return;
     }
@@ -131,7 +131,7 @@ RSRenderThread::~RSRenderThread()
 
 void RSRenderThread::Start()
 {
-    if (isUni_) {
+    if (isUniRenderEnabled_) {
         ROSEN_LOGD("RSRenderThread start is invalid under UniRender");
         return;
     }
@@ -155,7 +155,7 @@ void RSRenderThread::Start()
 
 void RSRenderThread::Stop()
 {
-    if (isUni_) {
+    if (isUniRenderEnabled_) {
         ROSEN_LOGD("RSRenderThread stop is invalid under UniRender");
         return;
     }
