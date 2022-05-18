@@ -16,6 +16,8 @@
 #include "pipeline/rs_display_render_node.h"
 
 #include "platform/common/rs_log.h"
+#include "platform/ohos/backend/rs_surface_ohos_gl.h"
+#include "platform/ohos/backend/rs_surface_ohos_raster.h"
 #include "visitor/rs_node_visitor.h"
 
 namespace OHOS {
@@ -86,5 +88,37 @@ bool RSDisplayRenderNode::GetSecurityDisplay() const
     return isSecurityDisplay_;
 }
 
+bool RSDisplayRenderNode::CreateSurface(sptr<IBufferConsumerListener> listener)
+{
+    if (consumer_ != nullptr && surface_ != nullptr) {
+        RS_LOGI("RSDisplayRenderNode::CreateSurface already created, return");
+        return true;
+    }
+    consumer_ = Surface::CreateSurfaceAsConsumer("DisplayNode");
+    if (consumer_ == nullptr) {
+        RS_LOGE("RSDisplayRenderNode::CreateSurface get consumer surface fail");
+        return false;
+    }
+    SurfaceError ret = consumer_->RegisterConsumerListener(listener);
+    if (ret != SURFACE_ERROR_OK) {
+        RS_LOGE("RSDisplayRenderNode::CreateSurface RegisterConsumerListener fail");
+        return false;
+    }
+    consumerListener_ = listener;
+    auto producer = consumer_->GetProducer();
+    sptr<Surface> surface = Surface::CreateSurfaceAsProducer(producer);
+
+#ifdef ACE_ENABLE_GL
+    // GPU render
+    surface_ = std::make_shared<RSSurfaceOhosGl>(surface);
+#else
+    // CPU render
+    surface_ = std::make_shared<RSSurfaceOhosRaster>(surface);
+#endif
+
+    RS_LOGI("RSDisplayRenderNode::CreateSurface end");
+    surfaceCreated_ = true;
+    return true;
+}
 } // namespace Rosen
 } // namespace OHOS

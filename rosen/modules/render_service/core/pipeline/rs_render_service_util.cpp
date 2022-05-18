@@ -19,6 +19,7 @@
 #include "display_type.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkRect.h"
+#include "pipeline/rs_main_thread.h"
 #include "common/rs_vector2.h"
 #include "pipeline/rs_paint_filter_canvas.h"
 #include "platform/common/rs_log.h"
@@ -531,7 +532,7 @@ bool ConvertYUV420SPToRGBA(std::vector<uint8_t>& rgbaBuf, const sptr<OHOS::Surfa
 bool RsRenderServiceUtil::enableClient = false;
 
 void RsRenderServiceUtil::ComposeSurface(std::shared_ptr<HdiLayerInfo> layer, sptr<Surface> consumerSurface,
-    std::vector<LayerInfoPtr>& layers, ComposeInfo info, RSSurfaceRenderNode* node)
+    std::vector<LayerInfoPtr>& layers, ComposeInfo info, RSBaseRenderNode* node)
 {
     layer->SetSurface(consumerSurface);
     layer->SetBuffer(info.buffer, info.fence, info.preBuffer, info.preFence);
@@ -539,13 +540,117 @@ void RsRenderServiceUtil::ComposeSurface(std::shared_ptr<HdiLayerInfo> layer, sp
     layer->SetAlpha(info.alpha);
     layer->SetLayerSize(info.dstRect);
     layer->SetLayerAdditionalInfo(node);
-    layer->SetCompositionType(IsNeedClient(node) ?
-        CompositionType::COMPOSITION_CLIENT : CompositionType::COMPOSITION_DEVICE);
+
+    if (node->IsInstanceOf<RSSurfaceRenderNode>()) {
+        layer->SetCompositionType(IsNeedClient(static_cast<RSSurfaceRenderNode*>(node)) ?
+            CompositionType::COMPOSITION_CLIENT : CompositionType::COMPOSITION_DEVICE);
+    } else {
+        layer->SetCompositionType(CompositionType::COMPOSITION_DEVICE);
+    }
+
     layer->SetVisibleRegion(1, info.visibleRect);
     layer->SetDirtyRegion(info.srcRect);
     layer->SetBlendType(info.blendType);
     layer->SetCropRect(info.srcRect);
     layers.emplace_back(layer);
+}
+
+void RsRenderServiceUtil::DropFrameProcess(RSSurfaceHandler& node)
+{
+    auto availableBufferCnt = node.GetAvailableBufferCount();
+    RS_LOGI("RsDebug RsRenderServiceUtil::DropFrameProcess start node:%llu available buffer:%d", node.GetId(),
+        availableBufferCnt);
+
+    const auto& surfaceConsumer = node.GetConsumer();
+    if (surfaceConsumer == nullptr) {
+        RS_LOGE("RsDebug RsRenderServiceUtil::DropFrameProcess (node: %llu): surfaceConsumer is null!", node.GetId());
+        return;
+    }
+
+    // availableBufferCnt>= 2 means QueueSize >=2 too
+    if (availableBufferCnt >= 2 && surfaceConsumer->GetQueueSize() == static_cast<uint32_t>(availableBufferCnt)) {
+        RS_LOGI("RsRenderServiceUtil::DropFrameProcess(node: %llu) queueBlock, start to drop one frame", node.GetId());
+        OHOS::sptr<SurfaceBuffer> cbuffer;
+        Rect damage;
+        sptr<SyncFence> acquireFence = SyncFence::INVALID_FENCE;
+        int64_t timestamp = 0;
+        auto ret = surfaceConsumer->AcquireBuffer(cbuffer, acquireFence, timestamp, damage);
+        if (ret != OHOS::SURFACE_ERROR_OK) {
+            RS_LOGW("RsRenderServiceUtil::DropFrameProcess(node: %llu): AcquireBuffer failed(ret: %d), do nothing ",
+                node.GetId(), ret);
+            return;
+        }
+
+        ret = surfaceConsumer->ReleaseBuffer(cbuffer, SyncFence::INVALID_FENCE);
+        if (ret != OHOS::SURFACE_ERROR_OK) {
+            RS_LOGW("RsRenderServiceUtil::DropFrameProcess(node: %llu): ReleaseBuffer failed(ret: %d), Acquire done ",
+                node.GetId(), ret);
+            return;
+        }
+        availableBufferCnt = node.ReduceAvailableBuffer();
+        RS_LOGI("RsDebug RsRenderServiceUtil::DropFrameProcess (node: %llu), drop one frame finished", node.GetId());
+    }
+
+    return;
+}
+
+bool RsRenderServiceUtil::ConsumeAndUpdateBuffer(RSSurfaceHandler& node, bool toReleaseBuffer)
+{
+    DropFrameProcess(node);
+
+    sptr<SurfaceBuffer> buffer;
+    sptr<SyncFence> acquireFence = SyncFence::INVALID_FENCE;
+    Rect damage = {0};
+    const auto& surfaceConsumer = node.GetConsumer();
+
+    auto availableBufferCnt = node.GetAvailableBufferCount();
+    if (availableBufferCnt == 0) {
+        RS_LOGD("RsRenderServiceUtil::ConsumeAndUpdateBuffer(node:%llu): no new buffer, try old buffer", node.GetId());
+        buffer = node.GetBuffer();
+        acquireFence = node.GetFence();
+        damage = node.GetDamageRegion();
+    } else {
+        if (surfaceConsumer == nullptr) {
+            RS_LOGE("RsRenderServiceUtil::ConsumeAndUpdateBuffer(node: %llu): surfaceConsumer is null!", node.GetId());
+            return false;
+        }
+
+        sptr<SyncFence> acquireFence = SyncFence::INVALID_FENCE;
+        int64_t timestamp = 0;
+        auto ret = surfaceConsumer->AcquireBuffer(buffer, acquireFence, timestamp, damage);
+        if (ret != OHOS::SURFACE_ERROR_OK) {
+            RS_LOGW("RsRenderServiceUtil::ConsumeAndUpdateBuffer (node: %llu): AcquireBuffer failed (ret: %d)," \
+                "try old buffer", node.GetId(), ret);
+            buffer = node.GetBuffer();
+            acquireFence = node.GetFence();
+            damage = node.GetDamageRegion();
+        } else {
+            availableBufferCnt = node.ReduceAvailableBuffer();
+        }
+    }
+
+    if (buffer == nullptr) {
+        RS_LOGE("RsRenderServiceUtil::ConsumeAndUpdateBuffer(node: %llu): no available buffer!", node.GetId());
+        return false;
+    }
+
+    if (toReleaseBuffer && node.GetBuffer() != nullptr && node.GetBuffer() != buffer) {
+        SurfaceError ret = surfaceConsumer->ReleaseBuffer(node.GetBuffer(), -1);
+        if (ret != SURFACE_ERROR_OK) {
+            RS_LOGE("RsRenderServiceUtil::ConsumeAndUpdateBuffer ReleaseBuffer error:%d.", ret);
+            return false;
+        }
+    }
+    node.SetBuffer(buffer);
+    node.SetFence(acquireFence);
+    node.SetDamageRegion(damage);
+
+    // still hava buffer(s) to consume.
+    if (availableBufferCnt > 0) {
+        RSMainThread::Instance()->RequestNextVSync();
+    }
+
+    return true;
 }
 
 bool RsRenderServiceUtil::IsNeedClient(RSSurfaceRenderNode* node)

@@ -16,12 +16,18 @@
 #define RENDER_SERVICE_CLIENT_CORE_PIPELINE_RS_DISPLAY_RENDER_NODE_H
 
 #include <memory>
+#include <surface.h>
+#include <ibuffer_consumer_listener.h>
 
+#include "platform/drawing/rs_surface.h"
 #include "pipeline/rs_base_render_node.h"
+#include "pipeline/rs_surface_handler.h"
+#include "render_context/render_context.h"
+#include "sync_fence.h"
 
 namespace OHOS {
 namespace Rosen {
-class RSDisplayRenderNode : public RSBaseRenderNode {
+class RSDisplayRenderNode : public RSBaseRenderNode, public RSSurfaceHandler {
 public:
     enum CompositeType {
         COMPATIBLE_COMPOSITE = 0,
@@ -89,6 +95,28 @@ public:
         return false;
     }
 
+    NodeId GetId() const override
+    {
+        return RSBaseRenderNode::GetId();
+    }
+
+    bool CreateSurface(sptr<IBufferConsumerListener> listener);
+
+    std::shared_ptr<RSSurface> GetRSSurface() const
+    {
+        return surface_;
+    }
+
+    sptr<IBufferConsumerListener> GetConsumerListener() const
+    {
+        return consumerListener_;
+    }
+
+    bool IsSurfaceCreated() const
+    {
+        return surfaceCreated_;
+    }
+
 private:
     CompositeType compositeType_ { HARDWARE_COMPOSITE };
     uint64_t screenId_;
@@ -98,6 +126,10 @@ private:
     bool isMirroredDisplay_ = false;
     bool isSecurityDisplay_ = false;
     WeakPtr mirrorSource_;
+
+    std::shared_ptr<RSSurface> surface_;
+    bool surfaceCreated_ { false };
+    sptr<IBufferConsumerListener> consumerListener_;
 };
 } // namespace Rosen
 } // namespace OHOS

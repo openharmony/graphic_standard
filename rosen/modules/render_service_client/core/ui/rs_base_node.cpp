@@ -21,6 +21,7 @@
 #include "command/rs_base_node_command.h"
 #include "pipeline/rs_node_map.h"
 #include "platform/common/rs_log.h"
+#include "platform/common/rs_system_properties.h"
 #include "transaction/rs_transaction_proxy.h"
 #include "ui/rs_canvas_node.h"
 #include "ui/rs_display_node.h"
@@ -44,6 +45,9 @@ NodeId RSBaseNode::GenerateId()
     // concat two 32-bit numbers to one 64-bit number
     return ((NodeId)pid_ << 32) | currentId_;
 }
+
+bool RSBaseNode::isUniRenderEnabled_ =
+    RSSystemProperties::GetUniRenderEnabledType() != UniRenderEnabledType::UNI_RENDER_DISABLED;
 
 RSBaseNode::RSBaseNode(bool isRenderServiceNode) : id_(GenerateId()), isRenderServiceNode_(isRenderServiceNode) {}
 

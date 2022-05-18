@@ -95,6 +95,7 @@ ohos_shared_library("librender_service_base") {
     "src/pipeline/rs_render_node.cpp",
     "src/pipeline/rs_render_node_map.cpp",
     "src/pipeline/rs_root_render_node.cpp",
+    "src/pipeline/rs_surface_handler.cpp",
     "src/pipeline/rs_surface_render_node.cpp",
 
     #property
@@ -124,6 +125,11 @@ ohos_shared_library("librender_service_base") {
     "src/screen_manager/rs_screen_mode_info.cpp",
     "src/screen_manager/rs_screen_props.cpp",
   ]
+
+  include_dirs =
+      [ "//foundation/graphic/graphic/rosen/modules/render_service_base/src" ]
+
+  deps = [ "//foundation/graphic/graphic/rosen/modules/render_service_base/src/platform:platform" ]
 
   public_deps = [
     "src/platform:platform",

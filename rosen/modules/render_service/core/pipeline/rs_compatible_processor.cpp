@@ -77,19 +77,8 @@ void RSCompatibleProcessor::ProcessSurface(RSSurfaceRenderNode& node)
         RS_LOGE("RsDebug RSCompatibleProcessor::ProcessSurface canvas is nullptr");
         return;
     }
-    OHOS::sptr<SurfaceBuffer> cbuffer;
-    RSProcessor::SpecialTask task = [&node, &cbuffer] () -> void{
-        if (cbuffer != node.GetBuffer() && node.GetBuffer() != nullptr) {
-            auto& surfaceConsumer = node.GetConsumer();
-            SurfaceError ret = surfaceConsumer->ReleaseBuffer(node.GetBuffer(), SyncFence::INVALID_FENCE);
-            if (ret != SURFACE_ERROR_OK) {
-                RS_LOGE("RSCompatibleProcessor::ProcessSurface: ReleaseBuffer buffer error! error: %d.", ret);
-                return;
-            }
-        }
-    };
-    bool ret = ConsumeAndUpdateBuffer(node, task, cbuffer);
-    if (!ret) {
+
+    if (!RsRenderServiceUtil::ConsumeAndUpdateBuffer(node)) {
         RS_LOGE("RsDebug RSCompatibleProcessor::ProcessSurface consume buffer fail");
         return;
     }

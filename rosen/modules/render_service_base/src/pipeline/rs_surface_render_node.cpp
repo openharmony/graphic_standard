@@ -41,21 +41,6 @@ RSSurfaceRenderNode::RSSurfaceRenderNode(const RSSurfaceRenderNodeConfig& config
 
 RSSurfaceRenderNode::~RSSurfaceRenderNode() {}
 
-void RSSurfaceRenderNode::SetConsumer(const sptr<Surface>& consumer)
-{
-    consumer_ = consumer;
-}
-
-void RSSurfaceRenderNode::SetBuffer(const sptr<SurfaceBuffer>& buffer)
-{
-    if (buffer_ != nullptr) {
-        preBuffer_ = buffer_;
-        buffer_ = buffer;
-    } else {
-        buffer_ = buffer;
-    }
-}
-
 void RSSurfaceRenderNode::ProcessRenderBeforeChildren(RSPaintFilterCanvas& canvas)
 {
     canvas.SaveAlpha();
@@ -100,27 +85,6 @@ RectI RSSurfaceRenderNode::CalculateClipRegion(RSPaintFilterCanvas& canvas)
 void RSSurfaceRenderNode::ProcessRenderAfterChildren(RSPaintFilterCanvas& canvas)
 {
     canvas.RestoreAlpha();
-}
-
-void RSSurfaceRenderNode::SetFence(sptr<SyncFence> fence)
-{
-    preFence_ = fence_;
-    fence_ = std::move(fence);
-}
-
-void RSSurfaceRenderNode::SetDamageRegion(const Rect& damage)
-{
-    damageRect_ = damage;
-}
-
-void RSSurfaceRenderNode::IncreaseAvailableBuffer()
-{
-    bufferAvailableCount_++;
-}
-
-int32_t RSSurfaceRenderNode::ReduceAvailableBuffer()
-{
-    return --bufferAvailableCount_;
 }
 
 void RSSurfaceRenderNode::Prepare(const std::shared_ptr<RSNodeVisitor>& visitor)
@@ -199,16 +163,6 @@ void RSSurfaceRenderNode::SetSecurityLayer(bool isSecurityLayer)
 bool RSSurfaceRenderNode::GetSecurityLayer() const
 {
     return isSecurityLayer_;
-}
-
-void RSSurfaceRenderNode::SetGlobalZOrder(float globalZOrder)
-{
-    globalZOrder_ = globalZOrder;
-}
-
-float RSSurfaceRenderNode::GetGlobalZOrder() const
-{
-    return globalZOrder_;
 }
 
 void RSSurfaceRenderNode::SetParentId(NodeId parentId, bool sendMsg)

@@ -36,8 +36,9 @@
 #include "pipeline/rs_render_service_util.h"
 #include "pipeline/rs_surface_render_node.h"
 #include "platform/common/rs_log.h"
-#include "platform/ohos/backend/rs_surface_ohos_gl.h"
-#include "platform/ohos/backend/rs_surface_ohos_raster.h"
+#include "platform/common/rs_system_properties.h"
+#include <platform/ohos/backend/rs_surface_ohos_gl.h>
+#include <platform/ohos/backend/rs_surface_ohos_raster.h>
 #include "property/rs_properties_painter.h"
 
 namespace OHOS {
@@ -197,10 +198,7 @@ void RSHardwareProcessor::ProcessSurface(RSSurfaceRenderNode &node)
     RS_LOGI("RsDebug RSHardwareProcessor::ProcessSurface start node id:%llu available buffer:%d name:[%s]"\
         "[%d %d %d %d]", node.GetId(), node.GetAvailableBufferCount(), node.GetName().c_str(),
         node.GetDstRect().left_, node.GetDstRect().top_, node.GetDstRect().width_, node.GetDstRect().height_);
-    OHOS::sptr<SurfaceBuffer> cbuffer;
-    RSProcessor::SpecialTask task = [] () -> void {};
-    bool ret = ConsumeAndUpdateBuffer(node, task, cbuffer);
-    if (!ret) {
+    if (!RsRenderServiceUtil::ConsumeAndUpdateBuffer(node)) {
         RS_LOGI("RsDebug RSHardwareProcessor::ProcessSurface consume buffer fail");
         return;
     }
@@ -287,6 +285,58 @@ void RSHardwareProcessor::ProcessSurface(RSSurfaceRenderNode &node)
     }
 }
 
+void RSHardwareProcessor::ProcessSurface(RSDisplayRenderNode& node)
+{
+    RS_LOGI("RSHardwareProcessor::ProcessSurface displayNode id:%llu available buffer:%d", node.GetId(),
+        node.GetAvailableBufferCount());
+    if (!output_) {
+        RS_LOGE("RSHardwareProcessor::ProcessSurface output is nullptr");
+        return;
+    }
+    if (!RsRenderServiceUtil::ConsumeAndUpdateBuffer(node)) {
+        RS_LOGE("RSHardwareProcessor::ProcessSurface consume buffer fail");
+        return;
+    }
+    ComposeInfo info = {
+        .srcRect = {
+            .x = 0,
+            .y = 0,
+            .w = node.GetBuffer()->GetSurfaceBufferWidth(),
+            .h = node.GetBuffer()->GetSurfaceBufferHeight(),
+        },
+        .dstRect = {
+            .x = 0,
+            .y = 0,
+            .w = static_cast<int32_t>(currScreenInfo_.width),
+            .h = static_cast<int32_t>(currScreenInfo_.height),
+        },
+        .visibleRect = {
+            .x = 0,
+            .y = 0,
+            .w = static_cast<int32_t>(currScreenInfo_.width),
+            .h = static_cast<int32_t>(currScreenInfo_.height),
+        },
+        .zOrder = static_cast<int32_t>(node.GetGlobalZOrder()),
+        .alpha = {
+            .enGlobalAlpha = false,
+        },
+        .buffer = node.GetBuffer(),
+        .fence = node.GetFence(),
+        .preBuffer = node.GetPreBuffer(),
+        .preFence = node.GetPreFence(),
+        .blendType = BLEND_NONE,
+    };
+    std::shared_ptr<HdiLayerInfo> layer = HdiLayerInfo::CreateHdiLayerInfo();
+    RS_LOGI("RSHardwareProcessor::ProcessSurface displayNode id:%llu dst [%d %d %d %d]"\
+        "SrcRect [%d %d] rawbuffer [%d %d] surfaceBuffer [%d %d] buffaddr:%p, globalZOrder:%d, blendType = %d",
+        node.GetId(),
+        info.dstRect.x, info.dstRect.y, info.dstRect.w, info.dstRect.h, info.srcRect.w, info.srcRect.h,
+        node.GetBuffer()->GetWidth(), node.GetBuffer()->GetHeight(), node.GetBuffer()->GetSurfaceBufferWidth(),
+        node.GetBuffer()->GetSurfaceBufferHeight(), node.GetBuffer().GetRefPtr(),
+        info.zOrder, info.blendType);
+    RsRenderServiceUtil::ComposeSurface(layer, node.GetConsumer(), layers_, info, &node);
+}
+
 void RSHardwareProcessor::CalculateSrcRect(ComposeInfo& info, RectI clipRegion, RectI originDstRect)
 {
     info.srcRect.x = clipRegion.IsEmpty() ? 0 : std::ceil((clipRegion.left_ - originDstRect.left_) *
@@ -349,8 +399,9 @@ void RSHardwareProcessor::Redraw(
         .usage = HBM_USE_CPU_READ | HBM_USE_CPU_WRITE | HBM_USE_MEM_DMA | HBM_USE_MEM_FB,
         .timeout = 0,
     };
+    bool isUni = RSSystemProperties::GetUniRenderEnabledType() != UniRenderEnabledType::UNI_RENDER_DISABLED;
     RS_TRACE_NAME("Redraw");
-    bool ifUseGPU = IfUseGPUClient(param);
+    bool ifUseGPU = !isUni && IfUseGPUClient(param);
     RS_LOGE("RSHardwareProcessor::Redraw if use GPU client: %d!", ifUseGPU);
 #ifdef RS_ENABLE_GL
     if (ifUseGPU) {
@@ -371,6 +422,9 @@ void RSHardwareProcessor::Redraw(
     }
     std::unique_ptr<RSPaintFilterCanvas> canvas = std::make_unique<RSPaintFilterCanvas>(skCanvas);
     for (auto it = param.layers.begin(); it != param.layers.end(); ++it) {
+        if (isUni) {
+            break;
+        }
         LayerInfoPtr layerInfo = *it;
         if (layerInfo == nullptr) {
             continue;
@@ -438,6 +492,9 @@ void RSHardwareProcessor::Redraw(
 
 void RSHardwareProcessor::OnRotate()
 {
+    if (RSSystemProperties::GetUniRenderEnabledType() != UniRenderEnabledType::UNI_RENDER_DISABLED) {
+        return;
+    }
     int32_t width = static_cast<int32_t>(currScreenInfo_.width);
     int32_t height = static_cast<int32_t>(currScreenInfo_.height);
     for (auto& layer: layers_) {

@@ -64,6 +64,8 @@ public:
     }
     virtual std::string DumpNode(int depth) const;
 protected:
+    static bool isUniRenderEnabled_;
+
     RSBaseNode(bool isRenderServiceNode);
     RSBaseNode(const RSBaseNode&) = delete;
     RSBaseNode(const RSBaseNode&&) = delete;
@@ -81,7 +83,7 @@ protected:
 
     bool IsRenderServiceNode() const
     {
-        return isRenderServiceNode_;
+        return isUniRenderEnabled_ || isRenderServiceNode_;
     }
 
     void SetRenderServiceNodeType(bool isRenderServiceNode)

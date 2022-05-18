@@ -82,7 +82,7 @@ void RSSoftwareProcessor::ProcessSurface(RSSurfaceRenderNode& node)
         return;
     }
     
-    DropFrameProcess(node);
+    RsRenderServiceUtil::DropFrameProcess(node);
 
     auto consumerSurface = node.GetConsumer();
     if (!consumerSurface) {
