@@ -27,6 +27,7 @@
 #include "common/rs_thread_handler.h"
 #include "common/rs_thread_looper.h"
 #include "ipc_callbacks/rs_application_render_thread_stub.h"
+#include "jank_detector/rs_jank_detector.h"
 #include "pipeline/rs_canvas_render_node.h"
 #include "pipeline/rs_render_thread_visitor.h"
 #include "platform/drawing/rs_vsync_client.h"
@@ -49,6 +50,7 @@ public:
     void PostTask(RSTaskMessage::RSTask task);
     void PostPreTask();
     void UpdateWindowStatus(bool active);
+    void UpdateUiDrawFrameMsg(uint64_t startTimeStamp, const std::string& abilityName);
 
     int32_t GetTid();
 
@@ -108,6 +110,11 @@ private:
     uint64_t refreshPeriod_ = 16666667;
     int32_t tid_ = -1;
     uint64_t mValue = 0;
+
+    // for jank frame detector
+    uint64_t uiStartTimeStamp_ = 0;
+    std::string uiDrawAbilityName_;
+    RSJankDetector jankDetector_;
 
     RSContext context_;
 

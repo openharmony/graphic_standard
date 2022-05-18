@@ -15,12 +15,9 @@
 
 #include "pipeline/rs_render_thread.h"
 
-#include <ctime>
 #ifdef OHOS_RSS_CLIENT
 #include <unordered_map>
 #endif
-
-#include "base/hiviewdfx/hisysevent/interfaces/native/innerkits/hisysevent/include/hisysevent.h"
 
 #include "pipeline/rs_frame_report.h"
 #include "pipeline/rs_render_node_map.h"
@@ -50,25 +47,6 @@ static void SystemCallSetThreadName(const std::string& name)
 #endif
 }
 
-namespace {
-void DrawEventReport(float frameLength)
-{
-    int32_t pid = getpid();
-    uint32_t uid = getuid();
-    std::string domain = "GRAPHIC";
-    std::string stringId = "NO_DRAW";
-    std::string processName = "RS_THREAD";
-    std::string msg = "It took " + std::to_string(frameLength * 1000) + "ms to draw."; // 1s = 1000ms
-
-    OHOS::HiviewDFX::HiSysEvent::Write(domain, stringId,
-        OHOS::HiviewDFX::HiSysEvent::EventType::FAULT,
-        "PID", pid,
-        "UID", uid,
-        "PROCESS_NAME", processName,
-        "MSG", msg);
-}
-}
-
 namespace OHOS {
 namespace Rosen {
 RSRenderThread& RSRenderThread::Instance()
@@ -89,12 +67,13 @@ RSRenderThread::RSRenderThread()
         return;
     }
     mainFunc_ = [&]() {
-        clock_t startTime = clock();
+        uint64_t renderStartTimeStamp = jankDetector_.GetSysTimeNs();
         std::string str = "RSRenderThread DrawFrame: " + std::to_string(timestamp_);
         ROSEN_TRACE_BEGIN(HITRACE_TAG_GRAPHIC_AGP, str.c_str());
         {
             prevTimestamp_ = timestamp_;
             ProcessCommands();
+            jankDetector_.ProcessUiDrawFrameMsg();
         }
 
         ROSEN_LOGD("RSRenderThread DrawFrame(%llu) in %s", prevTimestamp_, renderContext_ ? "GPU" : "CPU");
@@ -107,14 +86,7 @@ RSRenderThread::RSRenderThread()
             transactionProxy->FlushImplicitTransactionFromRT();
         }
         ROSEN_TRACE_END(HITRACE_TAG_GRAPHIC_AGP);
-        clock_t endTime = clock();
-        float drawTime = endTime - startTime;
-        // Due to the calibration problem, there is a larger error on the windows.
-        if (drawTime > CLOCKS_PER_SEC * 6) { // The drawing timeout reaches 6 seconds.
-            drawTime = static_cast<float>(drawTime) / CLOCKS_PER_SEC;
-            DrawEventReport(drawTime);
-            ROSEN_LOGD("RSRenderThread DrawFrame took %fs.", drawTime);
-        }
+        jankDetector_.CalculateSkippedFrame(renderStartTimeStamp, jankDetector_.GetSysTimeNs());
     };
 }
 
@@ -185,6 +157,7 @@ void RSRenderThread::RecvTransactionData(std::unique_ptr<RSTransactionData>& tra
     }
     // [PLANNING]: process in next vsync (temporarily)
     RSRenderThread::Instance().RequestNextVSync();
+    jankDetector_.UpdateUiDrawFrameMsg(uiStartTimeStamp_, jankDetector_.GetSysTimeNs(), uiDrawAbilityName_);
 }
 
 void RSRenderThread::RequestNextVSync()
@@ -260,6 +233,12 @@ void RSRenderThread::UpdateWindowStatus(bool active)
         activeWindowCnt_--;
     }
     ROSEN_LOGD("RSRenderThread UpdateWindowStatus %d, cur activeWindowCnt_ %d", active, activeWindowCnt_.load());
+}
+
+void RSRenderThread::UpdateUiDrawFrameMsg(uint64_t startTimeStamp, const std::string& abilityName)
+{
+    uiStartTimeStamp_ = startTimeStamp;
+    uiDrawAbilityName_ = abilityName;
 }
 
 void RSRenderThread::ProcessCommands()

@@ -56,7 +56,7 @@ void RSUIDirectorTest::TearDown() {}
 HWTEST_F(RSUIDirectorTest, SetTimeStamp001, TestSize.Level1)
 {
     std::shared_ptr<RSUIDirector> director = RSUIDirector::Create();
-    director->SetTimeStamp(g_normalUInt64_1);
+    director->SetTimeStamp(g_normalUInt64_1, "test");
 }
 
 /**
@@ -67,7 +67,7 @@ HWTEST_F(RSUIDirectorTest, SetTimeStamp001, TestSize.Level1)
 HWTEST_F(RSUIDirectorTest, SetTimeStamp002, TestSize.Level1)
 {
     std::shared_ptr<RSUIDirector> director = RSUIDirector::Create();
-    director->SetTimeStamp(-std::numeric_limits<uint64_t>::max());
+    director->SetTimeStamp(-std::numeric_limits<uint64_t>::max(), "test");
 }
 
 /**
@@ -78,7 +78,7 @@ HWTEST_F(RSUIDirectorTest, SetTimeStamp002, TestSize.Level1)
 HWTEST_F(RSUIDirectorTest, SetTimeStamp003, TestSize.Level1)
 {
     std::shared_ptr<RSUIDirector> director = RSUIDirector::Create();
-    director->SetTimeStamp(std::numeric_limits<int64_t>::min());
+    director->SetTimeStamp(std::numeric_limits<int64_t>::min(), "test");
 }
 
 /**
@@ -177,7 +177,7 @@ HWTEST_F(RSUIDirectorTest, UIDirectorTotal001, TestSize.Level1)
 
     director->SetRoot(rootNode->GetId());
 
-    director->SetTimeStamp(345);
+    director->SetTimeStamp(345, "test");
     director->SetRSSurfaceNode(nullptr);
     RSSurfaceNodeConfig c;
     auto surfaceNode = RSSurfaceNode::Create(c);
