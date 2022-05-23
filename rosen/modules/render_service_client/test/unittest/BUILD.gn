@@ -18,13 +18,26 @@ module_out_path = "graphic_standard/render_service_client"
 group("unittest") {
   testonly = true
 
-  deps = [ ":RSInterfacesTest" ]
+  deps = [
+    ":RSDropframeTest",
+    ":RSInterfacesTest",
+  ]
 }
 
 ## Build RSInterfacesTest
 ohos_unittest("RSInterfacesTest") {
   module_out_path = module_out_path
   sources = [ "rs_interfaces_test.cpp" ]
+  deps = [ ":rs_client_test_common" ]
+}
+
+## Build RSDropframeTest
+ohos_unittest("RSDropframeTest") {
+  module_out_path = module_out_path
+  sources = [
+    "//foundation/graphic/graphic/rosen/modules/render_service_base/src/pipeline/rs_base_render_node.cpp",
+    "rs_dropframe_test.cpp",
+  ]
   deps = [ ":rs_client_test_common" ]
 }
 
