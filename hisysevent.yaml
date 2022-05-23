@@ -43,5 +43,5 @@ NO_DRAW:
   __BASE: {type: FAULT, level: MINOR, desc: graphic no draw}
   PID: {type: INT32, desc: pid}
   UID: {type: INT32, desc: pid}
-  PROCESS_NAME: {type: STRING, desc: process name}
+  ABILITY_NAME: {type: STRING, desc: ability name}
   MSG: {type: STRING, desc: message}

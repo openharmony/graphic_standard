@@ -41,7 +41,7 @@ public:
     void SetUITaskRunner(const TaskRunner& uiTaskRunner);
     void SendMessages(); // post messages to render thread
 
-    void SetTimeStamp(uint64_t timeStamp);
+    void SetTimeStamp(uint64_t timeStamp, const std::string& abilityName);
 
 private:
     void Destroy();
