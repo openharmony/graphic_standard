@@ -19,21 +19,14 @@ namespace Rosen {
 enum GraphicsErrorCode {
     NO_ERR = 0,
     // 1-100 for Render Service
-
     // 101-200 for animation
-
     // 201-300 for 2d graphics
-    2D_GRAPHICS_OBJ_CREATE_FAILED = 201,
-    2D_GRAPHICS_DECODE_FILE_INVALID,
-
+    ERROR_2D_GRAPHICS_OBJ_CREATE_FAILED = 201,
+    ERROR_2D_GRAPHICS_DECODE_FILE_INVALID,
     // 301-400 for effect
-
     // 401-500 for backstore
-
     // 501-600 for composor
-
     // 601-700 for wms
-
 };
 }
 #endif
