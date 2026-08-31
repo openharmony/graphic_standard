@@ -14,6 +14,7 @@
  */
 
 #include "animation/rs_animation_log.h"
+#include "animation/parse_graphic_config_uint64.h"
 
 #include <cstdarg>
 #include <regex>
@@ -137,8 +138,13 @@ void RSAnimationLog::DealConfigInputInfo(const std::string& info)
                 needWriteAllProperty_ = true;
                 return;
             }
+            uint64_t propertyValue = 0;
+            if (!ParseGraphicConfigUint64(prop, propertyValue)) {
+                ROSEN_LOGE("invalid animation config property: [%s]", prop.c_str());
+                continue;
+            }
             RSAnimatableProperty property =
-                static_cast<RSAnimatableProperty>(strtoull(prop.c_str(), NULL, 10));
+                static_cast<RSAnimatableProperty>(propertyValue);
             propertySet_.insert(property);
         }
     }
@@ -151,7 +157,11 @@ void RSAnimationLog::DealConfigInputInfo(const std::string& info)
                 needWriteAllNode_ = true;
                 return;
             }
-            auto id = atoll(nodeId.c_str());
+            uint64_t id = 0;
+            if (!ParseGraphicConfigUint64(nodeId, id)) {
+                ROSEN_LOGE("invalid animation config node id: [%s]", nodeId.c_str());
+                continue;
+            }
             nodeIdSet_.insert(id);
         }
     }
